@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { isSupabaseConfigured } from '@/lib/supabase'
 import type { Customer } from '@/lib/types'
 
 // Mock customer data for authentication
-const customers: Customer[] = [
+const mockCustomers: Customer[] = [
   {
     id: '1',
     name: 'John Smith',
@@ -68,7 +69,7 @@ export async function POST(request: NextRequest) {
     
     // Demo mode - bypass authentication
     if (identifier === 'demo') {
-      const demoCustomer = customers[0]
+      const demoCustomer = mockCustomers[0]
       return NextResponse.json({
         success: true,
         customer: demoCustomer,
@@ -76,8 +77,8 @@ export async function POST(request: NextRequest) {
       })
     }
     
-    // Find customer by email or phone
-    const customer = customers.find(c => {
+    // Find customer by email or phone (using mock data for now)
+    const customer = mockCustomers.find(c => {
       if (type === 'email') {
         return c.email.toLowerCase() === identifier.toLowerCase()
       } else if (type === 'phone') {
@@ -128,7 +129,7 @@ export async function GET(request: NextRequest) {
     if (token === 'demo-token') {
       return NextResponse.json({
         success: true,
-        customer: customers[0]
+        customer: mockCustomers[0]
       })
     }
     
@@ -142,7 +143,7 @@ export async function GET(request: NextRequest) {
     }
     
     const customerId = match[1]
-    const customer = customers.find(c => c.id === customerId)
+    const customer = mockCustomers.find(c => c.id === customerId)
     
     if (!customer) {
       return NextResponse.json(

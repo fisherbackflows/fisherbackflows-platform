@@ -1,6 +1,60 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import type { Customer } from '@/lib/types'
+
+// Mock data for development when Supabase is not configured
+const mockCustomers: Customer[] = [
+  {
+    id: '1',
+    name: 'John Smith',
+    email: 'john.smith@email.com',
+    phone: '555-0123',
+    address: '123 Main St, City, State 12345',
+    accountNumber: 'FB001',
+    devices: [
+      {
+        id: 'dev1',
+        location: '123 Main St - Backyard',
+        serialNumber: 'BF-2023-001',
+        size: '3/4"',
+        make: 'Watts',
+        model: 'Series 909',
+        installDate: '2023-01-15',
+        lastTestDate: '2024-01-15',
+        nextTestDate: '2025-01-15',
+        status: 'Passed'
+      }
+    ],
+    balance: 0,
+    nextTestDate: '2025-01-15',
+    status: 'Active'
+  },
+  {
+    id: '2',
+    name: 'ABC Corporation',
+    email: 'admin@abccorp.com',
+    phone: '555-0456',
+    address: '456 Business Ave, City, State 12345',
+    accountNumber: 'FB002',
+    devices: [
+      {
+        id: 'dev2',
+        location: '456 Business Ave - Main Building',
+        serialNumber: 'BF-2023-002',
+        size: '1"',
+        make: 'Zurn Wilkins',
+        model: '350XL',
+        installDate: '2023-03-20',
+        lastTestDate: '2024-03-20',
+        nextTestDate: '2025-03-20',
+        status: 'Failed'
+      }
+    ],
+    balance: 150,
+    nextTestDate: '2025-03-20',
+    status: 'Needs Service'
+  }
+]
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,6 +62,32 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search')
     const status = searchParams.get('status')
     
+    // Use mock data if Supabase is not configured
+    if (!isSupabaseConfigured || !supabase) {
+      let filteredCustomers = mockCustomers
+      
+      // Apply search filter
+      if (search) {
+        const searchLower = search.toLowerCase()
+        filteredCustomers = filteredCustomers.filter(customer =>
+          customer.name.toLowerCase().includes(searchLower) ||
+          customer.email.toLowerCase().includes(searchLower) ||
+          customer.phone.includes(search) ||
+          customer.accountNumber.toLowerCase().includes(searchLower)
+        )
+      }
+      
+      // Apply status filter
+      if (status && status !== 'All') {
+        filteredCustomers = filteredCustomers.filter(customer =>
+          customer.status === status
+        )
+      }
+      
+      return NextResponse.json(filteredCustomers)
+    }
+    
+    // Use Supabase when configured
     let query = supabase
       .from('customers')
       .select(`
@@ -82,6 +162,22 @@ export async function POST(request: NextRequest) {
         { error: 'Missing required fields' },
         { status: 400 }
       )
+    }
+    
+    // Use mock data if Supabase is not configured
+    if (!isSupabaseConfigured || !supabase) {
+      const newCustomer: Customer = {
+        id: String(mockCustomers.length + 1),
+        accountNumber: `FB${String(mockCustomers.length + 1).padStart(3, '0')}`,
+        ...data,
+        devices: [],
+        balance: 0,
+        nextTestDate: data.nextTestDate || null,
+        status: 'Active'
+      }
+      
+      mockCustomers.push(newCustomer)
+      return NextResponse.json(newCustomer, { status: 201 })
     }
     
     // Get the next account number
