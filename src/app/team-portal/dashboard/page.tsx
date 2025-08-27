@@ -52,6 +52,7 @@ export default function AdminDashboard() {
   });
   const [currentTime, setCurrentTime] = useState(new Date());
   const [privateMode, setPrivateMode] = useState<boolean | null>(null);
+  const [isToggling, setIsToggling] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -116,6 +117,27 @@ export default function AdminDashboard() {
       router.push('/team-portal');
     } catch (error) {
       console.error('Logout error:', error);
+    }
+  };
+
+  const togglePrivateMode = async () => {
+    if (isToggling) return;
+    
+    setIsToggling(true);
+    try {
+      const response = await fetch('/api/admin/private-mode', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enable: !privateMode })
+      });
+      
+      if (response.ok) {
+        setPrivateMode(!privateMode);
+      }
+    } catch (error) {
+      console.error('Toggle failed:', error);
+    } finally {
+      setIsToggling(false);
     }
   };
 
@@ -313,30 +335,30 @@ export default function AdminDashboard() {
                 </div>
               </div>
               
-              <Button
-                onClick={async () => {
-                  try {
-                    const response = await fetch('/api/admin/private-mode', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ enable: !privateMode })
-                    });
-                    
-                    if (response.ok) {
-                      setPrivateMode(!privateMode);
-                    }
-                  } catch (error) {
-                    console.error('Toggle failed:', error);
-                  }
-                }}
-                className={`${
-                  privateMode 
-                    ? 'bg-green-600 hover:bg-green-700 text-white' 
-                    : 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                } px-4 py-2`}
-              >
-                {privateMode ? 'Make Public' : 'Make Private'}
-              </Button>
+              <div className="flex items-center gap-3">
+                <label className="text-sm text-white/80">
+                  Site Mode:
+                </label>
+                <div 
+                  onClick={togglePrivateMode}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors duration-200 ${
+                    privateMode 
+                      ? 'bg-yellow-500' 
+                      : 'bg-green-500'
+                  } ${isToggling ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
+                      privateMode ? 'translate-x-6' : 'translate-x-1'
+                    }`}
+                  />
+                </div>
+                <span className={`text-sm font-medium ${
+                  privateMode ? 'text-yellow-400' : 'text-green-400'
+                }`}>
+                  {isToggling ? 'Switching...' : (privateMode ? 'Private' : 'Public')}
+                </span>
+              </div>
             </div>
           </div>
 
