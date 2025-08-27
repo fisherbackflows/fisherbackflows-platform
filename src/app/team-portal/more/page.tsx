@@ -21,7 +21,8 @@ import {
   LogOut,
   Smartphone,
   Cloud,
-  Printer
+  Printer,
+  Instagram
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -52,6 +53,13 @@ export default function MorePage() {
   }, []);
 
   const businessFeatures = [
+    {
+      title: 'Instagram Marketing',
+      description: 'Branding & advertising dashboard',
+      icon: <Instagram className="h-6 w-6" />,
+      href: '/team-portal/instagram',
+      color: 'bg-pink-500'
+    },
     {
       title: 'Customer Database',
       description: 'Complete customer records',

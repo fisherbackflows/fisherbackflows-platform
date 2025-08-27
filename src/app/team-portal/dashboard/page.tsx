@@ -18,7 +18,8 @@ import {
   LogOut,
   TrendingUp,
   Bell,
-  User
+  User,
+  Instagram
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -99,6 +100,13 @@ export default function AdminDashboard() {
   };
 
   const quickActions = [
+    {
+      title: 'Instagram Marketing',
+      description: 'Branding & advertising',
+      icon: <Instagram className="h-8 w-8" />,
+      href: '/team-portal/instagram',
+      color: 'bg-pink-600 hover:bg-pink-700'
+    },
     {
       title: 'Manage Users',
       description: 'Add/remove team members',
