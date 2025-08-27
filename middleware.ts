@@ -4,13 +4,14 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const pathname = url.pathname;
 
-  // Check if site is in maintenance/private mode
-  const isPrivateMode = process.env.PRIVATE_MODE === 'true';
+  // Check for simple private mode cookie
+  const isPrivateMode = request.cookies.get('site-private-mode')?.value === 'true';
   
   // Admin routes that should always be accessible
   const adminRoutes = [
     '/team-portal',
     '/api/team',
+    '/api/admin',
     '/app' // Legacy admin routes
   ];
   

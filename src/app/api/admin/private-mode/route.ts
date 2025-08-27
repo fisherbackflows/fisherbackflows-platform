@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
   try {
-    const isPrivateMode = process.env.PRIVATE_MODE === 'true';
+    const isPrivateMode = request.cookies.get('site-private-mode')?.value === 'true';
     
     return NextResponse.json({
       privateMode: isPrivateMode,
@@ -32,17 +33,25 @@ export async function POST(request: NextRequest) {
 
     const { enable } = await request.json();
     
-    // In a real deployment, you would update environment variables
-    // or use a database to store this setting
-    // For now, we'll return instructions for manual setup
+    // Set or remove the private mode cookie
+    const cookieStore = await cookies();
+    
+    if (enable) {
+      cookieStore.set('site-private-mode', 'true', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+        path: '/',
+      });
+    } else {
+      cookieStore.delete('site-private-mode');
+    }
     
     return NextResponse.json({
       success: true,
-      message: enable 
-        ? 'To enable private mode, set PRIVATE_MODE=true in your environment variables and redeploy'
-        : 'To disable private mode, set PRIVATE_MODE=false in your environment variables and redeploy',
-      currentStatus: process.env.PRIVATE_MODE === 'true' ? 'private' : 'public',
-      requestedStatus: enable ? 'private' : 'public'
+      message: enable ? 'Private mode enabled' : 'Private mode disabled',
+      newStatus: enable ? 'private' : 'public'
     });
 
   } catch (error) {

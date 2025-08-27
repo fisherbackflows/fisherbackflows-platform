@@ -313,9 +313,30 @@ export default function AdminDashboard() {
                 </div>
               </div>
               
-              <div className="text-xs text-white/40">
-                Set PRIVATE_MODE=true in environment to enable
-              </div>
+              <Button
+                onClick={async () => {
+                  try {
+                    const response = await fetch('/api/admin/private-mode', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ enable: !privateMode })
+                    });
+                    
+                    if (response.ok) {
+                      setPrivateMode(!privateMode);
+                    }
+                  } catch (error) {
+                    console.error('Toggle failed:', error);
+                  }
+                }}
+                className={`${
+                  privateMode 
+                    ? 'bg-green-600 hover:bg-green-700 text-white' 
+                    : 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                } px-4 py-2`}
+              >
+                {privateMode ? 'Make Public' : 'Make Private'}
+              </Button>
             </div>
           </div>
 
