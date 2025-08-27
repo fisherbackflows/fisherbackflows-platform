@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   ArrowLeft,
@@ -58,22 +58,13 @@ interface TestReport {
   photos: string[];
 }
 
-export default function TestReportPage() {
+function TestReportContent() {
   const router = useRouter();
-  
-  // Safe searchParams access for SSR compatibility
-  let customerId = '';
-  try {
-    const searchParams = useSearchParams();
-    customerId = searchParams?.get('customer') || '';
-  } catch (error) {
-    // Fallback for SSR
-    console.log('SearchParams not available during SSR');
-  }
+  const searchParams = useSearchParams();
   
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState<TestReport>({
-    customerId: customerId || '',
+    customerId: '',
     customerName: '',
     deviceId: '',
     deviceType: 'RP',
@@ -126,20 +117,25 @@ export default function TestReportPage() {
     'Pierce County Water Utility'
   ];
 
+  // Handle searchParams after component mounts
   useEffect(() => {
+    const customerId = searchParams?.get('customer');
     if (customerId) {
       const customer = customers.find(c => c.id === customerId);
       if (customer) {
         setFormData(prev => ({
           ...prev,
+          customerId,
           customerName: customer.name
         }));
       }
     }
+  }, [searchParams]);
 
-    // Initialize test results based on device type
+  // Initialize test results based on device type
+  useEffect(() => {
     initializeTestResults();
-  }, [customerId, formData.deviceType]);
+  }, [formData.deviceType]);
 
   const initializeTestResults = () => {
     const deviceType = deviceTypes.find(d => d.value === formData.deviceType);
@@ -676,5 +672,20 @@ export default function TestReportPage() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function TestReportPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="text-gray-600 mt-4">Loading...</p>
+        </div>
+      </div>
+    }>
+      <TestReportContent />
+    </Suspense>
   );
 }

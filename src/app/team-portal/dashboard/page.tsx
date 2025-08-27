@@ -305,60 +305,90 @@ export default function AdminDashboard() {
           <div className="glass rounded-2xl p-6 glow-blue-sm mb-8">
             <h3 className="text-lg font-semibold mb-4 flex items-center">
               <Settings className="h-5 w-5 text-blue-400 mr-2" />
-              Site Status Control
+              Site Access Control - Admin Only
             </h3>
             
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${
-                  privateMode 
-                    ? 'bg-yellow-600/20 border border-yellow-500/30' 
-                    : 'bg-green-600/20 border border-green-500/30'
-                }`}>
-                  {privateMode ? (
-                    <EyeOff className="h-4 w-4 text-yellow-400" />
-                  ) : (
-                    <Eye className="h-4 w-4 text-green-400" />
-                  )}
-                  <span className={`text-sm font-medium ${
-                    privateMode ? 'text-yellow-400' : 'text-green-400'
+            <div className="flex flex-col gap-4">
+              {/* Current Status Display */}
+              <div className="flex items-center justify-between p-4 glass rounded-xl">
+                <div className="flex items-center gap-3">
+                  <div className={`p-3 rounded-lg ${
+                    privateMode 
+                      ? 'bg-yellow-600/20 border border-yellow-500/30' 
+                      : 'bg-green-600/20 border border-green-500/30'
                   }`}>
-                    {privateMode ? 'Private Mode' : 'Public Site'}
-                  </span>
+                    {privateMode ? (
+                      <EyeOff className="h-6 w-6 text-yellow-400" />
+                    ) : (
+                      <Eye className="h-6 w-6 text-green-400" />
+                    )}
+                  </div>
+                  <div>
+                    <div className={`font-semibold ${
+                      privateMode ? 'text-yellow-400' : 'text-green-400'
+                    }`}>
+                      {privateMode ? 'PRIVATE MODE ACTIVE' : 'PUBLIC ACCESS ENABLED'}
+                    </div>
+                    <div className="text-sm text-white/60">
+                      {privateMode 
+                        ? 'Only admins can access the website'
+                        : 'Website is visible to everyone'
+                      }
+                    </div>
+                  </div>
                 </div>
                 
-                <div className="text-sm text-white/60">
-                  {privateMode 
-                    ? 'Site is hidden from public, admin access only'
-                    : 'Site is publicly accessible'
-                  }
-                </div>
+                {/* Action Button */}
+                <button
+                  onClick={togglePrivateMode}
+                  disabled={isToggling}
+                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                    privateMode 
+                      ? 'bg-green-600 hover:bg-green-700 text-white' 
+                      : 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                  } ${isToggling ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
+                >
+                  {isToggling ? (
+                    <span className="flex items-center gap-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                      Updating...
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2">
+                      {privateMode ? (
+                        <>
+                          <Eye className="h-4 w-4" />
+                          Make Site Public
+                        </>
+                      ) : (
+                        <>
+                          <EyeOff className="h-4 w-4" />
+                          Enable Private Mode
+                        </>
+                      )}
+                    </span>
+                  )}
+                </button>
               </div>
               
-              <div className="flex items-center gap-3">
-                <label className="text-sm text-white/80">
-                  Site Mode:
-                </label>
-                <div 
-                  onClick={togglePrivateMode}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full cursor-pointer transition-colors duration-200 ${
-                    privateMode 
-                      ? 'bg-yellow-500' 
-                      : 'bg-green-500'
-                  } ${isToggling ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                  <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
-                      privateMode ? 'translate-x-6' : 'translate-x-1'
-                    }`}
-                  />
+              {/* Warning Message */}
+              {!privateMode && (
+                <div className="flex items-start gap-2 p-3 bg-blue-600/10 border border-blue-500/20 rounded-lg">
+                  <AlertTriangle className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-white/80">
+                    <strong>Note:</strong> When private mode is disabled, all visitors can access your website including customer portal and public pages.
+                  </div>
                 </div>
-                <span className={`text-sm font-medium ${
-                  privateMode ? 'text-yellow-400' : 'text-green-400'
-                }`}>
-                  {isToggling ? 'Switching...' : (privateMode ? 'Private' : 'Public')}
-                </span>
-              </div>
+              )}
+              
+              {privateMode && (
+                <div className="flex items-start gap-2 p-3 bg-yellow-600/10 border border-yellow-500/20 rounded-lg">
+                  <AlertTriangle className="h-4 w-4 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <div className="text-sm text-white/80">
+                    <strong>Private Mode Active:</strong> Only team members with admin credentials can access the website. All public visitors will be redirected to the login page.
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
