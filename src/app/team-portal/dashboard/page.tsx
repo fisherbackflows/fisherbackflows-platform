@@ -19,7 +19,9 @@ import {
   TrendingUp,
   Bell,
   User,
-  Instagram
+  Instagram,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -49,6 +51,7 @@ export default function AdminDashboard() {
     monthRevenue: 0
   });
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [privateMode, setPrivateMode] = useState<boolean | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -89,6 +92,23 @@ export default function AdminDashboard() {
 
     return () => clearInterval(timer);
   }, [router]);
+
+  // Check private mode status
+  useEffect(() => {
+    const checkPrivateMode = async () => {
+      try {
+        const response = await fetch('/api/admin/private-mode');
+        if (response.ok) {
+          const data = await response.json();
+          setPrivateMode(data.privateMode);
+        }
+      } catch (error) {
+        console.error('Private mode check error:', error);
+      }
+    };
+    
+    checkPrivateMode();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -255,6 +275,46 @@ export default function AdminDashboard() {
                 <div className="glass-emerald rounded-lg p-3">
                   <DollarSign className="h-6 w-6 text-emerald-400" />
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Site Status Control */}
+          <div className="glass rounded-2xl p-6 glow-blue-sm mb-8">
+            <h3 className="text-lg font-semibold mb-4 flex items-center">
+              <Settings className="h-5 w-5 text-blue-400 mr-2" />
+              Site Status Control
+            </h3>
+            
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className={`flex items-center gap-2 px-3 py-2 rounded-lg ${
+                  privateMode 
+                    ? 'bg-yellow-600/20 border border-yellow-500/30' 
+                    : 'bg-green-600/20 border border-green-500/30'
+                }`}>
+                  {privateMode ? (
+                    <EyeOff className="h-4 w-4 text-yellow-400" />
+                  ) : (
+                    <Eye className="h-4 w-4 text-green-400" />
+                  )}
+                  <span className={`text-sm font-medium ${
+                    privateMode ? 'text-yellow-400' : 'text-green-400'
+                  }`}>
+                    {privateMode ? 'Private Mode' : 'Public Site'}
+                  </span>
+                </div>
+                
+                <div className="text-sm text-white/60">
+                  {privateMode 
+                    ? 'Site is hidden from public, admin access only'
+                    : 'Site is publicly accessible'
+                  }
+                </div>
+              </div>
+              
+              <div className="text-xs text-white/40">
+                Set PRIVATE_MODE=true in environment to enable
               </div>
             </div>
           </div>
