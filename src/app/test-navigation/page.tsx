@@ -32,10 +32,10 @@ export default function NavigationTestPage() {
     { path: '/api/automation/payments', name: 'Payment Processing', category: 'API' },
 
     // Admin/App Routes
-    { path: '/app', name: 'Admin Dashboard', category: 'Admin' },
-    { path: '/app/customers', name: 'Customer Management', category: 'Admin' },
-    { path: '/app/schedule', name: 'Schedule Management', category: 'Admin' },
-    { path: '/app/invoices', name: 'Invoice Management', category: 'Admin' },
+    { path: '/team-portal', name: 'Team Portal', category: 'Admin' },
+    { path: '/team-portal/customers', name: 'Customer Management', category: 'Admin' },
+    { path: '/team-portal/schedule', name: 'Schedule Management', category: 'Admin' },
+    { path: '/team-portal/invoices', name: 'Invoice Management', category: 'Admin' },
   ];
 
   const testRoute = async (path: string) => {

@@ -87,7 +87,7 @@ Fisher Backflows Team`
     
     // Simulate successful save
     alert('Reminder created successfully!');
-    window.location.href = '/app/reminders';
+    window.location.href = '/team-portal/reminders';
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -138,7 +138,7 @@ Fisher Backflows Team`
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Link href="/app/reminders">
+            <Link href="/team-portal/reminders">
               <Button variant="ghost" size="sm">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back

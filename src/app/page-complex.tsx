@@ -99,7 +99,7 @@ export default function HomePage() {
               <Button 
                 size="lg" 
                 className="btn-glass px-8 py-3 rounded-lg hover-glow"
-                onClick={() => window.location.href = '/app'}
+                onClick={() => window.location.href = '/team-portal'}
               >
                 Business Login
                 <ArrowRight className="ml-2 h-5 w-5" />

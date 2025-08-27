@@ -48,7 +48,7 @@ export default function NewSchedulePage() {
     
     // Simulate successful save
     alert('Appointment scheduled successfully!');
-    window.location.href = '/app/schedule';
+    window.location.href = '/team-portal/schedule';
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -65,7 +65,7 @@ export default function NewSchedulePage() {
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Link href="/app/schedule">
+            <Link href="/team-portal/schedule">
               <Button variant="ghost" size="sm">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back

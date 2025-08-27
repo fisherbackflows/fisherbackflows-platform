@@ -234,11 +234,11 @@ export default function TestReportPage() {
         
         console.log('Creating district report:', districtReport);
         alert('Test report saved and sent to district reports queue!');
-        router.push('/app/district-reports');
+        router.push('/team-portal/district-reports');
       } else {
         // Regular submit
         alert('Test report saved successfully!');
-        router.push('/app');
+        router.push('/team-portal');
       }
     } catch (error) {
       console.error('Error saving test report:', error);

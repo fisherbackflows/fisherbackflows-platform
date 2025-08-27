@@ -56,28 +56,28 @@ export default function MorePage() {
       title: 'Customer Database',
       description: 'Complete customer records',
       icon: <Users className="h-6 w-6" />,
-      href: '/app/customers/database',
+      href: '/team-portal/customers/database',
       color: 'bg-blue-500'
     },
     {
       title: 'Invoices',
       description: 'Manage billing and payments',
       icon: <DollarSign className="h-6 w-6" />,
-      href: '/app/invoices',
+      href: '/team-portal/invoices',
       color: 'bg-green-500'
     },
     {
       title: 'Water Districts',
       description: 'Submit test reports',
       icon: <FileText className="h-6 w-6" />,
-      href: '/app/district-reports',
+      href: '/team-portal/district-reports',
       color: 'bg-indigo-500'
     },
     {
       title: 'Auto Reminders',
       description: 'Automated annual notifications',
       icon: <Bell className="h-6 w-6" />,
-      href: '/app/reminders',
+      href: '/team-portal/reminders',
       color: 'bg-yellow-500'
     }
   ];
@@ -87,28 +87,28 @@ export default function MorePage() {
       title: 'Export Data',
       description: 'Download customer data',
       icon: <Download className="h-6 w-6" />,
-      href: '/app/export',
+      href: '/team-portal/export',
       color: 'bg-purple-500'
     },
     {
       title: 'Import Data',
       description: 'Import existing records',
       icon: <Upload className="h-6 w-6" />,
-      href: '/app/import',
+      href: '/team-portal/import',
       color: 'bg-orange-500'
     },
     {
       title: 'Print Labels',
       description: 'Device and customer labels',
       icon: <Printer className="h-6 w-6" />,
-      href: '/app/labels',
+      href: '/team-portal/labels',
       color: 'bg-gray-500'
     },
     {
       title: 'Backup & Sync',
       description: 'Cloud data backup',
       icon: <Cloud className="h-6 w-6" />,
-      href: '/app/backup',
+      href: '/team-portal/backup',
       color: 'bg-cyan-500'
     }
   ];
@@ -118,14 +118,14 @@ export default function MorePage() {
       title: 'Settings',
       description: 'App preferences',
       icon: <Settings className="h-6 w-6" />,
-      href: '/app/settings',
+      href: '/team-portal/settings',
       color: 'bg-gray-600'
     },
     {
       title: 'Help & Support',
       description: 'Get help and tutorials',
       icon: <HelpCircle className="h-6 w-6" />,
-      href: '/app/help',
+      href: '/team-portal/help',
       color: 'bg-teal-500'
     }
   ];
@@ -231,7 +231,7 @@ export default function MorePage() {
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
           <div className="space-y-3">
             <Link
-              href="/app/test-report"
+              href="/team-portal/test-report"
               className="flex items-center justify-between bg-blue-600 text-white rounded-lg p-4 hover:bg-blue-700 transition-colors"
             >
               <div className="flex items-center space-x-3">
@@ -245,7 +245,7 @@ export default function MorePage() {
             </Link>
 
             <Link
-              href="/app/customers/new"
+              href="/team-portal/customers/new"
               className="flex items-center justify-between bg-green-600 text-white rounded-lg p-4 hover:bg-green-700 transition-colors"
             >
               <div className="flex items-center space-x-3">
@@ -259,7 +259,7 @@ export default function MorePage() {
             </Link>
 
             <Link
-              href="/app/invoices/new"
+              href="/team-portal/invoices/new"
               className="flex items-center justify-between bg-purple-600 text-white rounded-lg p-4 hover:bg-purple-700 transition-colors"
             >
               <div className="flex items-center space-x-3">
@@ -364,19 +364,19 @@ export default function MorePage() {
             <div className="h-6 w-6 bg-gray-400 rounded"></div>
             <span className="text-xs">Home</span>
           </Link>
-          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/team-portal/customers" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
             <Users className="h-6 w-6" />
             <span className="text-xs">Customers</span>
           </Link>
-          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/team-portal/test-report" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
             <Plus className="h-6 w-6" />
             <span className="text-xs">Test</span>
           </Link>
-          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/team-portal/schedule" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
             <Calendar className="h-6 w-6" />
             <span className="text-xs">Schedule</span>
           </Link>
-          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-blue-600 bg-blue-50">
+          <Link href="/team-portal/more" className="flex flex-col items-center py-2 px-1 text-blue-600 bg-blue-50">
             <div className="flex space-x-1">
               <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
               <div className="w-1 h-1 bg-blue-600 rounded-full"></div>

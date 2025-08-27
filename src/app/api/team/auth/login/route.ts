@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { cookies } from 'next/headers';
 import { v4 as uuidv4 } from 'uuid';

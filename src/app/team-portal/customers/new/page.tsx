@@ -129,7 +129,7 @@ export default function NewCustomerPage() {
       // In a real app, you'd send this data to your API
       console.log('Saving customer:', formData);
       
-      router.push('/app/customers');
+      router.push('/team-portal/customers');
     } catch (error) {
       console.error('Error saving customer:', error);
       alert('Error saving customer. Please try again.');
@@ -157,7 +157,7 @@ export default function NewCustomerPage() {
         <div className="px-4 py-4">
           <div className="flex items-center space-x-4">
             <Button variant="outline" size="sm" asChild>
-              <Link href="/app/customers">
+              <Link href="/team-portal/customers">
                 <ArrowLeft className="h-4 w-4" />
               </Link>
             </Button>

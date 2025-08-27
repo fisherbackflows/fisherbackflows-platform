@@ -184,7 +184,7 @@ export default function HomePage() {
               <Button 
                 size="lg" 
                 className="bg-green-600/20 border border-green-500/30 text-green-400 hover:bg-green-600/30 px-8 py-3 rounded-lg transition-all"
-                onClick={() => window.location.href = '/app'}
+                onClick={() => window.location.href = '/team-portal'}
               >
                 Business Login
                 <ArrowRight className="ml-2 h-5 w-5" />

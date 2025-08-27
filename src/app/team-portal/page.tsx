@@ -26,9 +26,9 @@ export default function TeamLoginPage() {
         if (response.ok) {
           const data = await response.json();
           if (data.role === 'admin') {
-            router.push('/app/dashboard');
+            router.push('/team-portal/dashboard');
           } else if (data.role === 'tester') {
-            router.push('/app/tester');
+            router.push('/team-portal/tester');
           }
         }
       } catch (error) {
@@ -58,9 +58,9 @@ export default function TeamLoginPage() {
         
         // Redirect based on role
         if (data.role === 'admin') {
-          router.push('/app/dashboard');
+          router.push('/team-portal/dashboard');
         } else if (data.role === 'tester') {
-          router.push('/app/tester');
+          router.push('/team-portal/tester');
         } else {
           setError('Invalid user role');
         }

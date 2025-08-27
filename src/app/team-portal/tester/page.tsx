@@ -55,16 +55,16 @@ export default function TesterDashboard() {
         if (response.ok) {
           const data = await response.json();
           if (data.role !== 'tester') {
-            router.push('/app');
+            router.push('/team-portal');
             return;
           }
           setUser(data.user);
         } else {
-          router.push('/app');
+          router.push('/team-portal');
         }
       } catch (error) {
         console.error('Auth check error:', error);
-        router.push('/app');
+        router.push('/team-portal');
       }
     };
 
@@ -132,7 +132,7 @@ export default function TesterDashboard() {
   const handleLogout = async () => {
     try {
       await fetch('/api/team/auth/logout', { method: 'POST' });
-      router.push('/app');
+      router.push('/team-portal');
     } catch (error) {
       console.error('Logout error:', error);
     }

@@ -58,16 +58,16 @@ export default function AdminDashboard() {
         if (response.ok) {
           const data = await response.json();
           if (data.role !== 'admin') {
-            router.push('/app');
+            router.push('/team-portal');
             return;
           }
           setUser(data.user);
         } else {
-          router.push('/app');
+          router.push('/team-portal');
         }
       } catch (error) {
         console.error('Auth check error:', error);
-        router.push('/app');
+        router.push('/team-portal');
       }
     };
 
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
   const handleLogout = async () => {
     try {
       await fetch('/api/team/auth/logout', { method: 'POST' });
-      router.push('/app');
+      router.push('/team-portal');
     } catch (error) {
       console.error('Logout error:', error);
     }
@@ -103,28 +103,28 @@ export default function AdminDashboard() {
       title: 'Manage Users',
       description: 'Add/remove team members',
       icon: <Users className="h-8 w-8" />,
-      href: '/app/users',
+      href: '/team-portal/users',
       color: 'bg-blue-600 hover:bg-blue-700'
     },
     {
       title: 'View All Tests',
       description: 'Review test reports',
       icon: <FileText className="h-8 w-8" />,
-      href: '/app/test-reports',
+      href: '/team-portal/test-reports',
       color: 'bg-green-600 hover:bg-green-700'
     },
     {
       title: 'Schedule Management',
       description: 'Assign routes & appointments',
       icon: <Calendar className="h-8 w-8" />,
-      href: '/app/schedule-admin',
+      href: '/team-portal/schedule-admin',
       color: 'bg-purple-600 hover:bg-purple-700'
     },
     {
       title: 'Reports & Analytics',
       description: 'Business insights',
       icon: <TrendingUp className="h-8 w-8" />,
-      href: '/app/analytics',
+      href: '/team-portal/analytics',
       color: 'bg-orange-600 hover:bg-orange-700'
     }
   ];
@@ -134,21 +134,21 @@ export default function AdminDashboard() {
       title: '2 Time-off Requests',
       description: 'Pending approval',
       icon: <Calendar className="h-6 w-6" />,
-      href: '/app/time-off',
+      href: '/team-portal/time-off',
       urgency: 'medium'
     },
     {
       title: '3 Reports Need Review',
       description: 'Quality control check',
       icon: <FileText className="h-6 w-6" />,
-      href: '/app/reports-review',
+      href: '/team-portal/reports-review',
       urgency: 'medium'
     },
     {
       title: '1 New Tester Registration',
       description: 'Activate account',
       icon: <User className="h-6 w-6" />,
-      href: '/app/users?filter=pending',
+      href: '/team-portal/users?filter=pending',
       urgency: 'high'
     }
   ];

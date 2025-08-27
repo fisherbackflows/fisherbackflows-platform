@@ -210,7 +210,7 @@ export default function NewInvoicePage() {
       console.log('Saving invoice:', { ...formData, action });
       
       alert(`Invoice ${action === 'save' ? 'saved as draft' : 'saved and sent'} successfully!`);
-      router.push('/app/invoices');
+      router.push('/team-portal/invoices');
     } catch (error) {
       console.error('Error saving invoice:', error);
       alert('Error saving invoice. Please try again.');
@@ -233,7 +233,7 @@ export default function NewInvoicePage() {
         <div className="px-4 py-4">
           <div className="flex items-center space-x-4">
             <Button variant="outline" size="sm" asChild>
-              <Link href="/app/invoices">
+              <Link href="/team-portal/invoices">
                 <ArrowLeft className="h-4 w-4" />
               </Link>
             </Button>

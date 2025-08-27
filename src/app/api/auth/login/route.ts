@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: 'Login successful',
       user,
-      redirect: role === 'admin' ? '/app' : '/portal/dashboard'
+      redirect: role === 'admin' ? '/team-portal' : '/portal/dashboard'
     });
     
   } catch (error) {
