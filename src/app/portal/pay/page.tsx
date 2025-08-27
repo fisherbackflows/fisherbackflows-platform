@@ -56,8 +56,16 @@ interface Invoice {
 
 export default function PaymentPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const invoiceId = searchParams?.get('invoice');
+  
+  // Safe searchParams access for SSR compatibility
+  let invoiceId = '';
+  try {
+    const searchParams = useSearchParams();
+    invoiceId = searchParams?.get('invoice') || '';
+  } catch (error) {
+    // Fallback for SSR
+    console.log('SearchParams not available during SSR');
+  }
   
   const [paymentStep, setPaymentStep] = useState<'lookup' | 'invoice' | 'payment' | 'success'>('lookup');
   const [lookupMethod, setLookupMethod] = useState<'invoice' | 'phone' | 'email'>('invoice');
