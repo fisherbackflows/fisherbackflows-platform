@@ -173,7 +173,7 @@ export default function ReportsPage() {
       <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
 
       {/* Header */}
-      <header className="glass border-b border-white/10 sticky top-0 z-50">
+      <header className="glass border-b border-white/10 relative z-10">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
@@ -182,7 +182,7 @@ export default function ReportsPage() {
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
               </Link>
-              <Logo width={140} height={28} className="sm:w-[180px] sm:h-[36px]" />
+              <Logo width={160} height={128} />
             </div>
             <div className="flex items-center space-x-4">
               <Button className="btn-glass px-4 py-2 rounded-lg">

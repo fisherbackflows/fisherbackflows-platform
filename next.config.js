@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // External packages configuration
+  serverExternalPackages: ['bcryptjs'],
+  
   turbopack: {
     rules: {
       '*.svg': {

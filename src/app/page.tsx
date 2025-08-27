@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import Logo from '@/components/ui/Logo';
 import { 
   Phone, 
   Mail, 
@@ -10,34 +10,34 @@ import {
   Calendar,
   CheckCircle,
   Shield,
-  Users,
   Clock,
   User,
   CreditCard,
   FileText,
-  Menu,
-  X,
   ChevronRight,
   ArrowRight,
-  Droplet,
   Gauge
 } from 'lucide-react';
 
 export default function HomePage() {
   const [currentYear, setCurrentYear] = useState(2024);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     setCurrentYear(new Date().getFullYear());
-    
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p>Loading Fisher Backflows Platform...</p>
+        </div>
+      </div>
+    );
+  }
 
   const services = [
     {
@@ -57,56 +57,41 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black text-white">
       {/* Background Effects */}
-      <div className="fixed inset-0 bg-grid opacity-20" />
       <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
       
       {/* Header */}
-      <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'nav-blur py-3' : 'py-4'}`}>
+      <header className="relative z-50 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            <Logo width={150} height={30} priority className="sm:w-[200px] sm:h-[40px]" />
+            <div className="flex items-center">
+              <Image
+                src="/fisher-backflows-logo.png"
+                alt="Fisher Backflows LLC"
+                width={200}
+                height={160}
+                priority
+                className="brightness-110 contrast-105"
+              />
+            </div>
             
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-6 items-center">
-              <a href="#services" className="text-white/80 hover:text-white transition-colors hover:text-glow-sm">Services</a>
-              <a href="#about" className="text-white/80 hover:text-white transition-colors hover:text-glow-sm">About</a>
-              <a href="#contact" className="text-white/80 hover:text-white transition-colors hover:text-glow-sm">Contact</a>
-              <a href="/portal" className="btn-glass px-4 py-2 rounded-lg hover-glow">Customer Portal</a>
-              <a href="/app" className="btn-glow px-4 py-2 rounded-lg">Business App</a>
+              <a href="#services" className="text-white/80 hover:text-white transition-colors">Services</a>
+              <a href="#about" className="text-white/80 hover:text-white transition-colors">About</a>
+              <a href="#contact" className="text-white/80 hover:text-white transition-colors">Contact</a>
+              <a href="/portal" className="bg-blue-600/20 border border-blue-500/30 text-blue-400 px-4 py-2 rounded-lg hover:bg-blue-600/30 transition-all">Customer Portal</a>
+              <a href="/app" className="bg-gradient-to-r from-blue-600 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-blue-600 transition-all">Team App</a>
             </nav>
-            
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-white/80 hover:text-white"
-            >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
           </div>
         </div>
-        
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden glass-darker mt-2 mx-4 rounded-lg p-4">
-            <nav className="flex flex-col space-y-3">
-              <a href="#services" className="text-white/80 hover:text-white transition-colors py-2">Services</a>
-              <a href="#about" className="text-white/80 hover:text-white transition-colors py-2">About</a>
-              <a href="#contact" className="text-white/80 hover:text-white transition-colors py-2">Contact</a>
-              <a href="/portal" className="btn-glass px-4 py-2 rounded-lg text-center">Customer Portal</a>
-              <a href="/app" className="btn-glow px-4 py-2 rounded-lg text-center">Business App</a>
-            </nav>
-          </div>
-        )}
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-dots opacity-10" />
-        <div className="max-w-7xl mx-auto text-center relative z-10">
+      <section className="relative pt-16 pb-20 px-4">
+        <div className="max-w-7xl mx-auto text-center">
           <div className="inline-block mb-6">
-            <div className="glass px-4 py-2 rounded-full text-blue-400 text-sm font-medium glow-blue-sm">
+            <div className="bg-blue-600/20 border border-blue-500/30 px-4 py-2 rounded-full text-blue-400 text-sm font-medium backdrop-blur-sm">
               <Gauge className="inline h-4 w-4 mr-2" />
               Professional Backflow Testing & Certification
             </div>
@@ -114,7 +99,7 @@ export default function HomePage() {
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6">
             <span className="text-white">Protecting Your</span><br />
-            <span className="gradient-text text-glow">Water Quality</span>
+            <span className="bg-gradient-to-r from-blue-400 to-blue-300 bg-clip-text text-transparent">Water Quality</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-white/60 mb-8 max-w-3xl mx-auto">
@@ -122,10 +107,10 @@ export default function HomePage() {
             Fast, reliable, and compliant.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button 
               size="lg" 
-              className="btn-glow px-8 py-6 text-lg rounded-lg group"
+              className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 px-8 py-6 text-lg rounded-lg group transition-all"
               onClick={() => window.location.href = '/portal/schedule'}
             >
               Schedule Testing
@@ -133,7 +118,7 @@ export default function HomePage() {
             </Button>
             <Button 
               size="lg" 
-              className="btn-glass px-8 py-6 text-lg rounded-lg hover-glow"
+              className="bg-green-600/20 border border-green-500/30 text-green-400 hover:bg-green-600/30 px-8 py-6 text-lg rounded-lg transition-all"
               onClick={() => window.location.href = 'tel:2532788692'}
             >
               <Phone className="mr-2 h-5 w-5" />
@@ -141,52 +126,46 @@ export default function HomePage() {
             </Button>
           </div>
           
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-            <div className="glass rounded-lg p-4 card-hover">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            <div className="bg-green-600/20 border border-green-500/30 rounded-lg p-4 backdrop-blur-sm">
               <CheckCircle className="h-6 w-6 text-green-400 mx-auto mb-2" />
               <p className="text-sm text-white/80">Licensed & Insured</p>
             </div>
-            <div className="glass rounded-lg p-4 card-hover">
+            <div className="bg-blue-600/20 border border-blue-500/30 rounded-lg p-4 backdrop-blur-sm">
               <Clock className="h-6 w-6 text-blue-400 mx-auto mb-2" />
               <p className="text-sm text-white/80">Same Week Service</p>
             </div>
-            <div className="glass rounded-lg p-4 card-hover">
+            <div className="bg-purple-600/20 border border-purple-500/30 rounded-lg p-4 backdrop-blur-sm">
               <Shield className="h-6 w-6 text-purple-400 mx-auto mb-2" />
               <p className="text-sm text-white/80">BAT Certified</p>
             </div>
           </div>
         </div>
-        
-        {/* Animated water effect */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 water-wave opacity-20" />
       </section>
 
       {/* Customer Portal CTA */}
-      <section className="py-20 px-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-blue-400/10" />
-        <div className="absolute inset-0 bg-dots opacity-10" />
-        
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="glass-blue rounded-2xl p-12 text-center glow-blue">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Customer Portal</h2>
+      <section className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-gradient-to-br from-blue-900/30 to-blue-800/20 border border-blue-500/30 rounded-2xl p-12 text-center backdrop-blur-sm">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-blue-300 bg-clip-text text-transparent">Customer Portal</h2>
             <p className="text-xl text-white/80 mb-8">
               Manage your account, pay bills, and schedule service online
             </p>
             
             <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
-              <div className="glass rounded-lg p-6">
+              <div className="bg-gray-900/50 border border-gray-500/20 rounded-lg p-6 backdrop-blur-sm">
                 <CreditCard className="h-12 w-12 text-blue-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Online Payments</h3>
                 <p className="text-white/60 text-sm">Secure and convenient bill pay</p>
               </div>
               
-              <div className="glass rounded-lg p-6">
+              <div className="bg-gray-900/50 border border-gray-500/20 rounded-lg p-6 backdrop-blur-sm">
                 <Calendar className="h-12 w-12 text-blue-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Easy Scheduling</h3>
                 <p className="text-white/60 text-sm">Book appointments 24/7</p>
               </div>
               
-              <div className="glass rounded-lg p-6">
+              <div className="bg-gray-900/50 border border-gray-500/20 rounded-lg p-6 backdrop-blur-sm">
                 <FileText className="h-12 w-12 text-blue-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Test Records</h3>
                 <p className="text-white/60 text-sm">Access all your documents</p>
@@ -196,7 +175,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
-                className="btn-glow px-8 py-3 rounded-lg"
+                className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 px-8 py-3 rounded-lg transition-all"
                 onClick={() => window.location.href = '/portal'}
               >
                 Access Portal
@@ -204,7 +183,7 @@ export default function HomePage() {
               </Button>
               <Button 
                 size="lg" 
-                className="btn-glass px-8 py-3 rounded-lg hover-glow"
+                className="bg-green-600/20 border border-green-500/30 text-green-400 hover:bg-green-600/30 px-8 py-3 rounded-lg transition-all"
                 onClick={() => window.location.href = '/app'}
               >
                 Business Login
@@ -215,49 +194,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Quick Info Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="glass rounded-2xl p-8 md:p-12 glow-blue-sm">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-3xl font-bold mb-8 text-center gradient-text">Why Testing Matters</h2>
-              
-              <div className="prose prose-lg prose-invert max-w-none mb-8">
-                <p className="text-white/70 text-lg leading-relaxed mb-4">
-                  Washington state requires annual testing of backflow devices to protect our water supply 
-                  from contamination. We make compliance easy.
-                </p>
-              </div>
-
-              <div className="glass-blue rounded-lg p-6">
-                <h3 className="text-xl font-semibold mb-4 text-blue-400">Our Process:</h3>
-                <ul className="space-y-3">
-                  {features.map((feature, index) => (
-                    <li key={index} className="flex items-start">
-                      <ChevronRight className="h-5 w-5 text-blue-400 mt-0.5 mr-3 flex-shrink-0" />
-                      <span className="text-white/80">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Services Section */}
       <section id="services" className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Our Services</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Our Services</h2>
             <p className="text-white/60 text-lg">Professional backflow testing and certification</p>
           </div>
           
           <div className="max-w-md mx-auto">
             {services.map((service, index) => (
-              <div key={index} className="glass rounded-xl p-8 card-hover group">
+              <div key={index} className="bg-gray-900/50 border border-gray-500/20 rounded-xl p-8 backdrop-blur-sm hover:border-gray-400/30 transition-all">
                 <div className="text-center mb-6">
-                  <div className="inline-block pulse-glow rounded-full p-3 glass mb-4">
+                  <div className="inline-block bg-blue-600/20 border border-blue-500/30 rounded-full p-3 mb-4">
                     {service.icon}
                   </div>
                   <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
@@ -277,62 +226,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 px-4 relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-transparent to-blue-500/5" />
-        <div className="max-w-7xl mx-auto relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 gradient-text">About Fisher Backflows</h2>
-              <p className="text-lg text-white/70 mb-6 leading-relaxed">
-                Family-owned and operated since 2019, we've built our reputation on reliability, 
-                expertise, and exceptional service throughout Pierce County.
-              </p>
-              
-              <div className="space-y-4">
-                {[
-                  "State Certified BAT Technicians", 
-                  "Licensed & Fully Insured",
-                  "10+ Years Experience",
-                  "1000+ Satisfied Customers"
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center">
-                    <div className="glass rounded-lg p-2 mr-4">
-                      <CheckCircle className="h-5 w-5 text-green-400" />
-                    </div>
-                    <span className="text-white/80">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            <div className="glass rounded-xl p-8 glow-blue-sm">
-              <h3 className="text-2xl font-semibold mb-6 text-blue-400">Service Areas</h3>
-              <div className="grid grid-cols-2 gap-4">
-                {["Tacoma", "Lakewood", "Puyallup", "Gig Harbor", "Spanaway", "Graham"].map((area, index) => (
-                  <div key={index} className="flex items-center text-white/70">
-                    <MapPin className="h-4 w-4 text-blue-400 mr-2" />
-                    {area}
-                  </div>
-                ))}
-              </div>
-              <p className="text-sm text-white/50 mt-6">And all surrounding Pierce County areas</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Contact Section */}
       <section id="contact" className="py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Get Started Today</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Get Started Today</h2>
             <p className="text-lg text-white/60">Choose the most convenient way to reach us</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <div className="glass rounded-xl p-6 text-center card-hover">
-              <div className="inline-block glass-blue rounded-full p-3 mb-4 pulse-glow">
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
+            <div className="bg-gray-900/50 border border-gray-500/20 rounded-xl p-6 text-center backdrop-blur-sm hover:border-gray-400/30 transition-all">
+              <div className="inline-block bg-blue-600/20 border border-blue-500/30 rounded-full p-3 mb-4">
                 <Phone className="h-6 w-6 text-blue-400" />
               </div>
               <h3 className="font-semibold mb-2">Call or Text</h3>
@@ -341,8 +245,8 @@ export default function HomePage() {
               </a>
             </div>
 
-            <div className="glass rounded-xl p-6 text-center card-hover">
-              <div className="inline-block glass-blue rounded-full p-3 mb-4 pulse-glow">
+            <div className="bg-gray-900/50 border border-gray-500/20 rounded-xl p-6 text-center backdrop-blur-sm hover:border-gray-400/30 transition-all">
+              <div className="inline-block bg-blue-600/20 border border-blue-500/30 rounded-full p-3 mb-4">
                 <Mail className="h-6 w-6 text-blue-400" />
               </div>
               <h3 className="font-semibold mb-2">Email</h3>
@@ -351,8 +255,8 @@ export default function HomePage() {
               </a>
             </div>
 
-            <div className="glass rounded-xl p-6 text-center card-hover">
-              <div className="inline-block glass-blue rounded-full p-3 mb-4 pulse-glow">
+            <div className="bg-gray-900/50 border border-gray-500/20 rounded-xl p-6 text-center backdrop-blur-sm hover:border-gray-400/30 transition-all">
+              <div className="inline-block bg-blue-600/20 border border-blue-500/30 rounded-full p-3 mb-4">
                 <Calendar className="h-6 w-6 text-blue-400" />
               </div>
               <h3 className="font-semibold mb-2">Book Online</h3>
@@ -366,12 +270,12 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mt-12 glass rounded-xl p-6 max-w-2xl mx-auto">
+          <div className="bg-gray-900/50 border border-gray-500/20 rounded-xl p-6 max-w-2xl mx-auto text-center">
             <div className="flex items-center justify-center mb-4">
               <Clock className="h-5 w-5 text-white/60 mr-2" />
               <h3 className="font-semibold">Business Hours</h3>
             </div>
-            <div className="space-y-1 text-white/70 text-center text-sm">
+            <div className="space-y-1 text-white/70 text-sm">
               <p>Monday–Friday: 7:00 AM – 6:00 PM</p>
               <p>Saturday: 8:00 AM – 4:00 PM</p>
               <p>Sunday: Emergency service only</p>
@@ -381,12 +285,18 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="glass-darker py-12 px-4 border-t border-white/10">
+      <footer className="bg-gray-900/50 border-t border-gray-500/20 py-12 px-4 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="mb-4">
-                <Logo width={160} height={32} />
+                <Image
+                  src="/fisher-backflows-logo.png"
+                  alt="Fisher Backflows LLC"
+                  width={160}
+                  height={128}
+                  className="brightness-110 contrast-105"
+                />
               </div>
               <p className="text-white/50 text-sm">
                 Professional backflow testing and prevention services for Pierce County.
@@ -399,7 +309,7 @@ export default function HomePage() {
                 <a href="/portal" className="block text-white/50 hover:text-white/80 text-sm transition-colors">Customer Portal</a>
                 <a href="/portal/schedule" className="block text-white/50 hover:text-white/80 text-sm transition-colors">Schedule Service</a>
                 <a href="/portal/pay" className="block text-white/50 hover:text-white/80 text-sm transition-colors">Pay Bill</a>
-                <a href="/app" className="block text-white/50 hover:text-white/80 text-sm transition-colors">Business App</a>
+                <a href="/app" className="block text-white/50 hover:text-white/80 text-sm transition-colors">Team App</a>
               </div>
             </div>
             
@@ -413,12 +323,12 @@ export default function HomePage() {
             </div>
           </div>
           
-          <div className="border-t border-white/10 pt-8 text-center">
+          <div className="border-t border-gray-500/20 pt-8 text-center">
             <p className="text-white/30 text-sm">
-              © {currentYear} Fisher Backflows. All rights reserved. Licensed & Insured.
+              © {currentYear} Fisher Backflows LLC. All rights reserved. Licensed & Insured.
             </p>
             <p className="text-white/20 text-xs mt-2">
-              BAT Certified | Contractor #FISHER*123AB
+              BAT Certified | Contractor License
             </p>
           </div>
         </div>

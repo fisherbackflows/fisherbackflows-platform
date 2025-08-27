@@ -23,14 +23,14 @@ export default function CustomerPortalLoginPage() {
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <Link href="/">
-              <Logo width={180} height={36} />
+              <Logo width={180} height={144} />
             </Link>
-            <nav className="hidden md:flex space-x-6">
-              <Link href="/" className="text-white/80 hover:text-white transition-colors">
+            <nav className="hidden md:flex space-x-4">
+              <Link href="/" className="glass border border-white/20 px-4 py-2 rounded-lg text-white/90 hover:text-white hover:border-white/40 transition-all duration-300 hover:bg-white/10 hover:scale-105">
                 Home
               </Link>
-              <Link href="/app" className="text-white/80 hover:text-white transition-colors">
-                Business App
+              <Link href="/app" className="glass border border-blue-400/30 px-4 py-2 rounded-lg text-blue-400 hover:text-white hover:border-blue-400/60 transition-all duration-300 hover:bg-blue-400/20 hover:scale-105 glow-blue-sm">
+                Team App
               </Link>
             </nav>
           </div>

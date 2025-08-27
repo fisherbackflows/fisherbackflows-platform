@@ -1,36 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateToken, setAuthCookie, verifyPassword } from '@/lib/auth';
 import { createRouteHandlerClient } from '@/lib/supabase';
 
-// Mock users for development - replace with real database queries
-const mockUsers = [
-  {
-    id: '1',
-    email: 'john.smith@email.com',
-    phone: '5550123',
-    password: '$2a$10$example.hash.would.go.here', // bcrypt hash
-    role: 'customer' as const,
-    name: 'John Smith',
-    accountNumber: 'FB001'
-  },
-  {
-    id: '2',
-    email: 'admin@fisherbackflows.com',
-    phone: '2532788692',
-    password: '$2a$10$another.example.hash', // bcrypt hash
-    role: 'admin' as const,
-    name: 'Mike Fisher',
-    accountNumber: 'ADMIN'
-  }
-];
-
 export async function POST(request: NextRequest) {
+  const response = NextResponse.next();
+  
   try {
     const { identifier, password, type } = await request.json();
     
     if (!identifier) {
       return NextResponse.json(
-        { error: 'Identifier is required' },
+        { error: 'Email or phone is required' },
         { status: 400 }
       );
     }
@@ -45,86 +24,109 @@ export async function POST(request: NextRequest) {
         accountNumber: 'DEMO'
       };
       
-      const token = generateToken({
-        userId: demoUser.id,
-        email: demoUser.email,
-        role: demoUser.role
-      });
-      
-      await setAuthCookie(token);
-      
       return NextResponse.json({
         success: true,
-        user: {
-          id: demoUser.id,
-          email: demoUser.email,
-          name: demoUser.name,
-          role: demoUser.role,
-          accountNumber: demoUser.accountNumber
-        },
-        token
+        message: 'Demo login successful',
+        user: demoUser,
+        redirect: '/portal/dashboard'
       });
     }
     
-    // Find user by email or phone
-    let user;
-    if (type === 'email') {
-      user = mockUsers.find(u => u.email.toLowerCase() === identifier.toLowerCase());
-    } else if (type === 'phone') {
+    if (!password) {
+      return NextResponse.json(
+        { error: 'Password is required' },
+        { status: 400 }
+      );
+    }
+
+    // Initialize Supabase client
+    const supabase = createRouteHandlerClient(request, response);
+    
+    // Determine if identifier is email or phone
+    let email = identifier;
+    
+    // If it looks like a phone number, find the email first
+    if (type === 'phone' || /^\d+/.test(identifier.replace(/\D/g, ''))) {
       const normalizedPhone = identifier.replace(/\D/g, '');
-      user = mockUsers.find(u => u.phone.replace(/\D/g, '') === normalizedPhone);
-    }
-    
-    if (!user) {
-      return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      );
-    }
-    
-    // Verify password (skip for demo purposes - in production, always verify)
-    if (password && password !== 'demo123') {
-      // const isValidPassword = await verifyPassword(password, user.password);
-      // if (!isValidPassword) {
-      //   return NextResponse.json(
-      //     { error: 'Invalid credentials' },
-      //     { status: 401 }
-      //   );
-      // }
       
-      // For demo, accept 'demo123' as password
-      return NextResponse.json(
-        { error: 'Invalid credentials' },
-        { status: 401 }
-      );
+      if (normalizedPhone.length >= 10) {
+        // Find customer by phone number
+        const { data: customer, error: customerError } = await supabase
+          .from('customers')
+          .select('email')
+          .eq('phone', identifier)
+          .single();
+        
+        if (customerError || !customer) {
+          return NextResponse.json(
+            { error: 'No account found with this phone number' },
+            { status: 401 }
+          );
+        }
+        
+        email = customer.email;
+      }
     }
     
-    // Generate JWT token
-    const token = generateToken({
-      userId: user.id,
-      email: user.email,
-      role: user.role
+    // Attempt to sign in with Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email,
+      password
     });
     
-    // Set HTTP-only cookie
-    await setAuthCookie(token);
+    if (authError || !authData.user) {
+      console.error('Authentication error:', authError);
+      return NextResponse.json(
+        { error: 'Invalid email/phone or password' },
+        { status: 401 }
+      );
+    }
+    
+    // Get customer details from database
+    const { data: customer, error: customerError } = await supabase
+      .from('customers')
+      .select('*')
+      .eq('id', authData.user.id)
+      .single();
+    
+    if (customerError || !customer) {
+      console.error('Customer lookup error:', customerError);
+      return NextResponse.json(
+        { error: 'Account not found' },
+        { status: 404 }
+      );
+    }
+    
+    // Determine user role based on email domain or metadata
+    let role = 'customer';
+    if (customer.email.includes('@fisherbackflows.com') || 
+        authData.user.user_metadata?.account_type === 'admin') {
+      role = 'admin';
+    }
+    
+    const user = {
+      id: customer.id,
+      email: customer.email,
+      name: customer.name,
+      role,
+      accountNumber: customer.account_number,
+      phone: customer.phone,
+      status: customer.status
+    };
+    
+    // Set session cookies (Supabase handles this automatically)
     
     return NextResponse.json({
       success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        accountNumber: user.accountNumber
-      },
-      token
+      message: 'Login successful',
+      user,
+      redirect: role === 'admin' ? '/app' : '/portal/dashboard'
     });
     
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
-      { error: 'Authentication failed' },
+      { error: 'Authentication failed. Please try again.' },
       { status: 500 }
     );
   }
@@ -132,41 +134,68 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    // Verify current session
-    const authHeader = request.headers.get('Authorization');
-    const cookieToken = request.cookies.get('auth-token')?.value;
+    const supabase = createRouteHandlerClient(request);
     
-    const token = authHeader?.replace('Bearer ', '') || cookieToken;
+    // Get the current session
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
     
-    if (!token) {
+    if (sessionError || !session?.user) {
       return NextResponse.json(
-        { error: 'No token provided' },
+        { error: 'No active session' },
         { status: 401 }
       );
     }
     
-    // Handle demo token
-    if (token === 'demo-token' || token.includes('demo')) {
-      return NextResponse.json({
-        success: true,
-        user: {
-          id: 'demo',
-          email: 'demo@fisherbackflows.com',
-          name: 'Demo Customer',
-          role: 'customer',
-          accountNumber: 'DEMO'
-        }
-      });
+    // Get customer details
+    const { data: customer, error: customerError } = await supabase
+      .from('customers')
+      .select('*')
+      .eq('id', session.user.id)
+      .single();
+    
+    if (customerError || !customer) {
+      // Handle demo user case
+      if (session.user.email === 'demo@fisherbackflows.com') {
+        return NextResponse.json({
+          success: true,
+          user: {
+            id: 'demo',
+            email: 'demo@fisherbackflows.com',
+            name: 'Demo Customer',
+            role: 'customer',
+            accountNumber: 'DEMO'
+          }
+        });
+      }
+      
+      return NextResponse.json(
+        { error: 'Customer record not found' },
+        { status: 404 }
+      );
     }
     
-    // TODO: Verify JWT token and return user data
-    return NextResponse.json(
-      { error: 'Invalid token' },
-      { status: 401 }
-    );
+    // Determine role
+    let role = 'customer';
+    if (customer.email.includes('@fisherbackflows.com') || 
+        session.user.user_metadata?.account_type === 'admin') {
+      role = 'admin';
+    }
+    
+    return NextResponse.json({
+      success: true,
+      user: {
+        id: customer.id,
+        email: customer.email,
+        name: customer.name,
+        role,
+        accountNumber: customer.account_number,
+        phone: customer.phone,
+        status: customer.status
+      }
+    });
     
   } catch (error) {
-    console.error('Auth verification error:', error);
+    console.error('Session verification error:', error);
     return NextResponse.json(
       { error: 'Authentication failed' },
       { status: 500 }

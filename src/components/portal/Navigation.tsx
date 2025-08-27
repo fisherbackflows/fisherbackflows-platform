@@ -49,7 +49,7 @@ export default function Navigation({ customerName = 'Customer', accountNumber = 
         <div className="flex justify-between items-center">
           {/* Logo */}
           <Link href="/portal/dashboard">
-            <Logo width={140} height={28} className="sm:w-[180px] sm:h-[36px]" />
+            <Logo width={160} height={128} />
           </Link>
 
           {/* Desktop Navigation */}

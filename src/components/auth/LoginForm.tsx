@@ -247,7 +247,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
       </div>
 
       {/* Additional Links */}
-      <div className="mt-6 text-center space-y-2">
+      <div className="mt-6 text-center space-y-3">
         <button
           type="button"
           className="text-blue-400 hover:text-blue-300 text-sm transition-colors"
@@ -255,8 +255,23 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
         >
           Forgot your password?
         </button>
-        <div className="text-white/40 text-xs">
-          Need an account? Contact us at{' '}
+        
+        <div className="flex items-center my-4">
+          <div className="flex-1 border-t border-white/10"></div>
+          <span className="px-4 text-white/40 text-xs">or</span>
+          <div className="flex-1 border-t border-white/10"></div>
+        </div>
+        
+        <Button
+          type="button"
+          className="w-full border border-blue-500/30 bg-blue-600/10 text-blue-400 hover:bg-blue-600/20 py-3 rounded-lg transition-all"
+          onClick={() => window.location.href = '/portal/register'}
+        >
+          Create New Account
+        </Button>
+        
+        <div className="text-white/40 text-xs mt-3">
+          Need help? Contact us at{' '}
           <a href="tel:2532788692" className="text-blue-400 hover:text-blue-300">
             (253) 278-8692
           </a>

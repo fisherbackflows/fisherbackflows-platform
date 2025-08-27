@@ -345,7 +345,7 @@ export default function MorePage() {
         <section className="mb-6">
           <div className="bg-gray-100 rounded-lg p-4 text-center">
             <div className="text-sm text-gray-600 mb-2">
-              Fisher Backflows Business App
+              Fisher Backflows Team App
             </div>
             <div className="text-xs text-gray-500">
               Version 1.0.0 • Next.js with Turbopack
