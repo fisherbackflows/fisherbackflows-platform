@@ -60,8 +60,16 @@ interface TestReport {
 
 export default function TestReportPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const customerId = searchParams?.get('customer');
+  
+  // Safe searchParams access for SSR compatibility
+  let customerId = '';
+  try {
+    const searchParams = useSearchParams();
+    customerId = searchParams?.get('customer') || '';
+  } catch (error) {
+    // Fallback for SSR
+    console.log('SearchParams not available during SSR');
+  }
   
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState<TestReport>({
