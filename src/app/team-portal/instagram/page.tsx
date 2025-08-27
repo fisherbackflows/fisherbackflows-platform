@@ -160,48 +160,48 @@ export default function InstagramDashboard() {
           </span>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-400">{metrics.followers.toLocaleString()}</div>
-            <div className="text-sm text-white/60">Followers</div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="text-center p-3 bg-blue-600/10 rounded-lg">
+            <div className="text-xl sm:text-2xl font-bold text-blue-400">{metrics.followers.toLocaleString()}</div>
+            <div className="text-xs sm:text-sm text-white/60">Followers</div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-400">{metrics.engagement_rate}%</div>
-            <div className="text-sm text-white/60">Engagement</div>
+          <div className="text-center p-3 bg-green-600/10 rounded-lg">
+            <div className="text-xl sm:text-2xl font-bold text-green-400">{metrics.engagement_rate}%</div>
+            <div className="text-xs sm:text-sm text-white/60">Engagement</div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-purple-400">{metrics.reach.toLocaleString()}</div>
-            <div className="text-sm text-white/60">Weekly Reach</div>
+          <div className="text-center p-3 bg-purple-600/10 rounded-lg">
+            <div className="text-xl sm:text-2xl font-bold text-purple-400">{metrics.reach.toLocaleString()}</div>
+            <div className="text-xs sm:text-sm text-white/60">Weekly Reach</div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-orange-400">{metrics.website_clicks}</div>
-            <div className="text-sm text-white/60">Website Clicks</div>
+          <div className="text-center p-3 bg-orange-600/10 rounded-lg">
+            <div className="text-xl sm:text-2xl font-bold text-orange-400">{metrics.website_clicks}</div>
+            <div className="text-xs sm:text-sm text-white/60">Website Clicks</div>
           </div>
         </div>
       </div>
 
       {/* Quick Actions */}
-      <div className="grid md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         <Button 
-          className="glass p-6 h-auto flex flex-col items-center gap-3 hover:glow-blue-sm transition-all"
+          className="glass p-4 sm:p-6 h-auto flex flex-col items-center gap-2 sm:gap-3 hover:glow-blue-sm transition-all"
           onClick={() => setActiveTab('content')}
         >
-          <Camera className="h-8 w-8 text-blue-400" />
-          <span>Create Post</span>
+          <Camera className="h-6 sm:h-8 w-6 sm:w-8 text-blue-400" />
+          <span className="text-sm sm:text-base">Create Post</span>
         </Button>
         <Button 
-          className="glass p-6 h-auto flex flex-col items-center gap-3 hover:glow-green-sm transition-all"
+          className="glass p-4 sm:p-6 h-auto flex flex-col items-center gap-2 sm:gap-3 hover:glow-green-sm transition-all"
           onClick={() => setActiveTab('advertising')}
         >
-          <Target className="h-8 w-8 text-green-400" />
-          <span>New Campaign</span>
+          <Target className="h-6 sm:h-8 w-6 sm:w-8 text-green-400" />
+          <span className="text-sm sm:text-base">New Campaign</span>
         </Button>
         <Button 
-          className="glass p-6 h-auto flex flex-col items-center gap-3 hover:glow-purple-sm transition-all"
+          className="glass p-4 sm:p-6 h-auto flex flex-col items-center gap-2 sm:gap-3 hover:glow-purple-sm transition-all"
           onClick={() => setActiveTab('analytics')}
         >
-          <BarChart3 className="h-8 w-8 text-purple-400" />
-          <span>View Analytics</span>
+          <BarChart3 className="h-6 sm:h-8 w-6 sm:w-8 text-purple-400" />
+          <span className="text-sm sm:text-base">View Analytics</span>
         </Button>
       </div>
 
@@ -211,38 +211,38 @@ export default function InstagramDashboard() {
           <TrendingUp className="h-5 w-5 text-green-400 mr-2" />
           Recent Performance (Last 7 Days)
         </h3>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <div>
-            <h4 className="font-medium mb-3">Content Performance</h4>
+            <h4 className="font-medium mb-3 text-sm sm:text-base">Content Performance</h4>
             <div className="space-y-2">
-              <div className="flex justify-between">
+              <div className="flex justify-between text-sm">
                 <span className="text-white/80">Average Likes</span>
-                <span className="text-green-400">+23%</span>
+                <span className="text-green-400 font-medium">+23%</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between text-sm">
                 <span className="text-white/80">Comments</span>
-                <span className="text-green-400">+18%</span>
+                <span className="text-green-400 font-medium">+18%</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between text-sm">
                 <span className="text-white/80">Story Views</span>
-                <span className="text-green-400">+31%</span>
+                <span className="text-green-400 font-medium">+31%</span>
               </div>
             </div>
           </div>
           <div>
-            <h4 className="font-medium mb-3">Business Metrics</h4>
+            <h4 className="font-medium mb-3 text-sm sm:text-base">Business Metrics</h4>
             <div className="space-y-2">
-              <div className="flex justify-between">
+              <div className="flex justify-between text-sm">
                 <span className="text-white/80">Profile Visits</span>
-                <span className="text-blue-400">{metrics.profile_visits}</span>
+                <span className="text-blue-400 font-medium">{metrics.profile_visits}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between text-sm">
                 <span className="text-white/80">Website Clicks</span>
-                <span className="text-blue-400">{metrics.website_clicks}</span>
+                <span className="text-blue-400 font-medium">{metrics.website_clicks}</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between text-sm">
                 <span className="text-white/80">Contact Button</span>
-                <span className="text-blue-400">34</span>
+                <span className="text-blue-400 font-medium">34</span>
               </div>
             </div>
           </div>
@@ -313,32 +313,32 @@ export default function InstagramDashboard() {
       {/* Content Pillars */}
       <div className="glass rounded-2xl p-6 glow-blue-sm">
         <h3 className="text-lg font-semibold mb-4">Content Pillars</h3>
-        <div className="grid md:grid-cols-4 gap-4">
-          <div className="p-4 bg-blue-600/20 border border-blue-500/30 rounded-lg">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="p-3 sm:p-4 bg-blue-600/20 border border-blue-500/30 rounded-lg">
             <div className="text-center">
-              <div className="text-2xl font-bold text-blue-400 mb-2">35%</div>
-              <div className="text-sm">Educational</div>
+              <div className="text-xl sm:text-2xl font-bold text-blue-400 mb-1 sm:mb-2">35%</div>
+              <div className="text-xs sm:text-sm font-medium">Educational</div>
               <div className="text-xs text-white/60 mt-1">Water safety tips</div>
             </div>
           </div>
-          <div className="p-4 bg-green-600/20 border border-green-500/30 rounded-lg">
+          <div className="p-3 sm:p-4 bg-green-600/20 border border-green-500/30 rounded-lg">
             <div className="text-center">
-              <div className="text-2xl font-bold text-green-400 mb-2">25%</div>
-              <div className="text-sm">Services</div>
+              <div className="text-xl sm:text-2xl font-bold text-green-400 mb-1 sm:mb-2">25%</div>
+              <div className="text-xs sm:text-sm font-medium">Services</div>
               <div className="text-xs text-white/60 mt-1">Testing process</div>
             </div>
           </div>
-          <div className="p-4 bg-purple-600/20 border border-purple-500/30 rounded-lg">
+          <div className="p-3 sm:p-4 bg-purple-600/20 border border-purple-500/30 rounded-lg">
             <div className="text-center">
-              <div className="text-2xl font-bold text-purple-400 mb-2">25%</div>
-              <div className="text-sm">Social Proof</div>
+              <div className="text-xl sm:text-2xl font-bold text-purple-400 mb-1 sm:mb-2">25%</div>
+              <div className="text-xs sm:text-sm font-medium">Social Proof</div>
               <div className="text-xs text-white/60 mt-1">Reviews & testimonials</div>
             </div>
           </div>
-          <div className="p-4 bg-orange-600/20 border border-orange-500/30 rounded-lg">
+          <div className="p-3 sm:p-4 bg-orange-600/20 border border-orange-500/30 rounded-lg">
             <div className="text-center">
-              <div className="text-2xl font-bold text-orange-400 mb-2">15%</div>
-              <div className="text-sm">Behind Scenes</div>
+              <div className="text-xl sm:text-2xl font-bold text-orange-400 mb-1 sm:mb-2">15%</div>
+              <div className="text-xs sm:text-sm font-medium">Behind Scenes</div>
               <div className="text-xs text-white/60 mt-1">Team & company</div>
             </div>
           </div>
@@ -415,25 +415,25 @@ export default function InstagramDashboard() {
       {/* Ad Performance */}
       <div className="glass rounded-2xl p-6 glow-blue-sm">
         <h3 className="text-lg font-semibold mb-4">Campaign Performance Overview</h3>
-        <div className="grid md:grid-cols-4 gap-4">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-blue-400">$426</div>
-            <div className="text-sm text-white/60">Total Spend</div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <div className="text-center p-3 bg-blue-600/10 rounded-lg">
+            <div className="text-xl sm:text-2xl font-bold text-blue-400">$426</div>
+            <div className="text-xs sm:text-sm text-white/60">Total Spend</div>
             <div className="text-xs text-green-400 mt-1">↑ 12% vs last month</div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-green-400">24,612</div>
-            <div className="text-sm text-white/60">Total Reach</div>
+          <div className="text-center p-3 bg-green-600/10 rounded-lg">
+            <div className="text-xl sm:text-2xl font-bold text-green-400">24,612</div>
+            <div className="text-xs sm:text-sm text-white/60">Total Reach</div>
             <div className="text-xs text-green-400 mt-1">↑ 28% vs last month</div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-purple-400">690</div>
-            <div className="text-sm text-white/60">Total Clicks</div>
+          <div className="text-center p-3 bg-purple-600/10 rounded-lg">
+            <div className="text-xl sm:text-2xl font-bold text-purple-400">690</div>
+            <div className="text-xs sm:text-sm text-white/60">Total Clicks</div>
             <div className="text-xs text-green-400 mt-1">↑ 19% vs last month</div>
           </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-orange-400">35</div>
-            <div className="text-sm text-white/60">Conversions</div>
+          <div className="text-center p-3 bg-orange-600/10 rounded-lg">
+            <div className="text-xl sm:text-2xl font-bold text-orange-400">35</div>
+            <div className="text-xs sm:text-sm text-white/60">Conversions</div>
             <div className="text-xs text-green-400 mt-1">↑ 42% vs last month</div>
           </div>
         </div>
@@ -716,7 +716,7 @@ export default function InstagramDashboard() {
 
           {/* Navigation Tabs */}
           <div className="mb-6">
-            <div className="flex flex-wrap gap-2">
+            <div className="flex overflow-x-auto gap-2 pb-2 scrollbar-hide">
               {[
                 { id: 'overview', label: 'Overview', icon: BarChart3 },
                 { id: 'branding', label: 'Branding', icon: Palette },
@@ -728,12 +728,13 @@ export default function InstagramDashboard() {
                   key={tab.id}
                   variant={activeTab === tab.id ? 'default' : 'ghost'}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`flex items-center gap-2 ${
+                  className={`flex items-center gap-2 whitespace-nowrap flex-shrink-0 min-w-fit px-3 py-2 text-sm ${
                     activeTab === tab.id ? 'bg-blue-600 text-white' : 'text-white/80 hover:text-white'
                   }`}
                 >
                   <tab.icon className="h-4 w-4" />
-                  {tab.label}
+                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="sm:hidden">{tab.label.slice(0, 3)}</span>
                 </Button>
               ))}
             </div>
