@@ -18,9 +18,9 @@ export async function GET(request: NextRequest) {
     try {
       const supabase = createRouteHandlerClient(request)
       
-      // Test database connection
+      // Test database connection with actual tables
       const { error } = await supabase
-        .from('customers')
+        .from('team_users')
         .select('id')
         .limit(1)
         
