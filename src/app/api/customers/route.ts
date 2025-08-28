@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase, isSupabaseConfigured } from '@/lib/supabase'
 import type { Customer } from '@/lib/types'
+import type { Device, ApiResponse, PaginatedResponse } from '@/types/api'
 
 // Mock data for development when Supabase is not configured
 const mockCustomers: Customer[] = [
@@ -128,7 +129,7 @@ export async function GET(request: NextRequest) {
       balance: customer.balance,
       nextTestDate: customer.next_test_date,
       status: customer.status,
-      devices: customer.devices?.map((device: any) => ({
+      devices: customer.devices?.map((device: Device) => ({
         id: device.id,
         location: device.location,
         serialNumber: device.serial_number,

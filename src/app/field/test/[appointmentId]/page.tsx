@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useOfflineMode } from '@/lib/offline';
+import { toast } from 'react-hot-toast';
 
 interface Appointment {
   id: string;
@@ -108,7 +109,7 @@ export default function FieldTestPage() {
       
       setAppointment(transformedAppointment);
     } catch (error) {
-      console.error('Error fetching appointment:', error);
+      toast.error('Failed to load appointment details');
     } finally {
       setLoading(false);
     }
@@ -145,8 +146,8 @@ export default function FieldTestPage() {
   };
 
   const capturePhoto = () => {
-    // Mobile camera integration would go here
-    alert('Camera integration would be implemented here');
+    // TODO: Implement mobile camera integration
+    toast.info('Camera feature coming soon');
   };
 
   const submitTest = async () => {
@@ -189,7 +190,7 @@ export default function FieldTestPage() {
         // Store offline for later sync
         storeTestReport(testSubmission);
         
-        alert(`Test completed and saved offline! 📱\n\n✅ Report saved locally\n📤 Will sync when online\n\nPending sync: ${pendingSync + 1} items`);
+        toast.success(`Test completed and saved offline! Report will sync when online. (${pendingSync + 1} items pending)`);
         router.push('/field/dashboard');
         return;
       }
@@ -207,15 +208,14 @@ export default function FieldTestPage() {
 
       if (result_response.success) {
         // Success! Everything is automated from here
-        alert(`Test completed successfully! 🎉\n\n✅ Report submitted\n💰 Invoice generated\n📧 Customer will be notified\n🏛️ Water department will receive report`);
+        toast.success('Test completed successfully! Report submitted, invoice generated, and notifications sent.');
         router.push('/field/dashboard');
       } else {
         throw new Error(result_response.error);
       }
 
-    } catch (error) {
-      console.error('Error submitting test:', error);
-      alert('Error submitting test. Please try again.');
+    } catch (error: any) {
+      toast.error(`Error submitting test: ${error.message || 'Please try again'}`);
     } finally {
       setSubmitting(false);
     }

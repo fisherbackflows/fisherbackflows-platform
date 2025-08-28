@@ -148,65 +148,69 @@ export async function signOut(): Promise<{ error: AuthError | null }> {
   }
 }
 
-// Field Tech Authentication
-export async function signInTech(username: string, password: string): Promise<{ success: boolean; error?: string }> {
+// SECURE AUTHENTICATION - Import from secure-auth module
+import { 
+  signInTechnician, 
+  getCurrentUser as getSecureCurrentUser,
+  signOut as secureSignOut,
+  validateSession
+} from './auth/secure-auth'
+
+// Field Tech Authentication - SECURE VERSION
+export async function signInTech(email: string, password: string): Promise<{ success: boolean; error?: string }> {
   try {
-    // Simple tech authentication - in production use proper auth
-    const validTechs = {
-      'mike': 'fisher123',
-      'tech1': 'backflow2024',
-      'admin': 'admin123'
+    const { user, error } = await signInTechnician(email, password);
+    
+    if (error) {
+      return { success: false, error: error.message };
     }
 
-    if (validTechs[username as keyof typeof validTechs] !== password) {
-      return { success: false, error: 'Invalid technician credentials' }
+    return { success: true };
+
+  } catch (error: any) {
+    console.error('Tech sign in error:', error);
+    return { success: false, error: 'Sign in failed' };
+  }
+}
+
+// Check if tech is authenticated - SECURE VERSION
+export async function isAuthenticatedTech(): Promise<boolean> {
+  try {
+    const { isValid } = await validateSession();
+    return isValid;
+  } catch {
+    return false;
+  }
+}
+
+// Get current tech user - SECURE VERSION
+export async function getCurrentTech() {
+  try {
+    const user = await getSecureCurrentUser();
+    if (user?.profile && ['technician', 'admin'].includes(user.profile.role)) {
+      return {
+        username: user.profile.email,
+        name: user.profile.name || user.profile.email,
+        role: user.profile.role,
+        id: user.profile.id,
+        organization_id: user.profile.organization_id
+      };
     }
-
-    // Store tech session in localStorage for now
-    localStorage.setItem('tech_session', JSON.stringify({
-      username,
-      name: username === 'mike' ? 'Mike Fisher' : `Tech ${username}`,
-      role: 'technician',
-      login_time: new Date().toISOString()
-    }))
-
-    return { success: true }
-
-  } catch (error) {
-    console.error('Tech sign in error:', error)
-    return { success: false, error: 'Sign in failed' }
-  }
-}
-
-// Check if tech is authenticated
-export function isAuthenticatedTech(): boolean {
-  try {
-    if (typeof window === 'undefined') return false
-    const session = localStorage.getItem('tech_session')
-    return !!session
+    return null;
   } catch {
-    return false
+    return null;
   }
 }
 
-// Get current tech user
-export function getCurrentTech() {
+// Sign out tech - SECURE VERSION
+export async function signOutTech() {
   try {
-    if (typeof window === 'undefined') return null
-    const session = localStorage.getItem('tech_session')
-    return session ? JSON.parse(session) : null
-  } catch {
-    return null
-  }
-}
-
-// Sign out tech
-export function signOutTech() {
-  try {
+    await secureSignOut();
+    // Clear any legacy localStorage items
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('tech_session')
+      localStorage.removeItem('tech_session');
     }
-  } catch (error) {
-    console.error('Tech sign out error:', error)
+  } catch (error: any) {
+    console.error('Tech sign out error:', error);
   }
 }

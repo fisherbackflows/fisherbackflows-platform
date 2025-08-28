@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@/lib/supabase';
+import type { Invoice as DatabaseInvoice } from '@/types/api';
 
 export interface Invoice {
   id: string
@@ -180,7 +181,7 @@ export async function GET(request: NextRequest) {
 
       // Auto-update overdue invoices
       const today = new Date().toISOString().split('T')[0];
-      const overdueInvoices = invoices.filter((inv: any) => 
+      const overdueInvoices = invoices.filter((inv: Invoice) => 
         inv.status === 'Pending' && inv.dueDate < today
       );
 
@@ -188,11 +189,11 @@ export async function GET(request: NextRequest) {
         await supabase
           .from('invoices')
           .update({ status: 'Overdue' })
-          .in('id', overdueInvoices.map((inv: any) => inv.id));
+          .in('id', overdueInvoices.map((inv: Invoice) => inv.id));
         
         // Update the returned data
-        invoices = invoices.map((inv: any) => 
-          overdueInvoices.find((overdue: any) => overdue.id === inv.id)
+        invoices = invoices.map((inv: Invoice) => 
+          overdueInvoices.find((overdue: Invoice) => overdue.id === inv.id)
             ? { ...inv, status: 'Overdue' }
             : inv
         );
@@ -245,7 +246,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Calculate total amount
-    const amount = data.services.reduce((total: number, service: any) => 
+    const amount = data.services.reduce((total: number, service: { total: number }) => 
       total + service.total, 0
     )
     

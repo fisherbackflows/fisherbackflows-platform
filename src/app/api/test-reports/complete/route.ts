@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@/lib/supabase';
 import { createAutoInvoice } from '../../invoices/route';
+import type { TestReport, ApiResponse } from '@/types/api';
+
+// Device update interface
+interface DeviceUpdateData {
+  last_test_date: string;
+  status: string;
+  next_test_date?: string;
+}
 
 // Automated test completion workflow
 export async function POST(request: NextRequest) {
@@ -91,7 +99,7 @@ export async function POST(request: NextRequest) {
       .eq('id', data.appointmentId);
 
     // Update device status and last test date
-    const deviceUpdateData: any = {
+    const deviceUpdateData: DeviceUpdateData = {
       last_test_date: testReportData.test_date,
       status: data.testResult
     };
