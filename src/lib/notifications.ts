@@ -1,5 +1,5 @@
 // Push notification system for Fisher Backflows automation platform
-import { createClient } from '@/lib/supabase/client'
+import { createClientComponentClient } from '@/lib/supabase'
 
 export interface NotificationPayload {
   title: string
@@ -30,7 +30,7 @@ export interface NotificationSubscription {
 export class NotificationManager {
   private static instance: NotificationManager
   private swRegistration: ServiceWorkerRegistration | null = null
-  private supabase = createClient()
+  private supabase = createClientComponentClient()
 
   private constructor() {}
 

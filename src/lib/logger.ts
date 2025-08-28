@@ -1,5 +1,5 @@
 // Enterprise-grade logging system for Fisher Backflows
-import { createClient } from '@/lib/supabase/client'
+import { createClientComponentClient } from '@/lib/supabase'
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'critical'
 
@@ -31,10 +31,22 @@ export interface LoggerConfig {
 
 class Logger {
   private config: LoggerConfig
-  private supabase = createClient()
+  private _supabase: ReturnType<typeof createClientComponentClient> | null = null
   private logQueue: LogEntry[] = []
   private flushTimer: NodeJS.Timeout | null = null
   private retryCount = 0
+
+  private get supabase() {
+    if (!this._supabase) {
+      try {
+        this._supabase = createClientComponentClient()
+      } catch (error) {
+        console.warn('Supabase client could not be initialized:', error)
+        return null
+      }
+    }
+    return this._supabase
+  }
 
   constructor(config?: Partial<LoggerConfig>) {
     this.config = {
@@ -258,7 +270,12 @@ class Logger {
 
   private async logToDatabase(logs: LogEntry[]): Promise<void> {
     try {
-      const { error } = await this.supabase
+      const supabase = this.supabase
+      if (!supabase) {
+        throw new Error('Supabase client not available')
+      }
+
+      const { error } = await supabase
         .from('system_logs')
         .insert(logs.map(log => ({
           level: log.level,
@@ -312,7 +329,10 @@ class Logger {
 
   private async getCurrentUserId(): Promise<string | undefined> {
     try {
-      const { data: { user } } = await this.supabase.auth.getUser()
+      const supabase = this.supabase
+      if (!supabase) return undefined
+      
+      const { data: { user } } = await supabase.auth.getUser()
       return user?.id
     } catch {
       return undefined

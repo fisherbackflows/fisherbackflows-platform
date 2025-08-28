@@ -80,9 +80,7 @@ const nextConfig = {
   },
 
   // Performance optimizations
-  swcMinify: true,
   experimental: {
-    optimizeCss: true,
     scrollRestoration: true,
     workerThreads: false,
     esmExternals: true,

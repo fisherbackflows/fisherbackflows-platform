@@ -1,17 +1,30 @@
-import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers'
+import { NextRequest, NextResponse } from 'next/server'
+import { createRouteHandlerClient } from '@/lib/supabase'
 import webpush from 'web-push'
 
-// Configure web-push with VAPID keys
-webpush.setVapidDetails(
-  'mailto:fisherbackflows@gmail.com',
-  process.env.NEXT_PUBLIC_VAPID_KEY || 'BEl62iUYgUivxIkv69yViEuiBIa40HI6YUTpZrLZjkRgF9n7X7wgqz6rS1WdAPHBSqLZswRk6Q4_dNa_gU7WGwE',
-  process.env.VAPID_PRIVATE_KEY || 'your-vapid-private-key'
-)
+// Configure web-push with VAPID keys only if they are properly set
+function configureWebPush() {
+  const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_KEY
+  const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY
+  
+  if (vapidPublicKey && vapidPrivateKey && 
+      vapidPublicKey !== 'BEl62iUYgUivxIkv69yViEuiBIa40HI6YUTpZrLZjkRgF9n7X7wgqz6rS1WdAPHBSqLZswRk6Q4_dNa_gU7WGwE' &&
+      vapidPrivateKey !== 'your-vapid-private-key') {
+    webpush.setVapidDetails(
+      'mailto:fisherbackflows@gmail.com',
+      vapidPublicKey,
+      vapidPrivateKey
+    )
+    return true
+  }
+  return false
+}
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // Check if web push is configured
+    const isWebPushConfigured = configureWebPush()
+    
     const body = await request.json()
     const { 
       userId, 
@@ -24,8 +37,7 @@ export async function POST(request: Request) {
       requireInteraction = false 
     } = body
 
-    const cookieStore = await cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = createRouteHandlerClient(request)
 
     // Verify authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -118,14 +130,18 @@ export async function POST(request: Request) {
           }
         }
 
-        await webpush.sendNotification(
-          pushSubscription,
-          JSON.stringify(notificationPayload),
-          {
-            TTL: 86400, // 24 hours
-            urgency: type === 'urgent' ? 'high' : 'normal'
-          }
-        )
+        if (isWebPushConfigured) {
+          await webpush.sendNotification(
+            pushSubscription,
+            JSON.stringify(notificationPayload),
+            {
+              TTL: 86400, // 24 hours
+              urgency: type === 'urgent' ? 'high' : 'normal'
+            }
+          )
+        } else {
+          console.log('Web push not configured - notification logged only')
+        }
 
         console.log(`Notification sent to ${subscription.user_id}`)
         return { success: true, userId: subscription.user_id }
@@ -189,14 +205,13 @@ export async function POST(request: Request) {
 }
 
 // GET endpoint to retrieve notification history
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const limit = parseInt(searchParams.get('limit') || '50')
     const offset = parseInt(searchParams.get('offset') || '0')
 
-    const cookieStore = await cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = createRouteHandlerClient(request)
 
     // Verify authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()

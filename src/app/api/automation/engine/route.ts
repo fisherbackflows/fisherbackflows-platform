@@ -1,13 +1,11 @@
-import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers'
-import { automationEngine } from '@/lib/automation'
+import { NextRequest, NextResponse } from 'next/server'
+import { createRouteHandlerClient } from '@/lib/supabase'
+import { getAutomationEngine } from '@/lib/automation'
 
 // GET: Get automation engine status and statistics
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
-    const cookieStore = await cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = createRouteHandlerClient(request)
 
     // Verify authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -19,6 +17,7 @@ export async function GET(request: Request) {
     }
 
     // Get automation statistics
+    const automationEngine = getAutomationEngine()
     const stats = await automationEngine.getStats()
 
     return NextResponse.json({
@@ -38,13 +37,12 @@ export async function GET(request: Request) {
 }
 
 // POST: Trigger automation cycle manually or start/stop the engine
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { action } = body
 
-    const cookieStore = await cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = createRouteHandlerClient(request)
 
     // Verify authentication and admin access
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -70,6 +68,7 @@ export async function POST(request: Request) {
     }
 
     let result
+    const automationEngine = getAutomationEngine()
 
     switch (action) {
       case 'run_cycle':
@@ -118,13 +117,12 @@ export async function POST(request: Request) {
 }
 
 // PUT: Update automation rules
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
   try {
     const body = await request.json()
     const { rule } = body
 
-    const cookieStore = await cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = createRouteHandlerClient(request)
 
     // Verify authentication and admin access
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -143,6 +141,7 @@ export async function PUT(request: Request) {
     }
 
     // Add the custom rule to the automation engine
+    const automationEngine = getAutomationEngine()
     const newRule = await automationEngine.addRule(rule)
 
     return NextResponse.json({

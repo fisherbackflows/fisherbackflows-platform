@@ -1,8 +1,7 @@
-import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers'
+import { NextRequest, NextResponse } from 'next/server'
+import { createRouteHandlerClient } from '@/lib/supabase'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { trackingId, action, timestamp } = body
@@ -14,8 +13,7 @@ export async function POST(request: Request) {
       )
     }
 
-    const cookieStore = await cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = createRouteHandlerClient(request)
 
     // Log the notification interaction
     const { error: insertError } = await supabase
