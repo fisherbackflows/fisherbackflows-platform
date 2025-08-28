@@ -58,6 +58,8 @@ export function createRouteHandlerClient(
   response?: NextResponse
 ) {
   if (!isSupabaseConfigured) {
+    console.warn('⚠️  Supabase not configured - system will use fallback mode')
+    console.warn('   Create .env.local with Supabase credentials for full functionality')
     throw new Error('Supabase is not configured')
   }
   

@@ -14,9 +14,13 @@ import {
   MapPin,
   User,
   Phone,
-  Wrench
+  Wrench,
+  WifiOff,
+  Wifi,
+  CloudOff
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useOfflineMode } from '@/lib/offline';
 
 interface Appointment {
   id: string;
@@ -59,34 +63,50 @@ export default function FieldTestPage() {
     technician: 'Mike Fisher'
   });
 
+  // Offline mode support
+  const { isOnline, storeTestReport, pendingSync } = useOfflineMode();
+
   useEffect(() => {
     fetchAppointment();
   }, [appointmentId]);
 
   const fetchAppointment = async () => {
     try {
-      // In real implementation, fetch from appointment API with device details
-      const mockAppointment: Appointment = {
-        id: appointmentId,
-        customerName: 'John Smith',
-        customerPhone: '(253) 555-0123',
-        address: '123 Main St, Tacoma, WA 98401',
-        serviceType: 'Annual Test',
-        appointmentDate: new Date().toISOString().split('T')[0],
-        appointmentTime: '10:00',
-        deviceLocation: '123 Main St - Backyard',
-        notes: 'Gate code: 1234',
-        device: {
-          id: 'dev1',
-          serialNumber: 'BF-2023-001',
-          size: '3/4"',
-          make: 'Watts',
-          model: 'Series 909',
-          lastTestDate: '2024-01-15'
+      // Fetch real appointment data from API
+      const response = await fetch(`/api/appointments/${appointmentId}`);
+      
+      if (!response.ok) {
+        throw new Error('Appointment not found');
+      }
+      
+      const data = await response.json();
+      
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to fetch appointment');
+      }
+      
+      // Transform API response to match component interface
+      const transformedAppointment: Appointment = {
+        id: data.appointment.id,
+        customerName: data.appointment.customerName || data.appointment.customer?.name || 'Unknown Customer',
+        customerPhone: data.appointment.customerPhone || data.appointment.customer?.phone || '',
+        address: data.appointment.customer?.address || data.appointment.deviceLocation || '',
+        serviceType: data.appointment.serviceType || 'Annual Test',
+        appointmentDate: data.appointment.date || data.appointment.appointment_date || new Date().toISOString().split('T')[0],
+        appointmentTime: data.appointment.time || data.appointment.appointment_time || '10:00',
+        deviceLocation: data.appointment.deviceLocation || data.appointment.device_location || data.appointment.customer?.address || '',
+        notes: data.appointment.notes || '',
+        device: data.appointment.device || {
+          id: data.appointment.device_id || `device_${appointmentId}`,
+          serialNumber: data.appointment.device?.serial_number || 'Unknown',
+          size: data.appointment.device?.size || '3/4"',
+          make: data.appointment.device?.make || 'Unknown',
+          model: data.appointment.device?.model || 'Unknown',
+          lastTestDate: data.appointment.device?.last_test_date || '2023-01-01'
         }
       };
       
-      setAppointment(mockAppointment);
+      setAppointment(transformedAppointment);
     } catch (error) {
       console.error('Error fetching appointment:', error);
     } finally {
@@ -150,6 +170,10 @@ export default function FieldTestPage() {
       const testSubmission = {
         appointmentId: appointmentId,
         deviceId: appointment?.device?.id,
+        customerId: appointment?.customerId,
+        customerName: appointment?.customerName,
+        customerEmail: appointment?.customerEmail || `${appointment?.customerName?.toLowerCase().replace(' ', '.')}@email.com`,
+        deviceLocation: appointment?.deviceLocation,
         testDate: new Date().toISOString().split('T')[0],
         initialPressure: parseFloat(testData.initialPressure),
         finalPressure: parseFloat(testData.finalPressure),
@@ -160,6 +184,15 @@ export default function FieldTestPage() {
         technician: testData.technician,
         photos: testData.photos
       };
+
+      if (!isOnline) {
+        // Store offline for later sync
+        storeTestReport(testSubmission);
+        
+        alert(`Test completed and saved offline! 📱\n\n✅ Report saved locally\n📤 Will sync when online\n\nPending sync: ${pendingSync + 1} items`);
+        router.push('/field/dashboard');
+        return;
+      }
 
       // Submit to automated completion workflow
       const response = await fetch('/api/test-reports/complete', {
@@ -174,7 +207,7 @@ export default function FieldTestPage() {
 
       if (result_response.success) {
         // Success! Everything is automated from here
-        alert(`Test completed successfully!\n\n✅ Report submitted\n💰 Invoice generated\n📧 Customer will be notified\n🏛️ Water department will receive report`);
+        alert(`Test completed successfully! 🎉\n\n✅ Report submitted\n💰 Invoice generated\n📧 Customer will be notified\n🏛️ Water department will receive report`);
         router.push('/field/dashboard');
       } else {
         throw new Error(result_response.error);
@@ -220,7 +253,24 @@ export default function FieldTestPage() {
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
-          <h1 className="text-xl font-bold text-white">Field Test</h1>
+          <div className="text-center">
+            <h1 className="text-xl font-bold text-white">Field Test</h1>
+            <div className="flex items-center justify-center space-x-1 mt-1">
+              {isOnline ? (
+                <Wifi className="h-3 w-3 text-green-400" />
+              ) : (
+                <WifiOff className="h-3 w-3 text-red-400" />
+              )}
+              <span className="text-xs text-white/60">
+                {isOnline ? 'Online' : 'Offline Mode'}
+              </span>
+              {pendingSync > 0 && (
+                <span className="text-xs bg-orange-500 text-white px-1 rounded">
+                  {pendingSync}
+                </span>
+              )}
+            </div>
+          </div>
           <div className="w-10" />
         </div>
 

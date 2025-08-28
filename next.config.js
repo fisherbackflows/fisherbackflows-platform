@@ -1,17 +1,92 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Production optimizations
+  output: 'standalone',
+  compress: true,
+  poweredByHeader: false,
+  
   // External packages configuration
-  serverExternalPackages: ['bcryptjs'],
+  serverExternalPackages: ['bcryptjs', '@supabase/supabase-js', 'web-push'],
+  
+  // Security headers
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains; preload'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' blob: data:",
+              "font-src 'self'",
+              "object-src 'none'",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.stripe.com",
+            ].join('; ')
+          }
+        ]
+      }
+    ]
+  },
+
+  // Rewrites for API routes and static files
+  async rewrites() {
+    return [
+      {
+        source: '/health',
+        destination: '/api/health'
+      }
+    ]
+  },
+
+  // Image optimization
+  images: {
+    domains: ['fisherbackflows.com', 'supabase.co'],
+    formats: ['image/webp', 'image/avif'],
+    minimumCacheTTL: 3600,
+  },
   
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: process.env.NODE_ENV === 'production',
   },
   
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: process.env.NODE_ENV === 'production',
   },
-  
-  output: 'standalone',
+
+  // Performance optimizations
+  swcMinify: true,
+  experimental: {
+    optimizeCss: true,
+    scrollRestoration: true,
+    workerThreads: false,
+    esmExternals: true,
+  },
   
   turbopack: {
     rules: {
@@ -24,6 +99,37 @@ const nextConfig = {
     resolveAlias: {
       '@': './src',
     }
+  },
+
+  // Webpack optimizations
+  webpack: (config, { dev, isServer }) => {
+    // Production optimizations
+    if (!dev) {
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            vendor: {
+              name: 'vendor',
+              chunks: 'all',
+              test: /node_modules/,
+              enforce: true
+            },
+            common: {
+              name: 'common',
+              chunks: 'all',
+              minChunks: 2,
+              enforce: true
+            }
+          }
+        }
+      }
+    }
+
+    return config
   },
 }
 

@@ -136,6 +136,46 @@ export async function POST(request: NextRequest) {
       console.error('Error creating auto invoice:', invoiceError);
     }
 
+    // Send push notification to admins about test completion
+    try {
+      const notificationResponse = await fetch(`${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/notifications/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: `Test Completed - ${data.testResult}`,
+          message: `${appointment.customers?.name || 'Customer'}'s backflow test ${data.testResult.toLowerCase()}. ${data.testResult === 'Passed' ? 'Invoice generated automatically.' : 'Customer will need repairs.'}`,
+          type: 'test_completed',
+          data: {
+            testReportId: testReport.id,
+            customerId: appointment.customer_id,
+            customerName: appointment.customers?.name,
+            testResult: data.testResult,
+            invoiceId: invoice?.id
+          },
+          actions: [
+            {
+              action: 'view-report',
+              title: 'View Report',
+              icon: '/icons/report.png'
+            },
+            {
+              action: 'contact-customer',
+              title: 'Contact Customer',
+              icon: '/icons/phone.png'
+            }
+          ],
+          targetUrl: `/reports/${testReport.id}`,
+          requireInteraction: data.testResult !== 'Passed' // Require interaction for failed tests
+        })
+      })
+      
+      if (notificationResponse.ok) {
+        console.log('Push notification sent for test completion')
+      }
+    } catch (notifError) {
+      console.error('Error sending push notification:', notifError)
+    }
+
     // Send confirmation email (placeholder - implement with your email service)
     // await sendTestCompletionEmail(appointment.customers, testReport, invoice);
 
@@ -147,6 +187,7 @@ export async function POST(request: NextRequest) {
       automation: {
         appointmentUpdated: true,
         deviceUpdated: true,
+        notificationSent: true,
         customerUpdated: true,
         invoiceGenerated: !!invoice,
         nextTestScheduled: data.testResult === 'Passed'

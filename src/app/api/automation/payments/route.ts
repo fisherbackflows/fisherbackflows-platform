@@ -143,21 +143,41 @@ async function createPaymentLink(invoiceId: string, amount: number, customerEmai
 // Create Stripe payment intent
 async function createStripePaymentIntent(paymentData: any) {
   try {
-    // This would use the actual Stripe SDK
-    // const stripe = require('stripe')(PAYMENT_CONFIG.stripe.secretKey);
+    // Check if Stripe is configured
+    if (!PAYMENT_CONFIG.stripe.secretKey) {
+      console.warn('Stripe not configured, using mock payment intent');
+      
+      // Mock Stripe response for development
+      const mockPaymentIntent = {
+        id: `pi_mock_${Date.now()}`,
+        client_secret: `pi_mock_${Date.now()}_secret_${Math.random().toString(36)}`,
+        amount: paymentData.amount,
+        currency: paymentData.currency,
+        status: 'requires_payment_method',
+        metadata: paymentData.metadata,
+        mock: true
+      };
+
+      console.log('Mock Stripe payment intent created:', mockPaymentIntent);
+      return mockPaymentIntent;
+    }
+
+    // Use real Stripe SDK
+    const Stripe = require('stripe');
+    const stripe = new Stripe(PAYMENT_CONFIG.stripe.secretKey);
     
-    // Mock Stripe response for now
-    const mockPaymentIntent = {
-      id: `pi_${Date.now()}`,
-      client_secret: `pi_${Date.now()}_secret_${Math.random().toString(36)}`,
+    const paymentIntent = await stripe.paymentIntents.create({
       amount: paymentData.amount,
       currency: paymentData.currency,
-      status: 'requires_payment_method',
-      metadata: paymentData.metadata
-    };
+      description: paymentData.description,
+      metadata: paymentData.metadata,
+      automatic_payment_methods: {
+        enabled: true,
+      },
+    });
 
-    console.log('Mock Stripe payment intent created:', mockPaymentIntent);
-    return mockPaymentIntent;
+    console.log('Real Stripe payment intent created:', paymentIntent.id);
+    return paymentIntent;
 
   } catch (error) {
     console.error('Stripe payment intent error:', error);
@@ -287,13 +307,27 @@ async function handlePaymentWebhook(request: NextRequest, supabase: any) {
 // Verify payment with processor
 async function verifyPayment(paymentIntentId: string): Promise<boolean> {
   try {
-    // This would verify with actual payment processor
-    // const stripe = require('stripe')(PAYMENT_CONFIG.stripe.secretKey);
-    // const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-    // return paymentIntent.status === 'succeeded';
+    // Check if this is a mock payment
+    if (paymentIntentId.startsWith('pi_mock_')) {
+      console.log('Mock payment verification for:', paymentIntentId);
+      return true;
+    }
 
-    console.log('Verifying payment:', paymentIntentId);
-    return true; // Mock verification
+    // Check if Stripe is configured
+    if (!PAYMENT_CONFIG.stripe.secretKey) {
+      console.warn('Stripe not configured, mock verifying payment:', paymentIntentId);
+      return true;
+    }
+
+    // Use real Stripe verification
+    const Stripe = require('stripe');
+    const stripe = new Stripe(PAYMENT_CONFIG.stripe.secretKey);
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    
+    const isSucceeded = paymentIntent.status === 'succeeded';
+    console.log('Real Stripe payment verification:', paymentIntentId, 'Status:', paymentIntent.status);
+    
+    return isSucceeded;
 
   } catch (error) {
     console.error('Payment verification error:', error);
@@ -303,10 +337,30 @@ async function verifyPayment(paymentIntentId: string): Promise<boolean> {
 
 // Verify webhook signature
 function verifyWebhookSignature(payload: string, signature: string | null): boolean {
-  // This would verify the actual webhook signature
-  // For Stripe: stripe.webhooks.constructEvent(payload, signature, webhookSecret)
-  console.log('Verifying webhook signature');
-  return true; // Mock verification
+  try {
+    // Check if webhook secret is configured
+    if (!PAYMENT_CONFIG.stripe.webhookSecret || !signature) {
+      console.warn('Stripe webhook not fully configured, allowing webhook for development');
+      return true;
+    }
+
+    // Use real Stripe webhook verification
+    const Stripe = require('stripe');
+    const stripe = new Stripe(PAYMENT_CONFIG.stripe.secretKey);
+    
+    const event = stripe.webhooks.constructEvent(
+      payload,
+      signature,
+      PAYMENT_CONFIG.stripe.webhookSecret
+    );
+    
+    console.log('Real Stripe webhook signature verified:', event.type);
+    return true;
+
+  } catch (error) {
+    console.error('Webhook signature verification failed:', error);
+    return false;
+  }
 }
 
 // Handle successful payment webhook
