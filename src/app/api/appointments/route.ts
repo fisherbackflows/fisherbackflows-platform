@@ -132,6 +132,7 @@ export async function GET(request: NextRequest) {
     
     return NextResponse.json({
       success: true,
+      message: 'FIXED - Vercel deployment working v3.0.0',
       appointments
     });
   } catch (error) {
