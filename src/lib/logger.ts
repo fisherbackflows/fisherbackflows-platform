@@ -1,5 +1,5 @@
 // Enterprise-grade logging system for Fisher Backflows
-import { createClient } from '@/lib/supabase/client'
+import { createClientComponentClient } from '@/lib/supabase'
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error' | 'critical'
 
@@ -31,7 +31,7 @@ export interface LoggerConfig {
 
 class Logger {
   private config: LoggerConfig
-  private supabase = createClient()
+  private supabase = createClientComponentClient()
   private logQueue: LogEntry[] = []
   private flushTimer: NodeJS.Timeout | null = null
   private retryCount = 0

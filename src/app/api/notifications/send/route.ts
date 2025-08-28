@@ -1,6 +1,5 @@
-import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { cookies } from 'next/headers'
+import { NextRequest, NextResponse } from 'next/server'
+import { createRouteHandlerClient } from '@/lib/supabase'
 import webpush from 'web-push'
 
 // Configure web-push with VAPID keys
@@ -10,7 +9,7 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY || 'your-vapid-private-key'
 )
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { 
@@ -24,8 +23,7 @@ export async function POST(request: Request) {
       requireInteraction = false 
     } = body
 
-    const cookieStore = await cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = createRouteHandlerClient(request)
 
     // Verify authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -189,14 +187,13 @@ export async function POST(request: Request) {
 }
 
 // GET endpoint to retrieve notification history
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const limit = parseInt(searchParams.get('limit') || '50')
     const offset = parseInt(searchParams.get('offset') || '0')
 
-    const cookieStore = await cookies()
-    const supabase = createClient(cookieStore)
+    const supabase = createRouteHandlerClient(request)
 
     // Verify authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()

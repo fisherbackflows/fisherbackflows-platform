@@ -1,5 +1,5 @@
 // High-performance caching system for Fisher Backflows
-import { createClient } from '@/lib/supabase/client'
+import { createClientComponentClient } from '@/lib/supabase'
 import { logger } from './logger'
 
 export interface CacheEntry<T = any> {
@@ -41,7 +41,7 @@ class CacheManager {
   private maxMemorySize = 50 * 1024 * 1024 // 50MB
   private maxEntries = 10000
   private cleanupInterval: NodeJS.Timeout | null = null
-  private supabase = createClient()
+  private supabase = createClientComponentClient()
 
   constructor() {
     this.startCleanupProcess()

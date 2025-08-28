@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
 import { createBrowserClient, createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import type { Database } from './database.types'
 
@@ -28,6 +27,7 @@ export async function createServerComponentClient() {
     throw new Error('Supabase is not configured')
   }
   
+  const { cookies } = await import('next/headers')
   const cookieStore = await cookies()
   
   return createServerClient<Database>(

@@ -1,5 +1,5 @@
 // Automated reminder and follow-up system for Fisher Backflows
-import { createClient } from '@/lib/supabase/client'
+import { createClientComponentClient } from '@/lib/supabase'
 import { NotificationTemplates } from './notifications'
 
 export interface ReminderRule {
@@ -38,7 +38,7 @@ export interface ScheduledReminder {
 }
 
 export class AutomationEngine {
-  private supabase = createClient()
+  private supabase = createClientComponentClient()
   private reminderRules: ReminderRule[] = []
 
   constructor() {
