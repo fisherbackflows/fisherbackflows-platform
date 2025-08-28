@@ -41,7 +41,19 @@ class CacheManager {
   private maxMemorySize = 50 * 1024 * 1024 // 50MB
   private maxEntries = 10000
   private cleanupInterval: NodeJS.Timeout | null = null
-  private supabase = createClientComponentClient()
+  private _supabase: ReturnType<typeof createClientComponentClient> | null = null
+
+  private get supabase() {
+    if (!this._supabase) {
+      try {
+        this._supabase = createClientComponentClient()
+      } catch (error) {
+        console.warn('Supabase client could not be initialized in cache:', error)
+        return null
+      }
+    }
+    return this._supabase
+  }
 
   constructor() {
     this.startCleanupProcess()
