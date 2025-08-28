@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@/lib/supabase'
-import { automationEngine } from '@/lib/automation'
+import { getAutomationEngine } from '@/lib/automation'
 
 // GET: Get automation engine status and statistics
 export async function GET(request: NextRequest) {
@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get automation statistics
+    const automationEngine = getAutomationEngine()
     const stats = await automationEngine.getStats()
 
     return NextResponse.json({
@@ -67,6 +68,7 @@ export async function POST(request: NextRequest) {
     }
 
     let result
+    const automationEngine = getAutomationEngine()
 
     switch (action) {
       case 'run_cycle':
@@ -139,6 +141,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Add the custom rule to the automation engine
+    const automationEngine = getAutomationEngine()
     const newRule = await automationEngine.addRule(rule)
 
     return NextResponse.json({

@@ -619,5 +619,12 @@ export class AutomationEngine {
   }
 }
 
-// Global automation engine instance
-export const automationEngine = new AutomationEngine()
+// Global automation engine instance with lazy initialization
+let _automationEngine: AutomationEngine | null = null
+
+export function getAutomationEngine(): AutomationEngine {
+  if (!_automationEngine) {
+    _automationEngine = new AutomationEngine()
+  }
+  return _automationEngine
+}
