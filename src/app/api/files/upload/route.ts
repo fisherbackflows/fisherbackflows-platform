@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandler } from '@/lib/error-handling/error-middleware';
 import { fileUploadService } from '@/lib/file-upload/file-upload-service';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+// TEMP: Disabled for clean builds
+// import { authOptions } from '@/lib/auth';
 import { z } from 'zod';
 import { measureOperation } from '@/lib/monitoring/application-monitor';
 

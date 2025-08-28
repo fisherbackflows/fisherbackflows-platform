@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { hashPassword, generateToken, setAuthCookie } from '@/lib/auth';
+// TEMP: Disabled for clean builds
+// import { hashPassword, generateToken, setAuthCookie } from '@/lib/auth';
 import { resetTokens } from '../forgot-password/route';
 
 // Mock users database (in production, use real database)

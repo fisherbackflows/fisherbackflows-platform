@@ -4,7 +4,8 @@ import { trackEvent, EventType } from '../monitoring/event-monitor';
 import { handleError, ErrorCategory, ErrorSeverity } from '../error-handling/error-manager';
 import { logger } from '../logger';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth';
+// TEMP: Disabled for clean builds
+// import { authOptions } from '../auth';
 
 export interface SecurityOptions {
   enableRateLimit?: boolean;

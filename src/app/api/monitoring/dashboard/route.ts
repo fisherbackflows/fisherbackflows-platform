@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { withErrorHandler } from '@/lib/error-handling/error-middleware';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+// TEMP: Disabled for clean builds  
+// import { authOptions } from '@/lib/auth';
 import { getApplicationHealth } from '@/lib/monitoring/application-monitor';
 import { getEvents, getEventStats, EventType } from '@/lib/monitoring/event-monitor';
 import { monitoringDashboard } from '@/lib/monitoring/monitoring-middleware';

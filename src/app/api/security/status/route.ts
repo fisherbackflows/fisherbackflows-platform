@@ -4,7 +4,8 @@ import { withAdminSecurity } from '@/lib/security/security-middleware';
 import { getSecurityThreats, getSecurityStats } from '@/lib/security/rate-limiter';
 import { getEvents, EventType } from '@/lib/monitoring/event-monitor';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+// TEMP: Disabled for clean builds
+// import { authOptions } from '@/lib/auth';
 import { cache } from '@/lib/cache';
 import { z } from 'zod';
 

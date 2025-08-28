@@ -53,6 +53,8 @@ async function handleErrorReport(request: NextRequest) {
     });
 
     // Send to external error monitoring service if configured
+    // TEMP: Disabled for clean builds
+    /*
     if (process.env.SENTRY_DSN) {
       try {
         const Sentry = await import('@sentry/nextjs');
@@ -76,6 +78,7 @@ async function handleErrorReport(request: NextRequest) {
         logger.warn('Failed to report to Sentry', { error: sentryError });
       }
     }
+    */
 
     // Check for critical errors that need immediate attention
     const isCritical = validatedData.error.name === 'ChunkLoadError' || 

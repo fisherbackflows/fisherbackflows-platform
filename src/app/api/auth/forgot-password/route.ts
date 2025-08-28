@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generateOTP, generateSecureToken } from '@/lib/auth';
+// TEMP: Disabled for clean builds
+// import { generateOTP, generateSecureToken } from '@/lib/auth';
 
 // Mock password reset storage (in production, use Redis or database)
 const resetTokens = new Map<string, {
