@@ -138,86 +138,23 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status')
     
     // Use mock data for now (invoices table not yet created in database)  
-    let invoices = mockInvoices;
-      let query = supabase
-        .from('invoices')
-        .select(`
-          *,
-          customers (
-            id,
-            name,
-            email,
-            phone
-          )
-        `)
-        .order('issue_date', { ascending: false });
-
-      // Apply filters
-      if (customerId) {
-        query = query.eq('customer_id', customerId);
-      }
-      if (status && status !== 'All') {
-        query = query.eq('status', status);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-
-      invoices = data?.map(invoice => ({
-        id: invoice.id,
-        customerId: invoice.customer_id,
-        customerName: invoice.customers?.name || 'Unknown',
-        invoiceNumber: invoice.invoice_number,
-        issueDate: invoice.issue_date,
-        dueDate: invoice.due_date,
-        amount: invoice.amount,
-        status: invoice.status,
-        services: invoice.services || [],
-        notes: invoice.notes,
-        paidDate: invoice.paid_date
-      })) || [];
-
-      // Auto-update overdue invoices
-      const today = new Date().toISOString().split('T')[0];
-      const overdueInvoices = invoices.filter((inv: Invoice) => 
-        inv.status === 'Pending' && inv.dueDate < today
+    let filteredInvoices = mockInvoices;
+    
+    // Apply filters
+    if (customerId) {
+      filteredInvoices = filteredInvoices.filter(invoice =>
+        invoice.customerId === customerId
       );
-
-      if (overdueInvoices.length > 0) {
-        await supabase
-          .from('invoices')
-          .update({ status: 'Overdue' })
-          .in('id', overdueInvoices.map((inv: Invoice) => inv.id));
-        
-        // Update the returned data
-        invoices = invoices.map((inv: Invoice) => 
-          overdueInvoices.find((overdue: Invoice) => overdue.id === inv.id)
-            ? { ...inv, status: 'Overdue' }
-            : inv
-        );
-      }
-
-    } catch (dbError) {
-      console.error('Database error, using mock data:', dbError);
-      let filteredInvoices = mockInvoices;
-      
-      if (customerId) {
-        filteredInvoices = filteredInvoices.filter(invoice =>
-          invoice.customerId === customerId
-        );
-      }
-      if (status && status !== 'All') {
-        filteredInvoices = filteredInvoices.filter(invoice =>
-          invoice.status === status
-        );
-      }
-      invoices = filteredInvoices;
+    }
+    if (status && status !== 'All') {
+      filteredInvoices = filteredInvoices.filter(invoice =>
+        invoice.status === status
+      );
     }
     
     return NextResponse.json({
       success: true,
-      invoices
+      invoices: filteredInvoices
     });
   } catch (error) {
     console.error('Error fetching invoices:', error)
