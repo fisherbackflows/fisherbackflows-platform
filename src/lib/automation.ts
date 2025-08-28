@@ -55,10 +55,10 @@ class AutomationEngine {
     // Get devices needing test reminders (30, 14, 7, 1 days out)
     const { data: devices } = await supabaseAdmin
       .from('devices')
-      .select(\`
+      .select(`
         *,
         customer:customers(*)
-      \`)
+      `)
       .in('next_test_date', [
         new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
@@ -79,7 +79,7 @@ class AutomationEngine {
       
       const success = await sendEmail({
         to: customer.email,
-        subject: \`Backflow Test Reminder - \${daysUntilTest} days\`,
+        subject: `Backflow Test Reminder - ${daysUntilTest} days`,
         html: template.html
       });
 
@@ -95,11 +95,11 @@ class AutomationEngine {
     // Get completed tests without invoices
     const { data: reports } = await supabaseAdmin
       .from('test_reports')
-      .select(\`
+      .select(`
         *,
         device:devices(*),
         customer:customers(*)
-      \`)
+      `)
       .is('invoice_id', null)
       .eq('result', 'pass');
 
@@ -118,7 +118,7 @@ class AutomationEngine {
         .insert({
           customer_id: customer.id,
           test_report_id: report.id,
-          invoice_number: \`INV-\${Date.now()}\`,
+          invoice_number: `INV-${Date.now()}`,
           subtotal: pricing.amount,
           tax_amount: pricing.amount * 0.08,
           total_amount: pricing.amount * 1.08,
@@ -140,10 +140,10 @@ class AutomationEngine {
     // Get overdue invoices
     const { data: invoices } = await supabaseAdmin
       .from('invoices')
-      .select(\`
+      .select(`
         *,
         customer:customers(*)
-      \`)
+      `)
       .lt('due_date', new Date().toISOString().split('T')[0])
       .in('status', ['sent', 'pending']);
 
@@ -164,8 +164,15 @@ class AutomationEngine {
   }
 
   private async autoScheduleTests() {
-    // Auto-scheduling logic would go here
-    this.stats.testsScheduled++;
+    // Import scheduling engine dynamically to avoid circular deps
+    const { schedulingEngine } = await import('./scheduling');
+    const result = await schedulingEngine.autoScheduleTests();
+    this.stats.testsScheduled += result.scheduled;
+    
+    logger.info('Auto-scheduling completed', {
+      scheduled: result.scheduled,
+      errors: result.errors
+    });
   }
 
   private getTestPricing(deviceType: string, deviceSize: string) {
