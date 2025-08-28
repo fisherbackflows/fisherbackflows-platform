@@ -132,7 +132,7 @@ const mockInvoices: Invoice[] = [
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('Invoices API called - using clean mock data');
+    console.log('Invoices API v2.0 - DEPLOYMENT TEST - using clean mock data');
     const { searchParams } = new URL(request.url)
     const customerId = searchParams.get('customerId')
     const status = searchParams.get('status')

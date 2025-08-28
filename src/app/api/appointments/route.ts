@@ -100,7 +100,7 @@ const mockAppointments: Appointment[] = [
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('Appointments API called - using clean mock data');
+    console.log('Appointments API v2.0 - DEPLOYMENT TEST - using clean mock data');
     const { searchParams } = new URL(request.url)
     const customerId = searchParams.get('customerId')
     const date = searchParams.get('date')

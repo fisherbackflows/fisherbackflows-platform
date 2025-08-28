@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     const health = {
       status: dbStatus === 'healthy' ? 'healthy' : 'unhealthy',
       timestamp: new Date().toISOString(),
-      version: process.env.npm_package_version || '1.0.1',
+      version: process.env.npm_package_version || '2.0.0-DEPLOYMENT-TEST',
       environment: process.env.NODE_ENV,
       config: envCheck,
       services: {
