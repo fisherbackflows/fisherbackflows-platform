@@ -239,7 +239,7 @@ class EmailTemplateService {
             <div style="background-color: #e8f4f8; border: 1px solid #b8daff; padding: 20px; margin: 20px 0; border-radius: 5px;">
               <h3 style="margin-top: 0; color: #0c5460;">Invoice Details</h3>
               <p><strong>Invoice Number:</strong> {{invoice.number}}</p>
-              <p><strong>Amount Due:</strong> ${{invoice.amount}}</p>
+              <p><strong>Amount Due:</strong> ${'{{invoice.amount}}'}</p>
               <p><strong>Due Date:</strong> {{invoice.dueDate}}</p>
               <p><strong>Service:</strong> {{invoice.description}}</p>
             </div>
@@ -285,7 +285,7 @@ class EmailTemplateService {
         
         INVOICE DETAILS:
         Invoice Number: {{invoice.number}}
-        Amount Due: ${{invoice.amount}}
+        Amount Due: ${'{{invoice.amount}}'}
         Due Date: {{invoice.dueDate}}
         Service: {{invoice.description}}
         

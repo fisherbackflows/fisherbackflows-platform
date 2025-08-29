@@ -91,11 +91,11 @@ export async function GET(
 // Update appointment status, notes, etc.
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createRouteHandlerClient(request);
-    const appointmentId = params.id;
+    const { id: appointmentId } = await params;
     const updateData = await request.json();
 
     const { data, error } = await supabase

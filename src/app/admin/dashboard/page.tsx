@@ -16,7 +16,8 @@ import {
   Wifi,
   Database,
   RefreshCw,
-  Search
+  Search,
+  Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { NotificationManagerComponent } from '@/components/NotificationManager';
@@ -279,6 +280,14 @@ export default function AdminDashboard() {
             >
               <Search className="h-4 w-4 mr-2" />
               Search
+            </Button>
+
+            <Button
+              onClick={() => window.location.href = '/admin/audit-logs'}
+              className="btn-glass px-4 py-2 rounded-lg"
+            >
+              <Shield className="h-4 w-4 mr-2" />
+              Audit Logs
             </Button>
             
             <Button

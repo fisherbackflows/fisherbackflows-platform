@@ -3,10 +3,7 @@
  * Fisher Backflows - Complete Regulatory Compliance
  */
 
-import { createClient } from '@/lib/supabase/client';
-import { logger } from '@/lib/logger';
-import { cache } from '@/lib/cache/redis';
-import { monitoring } from '@/lib/monitoring/monitoring';
+import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -55,6 +52,7 @@ export enum AuditEventType {
   CONFIG_CHANGED = 'system.config.changed',
   SECURITY_ALERT = 'system.security.alert',
   SYSTEM_ERROR = 'system.error',
+  API_REQUEST = 'api.request',
 
   // Admin Events
   USER_CREATED = 'admin.user.created',
@@ -148,7 +146,7 @@ const AuditEventSchema = z.object({
 // ═══════════════════════════════════════════════════════════════════════
 
 export class AuditLogger {
-  private supabase = createClient();
+  private supabase: any;
   private batchSize = 100;
   private batchTimeout = 5000; // 5 seconds
   private eventBatch: AuditEvent[] = [];
@@ -156,6 +154,13 @@ export class AuditLogger {
   private retentionPolicies: Map<string, DataRetentionPolicy> = new Map();
 
   constructor() {
+    if (typeof window === 'undefined') {
+      // Server-side initialization
+      this.supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+      );
+    }
     this.initializeRetentionPolicies();
     this.startBatchProcessor();
     this.startRetentionCleaner();
@@ -191,16 +196,8 @@ export class AuditLogger {
         await this.processBatch();
       }
 
-      // Send metrics
-      monitoring.metrics.increment('audit.event.logged', 1, [
-        `type:${sanitizedEvent.eventType}`,
-        `severity:${sanitizedEvent.severity}`,
-        `success:${sanitizedEvent.success}`
-      ]);
-
     } catch (error) {
-      logger.error('Failed to log audit event', { error, event });
-      monitoring.captureError(error as Error);
+      console.error('Failed to log audit event', error);
     }
   }
 
@@ -392,14 +389,9 @@ export class AuditLogger {
         recommendations
       };
 
-      // Cache the report
-      await cache.set(`compliance:report:${regulation}:${Date.now()}`, report, 86400); // 24 hours
-
-      monitoring.metrics.increment('compliance.report.generated', 1, [`regulation:${regulation}`]);
-
       return report;
     } catch (error) {
-      logger.error('Failed to generate compliance report', { error, regulation });
+      console.error('Failed to generate compliance report', error);
       throw error;
     }
   }
@@ -462,7 +454,7 @@ export class AuditLogger {
 
       return data || [];
     } catch (error) {
-      logger.error('Failed to search audit logs', { error, criteria });
+      console.error('Failed to search audit logs', error);
       return [];
     }
   }
@@ -516,7 +508,7 @@ export class AuditLogger {
           return JSON.stringify(filteredEvents, null, 2);
       }
     } catch (error) {
-      logger.error('Failed to export audit logs', { error, criteria });
+      console.error('Failed to export audit logs', error);
       throw error;
     }
   }
@@ -591,14 +583,12 @@ export class AuditLogger {
         throw error;
       }
 
-      monitoring.metrics.increment('audit.batch.processed', 1, [`size:${batch.length}`]);
-      logger.debug(`Processed audit batch of ${batch.length} events`);
+      console.log(`Processed audit batch of ${batch.length} events`);
 
     } catch (error) {
-      logger.error('Failed to process audit batch', { error, batchSize: batch.length });
+      console.error('Failed to process audit batch', error);
       // Re-add failed events back to batch for retry
       this.eventBatch.unshift(...batch);
-      monitoring.captureError(error as Error);
     }
   }
 
@@ -646,8 +636,7 @@ export class AuditLogger {
         }
       }
     } catch (error) {
-      logger.error('Failed to cleanup expired data', { error });
-      monitoring.captureError(error as Error);
+      console.error('Failed to cleanup expired data', error);
     }
   }
 
@@ -879,6 +868,134 @@ export class GDPRCompliance {
     // Implementation would anonymize/delete user data
     // This is a placeholder
     return true;
+  }
+
+  /**
+   * Set audit context for request tracking
+   */
+  setContext(context: {
+    sessionId?: string;
+    userId?: string;
+    ipAddress?: string;
+    userAgent?: string;
+    requestId?: string;
+  }): void {
+    // Store context in request-local storage
+    // In a real implementation, this would use async local storage
+    (globalThis as any).__auditContext = context;
+  }
+
+  /**
+   * Clear audit context
+   */
+  clearContext(): void {
+    (globalThis as any).__auditContext = null;
+  }
+
+  /**
+   * Get current audit context
+   */
+  private getContext(): any {
+    return (globalThis as any).__auditContext || {};
+  }
+
+  /**
+   * Log API request
+   */
+  async logApiRequest(
+    method: string,
+    url: string,
+    statusCode: number,
+    responseTime: number,
+    userId?: string,
+    success: boolean = true,
+    errorMessage?: string
+  ): Promise<void> {
+    const context = this.getContext();
+    await this.logEvent({
+      eventType: AuditEventType.API_REQUEST,
+      userId: userId || context.userId,
+      sessionId: context.sessionId,
+      ipAddress: context.ipAddress,
+      userAgent: context.userAgent,
+      entityType: 'api_request',
+      metadata: {
+        method,
+        url,
+        statusCode,
+        responseTime,
+        requestId: context.requestId
+      },
+      success,
+      errorMessage,
+      severity: statusCode >= 500 ? 'high' : statusCode >= 400 ? 'medium' : 'low',
+      regulations: [ComplianceRegulation.SOC2]
+    });
+  }
+
+  /**
+   * Log security event
+   */
+  async logSecurityEvent(
+    eventType: AuditEventType,
+    description: string,
+    severity: 'low' | 'medium' | 'high' | 'critical' = 'medium',
+    userId?: string,
+    metadata?: Record<string, any>
+  ): Promise<void> {
+    const context = this.getContext();
+    await this.logEvent({
+      eventType,
+      userId: userId || context.userId,
+      sessionId: context.sessionId,
+      ipAddress: context.ipAddress,
+      userAgent: context.userAgent,
+      entityType: 'security_event',
+      metadata: {
+        description,
+        ...metadata,
+        requestId: context.requestId
+      },
+      success: true,
+      severity,
+      regulations: [ComplianceRegulation.SOC2, ComplianceRegulation.GDPR]
+    });
+  }
+
+  /**
+   * Log data change event
+   */
+  async logDataChange(
+    operation: 'create' | 'update' | 'delete',
+    entityType: string,
+    entityId: string,
+    oldValues?: Record<string, any>,
+    newValues?: Record<string, any>,
+    userId?: string,
+    metadata?: Record<string, any>
+  ): Promise<void> {
+    const context = this.getContext();
+    await this.logEvent({
+      eventType: operation === 'create' ? AuditEventType.CUSTOMER_CREATED :
+                 operation === 'update' ? AuditEventType.CUSTOMER_UPDATED :
+                 AuditEventType.CUSTOMER_DELETED,
+      userId: userId || context.userId,
+      sessionId: context.sessionId,
+      ipAddress: context.ipAddress,
+      userAgent: context.userAgent,
+      entityType,
+      entityId,
+      oldValues,
+      newValues,
+      metadata: {
+        operation,
+        ...metadata,
+        requestId: context.requestId
+      },
+      success: true,
+      severity: operation === 'delete' ? 'high' : 'low',
+      regulations: [ComplianceRegulation.GDPR, ComplianceRegulation.CCPA]
+    });
   }
 }
 
