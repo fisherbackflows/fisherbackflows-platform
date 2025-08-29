@@ -20,6 +20,8 @@ import {
   User,
   Phone
 } from 'lucide-react';
+import LanguageSelector from '@/components/ui/LanguageSelector';
+import { useI18n } from '@/contexts/I18nProvider';
 
 interface NavigationProps {
   customerName?: string;
@@ -32,6 +34,7 @@ export default function Navigation({ customerName, accountNumber }: NavigationPr
   const [user, setUser] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
   const pathname = usePathname();
+  const { t } = useI18n();
 
   useEffect(() => {
     loadUser();
@@ -49,9 +52,9 @@ export default function Navigation({ customerName, accountNumber }: NavigationPr
   };
 
   const navigationItems = [
-    { href: '/portal/dashboard', icon: Home, label: 'Home' },
-    { href: '/portal/schedule', icon: Calendar, label: 'Schedule' },
-    { href: '/portal/billing', icon: CreditCard, label: 'Pay Bill' }
+    { href: '/portal/dashboard', icon: Home, label: t('nav.dashboard') },
+    { href: '/portal/schedule', icon: Calendar, label: t('appointments.appointments') },
+    { href: '/portal/billing', icon: CreditCard, label: t('billing.billing') }
   ];
 
   const isActive = (href: string) => pathname === href;
@@ -117,6 +120,7 @@ export default function Navigation({ customerName, accountNumber }: NavigationPr
 
           {/* Desktop User Info & Actions */}
           <div className="hidden md:flex items-center space-x-4">
+            <LanguageSelector />
             <div className="text-right">
               <p className="text-white/80 font-medium text-sm">{displayName}</p>
               {displayAccount && (
@@ -126,6 +130,7 @@ export default function Navigation({ customerName, accountNumber }: NavigationPr
             <Button
               onClick={handleLogout}
               className="btn-glass px-3 py-2 rounded-lg text-sm"
+              title={t('auth.logout')}
             >
               <LogOut className="h-4 w-4" />
             </Button>
@@ -178,6 +183,11 @@ export default function Navigation({ customerName, accountNumber }: NavigationPr
               })}
             </nav>
 
+            {/* Mobile Language Selector */}
+            <div className="mt-4 pt-4 border-t border-white/10">
+              <LanguageSelector variant="buttons" className="w-full justify-center" />
+            </div>
+
             {/* Mobile Actions */}
             <div className="mt-4 pt-4 border-t border-white/10 space-y-2">
               <a
@@ -192,7 +202,7 @@ export default function Navigation({ customerName, accountNumber }: NavigationPr
                 className="flex items-center space-x-3 px-3 py-3 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors w-full text-left"
               >
                 <LogOut className="h-5 w-5" />
-                <span>Sign Out</span>
+                <span>{t('auth.logout')}</span>
               </button>
             </div>
           </div>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppProviders from "@/components/providers/AppProviders";
+import { I18nProvider } from "@/contexts/I18nProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,9 +39,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
-        <AppProviders>
-          {children}
-        </AppProviders>
+        <I18nProvider>
+          <AppProviders>
+            {children}
+          </AppProviders>
+        </I18nProvider>
         
         {/* Global error tracking script */}
         <script
