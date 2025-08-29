@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { withErrorBoundary } from '@/components/error-boundaries';
 import { 
   Activity,
   Users,
@@ -73,7 +74,7 @@ interface Activity {
   color: string
 }
 
-export default function AdminDashboard() {
+function AdminDashboard() {
   const [systemMetrics, setSystemMetrics] = useState<SystemMetrics | null>(null)
   const [businessMetrics, setBusinessMetrics] = useState<BusinessMetrics | null>(null)
   const [activities, setActivities] = useState<Activity[]>([])
@@ -512,3 +513,9 @@ export default function AdminDashboard() {
     </div>
   )
 }
+
+// Wrap with error boundary
+export default withErrorBoundary(AdminDashboard, {
+  pageName: 'Admin Dashboard',
+  showDebugInfo: true
+});
