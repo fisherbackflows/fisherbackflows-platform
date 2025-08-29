@@ -85,11 +85,11 @@ export async function POST(request: NextRequest) {
     let passwordMatch = false;
     
     // Development bypass for existing admin user
-    if (user.email === 'admin@fisherbackflows.com' && 
+    if ((user as any).email === 'admin@fisherbackflows.com' && 
         (password === 'admin' || password === 'password' || password === 'fisherbackflows')) {
       passwordMatch = true;
     } else {
-      passwordMatch = await bcrypt.compare(password, user.password_hash);
+      passwordMatch = await bcrypt.compare(password, (user as any).password_hash);
     }
     
     if (!passwordMatch) {
