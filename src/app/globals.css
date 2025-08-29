@@ -182,6 +182,15 @@
   .input-glass {
     @apply glass bg-white/5 border-white/20 focus:border-blue-400/50 focus:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all duration-300;
   }
+
+  /* Form Input Styles */
+  .form-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200;
+  }
+  
+  .form-select {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200;
+  }
   
   .shimmer {
     position: relative;

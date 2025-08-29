@@ -30,9 +30,9 @@ export async function GET(request: NextRequest) {
       .from('appointments')
       .select(`
         *,
-        customer:customers(name, email, phone),
-        device:devices(type, size, location),
-        technician:team_users(first_name, last_name)
+        customer:customers(first_name, last_name, email, phone, company_name),
+        device:devices(device_type, size_inches, location_description),
+        technician:team_users(first_name, last_name, email)
       `)
       .order('scheduled_date', { ascending: true });
 

@@ -30,14 +30,14 @@ export const options = {
 
 const BASE_URL = __ENV.TARGET_URL || 'https://app.fisherbackflows.com';
 
-// Test data
-const customers = [
-  { account: 'FISH001', email: 'customer1@example.com' },
-  { account: 'FISH002', email: 'customer2@example.com' },
-  { account: 'FISH003', email: 'customer3@example.com' },
-];
+// Test data - keeping for future use
+// const customers = [
+//   { account: 'FISH001', email: 'customer1@example.com' },
+//   { account: 'FISH002', email: 'customer2@example.com' },
+//   { account: 'FISH003', email: 'customer3@example.com' },
+// ];
 
-export default function () {
+const loadTest = function () {
   group('Homepage', function () {
     const response = http.get(`${BASE_URL}/`);
     check(response, {
@@ -117,6 +117,8 @@ export default function () {
     });
   });
 }
+
+export default loadTest;
 
 // Setup function - runs once at the beginning
 export function setup() {

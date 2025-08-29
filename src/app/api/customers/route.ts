@@ -5,33 +5,40 @@ import { auth } from '@/lib/auth';
 export async function GET(request: NextRequest) {
   try {
     const user = await auth.getApiUser(request);
-    if (!user || !['admin', 'technician'].includes(user.role)) {
+    if (!user || !['admin', 'technician', 'tester'].includes(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // Since customers table doesn't exist yet, return mock data based on team_users
     const supabase = createRouteHandlerClient(request);
-    const { data: customers, error } = await supabase
-      .from('customers')
-      .select(`
-        *,
-        devices (
-          id,
-          serial_number,
-          type,
-          size,
-          location,
-          next_test_date,
-          status
-        )
-      `)
-      .order('name');
+    const { data: teamUsers, error } = await supabase
+      .from('team_users')
+      .select('*')
+      .order('first_name');
 
     if (error) {
       console.error('Database error:', error);
       return NextResponse.json({ error: 'Database error' }, { status: 500 });
     }
 
-    return NextResponse.json({ customers });
+    // Convert team users to mock customers for now
+    const mockCustomers = teamUsers?.map(user => ({
+      id: user.id,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      company_name: `${user.first_name} ${user.last_name} Company`,
+      phone: user.phone || '(555) 123-4567',
+      account_number: `FB-${user.id.slice(0, 6).toUpperCase()}`,
+      account_status: 'active',
+      created_at: user.created_at,
+      devices: [] // No devices table yet
+    })) || [];
+
+    return NextResponse.json({ 
+      customers: mockCustomers,
+      note: 'Using team_users as mock customer data until migration is applied'
+    });
   } catch (error) {
     console.error('API error:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });

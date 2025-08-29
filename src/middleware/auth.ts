@@ -32,7 +32,7 @@ export async function authMiddleware(request: NextRequest) {
   )
 
   // Get user session
-  const { data: { user }, error } = await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser()
   const pathname = request.nextUrl.pathname
 
   // Define protected routes
@@ -43,7 +43,7 @@ export async function authMiddleware(request: NextRequest) {
   // Check if route is protected
   const isCustomerRoute = customerRoutes.some(route => pathname.startsWith(route))
   const isFieldRoute = fieldRoutes.some(route => pathname.startsWith(route))
-  const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route))
+  // const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route))
 
   // Handle customer portal routes
   if (isCustomerRoute) {

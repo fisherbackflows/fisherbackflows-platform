@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { isSupabaseConfigured } from '@/lib/supabase'
+// import { isSupabaseConfigured } from '@/lib/supabase'
 import type { Customer } from '@/lib/types'
 
 // Mock customer data for authentication

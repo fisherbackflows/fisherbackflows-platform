@@ -5,14 +5,14 @@
 
 import Stripe from 'stripe';
 import { logger } from '@/lib/logger';
-import { cache } from '@/lib/cache';
+// import { cache } from '@/lib/cache';
 import { 
-  PaymentSchema, 
-  StripePaymentSchema, 
-  RefundSchema,
-  validateAndSanitize 
+  // PaymentSchema, 
+  // StripePaymentSchema, 
+  // RefundSchema,
+  // validateAndSanitize 
 } from '@/lib/validation/schemas';
-import { z } from 'zod';
+// import { z } from 'zod';
 
 // ═══════════════════════════════════════════════════════════════════════
 // CONFIGURATION
@@ -46,8 +46,9 @@ try {
   logger.info('Stripe initialized successfully', { 
     mode: key.startsWith('sk_test_') ? 'test' : 'live' 
   });
-} catch (error: any) {
-  logger.error('Failed to initialize Stripe', { error: error.message });
+} catch (error: unknown) {
+  const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+  logger.error('Failed to initialize Stripe', { error: errorMessage });
   // Don't initialize with dummy key - fail hard to prevent issues
   stripe = null;
 }
@@ -302,7 +303,7 @@ export class StripePaymentProcessor {
           error: `Payment failed with status: ${intent.status}`
         };
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error('Payment processing failed', { error, customerId, amount });
       
       // Handle specific Stripe errors
@@ -404,7 +405,7 @@ export class StripePaymentProcessor {
           error: `Payment confirmation failed with status: ${intent.status}`
         };
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error('Payment confirmation failed', { error, paymentIntentId });
       return {
         success: false,
@@ -446,7 +447,7 @@ export class StripeRefundManager {
         amount: refund.amount / 100,
         status: refund.status || 'pending'
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       logger.error('Refund processing failed', { error, paymentIntentId });
       return {
         success: false,
@@ -881,7 +882,7 @@ export class StripeReporting {
   static async getPaymentAnalytics(
     startDate: Date,
     endDate: Date
-  ): Promise<any> {
+  ): Promise<{ totalRevenue: number; totalCharges: number; averageAmount: number }> {
     if (!stripe) throw new Error('Stripe not initialized');
 
     try {
@@ -1034,7 +1035,7 @@ export function getCardBrand(cardNumber: string): string {
 // EXPORT DEFAULT PAYMENT SERVICE
 // ═══════════════════════════════════════════════════════════════════════
 
-export default {
+const StripeService = {
   isInitialized: () => stripe !== null,
   customer: StripeCustomerManager,
   payment: StripePaymentProcessor,
@@ -1049,3 +1050,5 @@ export default {
     getCardBrand
   }
 };
+
+export default StripeService;

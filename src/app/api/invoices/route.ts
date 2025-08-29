@@ -57,7 +57,7 @@ export async function createAutoInvoice(customerId: string, serviceType: string,
     }
 
     // Calculate pricing
-    let services = [];
+    const services = [];
     let totalAmount = 0;
 
     if (serviceType === 'Annual Test') {

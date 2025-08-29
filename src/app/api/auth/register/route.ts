@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     // Hash the password
     const saltRounds = 12;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const _hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Initialize Supabase client
     const supabase = createRouteHandlerClient(request);

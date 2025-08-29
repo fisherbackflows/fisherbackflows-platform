@@ -98,7 +98,7 @@ const nextConfig = {
   },
 
   // Simplified webpack config for Vercel compatibility
-  webpack: (config, { dev, isServer }) => {
+  webpack: (config) => {
     return config
   },
 }

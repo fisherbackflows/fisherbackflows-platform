@@ -167,7 +167,7 @@ export async function GET(request: NextRequest) {
 }
 
 // Helper functions
-function generateMonthlyData(testReports: any[], invoices: any[], startDate: Date, endDate: Date) {
+function generateMonthlyData(testReports: Array<{ created_at?: string; result?: string }>, invoices: Array<{ created_at?: string; amount?: number }>, startDate: Date, endDate: Date) {
   const months = []
   const current = new Date(startDate)
   
@@ -195,7 +195,7 @@ function generateMonthlyData(testReports: any[], invoices: any[], startDate: Dat
   return months
 }
 
-function generateCustomerGrowthData(customers: any[], startDate: Date, endDate: Date) {
+function generateCustomerGrowthData(customers: Array<{ created_at?: string }>, startDate: Date, endDate: Date) {
   const months = []
   const current = new Date(startDate)
   let runningTotal = 0
@@ -222,7 +222,7 @@ function generateCustomerGrowthData(customers: any[], startDate: Date, endDate: 
   return months
 }
 
-function calculateAverageTestTime(testReports: any[]): number {
+function calculateAverageTestTime(testReports: Array<{ test_duration?: number }>): number {
   const testsWithDuration = testReports.filter(r => r.test_duration && r.test_duration > 0)
   if (testsWithDuration.length === 0) return 18.5
   
@@ -230,7 +230,7 @@ function calculateAverageTestTime(testReports: any[]): number {
   return Math.round(totalTime / testsWithDuration.length * 10) / 10
 }
 
-function calculateCompletionRate(testReports: any[]): number {
+function calculateCompletionRate(testReports: Array<{ result?: string }>): number {
   const completedTests = testReports.filter(r => 
     r.status === 'Completed' || r.submitted === true
   ).length
@@ -240,7 +240,7 @@ function calculateCompletionRate(testReports: any[]): number {
     : 95.0
 }
 
-function calculateRevenueGrowth(invoices: any[]): number {
+function calculateRevenueGrowth(invoices: Array<{ created_at?: string; amount?: number }>): number {
   // Calculate month-over-month growth
   const now = new Date()
   const thisMonth = now.toISOString().substring(0, 7)
@@ -259,7 +259,7 @@ function calculateRevenueGrowth(invoices: any[]): number {
   return Math.round(((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 * 10) / 10
 }
 
-function identifyPeakMonths(testReports: any[]): string[] {
+function identifyPeakMonths(testReports: Array<{ created_at?: string }>): string[] {
   const monthCounts: { [key: string]: number } = {}
   
   testReports.forEach(report => {
@@ -275,7 +275,7 @@ function identifyPeakMonths(testReports: any[]): string[] {
     .map(([month]) => month)
 }
 
-function calculateTopDistricts(testReports: any[], invoices: any[]): Array<{ district: string; revenue: number }> {
+function calculateTopDistricts(testReports: Array<{ created_at?: string; customer?: { address?: string } }>, invoices: Array<{ created_at?: string; amount?: number; customer?: { address?: string } }>): Array<{ district: string; revenue: number }> {
   const districtRevenue: { [key: string]: number } = {}
   
   // Map test reports to invoices to get district revenue
@@ -292,7 +292,7 @@ function calculateTopDistricts(testReports: any[], invoices: any[]): Array<{ dis
     .slice(0, 5)
 }
 
-function calculateUpcomingTests(customers: any[]): number {
+function calculateUpcomingTests(customers: Array<{ next_test_date?: string }>): number {
   const thirtyDaysFromNow = new Date()
   thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
   

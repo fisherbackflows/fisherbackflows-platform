@@ -418,7 +418,7 @@ class BackupManager {
 
   private async backupFiles(jobId: string): Promise<{ size: number; errors: string[] }> {
     const errors: string[] = []
-    let size = 0
+    const size = 0
 
     try {
       // This would backup uploaded files, documents, etc.

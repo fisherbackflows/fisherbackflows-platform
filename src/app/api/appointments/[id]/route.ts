@@ -3,11 +3,11 @@ import { createRouteHandlerClient } from '@/lib/supabase';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createRouteHandlerClient(request);
-    const appointmentId = params.id;
+    const { id: appointmentId } = await params;
 
     // Get appointment with customer and device details
     const { data: appointment, error } = await supabase

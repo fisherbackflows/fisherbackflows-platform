@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { 
   BarChart, 
   Bar, 
@@ -23,12 +23,12 @@ import {
   TrendingDown,
   DollarSign,
   Users,
-  Calendar,
+  // Calendar,
   CheckCircle,
-  XCircle,
-  AlertTriangle,
+  // XCircle,
+  // AlertTriangle,
   Download,
-  Filter,
+  // Filter,
   RefreshCw,
   ArrowLeft
 } from 'lucide-react'
@@ -61,11 +61,7 @@ export default function AnalyticsPage() {
   const [dateRange, setDateRange] = useState('12months')
   const [refreshing, setRefreshing] = useState(false)
 
-  useEffect(() => {
-    fetchAnalytics()
-  }, [dateRange])
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     try {
       setRefreshing(true)
       const response = await fetch(`/api/admin/analytics?period=${dateRange}`)
@@ -142,7 +138,11 @@ export default function AnalyticsPage() {
       setLoading(false)
       setRefreshing(false)
     }
-  }
+  }, [dateRange])
+
+  useEffect(() => {
+    fetchAnalytics()
+  }, [fetchAnalytics])
 
   const downloadReport = async () => {
     try {
@@ -171,7 +171,7 @@ export default function AnalyticsPage() {
     title: string
     value: string | number
     change?: number
-    icon: any
+    icon: React.ComponentType<{ className?: string }>
     color?: 'blue' | 'green' | 'orange' | 'red'
   }) => {
     const colorClasses = {
@@ -387,7 +387,7 @@ export default function AnalyticsPage() {
                         borderRadius: '8px',
                         color: '#F9FAFB'
                       }}
-                      formatter={(value: any, name: string, props: any) => [
+                      formatter={(value: string | number, name: string, props: { payload: { percentage: string; result: string } }) => [
                         `${value} tests (${props.payload.percentage}%)`,
                         props.payload.result
                       ]}

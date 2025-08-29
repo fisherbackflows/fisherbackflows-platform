@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppProviders from "@/components/providers/AppProviders";
@@ -18,9 +18,13 @@ export const metadata: Metadata = {
   description: "State-certified backflow testing for Pierce County homes and businesses. Fast, reliable, and compliant backflow preventer testing services.",
   keywords: "backflow testing, backflow prevention, Pierce County, Tacoma, backflow certification, water testing",
   authors: [{ name: "Fisher Backflows" }],
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: "#0066cc",
   robots: "index, follow"
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0066cc"
 };
 
 export default function RootLayout({

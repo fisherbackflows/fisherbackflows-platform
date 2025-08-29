@@ -1,21 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React from 'react';
 import { 
   Calendar, 
-  CheckCircle, 
-  AlertTriangle, 
-  Clock, 
-  FileText,
   CreditCard,
-  Droplet,
-  MapPin,
   Phone,
-  Settings,
-  Download,
-  Plus,
-  Bell,
-  Shield
+  Download
 } from 'lucide-react';
 import {
   UnifiedLayout,
@@ -79,14 +69,11 @@ const mockCustomerData = {
 };
 
 export default function CustomerDashboard() {
-  const [customer, setCustomer] = useState(mockCustomerData);
-  const [loading, setLoading] = useState(false);
-
   // Calculate dashboard stats
-  const deviceCount = customer.devices.length;
-  const devicesNeedingTest = customer.devices.filter(d => d.daysUntilTest <= 30).length;
-  const upcomingCount = customer.upcomingAppointments.length;
-  const overdueInvoices = customer.invoices.filter(i => i.status === 'Overdue').length;
+  const deviceCount = mockCustomerData.devices.length;
+  const devicesNeedingTest = mockCustomerData.devices.filter(d => d.daysUntilTest <= 30).length;
+  const upcomingCount = mockCustomerData.upcomingAppointments.length;
+  const overdueInvoices = mockCustomerData.invoices.filter(i => i.status === 'Overdue').length;
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -107,19 +94,19 @@ export default function CustomerDashboard() {
     <UnifiedLayout background="grid">
       {/* Header */}
       <Navigation 
-        customerName={customer.name} 
-        accountNumber={customer.accountNumber} 
+        customerName={mockCustomerData.name} 
+        accountNumber={mockCustomerData.accountNumber} 
       />
 
       <UnifiedContainer className="py-8">
         {/* Welcome Section */}
         <div className="mb-8 text-center">
           <UnifiedH1 variant="gradient" align="center" className="mb-4">
-            Welcome back, {customer.name.split(' ')[0]}!
+            Welcome back, {mockCustomerData.name.split(' ')[0]}!
           </UnifiedH1>
           <UnifiedText variant="secondary" size="lg" align="center" className="mb-6">
-            Your next test is due in <span className={`font-bold ${getDaysUntilTestColor(customer.devices[0]?.daysUntilTest || 0)}`}>
-            {customer.devices[0]?.daysUntilTest || 0} days</span>
+            Your next test is due in <span className={`font-bold ${getDaysUntilTestColor(mockCustomerData.devices[0]?.daysUntilTest || 0)}`}>
+            {mockCustomerData.devices[0]?.daysUntilTest || 0} days</span>
           </UnifiedText>
         </div>
 
@@ -191,19 +178,19 @@ export default function CustomerDashboard() {
         </UnifiedGrid>
 
         {/* Device Status - Simple */}
-        {customer.devices.length > 0 && (
+        {mockCustomerData.devices.length > 0 && (
           <UnifiedCard className="mb-8">
             <UnifiedText size="xl" weight="bold" variant="gradient" className="mb-4">Your Device</UnifiedText>
             <div className="glass-darker rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <UnifiedText weight="semibold" className="mb-1">{customer.devices[0].location}</UnifiedText>
-                  <UnifiedText variant="muted" size="sm">{customer.devices[0].make} {customer.devices[0].model}</UnifiedText>
+                  <UnifiedText weight="semibold" className="mb-1">{mockCustomerData.devices[0].location}</UnifiedText>
+                  <UnifiedText variant="muted" size="sm">{mockCustomerData.devices[0].make} {mockCustomerData.devices[0].model}</UnifiedText>
                 </div>
                 <div className="text-right">
                   <UnifiedText variant="subtle" size="sm">Next Test Due</UnifiedText>
-                  <UnifiedText weight="bold" className={getDaysUntilTestColor(customer.devices[0].daysUntilTest)}>
-                    {new Date(customer.devices[0].nextTestDate).toLocaleDateString()}
+                  <UnifiedText weight="bold" className={getDaysUntilTestColor(mockCustomerData.devices[0].daysUntilTest)}>
+                    {new Date(mockCustomerData.devices[0].nextTestDate).toLocaleDateString()}
                   </UnifiedText>
                 </div>
               </div>
@@ -212,20 +199,20 @@ export default function CustomerDashboard() {
         )}
 
         {/* Recent Activity - Simple */}
-        {customer.recentTests.length > 0 && (
+        {mockCustomerData.recentTests.length > 0 && (
           <UnifiedCard>
             <UnifiedText size="xl" weight="bold" variant="gradient" className="mb-4">Last Test Report</UnifiedText>
             <div className="glass-darker rounded-lg p-4">
               <div className="flex justify-between items-center">
                 <div>
-                  <UnifiedText weight="medium">{customer.recentTests[0].deviceLocation}</UnifiedText>
+                  <UnifiedText weight="medium">{mockCustomerData.recentTests[0].deviceLocation}</UnifiedText>
                   <UnifiedText variant="muted" size="sm">
-                    {new Date(customer.recentTests[0].date).toLocaleDateString()}
+                    {new Date(mockCustomerData.recentTests[0].date).toLocaleDateString()}
                   </UnifiedText>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className={`px-3 py-1 rounded text-sm font-medium ${getStatusColor(customer.recentTests[0].result)}`}>
-                    {customer.recentTests[0].result}
+                  <span className={`px-3 py-1 rounded text-sm font-medium ${getStatusColor(mockCustomerData.recentTests[0].result)}`}>
+                    {mockCustomerData.recentTests[0].result}
                   </span>
                   <UnifiedButton 
                     variant="glass"

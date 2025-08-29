@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { 
   Activity,
   Users,
@@ -14,10 +14,9 @@ import {
   AlertTriangle,
   TrendingUp,
   Wifi,
-  WifiOff,
   Database,
-  Server,
-  RefreshCw
+  RefreshCw,
+  Search
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { NotificationManagerComponent } from '@/components/NotificationManager';
@@ -80,15 +79,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [lastRefresh, setLastRefresh] = useState(new Date())
 
-  useEffect(() => {
-    fetchMetrics()
-    
-    // Auto-refresh every 30 seconds
-    const interval = setInterval(fetchMetrics, 30000)
-    return () => clearInterval(interval)
-  }, [])
-
-  const fetchMetrics = async () => {
+  const fetchMetrics = useCallback(async () => {
     try {
       const [systemResponse, businessResponse, activityResponse] = await Promise.all([
         fetch('/api/automation/orchestrator?period=7'),
@@ -179,7 +170,15 @@ export default function AdminDashboard() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    fetchMetrics()
+    
+    // Auto-refresh every 30 seconds
+    const interval = setInterval(fetchMetrics, 30000)
+    return () => clearInterval(interval)
+  }, [fetchMetrics])
 
   const StatCard = ({ 
     title, 
@@ -191,7 +190,7 @@ export default function AdminDashboard() {
   }: {
     title: string
     value: string | number
-    icon: any
+    icon: React.ComponentType<{ className?: string }>
     trend?: number
     color?: 'blue' | 'green' | 'orange' | 'red'
     subtitle?: string
@@ -264,6 +263,22 @@ export default function AdminDashboard() {
             >
               <TrendingUp className="h-4 w-4 mr-2" />
               Analytics
+            </Button>
+
+            <Button
+              onClick={() => window.location.href = '/admin/data-management'}
+              className="btn-glass px-4 py-2 rounded-lg"
+            >
+              <Database className="h-4 w-4 mr-2" />
+              Data Export
+            </Button>
+
+            <Button
+              onClick={() => window.location.href = '/admin/search'}
+              className="btn-glass px-4 py-2 rounded-lg"
+            >
+              <Search className="h-4 w-4 mr-2" />
+              Search
             </Button>
             
             <Button

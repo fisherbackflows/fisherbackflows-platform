@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     const { data: customer, error: customerError } = await supabase
       .from('customers')
       .select('*')
-      .eq('id', authData.user.id)
+      .eq('email', email)
       .single();
     
     if (customerError || !customer) {

@@ -7,11 +7,12 @@ import { supabaseAdmin } from './supabase';
 import { logger } from './logger';
 import { sendEmail, emailTemplates } from './email';
 
-interface Location {
-  address: string;
-  lat?: number;
-  lng?: number;
-}
+// Location interface (keeping for future use)
+// interface Location {
+//   address: string;
+//   lat?: number;
+//   lng?: number;
+// }
 
 interface ScheduleSlot {
   date: string;
@@ -60,8 +61,9 @@ export class SchedulingEngine {
 
       // Filter out devices that already have active appointments
       const devicesNeedingScheduling = devicesNeedingTests.filter(device => {
-        const appointments = (device as any).appointments || [];
-        return !appointments.some((apt: any) => 
+        const deviceWithAppts = device as Record<string, unknown> & { appointments?: Array<{ status: string }> };
+        const appointments = deviceWithAppts.appointments || [];
+        return !appointments.some(apt => 
           ['scheduled', 'confirmed', 'in_progress'].includes(apt.status)
         );
       });
@@ -81,8 +83,9 @@ export class SchedulingEngine {
       // Schedule each device
       for (const device of devicesNeedingScheduling) {
         try {
-          const customer = (device as any).customer;
-          const preferredDate = device.next_test_date;
+          const deviceWithCustomer = device as Record<string, unknown> & { customer?: Record<string, unknown>; next_test_date: string };
+          const customer = deviceWithCustomer.customer;
+          const preferredDate = deviceWithCustomer.next_test_date;
           
           // Find best technician and time slot
           const assignment = await this.findBestScheduleSlot(
@@ -148,7 +151,7 @@ export class SchedulingEngine {
     preferredDate: string,
     customerAddress: string,
     deviceType: string,
-    technicians: any[]
+    technicians: Record<string, unknown>[]
   ): Promise<ScheduleSlot | null> {
     
     const testDuration = this.getTestDuration(deviceType);
@@ -193,7 +196,7 @@ export class SchedulingEngine {
     technicianId: string,
     date: string,
     durationMinutes: number,
-    customerAddress: string
+    _customerAddress: string
   ): Promise<{ startTime: string; endTime: string } | null> {
     
     if (!supabaseAdmin) return null;
@@ -266,17 +269,18 @@ export class SchedulingEngine {
       if (!appointments?.length) return { optimized, errors };
 
       // Group by technician
-      const technicianGroups = appointments.reduce((groups: any, apt) => {
-        const techId = apt.technician_id;
+      const technicianGroups = appointments.reduce((groups: Record<string, Array<Record<string, unknown>>>, apt) => {
+        const appointmentData = apt as Record<string, unknown> & { technician_id: string };
+        const techId = appointmentData.technician_id;
         if (!groups[techId]) groups[techId] = [];
-        groups[techId].push(apt);
+        groups[techId].push(appointmentData);
         return groups;
-      }, {});
+      }, {} as Record<string, Array<Record<string, unknown>>>);
 
       // Optimize each technician's route
-      for (const [techId, techAppointments] of Object.entries(technicianGroups)) {
+      for (const [_techId, techAppointments] of Object.entries(technicianGroups)) {
         try {
-          const optimizedRoute = await this.optimizeRoute(techAppointments as any[]);
+          const optimizedRoute = await this.optimizeRoute(techAppointments);
           
           // Update appointment times based on optimized route
           for (let i = 0; i < optimizedRoute.length; i++) {
@@ -311,20 +315,24 @@ export class SchedulingEngine {
    * Simple route optimization using nearest-neighbor algorithm
    * In production, would integrate with Google Maps API for real distances
    */
-  private async optimizeRoute(appointments: any[]): Promise<RouteStop[]> {
-    if (appointments.length <= 1) return appointments;
+  private async optimizeRoute(appointments: Array<Record<string, unknown>>): Promise<RouteStop[]> {
+    if (appointments.length <= 1) return appointments as RouteStop[];
 
-    const stops: RouteStop[] = appointments.map(apt => ({
-      appointmentId: apt.id,
-      customerId: apt.customer.id,
-      customerName: apt.customer.name,
-      address: apt.customer.address,
-      deviceType: apt.device.type,
-      estimatedDuration: this.getTestDuration(apt.device.type),
-      priority: apt.device.next_test_date < new Date().toISOString() ? 2 : 1,
-      lat: 0, // Would geocode in production
-      lng: 0
-    }));
+    const stops: RouteStop[] = appointments.map(apt => {
+      const customer = apt.customer as Record<string, unknown> & { id: string; name: string; address: string };
+      const device = apt.device as Record<string, unknown> & { type: string; next_test_date: string };
+      return {
+        appointmentId: apt.id as string,
+        customerId: customer.id,
+        customerName: customer.name,
+        address: customer.address,
+        deviceType: device.type,
+        estimatedDuration: this.getTestDuration(device.type),
+        priority: device.next_test_date < new Date().toISOString() ? 2 : 1,
+        lat: 0, // Would geocode in production
+        lng: 0
+      };
+    });
 
     // Simple optimization: sort by priority first, then by address
     // In production, would use actual distance calculations

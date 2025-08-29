@@ -105,10 +105,10 @@ export function useErrorHandler() {
   const throwError = useErrorBoundary();
 
   return React.useCallback(
-    async <T>(
-      asyncFn: () => Promise<T>,
+    async (
+      asyncFn: () => Promise<unknown>,
       onError?: (error: Error) => void
-    ): Promise<T | null> => {
+    ): Promise<unknown> => {
       try {
         return await asyncFn();
       } catch (error) {

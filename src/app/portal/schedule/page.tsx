@@ -7,8 +7,7 @@ import {
   MapPin, 
   User, 
   Phone,
-  CheckCircle,
-  ArrowLeft
+  CheckCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Navigation from '@/components/portal/Navigation';

@@ -572,9 +572,10 @@ export function validateAndSanitize<T>(
 ): T {
   // First sanitize string inputs
   if (typeof data === 'object' && data !== null) {
-    Object.keys(data).forEach(key => {
-      if (typeof (data as any)[key] === 'string') {
-        (data as any)[key] = sanitizeInput((data as any)[key]);
+    const dataObj = data as Record<string, unknown>;
+    Object.keys(dataObj).forEach(key => {
+      if (typeof dataObj[key] === 'string') {
+        dataObj[key] = sanitizeInput(dataObj[key] as string);
       }
     });
   }

@@ -32,10 +32,11 @@ const customers: Customer[] = [
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const customer = customers.find(c => c.id === params.id)
+    const { id } = await params;
+    const customer = customers.find(c => c.id === id)
     
     if (!customer) {
       return NextResponse.json(
@@ -56,11 +57,12 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const data = await request.json()
-    const customerIndex = customers.findIndex(c => c.id === params.id)
+    const customerIndex = customers.findIndex(c => c.id === id)
     
     if (customerIndex === -1) {
       return NextResponse.json(
@@ -73,7 +75,7 @@ export async function PUT(
     customers[customerIndex] = {
       ...customers[customerIndex],
       ...data,
-      id: params.id // Ensure ID doesn't change
+      id: id // Ensure ID doesn't change
     }
     
     return NextResponse.json(customers[customerIndex])
@@ -88,10 +90,11 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const customerIndex = customers.findIndex(c => c.id === params.id)
+    const { id } = await params;
+    const customerIndex = customers.findIndex(c => c.id === id)
     
     if (customerIndex === -1) {
       return NextResponse.json(

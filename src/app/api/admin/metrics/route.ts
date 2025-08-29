@@ -61,7 +61,8 @@ export async function GET(request: NextRequest) {
     thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
     
     const customersNeedingService = customers?.filter(customer => {
-      return customer.devices?.some((device: any) => {
+      const customerWithDevices = customer as { devices?: Array<{ next_test_due?: string }> };
+      return customerWithDevices.devices?.some(device => {
         if (!device.next_test_due) return false
         const dueDate = new Date(device.next_test_due)
         return dueDate <= thirtyDaysFromNow
