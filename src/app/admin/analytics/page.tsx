@@ -387,9 +387,9 @@ export default function AnalyticsPage() {
                         borderRadius: '8px',
                         color: '#F9FAFB'
                       }}
-                      formatter={(value: string | number, name: string, props: { payload: { percentage: string; result: string } }) => [
-                        `${value} tests (${props.payload.percentage}%)`,
-                        props.payload.result
+                      formatter={(value: string | number, name: string, props: any) => [
+                        `${value} tests (${props?.payload?.percentage || '0'}%)`,
+                        props?.payload?.result || name
                       ]}
                     />
                     <Legend />

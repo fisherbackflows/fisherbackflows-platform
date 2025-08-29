@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get recent activities from various tables
-    const activities = []
+    const activities: any[] = []
 
     try {
       // Recent test completions
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
         .order('created_at', { ascending: false })
         .limit(5)
 
-      testReports?.forEach(report => {
+      (testReports as any)?.forEach((report: any) => {
         activities.push({
           id: `test_${report.id}`,
           type: 'test_completed',
@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
         .order('created_at', { ascending: false })
         .limit(5)
 
-      invoices?.forEach(invoice => {
+      (invoices as any)?.forEach((invoice: any) => {
         activities.push({
           id: `invoice_${invoice.id}`,
           type: 'invoice_sent',
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
         .order('created_at', { ascending: false })
         .limit(5)
 
-      payments?.forEach(payment => {
+      (payments as any)?.forEach((payment: any) => {
         activities.push({
           id: `payment_${payment.id}`,
           type: 'payment_received',
@@ -131,7 +131,7 @@ export async function GET(request: NextRequest) {
         .order('created_at', { ascending: false })
         .limit(3)
 
-      appointments?.forEach(appointment => {
+      (appointments as any)?.forEach((appointment: any) => {
         activities.push({
           id: `appointment_${appointment.id}`,
           type: 'appointment_scheduled',

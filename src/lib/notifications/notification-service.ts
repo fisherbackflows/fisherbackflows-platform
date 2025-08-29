@@ -359,6 +359,61 @@ export class NotificationService {
     });
   }
 
+  // Payment-related notification methods
+  public async sendPaymentConfirmation(paymentData: any): Promise<NotificationResult> {
+    return this.sendEmail({
+      to: paymentData.customer_email || '',
+      subject: 'Payment Confirmation',
+      template: 'payment_confirmation',
+      data: paymentData
+    });
+  }
+
+  public async sendPaymentFailureNotification(paymentData: any): Promise<NotificationResult> {
+    return this.sendEmail({
+      to: paymentData.customer_email || '',
+      subject: 'Payment Failed',
+      template: 'payment_failure',
+      data: paymentData
+    });
+  }
+
+  public async sendRefundConfirmation(refundData: any): Promise<NotificationResult> {
+    return this.sendEmail({
+      to: refundData.customer_email || '',
+      subject: 'Refund Confirmation',
+      template: 'refund_confirmation',
+      data: refundData
+    });
+  }
+
+  public async sendSubscriptionStatusUpdate(subscriptionData: any): Promise<NotificationResult> {
+    return this.sendEmail({
+      to: subscriptionData.customer_email || '',
+      subject: 'Subscription Status Update',
+      template: 'subscription_update',
+      data: subscriptionData
+    });
+  }
+
+  public async sendInvoicePaymentConfirmation(invoiceData: any): Promise<NotificationResult> {
+    return this.sendEmail({
+      to: invoiceData.customer_email || '',
+      subject: 'Invoice Payment Confirmation',
+      template: 'invoice_payment_confirmation',
+      data: invoiceData
+    });
+  }
+
+  public async sendCheckoutConfirmation(checkoutData: any): Promise<NotificationResult> {
+    return this.sendEmail({
+      to: checkoutData.customer_email || '',
+      subject: 'Checkout Confirmation',
+      template: 'checkout_confirmation',  
+      data: checkoutData
+    });
+  }
+
   public destroy() {
     if (this.processingInterval) {
       clearInterval(this.processingInterval);

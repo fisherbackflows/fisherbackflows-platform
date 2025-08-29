@@ -121,7 +121,10 @@ export default function AdminSearchPage() {
       case 'appointments':
         return filterConfigurations.appointments;
       case 'invoices':
-        return filterConfigurations.invoices;
+        return {
+          ...filterConfigurations.invoices,
+          availableServiceTypes: []
+        };
       default:
         return {
           availableStatuses: [

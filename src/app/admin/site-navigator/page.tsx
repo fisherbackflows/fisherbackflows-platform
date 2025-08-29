@@ -8,11 +8,14 @@ import { UnifiedHeader } from '@/components/ui';
 export default function SiteNavigatorPage() {
   return (
     <UnifiedLayout variant="wide" background="gradient">
-      <UnifiedHeader 
-        title="Site Navigator"
-        subtitle="Complete platform navigation and management - 82 pages"
-        theme="purple"
-      />
+      <UnifiedHeader variant="admin">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-white">Site Navigator</h1>
+            <p className="text-purple-300">Complete platform navigation and management - 82 pages</p>
+          </div>
+        </div>
+      </UnifiedHeader>
       <SiteNavigator />
     </UnifiedLayout>
   );

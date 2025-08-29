@@ -3,17 +3,18 @@ import { NextRequest, NextResponse } from 'next/server';
 // import { generateOTP, generateSecureToken } from '@/lib/auth';
 
 // Mock password reset storage (in production, use Redis or database)
-const resetTokens = new Map<string, {
+let resetTokens: Map<string, {
   userId: string;
   email: string;
   token: string;
   otp: string;
   expires: Date;
   attempts: number;
-}>();
+}>;
 
 // Mock users for development
-const mockUsers = [
+function getMockUsers() {
+  return [
   {
     id: '1',
     email: 'john.smith@email.com',
@@ -28,7 +29,15 @@ const mockUsers = [
     name: 'ABC Corporation',
     accountNumber: 'FB002'
   }
-];
+  ];
+}
+
+function getResetTokens() {
+  if (!resetTokens) {
+    resetTokens = new Map();
+  }
+  return resetTokens;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -44,10 +53,10 @@ export async function POST(request: NextRequest) {
     // Find user by email or phone
     let user;
     if (type === 'email') {
-      user = mockUsers.find(u => u.email.toLowerCase() === identifier.toLowerCase());
+      user = getMockUsers().find(u => u.email.toLowerCase() === identifier.toLowerCase());
     } else if (type === 'phone') {
       const normalizedPhone = identifier.replace(/\D/g, '');
-      user = mockUsers.find(u => u.phone.replace(/\D/g, '') === normalizedPhone);
+      user = getMockUsers().find(u => u.phone.replace(/\D/g, '') === normalizedPhone);
     }
     
     if (!user) {
@@ -59,12 +68,12 @@ export async function POST(request: NextRequest) {
     }
     
     // Generate reset token and OTP
-    const resetToken = generateSecureToken();
-    const otp = generateOTP();
+    const resetToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expires = new Date(Date.now() + 15 * 60 * 1000); // 15 minutes
     
     // Store reset request
-    resetTokens.set(resetToken, {
+    getResetTokens().set(resetToken, {
       userId: user.id,
       email: user.email,
       token: resetToken,
@@ -106,14 +115,12 @@ export async function POST(request: NextRequest) {
 // Cleanup expired tokens periodically
 function cleanupExpiredTokens() {
   const now = new Date();
-  for (const [token, data] of resetTokens.entries()) {
+  for (const [token, data] of getResetTokens().entries()) {
     if (data.expires < now) {
-      resetTokens.delete(token);
+      getResetTokens().delete(token);
     }
   }
 }
 
-// Clean up every 5 minutes
-setInterval(cleanupExpiredTokens, 5 * 60 * 1000);
-
-export { resetTokens };
+// Remove the export that's causing Next.js compilation issues
+// Other modules can access reset tokens through API calls instead

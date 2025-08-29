@@ -57,11 +57,10 @@ export function withAuditLogging(
     if (userContext.userId) {
       auditLogger.setContext({
         userId: userContext.userId,
-        userEmail: userContext.userEmail,
-        userRole: userContext.userRole,
         ipAddress: getClientIP(request),
         userAgent: request.headers.get('user-agent') || undefined,
-        sessionId: userContext.sessionId
+        sessionId: userContext.sessionId,
+        requestId: request.headers.get('x-request-id') || undefined
       });
     }
 
@@ -202,31 +201,34 @@ async function logAPIRequest({
     method,
     pathname,
     statusCode,
-    {
-      duration,
-      requestSize,
-      responseSize,
-      error
-    }
+    duration,
+    userContext.userId,
+    statusCode < 400,
+    error?.message
   );
 
   // Log security events for sensitive endpoints
   if (isSensitive && statusCode === 401) {
     await auditLogger.logSecurityEvent(
-      'unauthorized_access',
+      AuditEventType.SECURITY_ALERT,
+      'Unauthorized access attempt',
+      'high',
+      userContext.userId,
       {
         endpoint: pathname,
         method,
         userAgent: userContext.userAgent,
         ipAddress: userContext.ipAddress
-      },
-      'high'
+      }
     );
   }
 
   if (isSensitive && statusCode === 403) {
     await auditLogger.logSecurityEvent(
-      'forbidden_access',
+      AuditEventType.SECURITY_ALERT,
+      'Forbidden access attempt',
+      'high',
+      userContext.userId,
       {
         endpoint: pathname,
         method,
@@ -288,7 +290,7 @@ async function logSpecificActions(
         break;
       case 'GET':
         if (customerId) {
-          await auditLogger.logDataChange('read', 'customer', customerId, {});
+          await auditLogger.logDataAccess('customer', customerId, userContext.userId, 'read');
         }
         break;
     }
@@ -300,7 +302,7 @@ async function logSpecificActions(
       await auditLogger.logPayment(
         AuditEventType.PAYMENT_INITIATED,
         userContext.userId || 'anonymous',
-        extractEntityId(pathname),
+        extractEntityId(pathname) || undefined,
         undefined, // Don't log amount in middleware
         undefined, // Don't log payment method in middleware
         isSuccess,

@@ -790,6 +790,115 @@ export class AuditLogger {
   </events>
 </auditLog>`;
   }
+
+  // Context management methods (moved from GDPRCompliance to AuditLogger)
+  setContext(context: {
+    sessionId?: string;
+    userId?: string;
+    ipAddress?: string;
+    userAgent?: string;
+    requestId?: string;
+  }): void {
+    (globalThis as any).__auditContext = context;
+  }
+
+  clearContext(): void {
+    (globalThis as any).__auditContext = null;
+  }
+
+  private getContext(): any {
+    return (globalThis as any).__auditContext || {};
+  }
+
+  async logApiRequest(
+    method: string,
+    url: string,
+    statusCode: number,
+    responseTime: number,
+    userId?: string,
+    success: boolean = true,
+    errorMessage?: string
+  ): Promise<void> {
+    const context = this.getContext();
+    await this.logEvent({
+      eventType: AuditEventType.API_REQUEST,
+      userId: userId || context.userId,
+      sessionId: context.sessionId,
+      ipAddress: context.ipAddress,
+      userAgent: context.userAgent,
+      entityType: 'api_request',
+      metadata: {
+        method,
+        url,
+        statusCode,
+        responseTime,
+        requestId: context.requestId
+      },
+      success,
+      errorMessage,
+      severity: statusCode >= 500 ? 'high' : statusCode >= 400 ? 'medium' : 'low',
+      regulations: [ComplianceRegulation.SOC2]
+    });
+  }
+
+  async logSecurityEvent(
+    eventType: AuditEventType,
+    description: string,
+    severity: 'low' | 'medium' | 'high' | 'critical' = 'medium',
+    userId?: string,
+    metadata?: Record<string, any>
+  ): Promise<void> {
+    const context = this.getContext();
+    await this.logEvent({
+      eventType,
+      userId: userId || context.userId,
+      sessionId: context.sessionId,
+      ipAddress: context.ipAddress,
+      userAgent: context.userAgent,
+      entityType: 'security_event',
+      metadata: {
+        description,
+        ...metadata,
+        requestId: context.requestId
+      },
+      success: true,
+      severity,
+      regulations: [ComplianceRegulation.SOC2, ComplianceRegulation.GDPR]
+    });
+  }
+
+  async logDataChange(
+    operation: 'create' | 'update' | 'delete',
+    entityType: string,
+    entityId: string,
+    oldValues?: Record<string, any>,
+    newValues?: Record<string, any>,
+    userId?: string,
+    metadata?: Record<string, any>
+  ): Promise<void> {
+    const context = this.getContext();
+    await this.logEvent({
+      eventType: operation === 'create' ? AuditEventType.CUSTOMER_CREATED :
+                 operation === 'update' ? AuditEventType.CUSTOMER_UPDATED :
+                 AuditEventType.CUSTOMER_DELETED,
+      userId: userId || context.userId,
+      sessionId: context.sessionId,
+      ipAddress: context.ipAddress,
+      userAgent: context.userAgent,
+      entityType,
+      entityId,
+      oldValues,
+      newValues,
+      metadata: {
+        operation,
+        ...metadata,
+        requestId: context.requestId
+      },
+      success: true,
+      severity: operation === 'delete' ? 'high' : 'low',
+      regulations: [ComplianceRegulation.GDPR, ComplianceRegulation.CCPA]
+    });
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════════════
