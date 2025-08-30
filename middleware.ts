@@ -1,33 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { productionAuthMiddleware, addSecurityHeaders } from '@/src/middleware/production-auth';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
-  // Always allow API routes, static files, and admin paths
+  // Skip middleware for static files and Next.js internals
   if (
-    pathname.startsWith('/api/') ||
     pathname.startsWith('/_next/') ||
-    pathname.startsWith('/team-portal') ||
-    pathname === '/team-portal' ||
-    pathname.startsWith('/api/admin/')
+    pathname.startsWith('/favicon.ico') ||
+    pathname.startsWith('/icon.png') ||
+    pathname.includes('.')
   ) {
     return NextResponse.next();
   }
-
-  // Check if site is in private mode
+  
+  // Apply production authentication middleware
+  let response = await productionAuthMiddleware(request);
+  
+  // If auth middleware returned a response (redirect, error, etc.), use it
+  if (response.status !== 200 || response.redirected) {
+    return addSecurityHeaders(response);
+  }
+  
+  // Check if site is in private mode (legacy support)
   const isPrivateMode = request.cookies.get('site-private-mode')?.value === 'true';
   const hasAdminAccess = request.cookies.get('team_session')?.value || 
                          request.cookies.get('admin-bypass')?.value;
 
   // If private mode is enabled and user doesn't have admin access
   if (isPrivateMode && !hasAdminAccess) {
-    // Redirect to team portal login
-    const url = request.nextUrl.clone();
-    url.pathname = '/team-portal';
-    return NextResponse.redirect(url);
+    // Only affect public pages, not API routes or team portal
+    if (!pathname.startsWith('/api/') && !pathname.startsWith('/team-portal')) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/team-portal/login';
+      response = NextResponse.redirect(url);
+    }
   }
-
-  return NextResponse.next();
+  
+  // Add security headers to all responses
+  return addSecurityHeaders(response);
 }
 
 export const config = {
@@ -37,7 +48,8 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
+     * - Any file with extension (images, css, js, etc.)
      */
-    '/((?!_next/static|_next/image|favicon.ico|icon.png).*)',
+    '/((?!_next/static|_next/image|favicon.ico|icon.png|.*\\..*).*)',
   ],
 };

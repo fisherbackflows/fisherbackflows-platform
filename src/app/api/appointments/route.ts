@@ -20,8 +20,11 @@ export interface Appointment {
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('🔍 Appointments API: Starting auth check...');
     const user = await auth.getApiUser(request);
+    console.log('👤 Appointments API: Auth result:', { user: user ? 'found' : 'null', role: user?.role });
     if (!user) {
+      console.log('❌ Appointments API: No user found, returning 401');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

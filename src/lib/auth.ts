@@ -3,7 +3,7 @@
  * Handles customer and team authentication with proper role management
  */
 
-import { createClientComponentClient, createServerComponentClient, createRouteHandlerClient } from './supabase';
+import { createClientComponentClient, createServerComponentClient, createRouteHandlerClient, supabaseAdmin } from './supabase';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 
@@ -62,11 +62,16 @@ export const auth = {
     const cookies = request.cookies;
     const teamSession = cookies.get('team_session')?.value;
     
+    console.log('🔍 Auth check - teamSession:', teamSession ? 'present' : 'missing');
+    
     if (teamSession) {
       // Check if it's a mock session (development mode)
+      console.log('🔍 Checking mock sessions...', !!global.mockTeamSessions);
       if (global.mockTeamSessions && global.mockTeamSessions[teamSession]) {
         const session = global.mockTeamSessions[teamSession];
+        console.log('🔍 Mock session found, expired?', session.expiresAt <= Date.now());
         if (session.expiresAt > Date.now()) {
+          console.log('✅ Using mock session for user:', session.user.email);
           return {
             id: session.user.id,
             email: session.user.email,
@@ -80,8 +85,9 @@ export const auth = {
       }
       
       // Check database for team session (if not read-only mode)
+      console.log('🔍 Trying database session lookup...');
       try {
-        const supabase = createRouteHandlerClient(request);
+        const supabase = supabaseAdmin || createRouteHandlerClient(request);
         const { data: session } = await supabase
           .from('team_sessions')
           .select(`
@@ -109,12 +115,15 @@ export const auth = {
         }
       } catch (error) {
         // If database query fails, continue to Supabase auth
+        console.log('❌ Database session lookup failed:', error);
       }
     }
     
     // Fallback to Supabase auth for customer authentication
+    console.log('🔍 Trying Supabase fallback auth...');
     const supabase = createRouteHandlerClient(request);
     const { data: { user } } = await supabase.auth.getUser();
+    console.log('🔍 Supabase auth result:', user ? 'found' : 'null');
     if (!user) return null;
     
     return {
