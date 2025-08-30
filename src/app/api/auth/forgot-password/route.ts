@@ -122,5 +122,5 @@ function cleanupExpiredTokens() {
   }
 }
 
-// Remove the export that's causing Next.js compilation issues
-// Other modules can access reset tokens through API calls instead
+// Export resetTokens for other auth routes
+export { resetTokens }

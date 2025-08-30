@@ -208,3 +208,6 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
+// Export createAutoInvoice for use in other routes
+export { createAutoInvoice }
