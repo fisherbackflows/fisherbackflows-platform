@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { productionAuthMiddleware, addSecurityHeaders } from '@/src/middleware/production-auth';
+import { productionAuthMiddleware, addSecurityHeaders } from '@/middleware/production-auth';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
