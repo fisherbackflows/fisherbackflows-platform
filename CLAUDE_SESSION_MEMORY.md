@@ -146,6 +146,13 @@ lsof -ti:3010 | xargs kill -9
 4. ✅ If not running: `./scripts/quick-start.sh`
 5. ✅ Verify working: `curl http://localhost:3010/api/health`
 
+### **📊 STRATEGIC CONTEXT (CRITICAL):**
+**Status**: Infrastructure 90% complete, Business Logic 39% complete
+**Current Phase**: Transform framework into functioning business application
+**Priority Focus**: Customer data + API fixes + device management
+**Key Files**: `COMPREHENSIVE_TASK_LIST.md`, `DEVELOPMENT_STRATEGY.md`
+**Next Action**: Implement Phase 1 priorities (customer management system)
+
 ### **What User Might Ask:**
 - **"Setup the database"** → It's already done, just verify
 - **"Configure Supabase"** → Already configured, test connection
