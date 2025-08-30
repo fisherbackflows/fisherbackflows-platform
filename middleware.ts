@@ -14,6 +14,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
   
+  // Handle specific redirects (matching vercel.json)
+  if (pathname === '/app') {
+    return NextResponse.redirect(new URL('/team-portal', request.url));
+  }
+  
   // Apply production authentication middleware
   let response = await productionAuthMiddleware(request);
   

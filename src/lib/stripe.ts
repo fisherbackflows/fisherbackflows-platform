@@ -19,7 +19,7 @@ import {
 // ═══════════════════════════════════════════════════════════════════════
 
 const stripeConfig = {
-  apiVersion: '2024-12-18' as Stripe.LatestApiVersion,
+  apiVersion: '2024-06-20' as Stripe.LatestApiVersion,
   typescript: true,
   maxNetworkRetries: 3,
   timeout: 30000,

@@ -6,7 +6,7 @@ import { sendEmail, emailTemplates } from '@/lib/email';
 import { logger } from '@/lib/logger';
 
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-12-18',
+  apiVersion: '2024-06-20',
 }) : null;
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
