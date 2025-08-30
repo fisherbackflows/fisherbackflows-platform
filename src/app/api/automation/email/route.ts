@@ -9,6 +9,35 @@ const EMAIL_CONFIG = {
   fromName: 'Fisher Backflows'
 };
 
+// Email service status check
+export async function GET() {
+  try {
+    const gmailUser = process.env.GMAIL_USER;
+    const gmailPass = process.env.GMAIL_APP_PASSWORD;
+    
+    return NextResponse.json({
+      status: 'active',
+      service: 'email_automation',
+      configured: !!(gmailUser && gmailPass),
+      supportedTypes: [
+        'test_completion',
+        'appointment_confirmation', 
+        'payment_received',
+        'appointment_reminder',
+        'lead_welcome'
+      ],
+      fromAddress: EMAIL_CONFIG.fromAddress,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Email service status error:', error);
+    return NextResponse.json(
+      { error: 'Email service unavailable' },
+      { status: 500 }
+    );
+  }
+}
+
 // Automated email system
 export async function POST(request: NextRequest) {
   try {
