@@ -70,8 +70,25 @@ scripts/           # Testing and utility scripts
 - **Database**: Live connection, all tables exist
 - **Server**: Background process management automated
 
+## MCP Server (Model Context Protocol)
+- **Status**: ✅ FULLY OPERATIONAL
+- **Purpose**: Enhanced Claude Code integration with project context
+- **Control**: `./mcp-control.sh {start|stop|status|logs}`
+- **Features**: File access, API discovery, project status, database schema
+- **Security**: Path validation, command whitelist, read-only sensitive files
+- **Integration**: Auto-configured for Claude Code at `~/.config/claude-code/mcp-servers.json`
+
+### Available MCP Tools
+1. `read_project_file` - Read any project file securely
+2. `list_project_files` - Browse project structure with filtering
+3. `get_project_status` - Real-time development environment status
+4. `get_api_endpoints` - Discover all 47 API endpoints automatically
+5. `get_database_schema` - Show discovered database tables
+6. `run_command` - Execute safe development commands only
+
 ## Cross-Platform Compatibility
 - Works on Termux (Android), Ubuntu (Desktop), WSL, macOS
 - Same credentials work everywhere
 - Universal commands in documentation
 - Platform-specific troubleshooting included
+- MCP server compatible with all Claude Code installations

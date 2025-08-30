@@ -1,0 +1,142 @@
+#!/bin/bash
+
+# Fisher Backflows Platform Agent Router
+# Routes commands to specialized agents
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+show_help() {
+    echo "🤖 Fisher Backflows Platform Agents"
+    echo "=================================="
+    echo ""
+    echo "Usage: ./agent <agent-type> [command] [options]"
+    echo ""
+    echo "Available Agents:"
+    echo "  security      - Security analysis and recommendations"
+    echo "  mcp           - MCP server management"
+    echo "  dev           - Development environment management"
+    echo ""
+    echo "Examples:"
+    echo "  ./agent security analyze    - Run full security audit"
+    echo "  ./agent security checklist  - Generate security checklist"
+    echo "  ./agent mcp start           - Start MCP server"
+    echo "  ./agent mcp status          - Check MCP server status"
+    echo "  ./agent dev status          - Check development environment"
+    echo ""
+    echo "For agent-specific help:"
+    echo "  ./agent security help"
+    echo "  ./agent mcp help"
+}
+
+case "$1" in
+    security)
+        shift
+        exec node "$SCRIPT_DIR/security-advisor.js" "$@"
+        ;;
+        
+    mcp)
+        shift
+        exec "$SCRIPT_DIR/mcp-control.sh" "$@"
+        ;;
+        
+    dev)
+        shift
+        case "$1" in
+            status)
+                echo "🚀 Fisher Backflows Development Environment Status"
+                echo "================================================"
+                echo ""
+                
+                # Check if dev server is running
+                if lsof -ti:3010 >/dev/null 2>&1; then
+                    echo "✅ Dev Server: Running on port 3010"
+                else
+                    echo "❌ Dev Server: Not running"
+                fi
+                
+                # Check MCP server
+                if [ -f "$SCRIPT_DIR/.mcp-server.pid" ] && kill -0 $(cat "$SCRIPT_DIR/.mcp-server.pid") 2>/dev/null; then
+                    echo "✅ MCP Server: Running (PID: $(cat "$SCRIPT_DIR/.mcp-server.pid"))"
+                else
+                    echo "❌ MCP Server: Not running"
+                fi
+                
+                # Check git status
+                cd "$SCRIPT_DIR"
+                if git status --porcelain | grep -q .; then
+                    echo "⚠️  Git Status: $(git status --porcelain | wc -l) uncommitted changes"
+                else
+                    echo "✅ Git Status: Clean"
+                fi
+                
+                # Check dependencies
+                if [ -f package.json ]; then
+                    echo "📦 Dependencies: $(jq -r '.dependencies | keys | length' package.json 2>/dev/null || echo 'Unknown') production, $(jq -r '.devDependencies | keys | length' package.json 2>/dev/null || echo 'Unknown') dev"
+                fi
+                
+                # Check database connection
+                if [ -f .env.local ] && grep -q "SUPABASE_URL" .env.local; then
+                    echo "✅ Database: Configured"
+                else
+                    echo "❌ Database: Not configured"
+                fi
+                ;;
+                
+            start)
+                echo "🚀 Starting Fisher Backflows Development Environment..."
+                
+                # Start dev server if not running
+                if ! lsof -ti:3010 >/dev/null 2>&1; then
+                    echo "Starting dev server..."
+                    npm run dev &
+                    sleep 3
+                fi
+                
+                # Start MCP server if not running
+                if ! [ -f "$SCRIPT_DIR/.mcp-server.pid" ] || ! kill -0 $(cat "$SCRIPT_DIR/.mcp-server.pid") 2>/dev/null; then
+                    echo "Starting MCP server..."
+                    "$SCRIPT_DIR/mcp-control.sh" start
+                fi
+                
+                echo "✅ Development environment ready!"
+                ;;
+                
+            stop)
+                echo "⏹️  Stopping Fisher Backflows Development Environment..."
+                
+                # Stop dev server
+                if lsof -ti:3010 >/dev/null 2>&1; then
+                    lsof -ti:3010 | xargs kill
+                    echo "Dev server stopped"
+                fi
+                
+                # Stop MCP server
+                "$SCRIPT_DIR/mcp-control.sh" stop
+                
+                echo "✅ Development environment stopped"
+                ;;
+                
+            help|*)
+                echo "Fisher Backflows Development Agent"
+                echo "Usage: ./agent dev <command>"
+                echo ""
+                echo "Commands:"
+                echo "  status  - Show development environment status"
+                echo "  start   - Start all development services"
+                echo "  stop    - Stop all development services"
+                echo "  help    - Show this help message"
+                ;;
+        esac
+        ;;
+        
+    help|--help|-h|"")
+        show_help
+        ;;
+        
+    *)
+        echo "❌ Unknown agent: $1"
+        echo ""
+        show_help
+        exit 1
+        ;;
+esac
