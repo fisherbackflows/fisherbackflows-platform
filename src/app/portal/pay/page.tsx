@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
   CreditCard,
@@ -54,18 +54,10 @@ interface Invoice {
   total: number;
 }
 
-export default function PaymentPage() {
+function PaymentPageContent() {
   const router = useRouter();
-  
-  // Safe searchParams access for SSR compatibility
-  let invoiceId = '';
-  try {
-    const searchParams = useSearchParams();
-    invoiceId = searchParams?.get('invoice') || '';
-  } catch (error) {
-    // Fallback for SSR
-    console.log('SearchParams not available during SSR');
-  }
+  const searchParams = useSearchParams();
+  const [invoiceId, setInvoiceId] = useState('');
   
   const [paymentStep, setPaymentStep] = useState<'lookup' | 'invoice' | 'payment' | 'success'>('lookup');
   const [lookupMethod, setLookupMethod] = useState<'invoice' | 'phone' | 'email'>('invoice');
@@ -93,6 +85,10 @@ export default function PaymentPage() {
   });
 
   useEffect(() => {
+    // Get invoice ID from URL params
+    const urlInvoiceId = searchParams?.get('invoice') || '';
+    setInvoiceId(urlInvoiceId);
+    
     // Load sample data
     const sampleInvoices: Invoice[] = [
       {
@@ -153,14 +149,14 @@ export default function PaymentPage() {
     setSavedMethods(samplePaymentMethods);
 
     // If invoice ID provided, jump to invoice view
-    if (invoiceId) {
-      const foundInvoice = sampleInvoices.find(inv => inv.id === invoiceId);
+    if (urlInvoiceId) {
+      const foundInvoice = sampleInvoices.find(inv => inv.id === urlInvoiceId);
       if (foundInvoice) {
-        setSelectedInvoices([invoiceId]);
+        setSelectedInvoices([urlInvoiceId]);
         setPaymentStep('payment');
       }
     }
-  }, [invoiceId]);
+  }, [searchParams]);
 
   const handleLookup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -808,5 +804,20 @@ export default function PaymentPage() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading payment portal...</p>
+        </div>
+      </div>
+    }>
+      <PaymentPageContent />
+    </Suspense>
   );
 }

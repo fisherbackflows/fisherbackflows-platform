@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
           );
         }
         
-        email = customer.email;
+        email = (customer as any).email;
       }
     }
     
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     const { data: customer, error: customerError } = await supabase
       .from('customers')
       .select('*')
-      .eq('id', authData.user.id)
+      .eq('email', email)
       .single();
     
     if (customerError || !customer) {
@@ -99,19 +99,19 @@ export async function POST(request: NextRequest) {
     
     // Determine user role based on email domain or metadata
     let role = 'customer';
-    if (customer.email.includes('@fisherbackflows.com') || 
+    if ((customer as any).email.includes('@fisherbackflows.com') || 
         authData.user.user_metadata?.account_type === 'admin') {
       role = 'admin';
     }
     
     const user = {
-      id: customer.id,
-      email: customer.email,
-      name: customer.name,
+      id: (customer as any).id,
+      email: (customer as any).email,
+      name: (customer as any).name,
       role,
-      accountNumber: customer.account_number,
-      phone: customer.phone,
-      status: customer.status
+      accountNumber: (customer as any).account_number,
+      phone: (customer as any).phone,
+      status: (customer as any).status
     };
     
     // Set session cookies (Supabase handles this automatically)

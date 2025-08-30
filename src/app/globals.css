@@ -41,9 +41,20 @@
 }
 
 @layer components {
+  /* Enhanced Glass Morphism System */
   .glass {
     @apply bg-white/5 backdrop-blur-xl border border-white/10;
     background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+  }
+  
+  .glass-strong {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  }
+  
+  .glass-subtle {
+    @apply bg-white/2 backdrop-blur-sm border border-white/5;
+    background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.01) 100%);
   }
   
   .glass-darker {
@@ -51,11 +62,38 @@
     background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%);
   }
   
+  .glass-dark {
+    @apply bg-black/20 backdrop-blur-sm border border-white/10;
+    background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.3) 100%);
+  }
+  
+  /* Colored Glass Variants */
   .glass-blue {
     @apply backdrop-blur-xl border border-blue-500/20;
     background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.05) 100%);
   }
   
+  .glass-green {
+    @apply backdrop-blur-xl border border-green-500/20;
+    background: linear-gradient(135deg, rgba(34,197,94,0.1) 0%, rgba(34,197,94,0.05) 100%);
+  }
+  
+  .glass-yellow {
+    @apply backdrop-blur-xl border border-yellow-500/20;
+    background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(245,158,11,0.05) 100%);
+  }
+  
+  .glass-red {
+    @apply backdrop-blur-xl border border-red-500/20;
+    background: linear-gradient(135deg, rgba(239,68,68,0.1) 0%, rgba(239,68,68,0.05) 100%);
+  }
+  
+  .glass-emerald {
+    @apply backdrop-blur-xl border border-emerald-500/20;
+    background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.05) 100%);
+  }
+  
+  /* Enhanced Glow System */
   .glow-blue {
     @apply shadow-[0_0_30px_rgba(59,130,246,0.3)];
   }
@@ -64,8 +102,44 @@
     @apply shadow-[0_0_15px_rgba(59,130,246,0.3)];
   }
   
+  .glow-green {
+    @apply shadow-[0_0_30px_rgba(34,197,94,0.3)];
+  }
+  
+  .glow-green-sm {
+    @apply shadow-[0_0_15px_rgba(34,197,94,0.3)];
+  }
+  
+  .glow-yellow {
+    @apply shadow-[0_0_30px_rgba(245,158,11,0.3)];
+  }
+  
+  .glow-yellow-sm {
+    @apply shadow-[0_0_15px_rgba(245,158,11,0.3)];
+  }
+  
+  .glow-red {
+    @apply shadow-[0_0_30px_rgba(239,68,68,0.3)];
+  }
+  
+  .glow-red-sm {
+    @apply shadow-[0_0_15px_rgba(239,68,68,0.3)];
+  }
+  
+  .glow-emerald {
+    @apply shadow-[0_0_30px_rgba(16,185,129,0.3)];
+  }
+  
+  .glow-emerald-sm {
+    @apply shadow-[0_0_15px_rgba(16,185,129,0.3)];
+  }
+  
   .glow-white {
     @apply shadow-[0_0_30px_rgba(255,255,255,0.1)];
+  }
+  
+  .glow-white-sm {
+    @apply shadow-[0_0_15px_rgba(255,255,255,0.1)];
   }
   
   .text-glow {
@@ -107,6 +181,15 @@
   
   .input-glass {
     @apply glass bg-white/5 border-white/20 focus:border-blue-400/50 focus:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all duration-300;
+  }
+
+  /* Form Input Styles */
+  .form-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200;
+  }
+  
+  .form-select {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200;
   }
   
   .shimmer {

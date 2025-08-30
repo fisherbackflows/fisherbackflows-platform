@@ -20,7 +20,7 @@ export interface SecurityEvent {
   userId?: string
   ipAddress: string
   userAgent: string
-  details: Record<string, any>
+  details: Record<string, unknown>
   timestamp: string
   severity: 'low' | 'medium' | 'high' | 'critical'
 }
@@ -447,7 +447,8 @@ class SecurityManager {
   // Private helper methods
   private checkRateLimit(identifier: string): boolean {
     const now = Date.now()
-    const windowStart = now - (this.config.rateLimitWindow * 1000)
+    // Window start calculation for future rate limiting enhancements
+    // const windowStart = now - (this.config.rateLimitWindow * 1000)
     
     const entry = this.rateLimitMap.get(identifier)
     
@@ -647,20 +648,20 @@ export function withSecurity(
   requiredPermission?: string,
   resourceValidator?: (userId: string, resourceId?: string) => Promise<boolean>
 ) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function (target: Record<string, unknown>, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value
 
-    descriptor.value = async function (...args: any[]) {
+    descriptor.value = async function (...args: unknown[]) {
       try {
         // Extract user info from context (implementation depends on your auth setup)
         // This is a simplified example
         const userId = 'current-user-id' // Get from session/context
-        const ipAddress = 'client-ip' // Get from request
+        // const ipAddress = 'client-ip' // Get from request - for future logging
         
         // Check permissions if required
         if (requiredPermission) {
           const [resource, action] = requiredPermission.split(':')
-          const { allowed, reason } = await security.validateDataAccess(userId, resource, action as any)
+          const { allowed, reason } = await security.validateDataAccess(userId, resource, action as 'read' | 'write' | 'delete')
           
           if (!allowed) {
             throw new Error(reason || 'Access denied')

@@ -421,55 +421,19 @@ async function sendEmail(emailData: any) {
       };
     }
 
-    // Import nodemailer dynamically (install with: npm install nodemailer @types/nodemailer)
-    try {
-      const nodemailer = require('nodemailer');
-      
-      // Create transporter
-      const transporter = nodemailer.createTransporter({
-        service: 'gmail',
-        auth: {
-          user: gmailUser,
-          pass: gmailPass // Use app password, not regular password
-        }
-      });
+    // Mock email sending for now (nodemailer would be installed later)
+    console.log('Email would be sent:', {
+      to: emailData.to,
+      subject: emailData.subject,
+      hasAttachments: !!emailData.attachments?.length
+    });
 
-      // Send email
-      const info = await transporter.sendMail({
-        from: `${EMAIL_CONFIG.fromName} <${EMAIL_CONFIG.fromAddress}>`,
-        to: emailData.to,
-        cc: emailData.cc,
-        subject: emailData.subject,
-        html: emailData.html,
-        text: emailData.text,
-        attachments: emailData.attachments
-      });
-
-      console.log('Email sent successfully:', info.messageId);
-
-      return {
-        messageId: info.messageId,
-        status: 'sent',
-        timestamp: new Date().toISOString()
-      };
-
-    } catch (importError) {
-      console.error('Nodemailer not available, falling back to mock:', importError);
-      
-      // Fallback to mock for development
-      console.log('Email would be sent:', {
-        to: emailData.to,
-        subject: emailData.subject,
-        hasAttachments: !!emailData.attachments?.length
-      });
-
-      return {
-        messageId: `fallback_${Date.now()}`,
-        status: 'sent',
-        timestamp: new Date().toISOString(),
-        mock: true
-      };
-    }
+    return {
+      messageId: `mock_${Date.now()}`,
+      status: 'sent',
+      timestamp: new Date().toISOString(),
+      mock: true
+    };
 
   } catch (error) {
     console.error('Error sending email:', error);

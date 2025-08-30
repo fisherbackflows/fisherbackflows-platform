@@ -2,19 +2,22 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Mail, Key, ArrowRight, AlertCircle, CheckCircle } from 'lucide-react';
+import { Mail, Key, ArrowRight, AlertCircle, CheckCircle, Eye, EyeOff, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { signInCustomer } from '@/lib/auth';
+import Link from 'next/link';
 
 export default function CustomerLogin() {
   const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
-    accountNumber: ''
+    password: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,25 +31,34 @@ export default function CustomerLogin() {
     setError('');
 
     try {
-      const { user, error } = await signInCustomer(formData.email, formData.accountNumber);
+      const { data, error } = await signInCustomer(formData.email, formData.password);
 
       if (error) {
-        setError(error.message);
+        // Provide more specific error messages
+        if (error.message.includes('Invalid email')) {
+          setError('No account found with this email address. Please check your email or contact us for help.');
+        } else if (error.message.includes('Invalid password') || error.message.includes('password')) {
+          setError('Incorrect password. Please try again or use the forgot password link below.');
+        } else if (error.message.includes('network')) {
+          setError('Connection problem. Please check your internet and try again.');
+        } else {
+          setError(error.message || 'Unable to sign in. Please try again.');
+        }
         return;
       }
 
-      if (user) {
-        setSuccess('Login link sent to your email! Check your inbox.');
+      if (data?.user) {
+        setSuccess('Welcome back! Taking you to your account...');
         
-        // Redirect to portal after a short delay
+        // Small delay for better UX
         setTimeout(() => {
           router.push('/portal/dashboard');
-        }, 2000);
+        }, 1000);
       }
 
     } catch (error) {
       console.error('Login error:', error);
-      setError('Something went wrong. Please try again.');
+      setError('Something unexpected happened. Please try again or contact support.');
     } finally {
       setLoading(false);
     }
@@ -105,29 +117,41 @@ export default function CustomerLogin() {
             </div>
 
             <div>
-              <label className="block text-white/80 text-sm font-medium mb-2">
-                Account Number
-              </label>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-white/80 text-sm font-medium">
+                  Password
+                </label>
+                <Link 
+                  href="/portal/forgot-password"
+                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               <div className="relative">
                 <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/40" />
                 <input
-                  type="text"
-                  name="accountNumber"
-                  value={formData.accountNumber}
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={formData.password}
                   onChange={handleInputChange}
-                  placeholder="FB001"
+                  placeholder="Enter your password"
                   required
-                  className="input-glass w-full pl-10 pr-4 py-3 rounded-xl text-white placeholder-white/40 uppercase"
+                  className="input-glass w-full pl-10 pr-12 py-3 rounded-xl text-white placeholder-white/40"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/40 hover:text-white/60 transition-colors"
+                >
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </button>
               </div>
-              <p className="text-white/50 text-xs mt-2">
-                Find this on your invoice or previous correspondence
-              </p>
             </div>
 
             <Button
               type="submit"
-              disabled={loading || !formData.email || !formData.accountNumber}
+              disabled={loading || !formData.email || !formData.password}
               className="w-full btn-glow py-3 text-lg font-bold rounded-xl hover-glow"
             >
               {loading ? (
@@ -137,30 +161,65 @@ export default function CustomerLogin() {
                 </>
               ) : (
                 <>
-                  Send Login Link
+                  Sign In
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </>
               )}
             </Button>
           </form>
 
-          {/* Help Text */}
-          <div className="text-center mt-6 space-y-3">
-            <p className="text-white/60 text-sm">
-              Don't have an account number? Call us at{' '}
-              <a href="tel:2532788692" className="text-blue-400 hover:text-blue-300">
-                (253) 278-8692
-              </a>
-            </p>
+          {/* Additional Options */}
+          <div className="text-center mt-6 space-y-4">
+            <div className="flex items-center justify-center space-x-4 text-sm">
+              <Link 
+                href="/portal/register" 
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                Create Account
+              </Link>
+              <span className="text-white/40">•</span>
+              <button
+                onClick={() => setShowHelp(!showHelp)}
+                className="text-blue-400 hover:text-blue-300 transition-colors flex items-center"
+              >
+                <HelpCircle className="h-4 w-4 mr-1" />
+                Need Help?
+              </button>
+            </div>
+
+            {showHelp && (
+              <div className="glass-darker rounded-xl p-4 space-y-3">
+                <div className="text-left">
+                  <p className="text-white/70 text-sm font-medium mb-2">
+                    🆘 Having trouble logging in?
+                  </p>
+                  <ul className="text-white/50 text-xs space-y-1">
+                    <li>• Check that your email is spelled correctly</li>
+                    <li>• Try the "Forgot password?" link above</li>
+                    <li>• Make sure you're using the email from your invoice</li>
+                    <li>• Contact us if you need your account number</li>
+                  </ul>
+                </div>
+                <div className="border-t border-white/10 pt-3">
+                  <p className="text-white/60 text-xs mb-1">Call or text us:</p>
+                  <a 
+                    href="tel:2532788692" 
+                    className="text-blue-400 hover:text-blue-300 text-sm font-medium"
+                  >
+                    (253) 278-8692
+                  </a>
+                </div>
+              </div>
+            )}
             
             <div className="glass-darker rounded-xl p-4">
               <p className="text-white/70 text-sm font-medium mb-2">
-                ⚡ Quick Demo Login
+                ⚡ Demo Account
               </p>
-              <p className="text-white/50 text-xs">
-                Email: demo@fisherbackflows.com<br/>
-                Account: FB005
-              </p>
+              <div className="text-white/50 text-xs space-y-1">
+                <p>Email: demo@fisherbackflows.com</p>
+                <p>Password: demo123</p>
+              </div>
             </div>
           </div>
         </div>

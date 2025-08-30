@@ -60,3 +60,6 @@ firebase-debug.log*
 # Temporary folders
 tmp/
 temp/
+
+# MCP configuration (contains sensitive tokens)
+.mcp.json

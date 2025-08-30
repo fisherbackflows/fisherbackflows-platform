@@ -14,7 +14,7 @@ export function subscribeToAppointments(
   try {
     const supabase = createClientComponentClient()
     
-    let channel = supabase.channel('appointments-changes')
+    const channel = supabase.channel('appointments-changes')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
@@ -55,7 +55,7 @@ export function subscribeToTestReports(
   try {
     const supabase = createClientComponentClient()
     
-    let channel = supabase.channel('test-reports-changes')
+    const channel = supabase.channel('test-reports-changes')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
@@ -94,7 +94,7 @@ export function subscribeToInvoices(
   try {
     const supabase = createClientComponentClient()
     
-    let channel = supabase.channel('invoices-changes')
+    const channel = supabase.channel('invoices-changes')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
@@ -133,7 +133,7 @@ export function subscribeToPayments(
   try {
     const supabase = createClientComponentClient()
     
-    let channel = supabase.channel('payments-changes')
+    const channel = supabase.channel('payments-changes')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
@@ -172,7 +172,7 @@ export function subscribeToNotifications(
   try {
     const supabase = createClientComponentClient()
     
-    let channel = supabase.channel('notifications-changes')
+    const channel = supabase.channel('notifications-changes')
       .on('postgres_changes', {
         event: 'INSERT',
         schema: 'public',
@@ -214,7 +214,7 @@ export function subscribeToMultiple(
   try {
     const supabase = createClientComponentClient()
     
-    let channel = supabase.channel('multi-table-changes')
+    const channel = supabase.channel('multi-table-changes')
 
     subscriptions.forEach(({ table, callback, filter }) => {
       channel.on('postgres_changes', {

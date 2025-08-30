@@ -172,7 +172,7 @@ export function camelToTitle(str: string): string {
 }
 
 // Validation utilities
-export function required(value: any): boolean {
+export function required(value: unknown): boolean {
   if (typeof value === 'string') return value.trim().length > 0
   if (typeof value === 'number') return !isNaN(value)
   return value != null
@@ -187,7 +187,7 @@ export function maxLength(value: string, length: number): boolean {
 }
 
 // File utilities
-export function downloadAsCSV(data: any[], filename: string): void {
+export function downloadAsCSV(data: Record<string, unknown>[], filename: string): void {
   if (!data.length) return
   
   const headers = Object.keys(data[0])
@@ -234,8 +234,7 @@ export function getStatusColor(status: string): string {
     
     // Due status
     'current': 'bg-green-100 text-green-800',
-    'due': 'bg-yellow-100 text-yellow-800',
-    'overdue': 'bg-red-100 text-red-800'
+    'due': 'bg-yellow-100 text-yellow-800'
   }
   
   return colors[status.toLowerCase()] || 'bg-gray-100 text-gray-800'
@@ -260,9 +259,10 @@ export function isOnline(): boolean {
 }
 
 // Template utilities
-export function replaceTemplate(template: string, variables: Record<string, any>): string {
+export function replaceTemplate(template: string, variables: Record<string, unknown>): string {
   return template.replace(/\{\{(\w+)\}\}/g, (match, key) => {
-    return variables[key] || match
+    const value = variables[key];
+    return (typeof value === 'string' || typeof value === 'number') ? String(value) : match;
   })
 }
 
@@ -275,7 +275,7 @@ export function handleError(error: unknown): string {
 }
 
 // Export utilities for PDF/printing
-export function preparePrintData(data: any): string {
+export function preparePrintData(data: unknown): string {
   return JSON.stringify(data, null, 2)
 }
 

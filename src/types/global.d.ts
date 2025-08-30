@@ -1,5 +1,5 @@
 declare global {
-  var mockTeamSessions: {
+  let mockTeamSessions: {
     [sessionToken: string]: {
       user: {
         id: string;

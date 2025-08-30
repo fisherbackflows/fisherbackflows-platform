@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { 
   Phone, 
   Mail, 
-  MapPin, 
   Calendar,
   CheckCircle,
   Shield,
@@ -14,7 +13,6 @@ import {
   User,
   CreditCard,
   FileText,
-  ChevronRight,
   ArrowRight,
   Gauge
 } from 'lucide-react';

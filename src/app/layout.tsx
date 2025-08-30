@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppProviders from "@/components/providers/AppProviders";
+import { I18nProvider } from "@/contexts/I18nProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,9 +19,13 @@ export const metadata: Metadata = {
   description: "State-certified backflow testing for Pierce County homes and businesses. Fast, reliable, and compliant backflow preventer testing services.",
   keywords: "backflow testing, backflow prevention, Pierce County, Tacoma, backflow certification, water testing",
   authors: [{ name: "Fisher Backflows" }],
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: "#0066cc",
   robots: "index, follow"
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0066cc"
 };
 
 export default function RootLayout({
@@ -34,9 +39,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning={true}
       >
-        <AppProviders>
-          {children}
-        </AppProviders>
+        <I18nProvider>
+          <AppProviders>
+            {children}
+          </AppProviders>
+        </I18nProvider>
         
         {/* Global error tracking script */}
         <script

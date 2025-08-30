@@ -2,36 +2,41 @@
 
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
-import ErrorBoundary, { DefaultErrorFallback } from '@/components/ErrorBoundary';
+import { GlobalErrorBoundary } from '@/components/error-boundaries';
 import { logger } from '@/lib/logger';
+import { reportError } from '@/components/error-boundaries/utils';
 
 interface AppProvidersProps {
   children: React.ReactNode;
 }
 
-// Global error handler for the entire application
-function GlobalErrorFallback({ error, errorInfo, errorId, resetError }: any) {
-  React.useEffect(() => {
-    // Report critical app-level errors
-    logger.error('CRITICAL: App-level error boundary triggered', {
-      errorId,
-      error: {
-        name: error.name,
-        message: error.message,
-        stack: error.stack
-      },
-      errorInfo
-    });
-  }, [error, errorInfo, errorId]);
+// Enhanced global error handler
+async function handleGlobalError(error: Error, errorInfo: React.ErrorInfo) {
+  // Log to existing logger system
+  logger.error('CRITICAL: App-level error boundary triggered', {
+    error: {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    },
+    errorInfo: {
+      componentStack: errorInfo.componentStack
+    },
+    context: {
+      url: typeof window !== 'undefined' ? window.location.href : 'unknown',
+      userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
+      timestamp: new Date().toISOString()
+    }
+  });
 
-  return (
-    <DefaultErrorFallback 
-      error={error}
-      errorInfo={errorInfo}
-      errorId={errorId}
-      resetError={resetError}
-    />
-  );
+  // Report using new error boundary system
+  await reportError({
+    error,
+    errorInfo,
+    context: 'Global App Error',
+    url: typeof window !== 'undefined' ? window.location.href : 'unknown',
+    timestamp: new Date()
+  });
 }
 
 export default function AppProviders({ children }: AppProvidersProps) {
@@ -73,35 +78,7 @@ export default function AppProviders({ children }: AppProvidersProps) {
   }, []);
 
   return (
-    <ErrorBoundary
-      fallback={GlobalErrorFallback}
-      onError={(error, errorInfo, errorId) => {
-        // Custom error reporting for app-level errors
-        logger.error('App-level error boundary triggered', {
-          errorId,
-          error: {
-            name: error.name,
-            message: error.message,
-            stack: error.stack
-          },
-          errorInfo: {
-            componentStack: errorInfo.componentStack
-          },
-          severity: 'critical',
-          context: {
-            url: typeof window !== 'undefined' ? window.location.href : 'unknown',
-            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'unknown',
-            timestamp: new Date().toISOString()
-          }
-        });
-
-        // Report to external services in production
-        if (process.env.NODE_ENV === 'production') {
-          // Could integrate with Sentry, LogRocket, etc.
-          console.error('Production error reported:', { errorId, error, errorInfo });
-        }
-      }}
-    >
+    <GlobalErrorBoundary onError={handleGlobalError}>
       {/* Toast notifications for user feedback */}
       <Toaster
         position="top-right"
@@ -128,6 +105,6 @@ export default function AppProviders({ children }: AppProvidersProps) {
       />
       
       {children}
-    </ErrorBoundary>
+    </GlobalErrorBoundary>
   );
 }
