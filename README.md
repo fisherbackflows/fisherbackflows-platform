@@ -1,6 +1,14 @@
 # Fisher Backflows - Comprehensive Backflow Testing Management Platform
 
+**🚨 CLAUDE: SYSTEM IS FULLY CONFIGURED - READ `CLAUDE_SESSION_MEMORY.md` FIRST! 🚨**
+
 🚀 Enterprise-grade web platform for managing backflow testing operations, customer relationships, compliance reporting, and business automation.
+
+## ⚡ QUICK START (System Already Configured)
+```bash
+./scripts/quick-start.sh
+```
+**Access**: http://localhost:3010 | **Login**: admin@fisherbackflows.com / admin
 
 ## 🎯 Key Features
 
