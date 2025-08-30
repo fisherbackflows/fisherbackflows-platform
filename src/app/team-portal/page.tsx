@@ -101,7 +101,7 @@ export default function TeamLoginPage() {
               <div className="inline-block glass-blue rounded-full p-4 mb-4 pulse-glow">
                 <User className="h-8 w-8 text-blue-400" />
               </div>
-              <h1 className="text-3xl font-bold mb-2">Team App Login</h1>
+              <h1 className="text-3xl font-bold mb-2">Team Portal Login</h1>
               <p className="text-white/60">Access your team dashboard and tools</p>
             </div>
 
@@ -180,7 +180,7 @@ export default function TeamLoginPage() {
 
           <div className="mt-6 text-center">
             <p className="text-white/30 text-xs">
-              Team App • Secure Access • Fisher Backflows
+              Team Portal • Secure Access • Fisher Backflows
             </p>
           </div>
         </div>
