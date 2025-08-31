@@ -109,14 +109,8 @@ export default function CustomerPortalLoginPage() {
 
           {/* Right Side - Login Form */}
           <div className="w-full">
-            <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-slate-900 mb-2">Customer Login</h2>
-                <p className="text-slate-800">Access your backflow testing account</p>
-              </div>
-              
-              <LoginForm redirectTo="/portal/dashboard" />
-            </div>
+            <LoginForm redirectTo="/portal/dashboard" />
+          </div>
             
             {/* Mobile Features Preview */}
             <div className="lg:hidden mt-8 grid grid-cols-3 gap-4">
