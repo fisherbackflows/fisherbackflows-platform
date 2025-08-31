@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { 
   Users, 
   Search,
@@ -15,7 +17,8 @@ import {
   Filter,
   AlertTriangle,
   CheckCircle,
-  Clock
+  Clock,
+  PlusCircle
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -40,6 +43,23 @@ export default function CustomersPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    // Load user info for navigation
+    const loadUserInfo = async () => {
+      try {
+        const response = await fetch('/api/team/auth/me');
+        if (response.ok) {
+          const data = await response.json();
+          setUserInfo(data);
+        }
+      } catch (error) {
+        console.error('Error loading user info:', error);
+      }
+    };
+    loadUserInfo();
+  }, []);
 
   useEffect(() => {
     const loadRealCustomers = async () => {
@@ -120,58 +140,95 @@ export default function CustomersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading customers...</p>
-        </div>
+      <div className="min-h-screen bg-white">
+        <TeamPortalNavigation userInfo={userInfo} />
+        <main className="p-6">
+          <div className="max-w-7xl mx-auto flex items-center justify-center py-20">
+            <LoadingSpinner size="lg" color="blue" text="Loading customers..." />
+          </div>
+        </main>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="px-4 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
-            <Button asChild>
-              <Link href="/team-portal/customers/new">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Customer
-              </Link>
-            </Button>
+      <TeamPortalNavigation userInfo={userInfo} />
+      
+      <main className="p-6">
+        <div className="max-w-7xl mx-auto space-y-6">
+          {/* Professional Header */}
+          <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-8">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div>
+                <h1 className="text-4xl font-bold text-slate-900 mb-3">
+                  Customer Management
+                </h1>
+                <p className="text-xl text-slate-600 leading-relaxed">
+                  View and manage your customer database
+                </p>
+              </div>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-sm font-medium transition-colors duration-200 flex items-center" asChild>
+                <Link href="/team-portal/customers/new">
+                  <PlusCircle className="h-5 w-5 mr-2" />
+                  Add Customer
+                </Link>
+              </Button>
+            </div>
           </div>
-        </div>
-      </header>
+          {/* Quick Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-blue-50 rounded-lg">
+                  <Users className="h-8 w-8 text-blue-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-slate-900">{statusCounts.all}</div>
+                  <div className="text-sm text-slate-500">Total Customers</div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-green-50 rounded-lg">
+                  <CheckCircle className="h-8 w-8 text-green-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-slate-900">{statusCounts.current}</div>
+                  <div className="text-sm text-slate-500">Current</div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-yellow-50 rounded-lg">
+                  <Clock className="h-8 w-8 text-yellow-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-slate-900">{statusCounts.due}</div>
+                  <div className="text-sm text-slate-500">Due Soon</div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-red-50 rounded-lg">
+                  <AlertTriangle className="h-8 w-8 text-red-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-slate-900">{statusCounts.overdue}</div>
+                  <div className="text-sm text-slate-500">Overdue</div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <main className="p-4">
-        {/* Quick Stats */}
-        <div className="grid grid-cols-4 gap-3 mb-6">
-          <div className="bg-white rounded-lg p-3 text-center shadow-sm">
-            <div className="text-lg font-bold text-gray-900">{statusCounts.all}</div>
-            <div className="text-xs text-gray-600">Total</div>
-          </div>
-          <div className="bg-green-50 rounded-lg p-3 text-center shadow-sm">
-            <div className="text-lg font-bold text-green-700">{statusCounts.current}</div>
-            <div className="text-xs text-green-600">Current</div>
-          </div>
-          <div className="bg-yellow-50 rounded-lg p-3 text-center shadow-sm">
-            <div className="text-lg font-bold text-yellow-700">{statusCounts.due}</div>
-            <div className="text-xs text-yellow-600">Due Soon</div>
-          </div>
-          <div className="bg-red-50 rounded-lg p-3 text-center shadow-sm">
-            <div className="text-lg font-bold text-red-700">{statusCounts.overdue}</div>
-            <div className="text-xs text-red-600">Overdue</div>
-          </div>
-        </div>
-
-        {/* Search and Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <div className="flex flex-col space-y-3">
+          {/* Search and Filters */}
+          <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="flex flex-col space-y-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
               <input
                 type="text"
                 placeholder="Search customers..."
@@ -187,7 +244,7 @@ export default function CustomersPage() {
                 className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
                   statusFilter === 'all' 
                     ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
                 }`}
               >
                 All ({statusCounts.all})
@@ -197,7 +254,7 @@ export default function CustomersPage() {
                 className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
                   statusFilter === 'current' 
                     ? 'bg-green-600 text-white' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
                 }`}
               >
                 Current ({statusCounts.current})
@@ -207,7 +264,7 @@ export default function CustomersPage() {
                 className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
                   statusFilter === 'due' 
                     ? 'bg-yellow-600 text-white' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
                 }`}
               >
                 Due ({statusCounts.due})
@@ -217,7 +274,7 @@ export default function CustomersPage() {
                 className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
                   statusFilter === 'overdue' 
                     ? 'bg-red-600 text-white' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
                 }`}
               >
                 Overdue ({statusCounts.overdue})
@@ -226,21 +283,21 @@ export default function CustomersPage() {
           </div>
         </div>
 
-        {/* Customer List */}
-        <div className="space-y-3">
-          {filteredCustomers.length > 0 ? (
-            filteredCustomers.map((customer) => (
-              <div key={customer.id} className="bg-white rounded-lg shadow-sm">
+          {/* Customer List */}
+          <div className="space-y-4">
+            {filteredCustomers.length > 0 ? (
+              filteredCustomers.map((customer) => (
+                <div key={customer.id} className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200">
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 text-lg">{customer.name}</h3>
+                      <h3 className="font-semibold text-slate-900 text-lg">{customer.name}</h3>
                       <div className="flex items-center mt-1">
                         <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(customer.status)}`}>
                           {getStatusIcon(customer.status)}
                           <span className="ml-1 capitalize">{customer.status}</span>
                         </span>
-                        <span className="ml-2 text-sm text-gray-500">
+                        <span className="ml-2 text-sm text-slate-500">
                           {customer.deviceCount} device{customer.deviceCount !== 1 ? 's' : ''}
                         </span>
                       </div>
@@ -253,20 +310,20 @@ export default function CustomersPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <MapPin className="h-4 w-4 mr-2 text-gray-400" />
+                    <div className="flex items-center text-sm text-slate-600">
+                      <MapPin className="h-4 w-4 mr-2 text-slate-400" />
                       {customer.address}, {customer.city}, {customer.state} {customer.zip}
                     </div>
                     
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Phone className="h-4 w-4 mr-2 text-gray-400" />
+                      <div className="flex items-center text-sm text-slate-600">
+                        <Phone className="h-4 w-4 mr-2 text-slate-400" />
                         <a href={`tel:${customer.phone}`} className="hover:text-blue-600">
                           {customer.phone}
                         </a>
                       </div>
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Mail className="h-4 w-4 mr-2 text-gray-400" />
+                      <div className="flex items-center text-sm text-slate-600">
+                        <Mail className="h-4 w-4 mr-2 text-slate-400" />
                         <a href={`mailto:${customer.email}`} className="hover:text-blue-600 truncate">
                           {customer.email}
                         </a>
@@ -275,15 +332,15 @@ export default function CustomersPage() {
 
                     <div className="flex items-center justify-between pt-2 border-t">
                       <div className="text-sm">
-                        <span className="text-gray-500">Last Test:</span>
+                        <span className="text-slate-500">Last Test:</span>
                         <span className="ml-1 font-medium">{formatDate(customer.lastTestDate)}</span>
                       </div>
                       <div className="text-sm">
-                        <span className="text-gray-500">Next Due:</span>
+                        <span className="text-slate-500">Next Due:</span>
                         <span className={`ml-1 font-medium ${
                           customer.status === 'overdue' ? 'text-red-600' : 
                           customer.status === 'due' ? 'text-yellow-600' : 
-                          'text-gray-900'
+                          'text-slate-900'
                         }`}>
                           {formatDate(customer.nextTestDue)}
                         </span>
@@ -316,10 +373,10 @@ export default function CustomersPage() {
               </div>
             ))
           ) : (
-            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No customers found</h3>
-              <p className="text-gray-500 mb-4">
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-8 text-center">
+              <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-slate-900 mb-2">No customers found</h3>
+              <p className="text-slate-500 mb-4">
                 {searchTerm || statusFilter !== 'all' 
                   ? "Try adjusting your search or filters" 
                   : "Get started by adding your first customer"
@@ -335,6 +392,7 @@ export default function CustomersPage() {
               )}
             </div>
           )}
+          </div>
         </div>
       </main>
     </div>
