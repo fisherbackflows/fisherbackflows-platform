@@ -110,7 +110,6 @@ export default function CustomerPortalLoginPage() {
           {/* Right Side - Login Form */}
           <div className="w-full">
             <LoginForm redirectTo="/portal/dashboard" />
-          </div>
             
             {/* Mobile Features Preview */}
             <div className="lg:hidden mt-8 grid grid-cols-3 gap-4">
