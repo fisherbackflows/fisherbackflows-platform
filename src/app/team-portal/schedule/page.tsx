@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
-import Logo from '@/components/ui/Logo';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 
 interface Appointment {
   id: string;
@@ -62,6 +62,23 @@ export default function SchedulePage() {
   const [viewMode, setViewMode] = useState<'day' | 'week' | 'month'>('day');
   const [statusFilter, setStatusFilter] = useState<string>('active');
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    // Load user info for navigation
+    const loadUserInfo = async () => {
+      try {
+        const response = await fetch('/api/team/auth/me');
+        if (response.ok) {
+          const data = await response.json();
+          setUserInfo(data);
+        }
+      } catch (error) {
+        console.error('Error loading user info:', error);
+      }
+    };
+    loadUserInfo();
+  }, []);
 
   useEffect(() => {
     const loadRealAppointments = async () => {
@@ -158,83 +175,66 @@ export default function SchedulePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <LoadingSpinner size="lg" color="blue" text="Loading schedule..." />
+      <div className="min-h-screen bg-white">
+        <TeamPortalNavigation userInfo={userInfo} />
+        <main className="p-6">
+          <div className="max-w-7xl mx-auto flex items-center justify-center py-20">
+            <LoadingSpinner size="lg" color="blue" text="Loading schedule..." />
+          </div>
+        </main>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex items-center space-x-8">
-              <Link href="/" className="flex items-center space-x-3">
-                <Logo width={160} height={128} />
-                <div>
-                  <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
-                  <p className="text-xs text-slate-600">Team Portal</p>
-                </div>
-              </Link>
-              <nav className="hidden md:flex space-x-1">
-                <Link href="/team-portal/dashboard" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
-                  <Home className="h-4 w-4 mr-2 inline" />
-                  Dashboard
-                </Link>
-                <Link href="/team-portal/schedule" className="px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 font-medium">
-                  <Calendar className="h-4 w-4 mr-2 inline" />
-                  Schedule
-                </Link>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
+      <TeamPortalNavigation userInfo={userInfo} />
+      
+      <main className="p-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Page Header */}
+          <header className="bg-white shadow-sm border-b border-slate-200 rounded-lg p-6 mb-6">
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-2xl font-bold text-slate-900">Schedule</h1>
+                <p className="text-slate-600">Manage appointments and scheduling</p>
+              </div>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
                 <Link href="/team-portal/schedule/new">
                   <Plus className="h-4 w-4 mr-2" />
                   New Appointment
                 </Link>
               </Button>
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/team-portal/settings">
-                  <Settings className="h-4 w-4" />
-                </Link>
-              </Button>
             </div>
-          </div>
+
+          </header>
 
           {/* Date Navigation */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <h2 className="text-3xl font-bold text-slate-900">Schedule Management</h2>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Button variant="outline" size="sm" onClick={() => navigateDate('prev')}>
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <div className="text-lg font-semibold text-slate-900 min-w-[180px] text-center">
-                {getDateTitle()}
+          <div className="bg-slate-50 rounded-xl p-6 mb-6 border border-slate-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Button variant="outline" size="sm" onClick={() => navigateDate('prev')}>
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <div className="text-lg font-semibold text-slate-900 min-w-[180px] text-center">
+                  {getDateTitle()}
+                </div>
+                <Button variant="outline" size="sm" onClick={() => navigateDate('next')}>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSelectedDate(new Date())}
+                  className="ml-4"
+                >
+                  Today
+                </Button>
               </div>
-              <Button variant="outline" size="sm" onClick={() => navigateDate('next')}>
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setSelectedDate(new Date())}
-                className="ml-4"
-              >
-                Today
-              </Button>
             </div>
           </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        {/* Filter Tabs */}
-        <div className="bg-white rounded-xl p-6 mb-8 border border-slate-200 shadow-sm">
+          {/* Filter Tabs */}
+          <div className="bg-slate-50 rounded-xl p-6 mb-6 border border-slate-200">
           <h3 className="text-lg font-semibold text-slate-900 mb-4">Filter Appointments</h3>
           <div className="flex flex-wrap gap-3">
             {[
@@ -257,13 +257,13 @@ export default function SchedulePage() {
               </button>
             ))}
           </div>
-        </div>
+          </div>
 
-        {/* Appointments List */}
-        <div className="space-y-4">
+          {/* Appointments List */}
+          <div className="space-y-4">
           {getDayAppointments.length > 0 ? (
             getDayAppointments.map((appointment) => (
-              <div key={appointment.id} className="bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+              <div key={appointment.id} className="bg-slate-50 border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center space-x-4">
@@ -335,7 +335,7 @@ export default function SchedulePage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between bg-slate-50 rounded-xl p-4">
+                    <div className="flex items-center justify-between bg-white rounded-xl p-4">
                       <div className="text-center">
                         <div className="text-2xl font-bold text-slate-900">
                           {appointment.deviceCount}
@@ -417,7 +417,7 @@ export default function SchedulePage() {
               </div>
             ))
           ) : (
-            <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-12 text-center">
+            <div className="bg-slate-50 border border-slate-200 rounded-2xl shadow-sm p-12 text-center">
               <div className="inline-flex p-4 rounded-full bg-slate-100 mb-6">
                 <Calendar className="h-12 w-12 text-slate-500" />
               </div>
@@ -438,6 +438,7 @@ export default function SchedulePage() {
               </Button>
             </div>
           )}
+          </div>
         </div>
       </main>
     </div>
