@@ -162,9 +162,14 @@ async function createStripePaymentIntent(paymentData: any) {
       return mockPaymentIntent;
     }
 
-    // Use real Stripe SDK
+    // Use real Stripe SDK with runtime check
+    if (!PAYMENT_CONFIG.stripe.secretKey) {
+      throw new Error('Stripe secret key not configured');
+    }
     const Stripe = require('stripe');
-    const stripe = new Stripe(PAYMENT_CONFIG.stripe.secretKey);
+    const stripe = new Stripe(PAYMENT_CONFIG.stripe.secretKey, {
+      apiVersion: '2024-06-20',
+    });
     
     const paymentIntent = await stripe.paymentIntents.create({
       amount: paymentData.amount,
@@ -319,9 +324,14 @@ async function verifyPayment(paymentIntentId: string): Promise<boolean> {
       return true;
     }
 
-    // Use real Stripe verification
+    // Use real Stripe verification with runtime check
+    if (!PAYMENT_CONFIG.stripe.secretKey) {
+      throw new Error('Stripe secret key not configured');
+    }
     const Stripe = require('stripe');
-    const stripe = new Stripe(PAYMENT_CONFIG.stripe.secretKey);
+    const stripe = new Stripe(PAYMENT_CONFIG.stripe.secretKey, {
+      apiVersion: '2024-06-20',
+    });
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
     
     const isSucceeded = paymentIntent.status === 'succeeded';
@@ -344,9 +354,14 @@ function verifyWebhookSignature(payload: string, signature: string | null): bool
       return true;
     }
 
-    // Use real Stripe webhook verification
+    // Use real Stripe webhook verification with runtime check
+    if (!PAYMENT_CONFIG.stripe.secretKey) {
+      throw new Error('Stripe secret key not configured');
+    }
     const Stripe = require('stripe');
-    const stripe = new Stripe(PAYMENT_CONFIG.stripe.secretKey);
+    const stripe = new Stripe(PAYMENT_CONFIG.stripe.secretKey, {
+      apiVersion: '2024-06-20',
+    });
     
     const event = stripe.webhooks.constructEvent(
       payload,

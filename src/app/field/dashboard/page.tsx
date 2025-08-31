@@ -14,11 +14,15 @@ import {
   Wrench,
   ArrowRight,
   Wifi,
-  WifiOff
+  WifiOff,
+  Home
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { isAuthenticatedTech, getCurrentTech, signOutTech } from '@/lib/auth';
 import { useFieldTechUpdates } from '@/hooks/useRealtime';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import Link from 'next/link';
+import Logo from '@/components/ui/Logo';
 
 interface Appointment {
   id: string;
@@ -209,154 +213,203 @@ export default function FieldDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-white">Loading appointments...</div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <LoadingSpinner size="lg" color="blue" text="Loading field dashboard..." />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-orange-500/5" />
-
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="glass-darker border-b border-white/10 relative z-10">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="glass rounded-full p-3">
-                <Wrench className="h-6 w-6 text-orange-400" />
-              </div>
-              <div>
-                <div className="flex items-center space-x-2">
-                  <h1 className="text-xl font-bold text-orange-400">Field Dashboard</h1>
-                  <div className="flex items-center space-x-1">
-                    {connections.appointments ? (
-                      <Wifi className="h-4 w-4 text-green-400" title="Real-time updates active" />
-                    ) : (
-                      <WifiOff className="h-4 w-4 text-red-400" title="Real-time updates offline" />
-                    )}
-                    <span className="text-xs text-white/50">
-                      {connections.appointments ? 'Live' : 'Offline'}
-                    </span>
-                  </div>
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-8">
+              <Link href="/" className="flex items-center space-x-3">
+                <Logo width={160} height={128} />
+                <div>
+                  <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
+                  <p className="text-xs text-slate-600">Field Dashboard</p>
                 </div>
-                <p className="text-white/60 text-sm">
-                  Welcome back, {techUser?.name || 'Technician'}
-                </p>
-              </div>
+              </Link>
+              <nav className="hidden md:flex space-x-1">
+                <Link href="/field" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                  <Home className="h-4 w-4 mr-2 inline" />
+                  Field Portal
+                </Link>
+                <Link href="/field/dashboard" className="px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 font-medium">
+                  <Calendar className="h-4 w-4 mr-2 inline" />
+                  Dashboard
+                </Link>
+              </nav>
             </div>
-            <Button
-              onClick={handleSignOut}
-              className="btn-glass text-white/70 hover:text-white"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Sign Out
-            </Button>
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-slate-600 bg-slate-50 px-3 py-2 rounded-lg border flex items-center space-x-2">
+                <Wrench className="h-4 w-4 text-green-600" />
+                <span>Welcome, {techUser?.name || 'Technician'}</span>
+              </div>
+              <div className={`text-sm px-3 py-2 rounded-lg border flex items-center space-x-2 ${
+                connections.appointments 
+                  ? 'bg-green-50 text-green-700 border-green-200' 
+                  : 'bg-red-50 text-red-700 border-red-200'
+              }`}>
+                {connections.appointments ? (
+                  <>
+                    <Wifi className="h-4 w-4" />
+                    <span>Live Updates</span>
+                  </>
+                ) : (
+                  <>
+                    <WifiOff className="h-4 w-4" />
+                    <span>Offline Mode</span>
+                  </>
+                )}
+              </div>
+              <Button
+                onClick={handleSignOut}
+                variant="outline"
+                size="sm"
+                className="border-red-300 text-red-700 hover:bg-red-50"
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8 relative z-10">
-        {/* Today's Schedule */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white">
-              Today's Schedule
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        {/* Header */}
+        <div className="mb-10">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">
+              Today's Field Schedule
             </h2>
-            <div className="text-white/60 text-sm">
+            <p className="text-slate-600 text-xl">
               {new Date().toLocaleDateString('en-US', { 
                 weekday: 'long', 
                 year: 'numeric', 
                 month: 'long', 
                 day: 'numeric' 
               })}
-            </div>
+            </p>
           </div>
 
           {appointments.length === 0 ? (
-            <div className="glass rounded-2xl p-8 text-center">
-              <Calendar className="h-16 w-16 text-white/30 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-white/80 mb-2">
+            <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-12 text-center">
+              <div className="inline-flex p-4 bg-slate-100 rounded-full mb-6">
+                <Calendar className="h-12 w-12 text-slate-500" />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-4">
                 No appointments scheduled for today
               </h3>
-              <p className="text-white/60">
+              <p className="text-slate-600 text-lg">
                 Enjoy your day off or check back tomorrow!
               </p>
             </div>
           ) : (
-            <div className="grid gap-4">
+            <div className="space-y-6">
               {appointments.map((appointment) => (
-                <div key={appointment.id} className="glass rounded-2xl p-6 hover:glow-orange-sm transition-all">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      {/* Appointment Info */}
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-4">
-                          <div className="flex items-center space-x-2">
-                            <Clock className="h-5 w-5 text-orange-400" />
-                            <span className="text-white font-medium text-lg">
-                              {appointment.appointmentTime}
-                            </span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <User className="h-5 w-5 text-blue-400" />
-                            <span className="text-white font-medium">
-                              {appointment.customerName}
-                            </span>
-                          </div>
-                        </div>
-                        <div className={`px-3 py-1 rounded-full text-sm ${
-                          appointment.status === 'Scheduled' 
-                            ? 'bg-green-500/20 text-green-400' 
-                            : 'bg-yellow-500/20 text-yellow-400'
-                        }`}>
-                          {appointment.status}
-                        </div>
-                      </div>
-
-                      {/* Service Details */}
-                      <div className="grid md:grid-cols-3 gap-4 mb-4">
-                        <div className="flex items-center space-x-2">
-                          <Wrench className="h-4 w-4 text-white/40" />
-                          <span className="text-white/80 text-sm">
-                            {appointment.serviceType}
+                <div key={appointment.id} className="bg-white border border-slate-200 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="p-6">
+                    {/* Appointment Header */}
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 space-y-4 lg:space-y-0">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-6">
+                        <div className="flex items-center space-x-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
+                          <Clock className="h-6 w-6 text-blue-600" />
+                          <span className="text-slate-900 font-bold text-xl">
+                            {appointment.appointmentTime}
                           </span>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <MapPin className="h-4 w-4 text-white/40" />
-                          <span className="text-white/80 text-sm">
-                            {appointment.deviceLocation}
-                          </span>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Phone className="h-4 w-4 text-white/40" />
-                          <span className="text-white/80 text-sm">
-                            {appointment.customerPhone}
+                        <div className="flex items-center space-x-3 bg-green-50 border border-green-200 rounded-xl px-4 py-3">
+                          <User className="h-6 w-6 text-green-600" />
+                          <span className="text-slate-900 font-bold text-lg">
+                            {appointment.customerName}
                           </span>
                         </div>
                       </div>
-
-                      {/* Notes */}
-                      {appointment.notes && (
-                        <div className="glass-darker rounded-xl p-3 mb-4">
-                          <p className="text-white/70 text-sm">
-                            <strong>Notes:</strong> {appointment.notes}
-                          </p>
-                        </div>
-                      )}
+                      <div className={`px-4 py-2 rounded-xl text-sm font-semibold border ${
+                        appointment.status === 'Scheduled' 
+                          ? 'bg-green-50 text-green-700 border-green-200' 
+                          : 'bg-yellow-50 text-yellow-700 border-yellow-200'
+                      }`}>
+                        {appointment.status}
+                      </div>
                     </div>
 
-                    {/* Action Button */}
-                    <div className="ml-6">
+                    {/* Service Details */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                      <div className="flex items-center space-x-3 bg-purple-50 border border-purple-200 rounded-xl p-4">
+                        <div className="p-2 bg-purple-100 rounded-lg">
+                          <Wrench className="h-5 w-5 text-purple-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-slate-600">Service Type</p>
+                          <p className="font-semibold text-slate-900">
+                            {appointment.serviceType}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+                        <div className="p-2 bg-emerald-100 rounded-lg">
+                          <MapPin className="h-5 w-5 text-emerald-600" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-slate-600">Location</p>
+                          <p className="font-semibold text-slate-900 text-sm">
+                            {appointment.deviceLocation}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-3 bg-cyan-50 border border-cyan-200 rounded-xl p-4">
+                        <div className="p-2 bg-cyan-100 rounded-lg">
+                          <Phone className="h-5 w-5 text-cyan-600" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-slate-600">Phone</p>
+                          <p className="font-semibold text-slate-900">
+                            <a href={`tel:${appointment.customerPhone}`} className="hover:text-cyan-600 transition-colors">
+                              {appointment.customerPhone}
+                            </a>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Notes */}
+                    {appointment.notes && (
+                      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+                        <div className="flex items-start space-x-3">
+                          <div className="p-1 bg-amber-100 rounded">
+                            <AlertTriangle className="h-4 w-4 text-amber-600" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-amber-800 mb-1">Special Notes:</p>
+                            <p className="text-amber-700 text-sm">{appointment.notes}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <Button
                         onClick={() => startTest(appointment.id)}
-                        className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl"
+                        className="flex-1 bg-green-600 hover:bg-green-700 text-white py-4 text-lg font-semibold rounded-xl shadow-lg transition-all duration-200"
                       >
+                        <Wrench className="h-5 w-5 mr-3" />
                         Start Test
-                        <ArrowRight className="h-4 w-4 ml-2" />
+                        <ArrowRight className="h-5 w-5 ml-3" />
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => window.open(`tel:${appointment.customerPhone}`)}
+                        className="border-slate-300 text-slate-700 hover:bg-slate-50 py-4 px-6 rounded-xl"
+                      >
+                        <Phone className="h-5 w-5" />
                       </Button>
                     </div>
                   </div>
@@ -366,31 +419,42 @@ export default function FieldDashboard() {
           )}
         </div>
 
-        {/* Quick Stats */}
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="glass rounded-2xl p-6 text-center">
-            <CheckCircle className="h-8 w-8 text-green-400 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-white mb-1">Tests Today</h3>
-            <p className="text-2xl font-bold text-green-400">{appointments.length}</p>
+        </div>
+
+        {/* Daily Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-200">
+            <div className="inline-flex p-4 bg-green-100 rounded-2xl mb-4">
+              <CheckCircle className="h-8 w-8 text-green-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Tests Today</h3>
+            <p className="text-4xl font-bold text-green-600 mb-1">{appointments.length}</p>
+            <p className="text-slate-600 text-sm">Scheduled appointments</p>
           </div>
           
-          <div className="glass rounded-2xl p-6 text-center">
-            <Clock className="h-8 w-8 text-blue-400 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-white mb-1">Time Left</h3>
-            <p className="text-2xl font-bold text-blue-400">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-200">
+            <div className="inline-flex p-4 bg-blue-100 rounded-2xl mb-4">
+              <Clock className="h-8 w-8 text-blue-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Estimated Time</h3>
+            <p className="text-4xl font-bold text-blue-600 mb-1">
               {appointments.length > 0 ? `${appointments.length * 1}h` : '0h'}
             </p>
+            <p className="text-slate-600 text-sm">Total field time</p>
           </div>
           
-          <div className="glass rounded-2xl p-6 text-center">
-            <AlertTriangle className="h-8 w-8 text-orange-400 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-white mb-1">Priority</h3>
-            <p className="text-2xl font-bold text-orange-400">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-200">
+            <div className="inline-flex p-4 bg-orange-100 rounded-2xl mb-4">
+              <AlertTriangle className="h-8 w-8 text-orange-600" />
+            </div>
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">Priority Jobs</h3>
+            <p className="text-4xl font-bold text-orange-600 mb-1">
               {appointments.filter(a => a.serviceType.includes('Repair')).length}
             </p>
+            <p className="text-slate-600 text-sm">Repair & retest required</p>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

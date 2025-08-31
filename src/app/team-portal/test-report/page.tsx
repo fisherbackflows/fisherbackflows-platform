@@ -312,11 +312,11 @@ function TestReportContent() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Device Type *
                 </label>
                 <select
-                  className="form-select"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
                   value={formData.deviceType}
                   onChange={(e) => handleDeviceTypeChange(e.target.value)}
                   required
@@ -329,11 +329,11 @@ function TestReportContent() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Size *
                 </label>
                 <select
-                  className="form-select"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
                   value={formData.deviceSize}
                   onChange={(e) => handleInputChange('deviceSize', e.target.value)}
                   required
@@ -357,7 +357,7 @@ function TestReportContent() {
                 </label>
                 <input
                   type="text"
-                  className="form-input"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
                   value={formData.manufacturer}
                   onChange={(e) => handleInputChange('manufacturer', e.target.value)}
                   placeholder="e.g. Watts, Zurn, Febco"
@@ -369,7 +369,7 @@ function TestReportContent() {
                 </label>
                 <input
                   type="text"
-                  className="form-input"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
                   value={formData.model}
                   onChange={(e) => handleInputChange('model', e.target.value)}
                   placeholder="Model number"
@@ -384,7 +384,7 @@ function TestReportContent() {
                 </label>
                 <input
                   type="text"
-                  className="form-input"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
                   value={formData.serialNumber}
                   onChange={(e) => handleInputChange('serialNumber', e.target.value)}
                   placeholder="Serial number"
@@ -396,7 +396,7 @@ function TestReportContent() {
                 </label>
                 <input
                   type="text"
-                  className="form-input"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
                   value={formData.location}
                   onChange={(e) => handleInputChange('location', e.target.value)}
                   placeholder="e.g. Front yard, Basement"
@@ -407,9 +407,9 @@ function TestReportContent() {
         </div>
 
         {/* Test Details */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <Calendar className="h-5 w-5 mr-2" />
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-6">
+          <h2 className="text-xl font-semibold text-slate-900 mb-6 flex items-center">
+            <Calendar className="h-6 w-6 mr-3" />
             Test Details
           </h2>
           

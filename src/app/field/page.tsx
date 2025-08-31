@@ -1,105 +1,145 @@
 import Link from 'next/link'
+import Logo from '@/components/ui/Logo'
+import { User, ClipboardList, ArrowLeft, Wrench, BarChart3, MapPin } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 
 export default function FieldPortal() {
   return (
-    <div className="min-h-screen bg-black">
-      <div className="fixed inset-0 bg-grid opacity-20"></div>
-      <div className="fixed inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-green-500/5"></div>
-      
-      <header className="relative z-10 glass border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold gradient-text">Field Portal</h1>
-            <Link href="/" className="btn-glass px-4 py-2 rounded-lg hover-glow">
-              ← Home
-            </Link>
+            <div className="flex items-center space-x-8">
+              <Link href="/" className="flex items-center space-x-3">
+                <Logo width={160} height={128} />
+                <div>
+                  <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
+                  <p className="text-xs text-slate-600">Field Portal</p>
+                </div>
+              </Link>
+              <nav className="hidden md:flex space-x-1">
+                <Link href="/" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                  <ArrowLeft className="h-4 w-4 mr-2 inline" />
+                  Home
+                </Link>
+              </nav>
+            </div>
+            <div className="text-sm text-slate-600">
+              Field Operations
+            </div>
           </div>
         </div>
       </header>
-      
-      <div className="pt-24 pb-16 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-block glass-green rounded-full p-6 mb-6 pulse-glow">
-              <svg className="h-12 w-12 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-              </svg>
-            </div>
-            <h2 className="text-4xl font-bold mb-4 text-white">Field Technician Portal</h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Access your daily schedule, complete tests, and manage appointments on the go.
-            </p>
+
+      {/* Main Content */}
+      <main className="max-w-6xl mx-auto px-6 py-12">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <div className="inline-flex p-6 bg-green-100 rounded-2xl mb-8">
+            <Wrench className="h-16 w-16 text-green-600" />
           </div>
-          
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="glass rounded-2xl p-8 hover:scale-105 transition-transform">
-              <div className="flex items-center mb-4">
-                <div className="glass-green rounded-lg p-3 mr-4">
-                  <svg className="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-white">Technician Login</h3>
+          <h2 className="text-5xl font-bold text-slate-900 mb-6">Field Technician Portal</h2>
+          <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            Mobile-optimized platform for field technicians to access schedules, complete tests, and manage appointments efficiently in the field.
+          </p>
+        </div>
+
+        {/* Access Cards */}
+        <div className="grid md:grid-cols-2 gap-8 mb-16">
+          <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center mb-6">
+              <div className="p-4 bg-green-100 rounded-xl mr-4">
+                <User className="h-8 w-8 text-green-600" />
               </div>
-              <p className="text-white/60 mb-6">Access your personalized dashboard and daily schedule</p>
-              <Link href="/field/login" className="btn-glow w-full py-3 rounded-lg text-center block">
+              <div>
+                <h3 className="text-2xl font-bold text-slate-900">Technician Login</h3>
+                <p className="text-slate-600">Secure access for certified technicians</p>
+              </div>
+            </div>
+            <p className="text-slate-600 mb-8 leading-relaxed">
+              Access your personalized dashboard with today's appointments, customer information, and mobile-optimized test forms.
+            </p>
+            <Button asChild className="w-full bg-green-600 hover:bg-green-700 text-white py-4 text-lg font-semibold rounded-xl">
+              <Link href="/field/login">
+                <User className="h-5 w-5 mr-3" />
                 Login to Field App
               </Link>
-            </div>
-            
-            <div className="glass rounded-2xl p-8 hover:scale-105 transition-transform">
-              <div className="flex items-center mb-4">
-                <div className="glass-green rounded-lg p-3 mr-4">
-                  <svg className="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-white">Quick Access</h3>
-              </div>
-              <p className="text-white/60 mb-6">Jump directly to your daily tasks and appointments</p>
-              <Link href="/field/dashboard" className="btn-glass w-full py-3 rounded-lg text-center block hover-glow">
-                View Dashboard
-              </Link>
-            </div>
+            </Button>
           </div>
           
-          <div className="glass rounded-2xl p-8">
-            <h3 className="text-2xl font-bold mb-6 text-center text-white">Field Features</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="glass-green rounded-lg p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <svg className="h-8 w-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3a4 4 0 118 0v4h0l.95 10.95c.1.95-.8 1.05-1.9 1.05H6.95c-1.1 0-2-.1-1.9-1.05L6 7z" />
-                  </svg>
-                </div>
-                <h4 className="font-semibold text-white mb-2">Test Equipment</h4>
-                <p className="text-white/60 text-sm">Digital test forms and equipment tracking</p>
+          <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center mb-6">
+              <div className="p-4 bg-blue-100 rounded-xl mr-4">
+                <ClipboardList className="h-8 w-8 text-blue-600" />
               </div>
-              
-              <div className="text-center">
-                <div className="glass-green rounded-lg p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <svg className="h-8 w-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                </div>
-                <h4 className="font-semibold text-white mb-2">Real-time Sync</h4>
-                <p className="text-white/60 text-sm">Instant updates to office systems</p>
+              <div>
+                <h3 className="text-2xl font-bold text-slate-900">Quick Access</h3>
+                <p className="text-slate-600">Jump directly to field operations</p>
               </div>
-              
-              <div className="text-center">
-                <div className="glass-green rounded-lg p-4 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <svg className="h-8 w-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-                <h4 className="font-semibold text-white mb-2">Route Planning</h4>
-                <p className="text-white/60 text-sm">Optimized daily routes and navigation</p>
+            </div>
+            <p className="text-slate-600 mb-8 leading-relaxed">
+              View your daily schedule, appointment details, customer contact information, and access mobile testing tools.
+            </p>
+            <Button variant="outline" asChild className="w-full border-slate-300 text-slate-700 hover:bg-slate-50 py-4 text-lg font-semibold rounded-xl">
+              <Link href="/field/dashboard">
+                <ClipboardList className="h-5 w-5 mr-3" />
+                View Dashboard
+              </Link>
+            </Button>
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className="bg-slate-50 rounded-2xl p-12 border border-slate-200">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-slate-900 mb-4">Field App Features</h3>
+            <p className="text-slate-600 text-lg">Professional tools designed for efficient field operations</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="inline-flex p-6 bg-green-100 rounded-2xl mb-6">
+                <Wrench className="h-12 w-12 text-green-600" />
               </div>
+              <h4 className="text-xl font-bold text-slate-900 mb-3">Digital Test Forms</h4>
+              <p className="text-slate-600 leading-relaxed">
+                Mobile-optimized digital forms for backflow testing with automatic calculations and instant report generation.
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="inline-flex p-6 bg-blue-100 rounded-2xl mb-6">
+                <BarChart3 className="h-12 w-12 text-blue-600" />
+              </div>
+              <h4 className="text-xl font-bold text-slate-900 mb-3">Real-time Sync</h4>
+              <p className="text-slate-600 leading-relaxed">
+                Instant synchronization with office systems for immediate report submission and customer updates.
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <div className="inline-flex p-6 bg-purple-100 rounded-2xl mb-6">
+                <MapPin className="h-12 w-12 text-purple-600" />
+              </div>
+              <h4 className="text-xl font-bold text-slate-900 mb-3">Route Optimization</h4>
+              <p className="text-slate-600 leading-relaxed">
+                Smart route planning with GPS navigation and optimized scheduling for maximum efficiency.
+              </p>
             </div>
           </div>
         </div>
-      </div>
+
+        {/* Mobile Optimization Notice */}
+        <div className="mt-12 text-center">
+          <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+            <h4 className="text-lg font-semibold text-green-800 mb-2">📱 Mobile-First Design</h4>
+            <p className="text-green-700">
+              This field portal is optimized for mobile devices and tablets for easy use in the field
+            </p>
+          </div>
+        </div>
+      </main>
     </div>
   )
 }

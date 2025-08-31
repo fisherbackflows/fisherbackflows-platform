@@ -4,7 +4,7 @@
  */
 
 import { createClient } from '@/lib/supabase/client';
-import stripeService, { StripePaymentProcessor, StripeCustomerManager } from '@/lib/payment/stripe';
+import StripeService, { StripePaymentProcessor, StripeCustomerManager } from '@/lib/stripe';
 import { auditLogger, AuditEventType } from '@/lib/compliance/audit-logger';
 import { monitoring } from '@/lib/monitoring/monitoring';
 import { logger } from '@/lib/logger';
@@ -565,7 +565,7 @@ export class InvoicePaymentService {
 
       // Process refund with Stripe
       if (payment.stripe_payment_id) {
-        const refundResult = await stripeService.refund.processRefund(
+        const refundResult = await StripeService.refund.processRefund(
           payment.stripe_payment_id,
           refundAmount,
           refundData.reason

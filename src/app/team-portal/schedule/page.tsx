@@ -14,9 +14,13 @@ import {
   ChevronRight,
   AlertTriangle,
   CheckCircle,
-  Edit
+  Edit,
+  Home,
+  Settings
 } from 'lucide-react';
 import Link from 'next/link';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import Logo from '@/components/ui/Logo';
 
 interface Appointment {
   id: string;
@@ -60,100 +64,31 @@ export default function SchedulePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load sample appointments
-    const today = new Date();
-    const sampleAppointments: Appointment[] = [
-      {
-        id: '1',
-        customerId: '1',
-        customerName: 'Johnson Properties LLC',
-        customerPhone: '(253) 555-0123',
-        address: '1234 Pacific Ave',
-        city: 'Tacoma',
-        date: today.toISOString().split('T')[0],
-        time: '09:00',
-        duration: 45,
-        type: 'test',
-        status: 'confirmed',
-        notes: 'Annual backflow test, 3 devices',
-        deviceCount: 3,
-        estimatedCost: 255,
-        priority: 'medium'
-      },
-      {
-        id: '2',
-        customerId: '2',
-        customerName: 'Smith Residence',
-        customerPhone: '(253) 555-0124',
-        address: '5678 6th Ave',
-        city: 'Tacoma',
-        date: today.toISOString().split('T')[0],
-        time: '11:00',
-        duration: 30,
-        type: 'test',
-        status: 'scheduled',
-        notes: 'First time customer, single device',
-        deviceCount: 1,
-        estimatedCost: 85,
-        priority: 'low'
-      },
-      {
-        id: '3',
-        customerId: '3',
-        customerName: 'Parkland Medical Center',
-        customerPhone: '(253) 555-0125',
-        address: '910 112th St E',
-        city: 'Parkland',
-        date: today.toISOString().split('T')[0],
-        time: '14:00',
-        duration: 90,
-        type: 'repair',
-        status: 'confirmed',
-        notes: 'Failed test last week, needs repair',
-        deviceCount: 5,
-        estimatedCost: 425,
-        priority: 'high'
-      },
-      {
-        id: '4',
-        customerId: '4',
-        customerName: 'Harbor View Apartments',
-        customerPhone: '(253) 555-0126',
-        address: '2500 Harborview Dr',
-        city: 'Gig Harbor',
-        date: new Date(today.getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        time: '08:00',
-        duration: 120,
-        type: 'test',
-        status: 'scheduled',
-        notes: 'Multi-unit building, 8 devices',
-        deviceCount: 8,
-        estimatedCost: 680,
-        priority: 'medium'
-      },
-      {
-        id: '5',
-        customerId: '5',
-        customerName: 'Downtown Deli',
-        customerPhone: '(253) 555-0127',
-        address: '789 Commerce St',
-        city: 'Tacoma',
-        date: new Date(today.getTime() + 48 * 60 * 60 * 1000).toISOString().split('T')[0],
-        time: '10:30',
-        duration: 45,
-        type: 'installation',
-        status: 'confirmed',
-        notes: 'New backflow device installation',
-        deviceCount: 1,
-        estimatedCost: 850,
-        priority: 'high'
+    const loadRealAppointments = async () => {
+      try {
+        setLoading(true);
+        
+        const response = await fetch('/api/team/appointments');
+        if (!response.ok) {
+          throw new Error(`Failed to load appointments: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        if (data.success && data.appointments) {
+          setAppointments(data.appointments);
+        } else {
+          console.warn('No appointment data available');
+          setAppointments([]);
+        }
+      } catch (error) {
+        console.error('Error loading appointments:', error);
+        setAppointments([]);
+      } finally {
+        setLoading(false);
       }
-    ];
+    };
 
-    setTimeout(() => {
-      setAppointments(sampleAppointments);
-      setLoading(false);
-    }, 500);
+    loadRealAppointments();
   }, []);
 
   const getAppointmentsForDate = (date: Date) => {
@@ -223,188 +158,255 @@ export default function SchedulePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading schedule...</p>
-        </div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <LoadingSpinner size="lg" color="blue" text="Loading schedule..." />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b sticky top-0 z-10">
-        <div className="px-4 py-4">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-gray-900">Schedule</h1>
-            <Button size="sm" asChild>
-              <Link href="/app/schedule/new">
-                <Plus className="h-4 w-4 mr-2" />
-                Book
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center space-x-8">
+              <Link href="/" className="flex items-center space-x-3">
+                <Logo width={160} height={128} />
+                <div>
+                  <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
+                  <p className="text-xs text-slate-600">Team Portal</p>
+                </div>
               </Link>
-            </Button>
+              <nav className="hidden md:flex space-x-1">
+                <Link href="/team-portal/dashboard" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                  <Home className="h-4 w-4 mr-2 inline" />
+                  Dashboard
+                </Link>
+                <Link href="/team-portal/schedule" className="px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 font-medium">
+                  <Calendar className="h-4 w-4 mr-2 inline" />
+                  Schedule
+                </Link>
+              </nav>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
+                <Link href="/team-portal/schedule/new">
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Appointment
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/team-portal/settings">
+                  <Settings className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
 
           {/* Date Navigation */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-4">
+              <h2 className="text-3xl font-bold text-slate-900">Schedule Management</h2>
+            </div>
+            <div className="flex items-center space-x-3">
               <Button variant="outline" size="sm" onClick={() => navigateDate('prev')}>
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <h2 className="text-lg font-semibold text-gray-900 min-w-0">
+              <div className="text-lg font-semibold text-slate-900 min-w-[180px] text-center">
                 {getDateTitle()}
-              </h2>
+              </div>
               <Button variant="outline" size="sm" onClick={() => navigateDate('next')}>
                 <ChevronRight className="h-4 w-4" />
               </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setSelectedDate(new Date())}
+                className="ml-4"
+              >
+                Today
+              </Button>
             </div>
-            
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setSelectedDate(new Date())}
-            >
-              Today
-            </Button>
           </div>
         </div>
       </header>
 
-      <div className="p-4">
+      <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Filter Tabs */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <div className="flex space-x-2 overflow-x-auto">
+        <div className="bg-white rounded-xl p-6 mb-8 border border-slate-200 shadow-sm">
+          <h3 className="text-lg font-semibold text-slate-900 mb-4">Filter Appointments</h3>
+          <div className="flex flex-wrap gap-3">
             {[
-              { key: 'active', label: 'Active', count: appointments.filter(a => ['scheduled', 'confirmed', 'in-progress'].includes(a.status)).length },
-              { key: 'all', label: 'All', count: appointments.length },
-              { key: 'scheduled', label: 'Scheduled', count: appointments.filter(a => a.status === 'scheduled').length },
-              { key: 'confirmed', label: 'Confirmed', count: appointments.filter(a => a.status === 'confirmed').length },
-              { key: 'completed', label: 'Completed', count: appointments.filter(a => a.status === 'completed').length }
+              { key: 'active', label: 'Active', count: appointments.filter(a => ['scheduled', 'confirmed', 'in-progress'].includes(a.status)).length, color: 'bg-blue-100 text-blue-700 border-blue-200' },
+              { key: 'all', label: 'All', count: appointments.length, color: 'bg-slate-100 text-slate-700 border-slate-200' },
+              { key: 'scheduled', label: 'Scheduled', count: appointments.filter(a => a.status === 'scheduled').length, color: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
+              { key: 'confirmed', label: 'Confirmed', count: appointments.filter(a => a.status === 'confirmed').length, color: 'bg-green-100 text-green-700 border-green-200' },
+              { key: 'completed', label: 'Completed', count: appointments.filter(a => a.status === 'completed').length, color: 'bg-purple-100 text-purple-700 border-purple-200' }
             ].map(filter => (
               <button
                 key={filter.key}
                 onClick={() => setStatusFilter(filter.key)}
-                className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
+                className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 hover:shadow-md ${
                   statusFilter === filter.key
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-lg'
+                    : `${filter.color} hover:bg-opacity-80`
                 }`}
               >
-                {filter.label} ({filter.count})
+                {filter.label} <span className="ml-1 font-bold">({filter.count})</span>
               </button>
             ))}
           </div>
         </div>
 
         {/* Appointments List */}
-        <div className="space-y-3">
+        <div className="space-y-4">
           {getDayAppointments.length > 0 ? (
             getDayAppointments.map((appointment) => (
-              <div key={appointment.id} className="bg-white rounded-lg shadow-sm">
-                <div className="p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="text-blue-600 font-bold text-lg">
-                        {formatTime(appointment.time)}
+              <div key={appointment.id} className="bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-center space-x-4">
+                      <div className="bg-blue-100 rounded-xl px-4 py-2">
+                        <div className="text-blue-700 font-bold text-xl">
+                          {formatTime(appointment.time)}
+                        </div>
+                        <div className="text-blue-600 text-xs font-medium">
+                          {formatDuration(appointment.duration)}
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${appointmentTypes[appointment.type].color}`}>
-                          <span className="mr-1">{appointmentTypes[appointment.type].icon}</span>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className={`inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-semibold ${appointmentTypes[appointment.type].color}`}>
+                          <span className="mr-2 text-base">{appointmentTypes[appointment.type].icon}</span>
                           {appointmentTypes[appointment.type].label}
                         </span>
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${statusConfig[appointment.status].color}`}>
+                        <span className={`inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-semibold ${statusConfig[appointment.status].color}`}>
                           {statusConfig[appointment.status].label}
                         </span>
                         {appointment.priority === 'high' && (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                            <AlertTriangle className="h-3 w-3 mr-1" />
+                          <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-semibold bg-red-100 text-red-700">
+                            <AlertTriangle className="h-4 w-4 mr-1" />
                             High Priority
                           </span>
                         )}
                       </div>
                     </div>
-                    <Button variant="outline" size="sm">
-                      <Edit className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center space-x-2">
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-green-600">
+                          ${appointment.estimatedCost}
+                        </div>
+                        <div className="text-xs text-slate-500">
+                          Estimated
+                        </div>
+                      </div>
+                      <Button variant="outline" size="sm" className="ml-4">
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-gray-900 text-lg">
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-bold text-slate-900 text-2xl mb-2">
                         {appointment.customerName}
                       </h3>
-                      <div className="text-sm text-gray-600">
-                        {formatDuration(appointment.duration)} • ${appointment.estimatedCost}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 bg-purple-100 rounded-lg">
+                            <MapPin className="h-5 w-5 text-purple-600" />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-slate-900">{appointment.address}</p>
+                            <p className="text-slate-600 text-sm">{appointment.city}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-3">
+                          <div className="p-2 bg-green-100 rounded-lg">
+                            <Phone className="h-5 w-5 text-green-600" />
+                          </div>
+                          <div>
+                            <a href={`tel:${appointment.customerPhone}`} className="font-semibold text-slate-900 hover:text-blue-600 transition-colors">
+                              {appointment.customerPhone}
+                            </a>
+                            <p className="text-slate-600 text-sm">Customer Phone</p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="flex items-center text-sm text-gray-600">
-                      <MapPin className="h-4 w-4 mr-2 text-gray-400" />
-                      {appointment.address}, {appointment.city}
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Phone className="h-4 w-4 mr-2 text-gray-400" />
-                        <a href={`tel:${appointment.customerPhone}`} className="hover:text-blue-600">
-                          {appointment.customerPhone}
-                        </a>
+                    <div className="flex items-center justify-between bg-slate-50 rounded-xl p-4">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-slate-900">
+                          {appointment.deviceCount}
+                        </div>
+                        <div className="text-sm text-slate-600">
+                          Device{appointment.deviceCount !== 1 ? 's' : ''}
+                        </div>
                       </div>
-                      <div className="text-sm text-gray-600">
-                        {appointment.deviceCount} device{appointment.deviceCount !== 1 ? 's' : ''}
+                      <div className="h-8 w-px bg-slate-300"></div>
+                      <div className="text-center">
+                        <div className="text-lg font-semibold text-slate-900">
+                          {formatDuration(appointment.duration)}
+                        </div>
+                        <div className="text-sm text-slate-600">
+                          Duration
+                        </div>
                       </div>
                     </div>
 
                     {appointment.notes && (
-                      <div className="text-sm text-gray-600 bg-gray-50 rounded p-2 mt-2">
-                        {appointment.notes}
+                      <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                        <h4 className="text-sm font-semibold text-amber-800 mb-2">Special Notes:</h4>
+                        <p className="text-amber-700 text-sm">{appointment.notes}</p>
                       </div>
                     )}
 
                     {/* Quick Actions */}
-                    <div className="flex items-center justify-between pt-3 border-t">
-                      <div className="flex space-x-2">
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-slate-200">
+                      <div className="flex flex-wrap gap-2">
                         {appointment.status === 'scheduled' && (
                           <Button
                             size="sm"
-                            variant="outline"
+                            className="bg-green-600 hover:bg-green-700 text-white"
                             onClick={() => updateAppointmentStatus(appointment.id, 'confirmed')}
                           >
-                            <CheckCircle className="h-4 w-4 mr-1" />
-                            Confirm
+                            <CheckCircle className="h-4 w-4 mr-2" />
+                            Confirm Appointment
                           </Button>
                         )}
                         {appointment.status === 'confirmed' && (
                           <Button
                             size="sm"
-                            variant="outline"
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
                             onClick={() => updateAppointmentStatus(appointment.id, 'in-progress')}
                           >
-                            <Clock className="h-4 w-4 mr-1" />
-                            Start
+                            <Clock className="h-4 w-4 mr-2" />
+                            Start Service
                           </Button>
                         )}
                         {appointment.status === 'in-progress' && (
                           <Button
                             size="sm"
+                            className="bg-green-600 hover:bg-green-700 text-white"
                             onClick={() => updateAppointmentStatus(appointment.id, 'completed')}
                           >
-                            <CheckCircle className="h-4 w-4 mr-1" />
-                            Complete
+                            <CheckCircle className="h-4 w-4 mr-2" />
+                            Mark Complete
                           </Button>
                         )}
                       </div>
                       
-                      <div className="flex space-x-2">
-                        <Button size="sm" variant="outline" asChild>
+                      <div className="flex gap-2 sm:ml-auto">
+                        <Button size="sm" variant="outline" className="flex-1 sm:flex-initial" asChild>
                           <Link href={`tel:${appointment.customerPhone}`}>
-                            <Phone className="h-4 w-4" />
+                            <Phone className="h-4 w-4 mr-2" />
+                            Call
                           </Link>
                         </Button>
-                        <Button size="sm" variant="outline" asChild>
-                          <Link href={`/app/test-report?customer=${appointment.customerId}`}>
+                        <Button size="sm" variant="outline" className="flex-1 sm:flex-initial" asChild>
+                          <Link href={`/team-portal/test-report?customer=${appointment.customerId}`}>
+                            <Edit className="h-4 w-4 mr-2" />
                             Start Test
                           </Link>
                         </Button>
@@ -415,54 +417,29 @@ export default function SchedulePage() {
               </div>
             ))
           ) : (
-            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <Calendar className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
-                No appointments {statusFilter === 'all' ? '' : `(${statusFilter})`}
+            <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-12 text-center">
+              <div className="inline-flex p-4 rounded-full bg-slate-100 mb-6">
+                <Calendar className="h-12 w-12 text-slate-500" />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-3">
+                No appointments found
               </h3>
-              <p className="text-gray-500 mb-4">
+              <p className="text-slate-600 text-lg mb-2">
+                {statusFilter === 'all' ? 'No appointments scheduled' : `No ${statusFilter} appointments`}
+              </p>
+              <p className="text-slate-500 mb-8">
                 {getDateTitle()}
               </p>
-              <Button asChild>
-                <Link href="/app/schedule/new">
-                  <Plus className="h-4 w-4 mr-2" />
-                  Book New Appointment
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold" asChild>
+                <Link href="/team-portal/schedule/new">
+                  <Plus className="h-5 w-5 mr-3" />
+                  Schedule New Appointment
                 </Link>
               </Button>
             </div>
           )}
         </div>
-      </div>
-
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-        <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <div className="h-6 w-6 bg-gray-400 rounded"></div>
-            <span className="text-xs">Home</span>
-          </Link>
-          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <User className="h-6 w-6" />
-            <span className="text-xs">Customers</span>
-          </Link>
-          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <Plus className="h-6 w-6" />
-            <span className="text-xs">Test</span>
-          </Link>
-          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-blue-600 bg-blue-50">
-            <Calendar className="h-6 w-6" />
-            <span className="text-xs font-medium">Schedule</span>
-          </Link>
-          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-            </div>
-            <span className="text-xs">More</span>
-          </Link>
-        </div>
-      </nav>
+      </main>
     </div>
   );
 }

@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { UnifiedPageLayout, UnifiedCard, THEME } from '@/components/ui/UnifiedTheme';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Logo from '@/components/ui/Logo';
-import StandardHeader from '@/components/ui/StandardHeader';
 import { ArrowLeft, Lock, User, Eye, EyeOff } from 'lucide-react';
 
-export default function TeamLoginPage() {
+export default function TeamPortalPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -53,138 +53,150 @@ export default function TeamLoginPage() {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        const data = await response.json();
-        
         // Redirect based on role
         if (data.role === 'admin') {
           router.push('/team-portal/dashboard');
-        } else if (data.role === 'tester') {
+        } else if (data.role === 'technician' || data.role === 'tester') {
           router.push('/team-portal/tester');
         } else {
-          setError('Invalid user role');
+          router.push('/team-portal/dashboard');
         }
       } else {
-        const errorData = await response.json();
-        setError(errorData.error || 'Login failed');
+        setError(data.error || 'Login failed');
       }
     } catch (error) {
       console.error('Login error:', error);
-      setError('Network error occurred');
+      setError('Network error. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Effects */}
-      <div className="fixed inset-0 bg-grid opacity-20" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
-      
-      <StandardHeader variant="portal">
-        <div className="flex justify-between items-center">
-          <Logo width={200} height={160} priority />
-          <div className="flex items-center gap-4">
-            <Link href="/" className="btn-glass px-4 py-2 rounded-lg hover-glow flex items-center">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Home
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="bg-white border-b border-slate-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <Link href="/" className="flex items-center space-x-3">
+              <Logo width={160} height={128} />
+              <div>
+                <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
+                <p className="text-xs text-slate-600">Business Portal</p>
+              </div>
             </Link>
+            <nav className="hidden md:flex space-x-1">
+              <Link href="/">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 font-medium">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Home
+                </Button>
+              </Link>
+              <Link href="/portal">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 font-medium">
+                  Customer Portal
+                </Button>
+              </Link>
+            </nav>
           </div>
         </div>
-      </StandardHeader>
+      </header>
 
-      <div className="pt-24 pb-16 px-4">
-        <div className="max-w-md mx-auto">
-          <div className="glass rounded-2xl p-8 glow-blue-sm">
+      {/* Main Content */}
+      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6 bg-gradient-to-b from-slate-50/50 to-white">
+        <div className="w-full max-w-md">
+          <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg">
             <div className="text-center mb-8">
-              <div className="inline-block glass-blue rounded-full p-4 mb-4 pulse-glow">
-                <User className="h-8 w-8 text-blue-400" />
+              <div className="inline-flex p-4 rounded-2xl bg-slate-100 mb-6">
+                <Lock className="h-8 w-8 text-slate-700" />
               </div>
-              <h1 className="text-3xl font-bold mb-2">Team Portal Login</h1>
-              <p className="text-white/60">Access your team dashboard and tools</p>
+              <h1 className="text-3xl font-bold text-slate-900 mb-2">Business Portal</h1>
+              <p className="text-slate-600">Sign in to access team management tools</p>
             </div>
 
             {error && (
-              <div className="glass-red rounded-lg p-4 mb-6 text-center text-red-300">
-                {error}
+              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+                <p className="text-sm text-center text-red-700">{error}</p>
               </div>
             )}
 
             <form onSubmit={handleLogin} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-white/80">
+              <div>
+                <Label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
                   Email Address
                 </Label>
                 <Input
-                  id="email"
                   type="email"
-                  placeholder="Enter your email"
+                  id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                  placeholder="admin@fisherbackflows.com"
                   required
-                  className="glass border-white/20 text-white placeholder:text-white/40 focus:border-blue-400"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-white/80">
+              <div>
+                <Label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
                   Password
                 </Label>
                 <div className="relative">
                   <Input
+                    type={showPassword ? "text" : "password"}
                     id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-3 pr-12 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    placeholder="Enter your password"
                     required
-                    className="glass border-white/20 text-white placeholder:text-white/40 focus:border-blue-400 pr-12"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
               </div>
 
               <Button
                 type="submit"
-                size="lg"
-                className="w-full btn-glow py-3 flex items-center justify-center"
                 disabled={isLoading}
+                className="w-full py-3 text-white font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
               >
                 {isLoading ? (
-                  <div className="flex items-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
-                    Signing In...
+                  <div className="flex items-center justify-center space-x-2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    <span>Signing in...</span>
                   </div>
                 ) : (
-                  <>
-                    <Lock className="h-4 w-4 mr-2" />
-                    Sign In
-                  </>
+                  <div className="flex items-center justify-center space-x-2">
+                    <User className="h-5 w-5" />
+                    <span>Sign In to Business Portal</span>
+                  </div>
                 )}
               </Button>
             </form>
 
-            <div className="mt-8 text-center">
-              <p className="text-white/50 text-sm">
-                Need help? Contact your administrator
+            <div className="mt-8 text-center text-slate-500 text-sm">
+              <p>Need help accessing your account?</p>
+              <p className="mt-2">
+                Contact IT support at{' '}
+                <a 
+                  href="mailto:support@fisherbackflows.com" 
+                  className="text-blue-600 hover:text-blue-700 transition-colors font-semibold"
+                >
+                  support@fisherbackflows.com
+                </a>
               </p>
             </div>
           </div>
-
-          <div className="mt-6 text-center">
-            <p className="text-white/30 text-xs">
-              Team Portal • Secure Access • Fisher Backflows
-            </p>
-          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

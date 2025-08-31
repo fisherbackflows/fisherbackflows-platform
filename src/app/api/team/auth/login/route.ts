@@ -33,8 +33,8 @@ function generateSecureToken(): string {
 }
 
 // Get client IP address
-function getClientIP(request: NextRequest): string {
-  const headersList = headers();
+async function getClientIP(request: NextRequest): Promise<string> {
+  const headersList = await headers();
   const forwarded = headersList.get('x-forwarded-for');
   const real = headersList.get('x-real-ip');
   
@@ -104,7 +104,7 @@ async function logSecurityEvent(event: LoginAttempt) {
 
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
-  const clientIP = getClientIP(request);
+  const clientIP = await getClientIP(request);
   const userAgent = request.headers.get('user-agent') || 'unknown';
   
   try {

@@ -1,479 +1,412 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
-import StandardHeader from '@/components/ui/StandardHeader';
-import Logo from '@/components/ui/Logo';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { 
   Users, 
-  Calendar,
-  FileText,
-  DollarSign,
+  Calendar, 
+  FileText, 
+  CreditCard, 
+  TrendingUp, 
   Clock,
   CheckCircle,
   AlertTriangle,
+  Plus,
+  Activity,
+  BarChart3,
+  Bell,
   Settings,
-  LogOut,
-  TrendingUp,
-  User,
-  Instagram,
+  ArrowRight,
+  PlusCircle,
   Eye,
-  EyeOff
+  Edit,
+  Send
 } from 'lucide-react';
 import Link from 'next/link';
 
 interface DashboardStats {
-  todayTests: number;
-  weekTests: number;
-  pendingReports: number;
-  monthRevenue: number;
+  customers: {
+    total: number;
+    active: number;
+    needsService: number;
+  };
+  appointments: {
+    scheduled: number;
+    completed: number;
+    pending: number;
+  };
+  financials: {
+    monthlyRevenue: number;
+    pendingInvoices: number;
+    overduePayments: number;
+  };
+  testing: {
+    totalTests: number;
+    passedTests: number;
+    failedTests: number;
+    passRate: number;
+  };
 }
 
-interface TeamUser {
+interface RecentActivity {
   id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-  is_active: boolean;
-  last_login: string;
+  type: string;
+  icon: string;
+  text: string;
+  time: string;
+  color: string;
 }
 
-export default function AdminDashboard() {
-  const [user, setUser] = useState<TeamUser | null>(null);
+export default function TeamPortalDashboard() {
   const [stats, setStats] = useState<DashboardStats>({
-    todayTests: 0,
-    weekTests: 0,
-    pendingReports: 0,
-    monthRevenue: 0
+    customers: { total: 0, active: 0, needsService: 0 },
+    appointments: { scheduled: 0, completed: 0, pending: 0 },
+    financials: { monthlyRevenue: 0, pendingInvoices: 0, overduePayments: 0 },
+    testing: { totalTests: 0, passedTests: 0, failedTests: 0, passRate: 0 }
   });
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [privateMode, setPrivateMode] = useState<boolean | null>(null);
-  const [isToggling, setIsToggling] = useState(false);
-  const router = useRouter();
+  const [activities, setActivities] = useState<RecentActivity[]>([]);
+  const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check authentication and role
-    const checkAuth = async () => {
+    const loadData = async () => {
       try {
-        const response = await fetch('/api/team/auth/me');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.role !== 'admin') {
-            router.push('/team-portal');
-            return;
+        setLoading(true);
+        setError(null);
+
+        // Load user info
+        const userResponse = await fetch('/api/team/auth/me');
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          setUserInfo(userData);
+        }
+
+        // Load real metrics from admin API (team portal has admin-level access)
+        const [metricsResponse, activityResponse] = await Promise.allSettled([
+          fetch('/api/admin/metrics'),
+          fetch('/api/admin/activity?limit=5')
+        ]);
+
+        // Process metrics
+        if (metricsResponse.status === 'fulfilled' && metricsResponse.value.ok) {
+          const metricsData = await metricsResponse.value.json();
+          if (metricsData.success) {
+            setStats(metricsData.metrics);
           }
-          setUser(data.user);
-        } else {
-          router.push('/team-portal');
         }
+
+        // Process activities
+        if (activityResponse.status === 'fulfilled' && activityResponse.value.ok) {
+          const activityData = await activityResponse.value.json();
+          if (activityData.success) {
+            setActivities(activityData.activities || []);
+          }
+        }
+
+        setLoading(false);
       } catch (error) {
-        console.error('Auth check error:', error);
-        router.push('/team-portal');
+        console.error('Error loading dashboard data:', error);
+        setError('Failed to load dashboard data. Please refresh the page.');
+        setLoading(false);
       }
     };
 
-    checkAuth();
-
-    // Load dashboard stats (mock data for now)
-    setStats({
-      todayTests: 8,
-      weekTests: 32,
-      pendingReports: 3,
-      monthRevenue: 4250
-    });
-
-    // Update time every minute
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000);
-
-    return () => clearInterval(timer);
-  }, [router]);
-
-  // Check private mode status
-  useEffect(() => {
-    const checkPrivateMode = async () => {
-      try {
-        const response = await fetch('/api/admin/private-mode');
-        if (response.ok) {
-          const data = await response.json();
-          setPrivateMode(data.privateMode);
-        }
-      } catch (error) {
-        console.error('Private mode check error:', error);
-      }
-    };
-    
-    checkPrivateMode();
+    loadData();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await fetch('/api/team/auth/logout', { method: 'POST' });
-      router.push('/team-portal');
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
-
-  const togglePrivateMode = async () => {
-    if (isToggling) return;
-    
-    setIsToggling(true);
-    try {
-      const response = await fetch('/api/admin/private-mode', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ enable: !privateMode })
-      });
-      
-      if (response.ok) {
-        setPrivateMode(!privateMode);
-      }
-    } catch (error) {
-      console.error('Toggle failed:', error);
-    } finally {
-      setIsToggling(false);
-    }
-  };
-
-  const quickActions = [
-    {
-      title: 'Instagram Marketing',
-      description: 'Branding & advertising',
-      icon: <Instagram className="h-8 w-8" />,
-      href: '/team-portal/instagram',
-      color: 'bg-pink-600 hover:bg-pink-700'
-    },
-    {
-      title: 'Manage Users',
-      description: 'Add/remove team members',
-      icon: <Users className="h-8 w-8" />,
-      href: '/team-portal/users',
-      color: 'bg-blue-600 hover:bg-blue-700'
-    },
-    {
-      title: 'View All Tests',
-      description: 'Review test reports',
-      icon: <FileText className="h-8 w-8" />,
-      href: '/team-portal/test-reports',
-      color: 'bg-green-600 hover:bg-green-700'
-    },
-    {
-      title: 'Schedule Management',
-      description: 'Assign routes & appointments',
-      icon: <Calendar className="h-8 w-8" />,
-      href: '/team-portal/schedule-admin',
-      color: 'bg-purple-600 hover:bg-purple-700'
-    },
-    {
-      title: 'Reports & Analytics',
-      description: 'Business insights',
-      icon: <TrendingUp className="h-8 w-8" />,
-      href: '/team-portal/analytics',
-      color: 'bg-orange-600 hover:bg-orange-700'
-    }
-  ];
-
-  const pendingActions = [
-    {
-      title: '2 Time-off Requests',
-      description: 'Pending approval',
-      icon: <Calendar className="h-6 w-6" />,
-      href: '/team-portal/time-off',
-      urgency: 'medium'
-    },
-    {
-      title: '3 Reports Need Review',
-      description: 'Quality control check',
-      icon: <FileText className="h-6 w-6" />,
-      href: '/team-portal/reports-review',
-      urgency: 'medium'
-    },
-    {
-      title: '1 New Tester Registration',
-      description: 'Activate account',
-      icon: <User className="h-6 w-6" />,
-      href: '/team-portal/users?filter=pending',
-      urgency: 'high'
-    }
-  ];
-
-  if (!user) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400" />
+      <div className="min-h-screen bg-white">
+        <TeamPortalNavigation userInfo={userInfo} />
+        <main className="p-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-center py-20">
+              <LoadingSpinner size="lg" />
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
 
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white">
+        <TeamPortalNavigation userInfo={userInfo} />
+        <main className="p-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">Unable to Load Dashboard</h2>
+                <p className="text-slate-600 mb-6">{error}</p>
+                <Button onClick={() => window.location.reload()} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+                  Refresh Page
+                </Button>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  const hasData = stats.customers.total > 0 || stats.appointments.scheduled > 0 || stats.testing.totalTests > 0;
+
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Effects */}
-      <div className="fixed inset-0 bg-grid opacity-20" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
+    <div className="min-h-screen bg-slate-50">
+      <TeamPortalNavigation userInfo={userInfo} />
       
-      <StandardHeader variant="portal">
-        <div className="flex justify-between items-center">
-          <Logo width={200} height={160} priority />
-          <div className="flex items-center gap-4">
-            <div className="glass rounded-lg px-3 py-2">
-              <div className="flex items-center space-x-2 text-sm">
-                <Clock className="h-4 w-4 text-blue-400" />
-                <span className="text-white/80">
-                  {currentTime.toLocaleTimeString('en-US', { 
-                    hour: 'numeric', 
-                    minute: '2-digit' 
-                  })}
-                </span>
+      <main className="p-6">
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Professional Header */}
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div>
+                <h1 className="text-4xl font-bold text-slate-900 mb-3">
+                  Team Operations Center
+                </h1>
+                <p className="text-xl text-slate-600 leading-relaxed">
+                  Manage your team operations, track performance, and drive business growth
+                </p>
               </div>
-            </div>
-            <div className="glass rounded-lg px-3 py-2">
-              <span className="text-white/80 text-sm">
-                Welcome, {user.first_name}
-              </span>
-            </div>
-            <Button
-              onClick={handleLogout}
-              className="btn-glass px-4 py-2 rounded-lg hover-glow flex items-center"
-            >
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
-          </div>
-        </div>
-      </StandardHeader>
-
-      <div className="pt-24 pb-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          {/* Dashboard Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div className="glass rounded-xl p-6 glow-blue-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-2xl font-bold text-white">{stats.todayTests}</div>
-                  <div className="text-blue-300 text-sm">Today's Tests</div>
-                </div>
-                <div className="glass-blue rounded-lg p-3">
-                  <CheckCircle className="h-6 w-6 text-blue-400" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="glass rounded-xl p-6 glow-green-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-2xl font-bold text-white">{stats.weekTests}</div>
-                  <div className="text-green-300 text-sm">This Week</div>
-                </div>
-                <div className="glass-green rounded-lg p-3">
-                  <TrendingUp className="h-6 w-6 text-green-400" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="glass rounded-xl p-6 glow-yellow-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-2xl font-bold text-white">{stats.pendingReports}</div>
-                  <div className="text-yellow-300 text-sm">Pending</div>
-                </div>
-                <div className="glass-yellow rounded-lg p-3">
-                  <Clock className="h-6 w-6 text-yellow-400" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="glass rounded-xl p-6 glow-emerald-sm">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-2xl font-bold text-white">${stats.monthRevenue.toLocaleString()}</div>
-                  <div className="text-emerald-300 text-sm">Monthly Revenue</div>
-                </div>
-                <div className="glass-emerald rounded-lg p-3">
-                  <DollarSign className="h-6 w-6 text-emerald-400" />
-                </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link href="/team-portal/customers/new">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-sm font-medium transition-colors duration-200 flex items-center">
+                    <PlusCircle className="h-5 w-5 mr-2" />
+                    Add Customer
+                  </Button>
+                </Link>
+                <Link href="/team-portal/schedule/new">
+                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg shadow-sm font-medium transition-colors duration-200 flex items-center">
+                    <Calendar className="h-5 w-5 mr-2" />
+                    Schedule Test
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
 
-          {/* Site Status Control */}
-          <div className="glass rounded-2xl p-6 glow-blue-sm mb-8">
-            <h3 className="text-lg font-semibold mb-4 flex items-center">
-              <Settings className="h-5 w-5 text-blue-400 mr-2" />
-              Site Access Control - Admin Only
-            </h3>
-            
-            <div className="flex flex-col gap-4">
-              {/* Current Status Display */}
-              <div className="flex items-center justify-between p-4 glass rounded-xl">
-                <div className="flex items-center gap-3">
-                  <div className={`p-3 rounded-lg ${
-                    privateMode 
-                      ? 'bg-yellow-600/20 border border-yellow-500/30' 
-                      : 'bg-green-600/20 border border-green-500/30'
-                  }`}>
-                    {privateMode ? (
-                      <EyeOff className="h-6 w-6 text-yellow-400" />
-                    ) : (
-                      <Eye className="h-6 w-6 text-green-400" />
-                    )}
-                  </div>
-                  <div>
-                    <div className={`font-semibold ${
-                      privateMode ? 'text-yellow-400' : 'text-green-400'
-                    }`}>
-                      {privateMode ? 'PRIVATE MODE ACTIVE' : 'PUBLIC ACCESS ENABLED'}
-                    </div>
-                    <div className="text-sm text-white/60">
-                      {privateMode 
-                        ? 'Only admins can access the website'
-                        : 'Website is visible to everyone'
-                      }
-                    </div>
-                  </div>
+          {/* Professional Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Total Customers */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-blue-50 rounded-lg">
+                  <Users className="h-8 w-8 text-blue-600" />
                 </div>
-                
-                {/* Action Button */}
-                <button
-                  onClick={togglePrivateMode}
-                  disabled={isToggling}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                    privateMode 
-                      ? 'bg-green-600 hover:bg-green-700 text-white' 
-                      : 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                  } ${isToggling ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
-                >
-                  {isToggling ? (
-                    <span className="flex items-center gap-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                      Updating...
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-2">
-                      {privateMode ? (
-                        <>
-                          <Eye className="h-4 w-4" />
-                          Make Site Public
-                        </>
-                      ) : (
-                        <>
-                          <EyeOff className="h-4 w-4" />
-                          Enable Private Mode
-                        </>
-                      )}
-                    </span>
-                  )}
-                </button>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-slate-900">{hasData ? stats.customers.total.toLocaleString() : '0'}</div>
+                  <div className="text-sm text-slate-500">{hasData ? `${stats.customers.active} active` : 'No customers yet'}</div>
+                </div>
               </div>
-              
-              {/* Warning Message */}
-              {!privateMode && (
-                <div className="flex items-start gap-2 p-3 bg-blue-600/10 border border-blue-500/20 rounded-lg">
-                  <AlertTriangle className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-white/80">
-                    <strong>Note:</strong> When private mode is disabled, all visitors can access your website including customer portal and public pages.
-                  </div>
+              <div className="text-slate-700 font-medium">Total Customers</div>
+            </div>
+
+            {/* Scheduled Appointments */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-emerald-50 rounded-lg">
+                  <Calendar className="h-8 w-8 text-emerald-600" />
                 </div>
-              )}
-              
-              {privateMode && (
-                <div className="flex items-start gap-2 p-3 bg-yellow-600/10 border border-yellow-500/20 rounded-lg">
-                  <AlertTriangle className="h-4 w-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-white/80">
-                    <strong>Private Mode Active:</strong> Only team members with admin credentials can access the website. All public visitors will be redirected to the login page.
-                  </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-slate-900">{hasData ? stats.appointments.scheduled : '0'}</div>
+                  <div className="text-sm text-slate-500">{hasData ? `${stats.appointments.completed} completed` : 'No appointments'}</div>
                 </div>
-              )}
+              </div>
+              <div className="text-slate-700 font-medium">Scheduled Tests</div>
+            </div>
+
+            {/* Test Results */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-amber-50 rounded-lg">
+                  <FileText className="h-8 w-8 text-amber-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-slate-900">{hasData ? stats.testing.totalTests : '0'}</div>
+                  <div className="text-sm text-slate-500">{hasData ? `${stats.testing.passRate}% pass rate` : 'No tests completed'}</div>
+                </div>
+              </div>
+              <div className="text-slate-700 font-medium">Total Tests</div>
+            </div>
+
+            {/* Monthly Revenue */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 bg-purple-50 rounded-lg">
+                  <CreditCard className="h-8 w-8 text-purple-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-slate-900">${hasData ? stats.financials.monthlyRevenue.toLocaleString() : '0'}</div>
+                  <div className="text-sm text-slate-500">{hasData ? `${stats.financials.pendingInvoices} pending` : 'No revenue yet'}</div>
+                </div>
+              </div>
+              <div className="text-slate-700 font-medium">Monthly Revenue</div>
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <section className="mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">Admin Dashboard</h2>
-              <div className="text-white/60 text-sm">Full system access</div>
+          {/* Dashboard Sections */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Recent Activity */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-900 mb-2">Recent Activity</h2>
+                  <p className="text-slate-600">Latest updates and actions</p>
+                </div>
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm font-medium transition-colors duration-200">
+                  <Activity className="h-4 w-4 mr-2" />
+                  View All
+                </Button>
+              </div>
+              <div className="space-y-4">
+                {activities.length > 0 ? (
+                  activities.map((activity) => {
+                    const iconMap: { [key: string]: any } = {
+                      CheckCircle,
+                      Users,
+                      Calendar,
+                      Clock,
+                      Mail: Send,
+                      DollarSign: CreditCard,
+                      Activity
+                    };
+                    const IconComponent = iconMap[activity.icon] || Activity;
+                    
+                    return (
+                      <div key={activity.id} className="flex items-center space-x-4 p-4 rounded-lg bg-slate-50 border border-slate-100 hover:bg-slate-100 transition-colors duration-200">
+                        <div className="p-3 bg-blue-50 rounded-lg">
+                          <IconComponent className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold text-slate-900">{activity.text}</p>
+                          <p className="text-sm text-slate-500">{activity.time}</p>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="text-center py-8">
+                    <Activity className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+                    <p className="text-slate-500 mb-4">No recent activity</p>
+                    <p className="text-sm text-slate-400">Activity will appear here as you start using the system</p>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {quickActions.map((action, index) => (
-                <Link
-                  key={index}
-                  href={action.href}
-                  className="group glass rounded-xl p-6 card-hover"
-                >
-                  <div className="text-center">
-                    <div className="inline-block glass-blue rounded-full p-4 mb-4 pulse-glow">
-                      {action.icon}
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-2">{action.title}</h3>
-                    <p className="text-white/60 text-sm">{action.description}</p>
+
+            {/* Quick Actions */}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+              <div className="mb-6">
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">Quick Actions</h2>
+                <p className="text-slate-600">Common tasks and shortcuts</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <Link href="/team-portal/customers">
+                  <div className="group bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
+                    <Users className="h-10 w-10 text-blue-600 mb-4 group-hover:scale-105 transition-transform duration-200" />
+                    <h3 className="font-bold text-slate-900 mb-2">Manage Customers</h3>
+                    <p className="text-sm text-slate-600">View and edit customer information</p>
                   </div>
                 </Link>
-              ))}
+
+                <Link href="/team-portal/schedule">
+                  <div className="group bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
+                    <Calendar className="h-10 w-10 text-emerald-600 mb-4 group-hover:scale-105 transition-transform duration-200" />
+                    <h3 className="font-bold text-slate-900 mb-2">Schedule Tests</h3>
+                    <p className="text-sm text-slate-600">Book and manage appointments</p>
+                  </div>
+                </Link>
+
+                <Link href="/team-portal/test-report">
+                  <div className="group bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
+                    <FileText className="h-10 w-10 text-amber-600 mb-4 group-hover:scale-105 transition-transform duration-200" />
+                    <h3 className="font-bold text-slate-900 mb-2">Test Reports</h3>
+                    <p className="text-sm text-slate-600">Create and manage test reports</p>
+                  </div>
+                </Link>
+
+                <Link href="/team-portal/invoices">
+                  <div className="group bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
+                    <CreditCard className="h-10 w-10 text-purple-600 mb-4 group-hover:scale-105 transition-transform duration-200" />
+                    <h3 className="font-bold text-slate-900 mb-2">Invoices</h3>
+                    <p className="text-sm text-slate-600">Generate and send invoices</p>
+                  </div>
+                </Link>
+              </div>
             </div>
-          </section>
+          </div>
 
-          {/* Pending Actions */}
-          <section className="mb-8">
-            <h2 className="text-xl font-semibold text-white mb-6">Needs Attention</h2>
-            
-            {pendingActions.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {pendingActions.map((action, index) => (
-                  <Link
-                    key={index}
-                    href={action.href}
-                    className="glass rounded-xl p-6 card-hover"
-                  >
-                    <div className="flex items-start space-x-4">
-                      <div className={`glass-${action.urgency === 'high' ? 'red' : 'yellow'} rounded-lg p-3`}>
-                        {action.icon}
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-white mb-1">
-                          {action.title}
-                        </h3>
-                        <p className="text-white/60 text-sm">
-                          {action.description}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <div className="glass rounded-xl p-8 text-center">
-                <CheckCircle className="h-12 w-12 mx-auto mb-4 text-green-400" />
-                <p className="text-white/80">All caught up!</p>
-                <p className="text-white/50 text-sm">No pending admin actions</p>
-              </div>
-            )}
-          </section>
-
-          {/* System Overview */}
-          <section>
-            <h2 className="text-xl font-semibold text-white mb-6">System Overview</h2>
-            <div className="glass rounded-xl p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-400 mb-2">5</div>
-                  <div className="text-white/80 text-sm">Active Testers</div>
+          {/* Professional Getting Started */}
+          {!hasData && (
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-8">
+              <div className="flex items-start space-x-4">
+                <div className="p-4 bg-blue-100 rounded-lg">
+                  <Activity className="h-8 w-8 text-blue-600" />
                 </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-400 mb-2">127</div>
-                  <div className="text-white/80 text-sm">Tests This Month</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-yellow-400 mb-2">98.5%</div>
-                  <div className="text-white/80 text-sm">Pass Rate</div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Get Started with Your Team Portal</h3>
+                  <p className="text-slate-700 text-lg mb-6">
+                    Start managing your backflow testing operations by adding customers and scheduling tests.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <Link href="/team-portal/customers/new">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium flex items-center">
+                        <PlusCircle className="h-4 w-4 mr-2" />
+                        Add First Customer
+                      </Button>
+                    </Link>
+                    <Link href="/team-portal/customers">
+                      <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-3 rounded-lg font-medium flex items-center">
+                        <Eye className="h-4 w-4 mr-2" />
+                        View All Customers
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
-          </section>
+          )}
+
+          {/* Alerts for Active Data */}
+          {hasData && (stats.customers.needsService > 0 || stats.financials.overduePayments > 0) && (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-8">
+              <div className="flex items-center space-x-4">
+                <div className="p-4 bg-amber-100 rounded-lg">
+                  <AlertTriangle className="h-8 w-8 text-amber-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Attention Required</h3>
+                  <p className="text-slate-700 text-lg mb-4">
+                    {stats.customers.needsService > 0 && `${stats.customers.needsService} customers need service. `}
+                    {stats.financials.overduePayments > 0 && `${stats.financials.overduePayments} payments are overdue.`}
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {stats.customers.needsService > 0 && (
+                      <Link href="/team-portal/customers">
+                        <Button className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-medium">
+                          Schedule Service
+                        </Button>
+                      </Link>
+                    )}
+                    {stats.financials.overduePayments > 0 && (
+                      <Link href="/team-portal/invoices">
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium">
+                          Review Invoices
+                        </Button>
+                      </Link>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

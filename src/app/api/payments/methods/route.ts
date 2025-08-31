@@ -109,7 +109,17 @@ export async function POST(request: NextRequest) {
     }
 
     // Attach payment method to customer in Stripe
-    const stripe = (await import('stripe')).default(process.env.STRIPE_SECRET_KEY!);
+    if (!process.env.STRIPE_SECRET_KEY) {
+      return NextResponse.json(
+        { error: 'Stripe not configured' },
+        { status: 500 }
+      );
+    }
+    
+    const stripe = (await import('stripe')).default(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2024-06-20',
+    });
+    
     await stripe.paymentMethods.attach(paymentMethodId, {
       customer: stripeCustomerId
     });

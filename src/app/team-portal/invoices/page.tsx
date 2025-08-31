@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { 
   DollarSign,
   Plus,
@@ -15,7 +17,10 @@ import {
   Clock,
   AlertTriangle,
   Calendar,
-  User
+  User,
+  ArrowLeft,
+  PlusCircle,
+  FileText
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -43,12 +48,12 @@ interface Invoice {
 }
 
 const statusConfig = {
-  draft: { label: 'Draft', color: 'bg-gray-100 text-gray-800', icon: Edit },
-  sent: { label: 'Sent', color: 'bg-blue-100 text-blue-800', icon: Send },
-  viewed: { label: 'Viewed', color: 'bg-purple-100 text-purple-800', icon: Eye },
-  paid: { label: 'Paid', color: 'bg-green-100 text-green-800', icon: CheckCircle },
-  overdue: { label: 'Overdue', color: 'bg-red-100 text-red-800', icon: AlertTriangle },
-  cancelled: { label: 'Cancelled', color: 'bg-gray-100 text-gray-600', icon: Clock }
+  draft: { label: 'Draft', color: 'bg-slate-50 text-slate-700 border-slate-200', icon: Edit },
+  sent: { label: 'Sent', color: 'bg-blue-50 text-blue-700 border-blue-200', icon: Send },
+  viewed: { label: 'Viewed', color: 'bg-purple-50 text-purple-700 border-purple-200', icon: Eye },
+  paid: { label: 'Paid', color: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: CheckCircle },
+  overdue: { label: 'Overdue', color: 'bg-red-50 text-red-700 border-red-200', icon: AlertTriangle },
+  cancelled: { label: 'Cancelled', color: 'bg-slate-50 text-slate-600 border-slate-200', icon: Clock }
 };
 
 export default function InvoicesPage() {
@@ -58,105 +63,31 @@ export default function InvoicesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load sample invoice data
-    const sampleInvoices: Invoice[] = [
-      {
-        id: '1',
-        invoiceNumber: 'INV-2024-001',
-        customerId: '1',
-        customerName: 'Johnson Properties LLC',
-        customerEmail: 'manager@johnsonproperties.com',
-        issueDate: '2024-08-15',
-        dueDate: '2024-09-14',
-        amount: 255.00,
-        tax: 22.95,
-        total: 277.95,
-        status: 'paid',
-        services: [
-          { description: 'Annual Backflow Test - RP Device', quantity: 2, rate: 85.00, amount: 170.00 },
-          { description: 'Annual Backflow Test - DC Device', quantity: 1, rate: 85.00, amount: 85.00 }
-        ],
-        notes: 'All devices passed testing. Next test due March 2025.',
-        paidDate: '2024-08-20',
-        paymentMethod: 'Check'
-      },
-      {
-        id: '2',
-        invoiceNumber: 'INV-2024-002',
-        customerId: '2',
-        customerName: 'Smith Residence',
-        customerEmail: 'john.smith@gmail.com',
-        issueDate: '2024-08-18',
-        dueDate: '2024-09-17',
-        amount: 85.00,
-        tax: 7.65,
-        total: 92.65,
-        status: 'viewed',
-        services: [
-          { description: 'Annual Backflow Test - PVB Device', quantity: 1, rate: 85.00, amount: 85.00 }
-        ],
-        notes: 'Device passed testing. Certificate mailed to customer.'
-      },
-      {
-        id: '3',
-        invoiceNumber: 'INV-2024-003',
-        customerId: '3',
-        customerName: 'Parkland Medical Center',
-        customerEmail: 'facilities@parklandmedical.com',
-        issueDate: '2024-08-10',
-        dueDate: '2024-09-09',
-        amount: 595.00,
-        tax: 53.55,
-        total: 648.55,
-        status: 'overdue',
-        services: [
-          { description: 'Annual Backflow Test - RP Device', quantity: 3, rate: 85.00, amount: 255.00 },
-          { description: 'Backflow Device Repair - Relief Valve', quantity: 2, rate: 150.00, amount: 300.00 },
-          { description: 'Parts - Relief Valve Assembly', quantity: 1, rate: 40.00, amount: 40.00 }
-        ],
-        notes: 'Two devices required repairs. Follow-up test completed successfully.'
-      },
-      {
-        id: '4',
-        invoiceNumber: 'INV-2024-004',
-        customerId: '4',
-        customerName: 'Harbor View Apartments',
-        customerEmail: 'maintenance@harborview.com',
-        issueDate: '2024-08-22',
-        dueDate: '2024-09-21',
-        amount: 680.00,
-        tax: 61.20,
-        total: 741.20,
-        status: 'sent',
-        services: [
-          { description: 'Annual Backflow Test - RP Device', quantity: 6, rate: 85.00, amount: 510.00 },
-          { description: 'Annual Backflow Test - DC Device', quantity: 2, rate: 85.00, amount: 170.00 }
-        ],
-        notes: 'Large apartment complex - 8 total devices tested. All passed.'
-      },
-      {
-        id: '5',
-        invoiceNumber: 'INV-2024-005',
-        customerId: '5',
-        customerName: 'Downtown Deli',
-        customerEmail: 'owner@downtowndeli.com',
-        issueDate: '2024-08-25',
-        dueDate: '2024-09-24',
-        amount: 170.00,
-        tax: 15.30,
-        total: 185.30,
-        status: 'draft',
-        services: [
-          { description: 'Annual Backflow Test - DC Device', quantity: 2, rate: 85.00, amount: 170.00 }
-        ],
-        notes: 'Commercial kitchen - 2 devices tested and passed.'
+    const loadInvoices = async () => {
+      try {
+        setLoading(true);
+        
+        const response = await fetch('/api/team/invoices');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            setInvoices(data.invoices || []);
+          } else {
+            setInvoices([]);
+          }
+        } else {
+          // API doesn't exist yet - show empty state
+          setInvoices([]);
+        }
+      } catch (error) {
+        console.error('Error loading invoices:', error);
+        setInvoices([]);
+      } finally {
+        setLoading(false);
       }
-    ];
+    };
 
-    setTimeout(() => {
-      setInvoices(sampleInvoices);
-      setLoading(false);
-    }, 500);
+    loadInvoices();
   }, []);
 
   const filteredInvoices = invoices.filter(invoice => {
@@ -216,178 +147,209 @@ export default function InvoicesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading invoices...</p>
-        </div>
+      <div className="min-h-screen bg-slate-50">
+        <TeamPortalNavigation userInfo={null} />
+        <main className="p-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <LoadingSpinner size="lg" />
+                <p className="text-slate-600 mt-4">Loading invoices...</p>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="px-4 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Invoices</h1>
-            <Button asChild>
-              <Link href="/app/invoices/new">
-                <Plus className="h-4 w-4 mr-2" />
-                New Invoice
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </header>
-
-      <div className="p-4">
-        {/* Financial Overview */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-            <div className="text-lg font-bold text-green-700">{formatCurrency(totals.paid)}</div>
-            <div className="text-xs text-green-600">Paid This Month</div>
-          </div>
-          <div className="bg-white rounded-lg p-4 text-center shadow-sm">
-            <div className="text-lg font-bold text-blue-700">{formatCurrency(totals.outstanding)}</div>
-            <div className="text-xs text-blue-600">Outstanding</div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <div className="bg-red-50 rounded-lg p-4 text-center shadow-sm">
-            <div className="text-lg font-bold text-red-700">{formatCurrency(totals.overdue)}</div>
-            <div className="text-xs text-red-600">Overdue</div>
-          </div>
-          <div className="bg-gray-50 rounded-lg p-4 text-center shadow-sm">
-            <div className="text-lg font-bold text-gray-700">{formatCurrency(totals.total)}</div>
-            <div className="text-xs text-gray-600">Total Revenue</div>
-          </div>
-        </div>
-
-        {/* Search and Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <div className="flex flex-col space-y-3">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <input
-                type="text"
-                placeholder="Search invoices..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            
-            <div className="flex space-x-2 overflow-x-auto">
-              {[
-                { key: 'active', label: 'Active', count: statusCounts.active },
-                { key: 'all', label: 'All', count: statusCounts.all },
-                { key: 'draft', label: 'Draft', count: statusCounts.draft },
-                { key: 'sent', label: 'Sent', count: statusCounts.sent },
-                { key: 'paid', label: 'Paid', count: statusCounts.paid },
-                { key: 'overdue', label: 'Overdue', count: statusCounts.overdue }
-              ].map(filter => (
-                <button
-                  key={filter.key}
-                  onClick={() => setStatusFilter(filter.key)}
-                  className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
-                    statusFilter === filter.key
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {filter.label} ({filter.count})
-                </button>
-              ))}
+    <div className="min-h-screen bg-slate-50">
+      <TeamPortalNavigation userInfo={null} />
+      
+      <main className="p-6">
+        <div className="max-w-7xl mx-auto space-y-8">
+          {/* Professional Header */}
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="flex items-center space-x-4">
+                <Link href="/team-portal/dashboard">
+                  <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-lg">
+                    <ArrowLeft className="h-5 w-5" />
+                  </Button>
+                </Link>
+                <div className="p-3 bg-emerald-50 rounded-lg">
+                  <DollarSign className="w-6 h-6 text-emerald-600" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-slate-900">Invoice Management</h1>
+                  <p className="text-slate-600 mt-1">Track and manage all your invoices and payments</p>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Link href="/team-portal/invoices/new">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center">
+                    <PlusCircle className="h-4 w-4 mr-2" />
+                    New Invoice
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Invoices List */}
-        <div className="space-y-3">
-          {filteredInvoices.length > 0 ? (
-            filteredInvoices.map((invoice) => {
-              const StatusIcon = statusConfig[invoice.status].icon;
-              return (
-                <div key={invoice.id} className="bg-white rounded-lg shadow-sm">
-                  <div className="p-4">
+          {/* Professional Financial Overview */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
+              <div className="text-2xl font-bold text-emerald-600">{invoices.length > 0 ? formatCurrency(totals.paid) : '$0'}</div>
+              <div className="text-sm text-slate-600 mt-1">Paid This Month</div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
+              <div className="text-2xl font-bold text-blue-600">{invoices.length > 0 ? formatCurrency(totals.outstanding) : '$0'}</div>
+              <div className="text-sm text-slate-600 mt-1">Outstanding</div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
+              <div className="text-2xl font-bold text-red-600">{invoices.length > 0 ? formatCurrency(totals.overdue) : '$0'}</div>
+              <div className="text-sm text-slate-600 mt-1">Overdue</div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
+              <div className="text-2xl font-bold text-slate-900">{invoices.length > 0 ? formatCurrency(totals.total) : '$0'}</div>
+              <div className="text-sm text-slate-600 mt-1">Total Revenue</div>
+            </div>
+          </div>
+
+          {/* Professional Search and Filters */}
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Search Invoices</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
+                  <input
+                    type="text"
+                    placeholder="Search by invoice number, customer, or email..."
+                    className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Filter by Status</label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { key: 'active', label: 'Active', count: statusCounts.active },
+                    { key: 'all', label: 'All', count: statusCounts.all },
+                    { key: 'draft', label: 'Draft', count: statusCounts.draft },
+                    { key: 'sent', label: 'Sent', count: statusCounts.sent },
+                    { key: 'paid', label: 'Paid', count: statusCounts.paid },
+                    { key: 'overdue', label: 'Overdue', count: statusCounts.overdue }
+                  ].map(filter => (
+                    <button
+                      key={filter.key}
+                      onClick={() => setStatusFilter(filter.key)}
+                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                        statusFilter === filter.key
+                          ? 'bg-blue-600 text-white shadow-sm'
+                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                      }`}
+                    >
+                      {filter.label} ({filter.count})
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Professional Invoices List */}
+          <div className="space-y-4">
+            {filteredInvoices.length > 0 ? (
+              filteredInvoices.map((invoice) => {
+                const StatusIcon = statusConfig[invoice.status].icon;
+                return (
+                  <div key={invoice.id} className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200">
+                    <div className="p-6">
                     <div className="flex justify-between items-start mb-3">
                       <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <h3 className="font-semibold text-gray-900">
+                        <div className="flex items-center space-x-3 mb-2">
+                          <h3 className="font-bold text-slate-900 text-lg">
                             {invoice.invoiceNumber}
                           </h3>
-                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${statusConfig[invoice.status].color}`}>
-                            <StatusIcon className="h-3 w-3 mr-1" />
+                          <span className={`inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium border ${statusConfig[invoice.status].color}`}>
+                            <StatusIcon className="h-4 w-4 mr-1" />
                             {statusConfig[invoice.status].label}
                           </span>
                         </div>
-                        <p className="text-gray-600">{invoice.customerName}</p>
+                        <p className="text-slate-600 font-medium">{invoice.customerName}</p>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-gray-900">
+                        <div className="text-2xl font-bold text-slate-900">
                           {formatCurrency(invoice.total)}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-slate-500 font-medium">
                           Due {formatDate(invoice.dueDate)}
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-500">Issued:</span>
-                        <span className="font-medium">{formatDate(invoice.issueDate)}</span>
-                      </div>
-                      
-                      {invoice.paidDate && (
+                    <div className="space-y-4 mt-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-500">Paid:</span>
-                          <span className="font-medium text-green-600">
-                            {formatDate(invoice.paidDate)} ({invoice.paymentMethod})
-                          </span>
+                          <span className="text-slate-500 font-medium">Issued:</span>
+                          <span className="text-slate-900 font-semibold">{formatDate(invoice.issueDate)}</span>
                         </div>
-                      )}
-
-                      <div className="text-sm text-gray-600 bg-gray-50 rounded p-2 mt-2">
-                        {invoice.services.map((service, index) => (
-                          <div key={index} className="flex justify-between">
-                            <span>{service.description} (×{service.quantity})</span>
-                            <span className="font-medium">{formatCurrency(service.amount)}</span>
+                        
+                        {invoice.paidDate && (
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-slate-500 font-medium">Paid:</span>
+                            <span className="font-semibold text-emerald-600">
+                              {formatDate(invoice.paidDate)} ({invoice.paymentMethod})
+                            </span>
                           </div>
-                        ))}
+                        )}
+                      </div>
+
+                      <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                        <h4 className="text-sm font-medium text-slate-700 mb-3">Services</h4>
+                        <div className="space-y-2">
+                          {invoice.services.map((service, index) => (
+                            <div key={index} className="flex justify-between items-center text-sm">
+                              <span className="text-slate-600">{service.description} (×{service.quantity})</span>
+                              <span className="font-semibold text-slate-900">{formatCurrency(service.amount)}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Quick Actions */}
-                    <div className="flex items-center justify-between pt-3 border-t mt-4">
+                    {/* Professional Quick Actions */}
+                    <div className="flex items-center justify-between pt-4 border-t border-slate-200 mt-6">
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline" asChild>
-                          <Link href={`/app/invoices/${invoice.id}`}>
-                            <Eye className="h-4 w-4 mr-1" />
+                        <Link href={`/team-portal/invoices/${invoice.id}`}>
+                          <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
+                            <Eye className="h-4 w-4 mr-2" />
                             View
-                          </Link>
-                        </Button>
-                        {(invoice.status === 'draft' || invoice.status === 'sent') && (
-                          <Button size="sm" variant="outline" asChild>
-                            <Link href={`/app/invoices/${invoice.id}/edit`}>
-                              <Edit className="h-4 w-4 mr-1" />
-                              Edit
-                            </Link>
                           </Button>
+                        </Link>
+                        {(invoice.status === 'draft' || invoice.status === 'sent') && (
+                          <Link href={`/team-portal/invoices/${invoice.id}/edit`}>
+                            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
+                              <Edit className="h-4 w-4 mr-2" />
+                              Edit
+                            </Button>
+                          </Link>
                         )}
                       </div>
                       
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline">
-                          <Download className="h-4 w-4 mr-1" />
+                        <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
+                          <Download className="h-4 w-4 mr-2" />
                           PDF
                         </Button>
                         {invoice.status !== 'paid' && invoice.status !== 'cancelled' && (
-                          <Button size="sm" variant="outline">
-                            <Send className="h-4 w-4 mr-1" />
+                          <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
+                            <Send className="h-4 w-4 mr-2" />
                             Send
                           </Button>
                         )}
@@ -397,58 +359,34 @@ export default function InvoicesPage() {
                 </div>
               );
             })
-          ) : (
-            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <DollarSign className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No invoices found</h3>
-              <p className="text-gray-500 mb-4">
-                {searchTerm || statusFilter !== 'all' 
-                  ? "Try adjusting your search or filters" 
-                  : "Get started by creating your first invoice"
-                }
-              </p>
-              {(!searchTerm && statusFilter === 'all') && (
-                <Button asChild>
-                  <Link href="/app/invoices/new">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create Your First Invoice
-                  </Link>
-                </Button>
-              )}
-            </div>
-          )}
+            ) : (
+              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
+                <DollarSign className="h-16 w-16 text-slate-300 mx-auto mb-6" />
+                <h3 className="text-2xl font-bold text-slate-900 mb-3">No invoices found</h3>
+                <p className="text-slate-600 mb-8 max-w-md mx-auto">
+                  {searchTerm || statusFilter !== 'all' 
+                    ? "Try adjusting your search or filters to find the invoices you're looking for." 
+                    : "Get started by creating your first invoice after completing a backflow test."
+                  }
+                </p>
+                {(!searchTerm && statusFilter === 'all') && (
+                  <div className="space-y-4">
+                    <Link href="/team-portal/invoices/new">
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center mx-auto">
+                        <PlusCircle className="h-5 w-5 mr-2" />
+                        Create Your First Invoice
+                      </Button>
+                    </Link>
+                    <p className="text-sm text-slate-500">
+                      Or <Link href="/team-portal/test-report" className="text-blue-600 hover:text-blue-800 font-medium">complete a test first</Link>
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-        <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <div className="h-6 w-6 bg-gray-400 rounded"></div>
-            <span className="text-xs">Home</span>
-          </Link>
-          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <User className="h-6 w-6" />
-            <span className="text-xs">Customers</span>
-          </Link>
-          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <Plus className="h-6 w-6" />
-            <span className="text-xs">Test</span>
-          </Link>
-          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <Calendar className="h-6 w-6" />
-            <span className="text-xs">Schedule</span>
-          </Link>
-          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-blue-600 bg-blue-50">
-            <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
-            </div>
-            <span className="text-xs font-medium">More</span>
-          </Link>
-        </div>
-      </nav>
+      </main>
     </div>
   );
 }

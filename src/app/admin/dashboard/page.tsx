@@ -9,19 +9,23 @@ import {
   DollarSign,
   FileText,
   Mail,
-  Zap,
   Clock,
   CheckCircle,
   AlertTriangle,
   TrendingUp,
-  Wifi,
   Database,
   RefreshCw,
   Search,
-  Shield
+  Shield,
+  Home,
+  Settings,
+  Wrench
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { NotificationManagerComponent } from '@/components/NotificationManager';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import Link from 'next/link';
+import Logo from '@/components/ui/Logo';
 
 interface SystemMetrics {
   automation: {
@@ -36,14 +40,6 @@ interface SystemMetrics {
     status: string
     lastRun: string
     uptime: string
-  }
-  realtimeConnections: {
-    active: number
-    total: number
-  }
-  offlineSync: {
-    pending: number
-    lastSync: string
   }
 }
 
@@ -63,6 +59,12 @@ interface BusinessMetrics {
     pendingInvoices: number
     overduePayments: number
   }
+  testing?: {
+    totalTests: number
+    passedTests: number
+    failedTests: number
+    passRate: number
+  }
 }
 
 interface Activity {
@@ -71,7 +73,7 @@ interface Activity {
   icon: string
   text: string
   time: string
-  color: string
+  color?: string
 }
 
 function AdminDashboard() {
@@ -96,15 +98,7 @@ function AdminDashboard() {
       if (systemData.success) {
         setSystemMetrics({
           automation: systemData.metrics,
-          automationHealth: systemData.automationHealth,
-          realtimeConnections: {
-            active: Math.floor(Math.random() * 15) + 5, // Mock data
-            total: 25
-          },
-          offlineSync: {
-            pending: Math.floor(Math.random() * 3),
-            lastSync: new Date().toISOString()
-          }
+          automationHealth: systemData.automationHealth
         })
       }
 
@@ -119,56 +113,45 @@ function AdminDashboard() {
       setLastRefresh(new Date())
     } catch (error) {
       console.error('Error fetching metrics:', error)
-      // Use mock data on error
+      // Show real empty state instead of mock data
       setSystemMetrics({
         automation: {
-          testsCompleted: 23,
-          invoicesGenerated: 23,
-          paymentsProcessed: 18,
-          reportsSubmitted: 23,
-          emailsSent: 47,
-          remindersScheduled: 12
+          testsCompleted: 0,
+          invoicesGenerated: 0,
+          paymentsProcessed: 0,
+          reportsSubmitted: 0,
+          emailsSent: 0,
+          remindersScheduled: 0
         },
         automationHealth: {
-          status: 'healthy',
-          lastRun: new Date().toISOString(),
-          uptime: '99.8%'
-        },
-        realtimeConnections: {
-          active: 8,
-          total: 12
-        },
-        offlineSync: {
-          pending: 0,
-          lastSync: new Date().toISOString()
+          status: 'initializing',
+          lastRun: 'Never',
+          uptime: '100%'
         }
       })
 
       setBusinessMetrics({
         customers: {
-          total: 127,
-          active: 115,
-          needsService: 12
+          total: 0,
+          active: 0,
+          needsService: 0
         },
         appointments: {
-          scheduled: 8,
-          completed: 23,
-          pending: 2
+          scheduled: 0,
+          completed: 0,
+          pending: 0
         },
         financials: {
-          monthlyRevenue: 3450,
-          pendingInvoices: 5,
-          overduePayments: 2
+          monthlyRevenue: 0,
+          pendingInvoices: 0,
+          overduePayments: 0
         }
       })
 
-      // Set fallback activities if none loaded
-      if (activities.length === 0) {
-        setActivities([
-          { id: '1', type: 'system', icon: 'Activity', text: 'System monitoring dashboard loaded', time: 'Just now', color: 'text-blue-400' },
-          { id: '2', type: 'ready', icon: 'CheckCircle', text: 'Automation system ready for operations', time: '1 minute ago', color: 'text-green-400' }
-        ])
-      }
+      // Show empty state message
+      setActivities([
+        { id: '1', type: 'system', icon: 'Activity', text: 'System dashboard loaded - connect your data sources to see real metrics', time: 'Just now' }
+      ])
     } finally {
       setLoading(false)
     }
@@ -182,334 +165,366 @@ function AdminDashboard() {
     return () => clearInterval(interval)
   }, [fetchMetrics])
 
-  const StatCard = ({ 
-    title, 
-    value, 
-    icon: Icon, 
-    trend, 
-    color = 'blue',
-    subtitle 
-  }: {
-    title: string
-    value: string | number
-    icon: React.ComponentType<{ className?: string }>
-    trend?: number
-    color?: 'blue' | 'green' | 'orange' | 'red'
-    subtitle?: string
-  }) => {
-    const colorClasses = {
-      blue: 'text-blue-400 bg-blue-500/20',
-      green: 'text-green-400 bg-green-500/20',
-      orange: 'text-orange-400 bg-orange-500/20',
-      red: 'text-red-400 bg-red-500/20'
-    }
-
-    return (
-      <div className="glass rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className={`p-3 rounded-xl ${colorClasses[color]}`}>
-            <Icon className="h-6 w-6" />
-          </div>
-          {trend && (
-            <div className={`flex items-center space-x-1 text-sm ${trend > 0 ? 'text-green-400' : 'text-red-400'}`}>
-              <TrendingUp className={`h-4 w-4 ${trend < 0 ? 'rotate-180' : ''}`} />
-              <span>{Math.abs(trend)}%</span>
-            </div>
-          )}
-        </div>
-        <h3 className="text-white/80 text-sm font-medium">{title}</h3>
-        <p className="text-2xl font-bold text-white mt-1">{value}</p>
-        {subtitle && (
-          <p className="text-white/50 text-xs mt-1">{subtitle}</p>
-        )}
-      </div>
-    )
-  }
-
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="flex items-center space-x-3">
-          <RefreshCw className="h-6 w-6 text-blue-400 animate-spin" />
-          <span className="text-white">Loading system metrics...</span>
-        </div>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <LoadingSpinner size="lg" color="blue" text="Loading admin dashboard..." />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center space-x-8">
+              <Link href="/" className="flex items-center space-x-3">
+                <Logo width={160} height={128} />
+                <div>
+                  <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
+                  <p className="text-xs text-slate-600">Admin Portal</p>
+                </div>
+              </Link>
+              <nav className="hidden md:flex space-x-1">
+                <Link href="/admin/dashboard" className="px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 font-medium">
+                  <Home className="h-4 w-4 mr-2 inline" />
+                  Dashboard
+                </Link>
+                <Link href="/admin/analytics" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                  <TrendingUp className="h-4 w-4 mr-2 inline" />
+                  Analytics
+                </Link>
+                <Link href="/admin/data-management" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                  <Database className="h-4 w-4 mr-2 inline" />
+                  Data Export
+                </Link>
+              </nav>
+            </div>
+            <div className="flex items-center space-x-4">
+              <NotificationManagerComponent />
+              <div className="text-sm text-slate-600 bg-slate-50 px-3 py-2 rounded-lg border">
+                Last updated: {lastRefresh.toLocaleTimeString()}
+              </div>
+              <Button
+                onClick={fetchMetrics}
+                variant="outline"
+                size="sm"
+                className="border-slate-300 text-slate-700 hover:bg-slate-50"
+              >
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Refresh
+              </Button>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/admin/settings">
+                  <Settings className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8 relative z-10">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold gradient-text">System Dashboard</h1>
-            <p className="text-white/60 mt-2">
-              Real-time monitoring of your automation platform
+            <h2 className="text-4xl font-bold text-slate-900 mb-2">System Control Center</h2>
+            <p className="text-slate-600 text-xl">
+              Real business data and operational insights for Fisher Backflows
             </p>
           </div>
-          
-          <div className="flex items-center space-x-6">
-            <NotificationManagerComponent />
-            
-            <div className="text-right text-sm text-white/60">
-              Last updated: {lastRefresh.toLocaleTimeString()}
-            </div>
-            
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        {/* Quick Actions */}
+        <div className="mb-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Button
               onClick={() => window.location.href = '/admin/analytics'}
-              className="btn-glass px-4 py-2 rounded-lg"
+              variant="outline"
+              className="h-auto p-6 flex-col space-y-3 border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200"
             >
-              <TrendingUp className="h-4 w-4 mr-2" />
-              Analytics
+              <TrendingUp className="h-8 w-8 text-blue-600" />
+              <div className="text-center">
+                <div className="font-semibold text-slate-900">Analytics</div>
+                <div className="text-sm text-slate-600">View detailed reports</div>
+              </div>
             </Button>
 
             <Button
               onClick={() => window.location.href = '/admin/data-management'}
-              className="btn-glass px-4 py-2 rounded-lg"
+              variant="outline"
+              className="h-auto p-6 flex-col space-y-3 border-green-200 hover:bg-green-50 hover:border-green-300 transition-all duration-200"
             >
-              <Database className="h-4 w-4 mr-2" />
-              Data Export
+              <Database className="h-8 w-8 text-green-600" />
+              <div className="text-center">
+                <div className="font-semibold text-slate-900">Data Export</div>
+                <div className="text-sm text-slate-600">Manage data exports</div>
+              </div>
             </Button>
 
             <Button
               onClick={() => window.location.href = '/admin/search'}
-              className="btn-glass px-4 py-2 rounded-lg"
+              variant="outline"
+              className="h-auto p-6 flex-col space-y-3 border-purple-200 hover:bg-purple-50 hover:border-purple-300 transition-all duration-200"
             >
-              <Search className="h-4 w-4 mr-2" />
-              Search
+              <Search className="h-8 w-8 text-purple-600" />
+              <div className="text-center">
+                <div className="font-semibold text-slate-900">Search</div>
+                <div className="text-sm text-slate-600">Find records</div>
+              </div>
             </Button>
 
             <Button
               onClick={() => window.location.href = '/admin/audit-logs'}
-              className="btn-glass px-4 py-2 rounded-lg"
+              variant="outline"
+              className="h-auto p-6 flex-col space-y-3 border-red-200 hover:bg-red-50 hover:border-red-300 transition-all duration-200"
             >
-              <Shield className="h-4 w-4 mr-2" />
-              Audit Logs
-            </Button>
-            
-            <Button
-              onClick={fetchMetrics}
-              className="btn-glass px-4 py-2 rounded-lg"
-            >
-              <RefreshCw className="h-4 w-4 mr-2" />
-              Refresh
+              <Shield className="h-8 w-8 text-red-600" />
+              <div className="text-center">
+                <div className="font-semibold text-slate-900">Security</div>
+                <div className="text-sm text-slate-600">View audit logs</div>
+              </div>
             </Button>
           </div>
         </div>
 
-        {/* System Health Status */}
-        <div className="glass rounded-2xl p-6 mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-white">System Health</h2>
-            <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm ${
+        {/* System Status */}
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8 mb-10">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h3 className="text-3xl font-bold text-slate-900 mb-2">Platform Status</h3>
+              <p className="text-slate-600 text-lg">Real business operations data</p>
+            </div>
+            <div className={`flex items-center space-x-3 px-6 py-3 rounded-xl text-lg font-semibold border ${
               systemMetrics?.automationHealth.status === 'healthy' 
-                ? 'bg-green-500/20 text-green-400' 
-                : 'bg-red-500/20 text-red-400'
+                ? 'bg-green-50 text-green-700 border-green-200' 
+                : systemMetrics?.automationHealth.status === 'initializing'
+                ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
+                : 'bg-red-50 text-red-700 border-red-200'
             }`}>
-              <Activity className="h-4 w-4" />
-              <span className="capitalize">{systemMetrics?.automationHealth.status}</span>
+              <Activity className="h-6 w-6" />
+              <span className="capitalize">{systemMetrics?.automationHealth.status || 'Loading'}</span>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-white">{systemMetrics?.automationHealth.uptime}</div>
-              <div className="text-white/60 text-sm">Uptime</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold text-blue-600 mb-3">{systemMetrics?.automationHealth.uptime || '100%'}</div>
+              <div className="text-slate-700 font-semibold">System Uptime</div>
+              <div className="text-slate-500 text-sm mt-1">Platform availability</div>
             </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center space-x-1">
-                <Wifi className="h-4 w-4 text-green-400" />
-                <span className="text-2xl font-bold text-white">
-                  {systemMetrics?.realtimeConnections.active}/{systemMetrics?.realtimeConnections.total}
-                </span>
-              </div>
-              <div className="text-white/60 text-sm">Live Connections</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-white">{systemMetrics?.offlineSync.pending}</div>
-              <div className="text-white/60 text-sm">Pending Sync</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-400">
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold text-emerald-600 mb-3">
                 {systemMetrics?.automation.testsCompleted || 0}
               </div>
-              <div className="text-white/60 text-sm">Tests This Week</div>
+              <div className="text-slate-700 font-semibold">Tests Completed</div>
+              <div className="text-slate-500 text-sm mt-1">Last 7 days</div>
+            </div>
+            <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold text-green-600 mb-3">
+                {systemMetrics?.automation.invoicesGenerated || 0}
+              </div>
+              <div className="text-slate-700 font-semibold">Invoices Generated</div>
+              <div className="text-slate-500 text-sm mt-1">Last 7 days</div>
+            </div>
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold text-purple-600 mb-3">
+                {systemMetrics?.automation.paymentsProcessed || 0}
+              </div>
+              <div className="text-slate-700 font-semibold">Payments Processed</div>
+              <div className="text-slate-500 text-sm mt-1">Last 7 days</div>
             </div>
           </div>
         </div>
 
-        {/* Automation Metrics */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-white mb-6">Automation Performance</h2>
-          <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <StatCard
-              title="Tests Completed"
-              value={systemMetrics?.automation.testsCompleted || 0}
-              icon={CheckCircle}
-              color="green"
-              trend={12}
-              subtitle="This week"
-            />
-            <StatCard
-              title="Invoices Generated"
-              value={systemMetrics?.automation.invoicesGenerated || 0}
-              icon={FileText}
-              color="blue"
-              trend={8}
-              subtitle="Auto-generated"
-            />
-            <StatCard
-              title="Payments Processed"
-              value={systemMetrics?.automation.paymentsProcessed || 0}
-              icon={DollarSign}
-              color="green"
-              trend={15}
-              subtitle="Automated"
-            />
-            <StatCard
-              title="Reports Submitted"
-              value={systemMetrics?.automation.reportsSubmitted || 0}
-              icon={Database}
-              color="blue"
-              subtitle="To water depts"
-            />
-            <StatCard
-              title="Emails Sent"
-              value={systemMetrics?.automation.emailsSent || 0}
-              icon={Mail}
-              color="green"
-              trend={5}
-              subtitle="Notifications"
-            />
-            <StatCard
-              title="Reminders Scheduled"
-              value={systemMetrics?.automation.remindersScheduled || 0}
-              icon={Clock}
-              color="orange"
-              subtitle="Follow-ups"
-            />
+        {/* Business Overview */}
+        <div className="mb-10">
+          <div className="mb-8">
+            <h3 className="text-3xl font-bold text-slate-900 mb-2">Business Overview</h3>
+            <p className="text-slate-600 text-lg">Key business metrics and operational insights</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-blue-100 rounded-lg mb-4">
+                <Users className="h-8 w-8 text-blue-600" />
+              </div>
+              <div className="text-3xl font-bold text-blue-700 mb-2">{businessMetrics?.customers.total || 0}</div>
+              <div className="text-slate-700 font-semibold mb-1">Total Customers</div>
+              <div className="text-slate-500 text-sm">{businessMetrics?.customers.active || 0} active</div>
+            </div>
+            
+            <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-green-100 rounded-lg mb-4">
+                <Calendar className="h-8 w-8 text-green-600" />
+              </div>
+              <div className="text-3xl font-bold text-green-700 mb-2">{businessMetrics?.appointments.scheduled || 0}</div>
+              <div className="text-slate-700 font-semibold mb-1">Scheduled Appointments</div>
+              <div className="text-slate-500 text-sm">This month</div>
+            </div>
+            
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-emerald-100 rounded-lg mb-4">
+                <DollarSign className="h-8 w-8 text-emerald-600" />
+              </div>
+              <div className="text-3xl font-bold text-emerald-700 mb-2">${businessMetrics?.financials.monthlyRevenue?.toLocaleString() || '0'}</div>
+              <div className="text-slate-700 font-semibold mb-1">Monthly Revenue</div>
+              <div className="text-slate-500 text-sm">Current month</div>
+            </div>
+            
+            <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-red-100 rounded-lg mb-4">
+                <AlertTriangle className="h-8 w-8 text-red-600" />
+              </div>
+              <div className="text-3xl font-bold text-red-700 mb-2">{businessMetrics?.customers.needsService || 0}</div>
+              <div className="text-slate-700 font-semibold mb-1">Need Service</div>
+              <div className="text-slate-500 text-sm">Require attention</div>
+            </div>
           </div>
         </div>
 
-        {/* Business Metrics */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-white mb-6">Business Overview</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatCard
-              title="Total Customers"
-              value={businessMetrics?.customers.total || 0}
-              icon={Users}
-              color="blue"
-              trend={3}
-              subtitle={`${businessMetrics?.customers.active || 0} active`}
-            />
-            <StatCard
-              title="Scheduled Appointments"
-              value={businessMetrics?.appointments.scheduled || 0}
-              icon={Calendar}
-              color="green"
-              subtitle="This week"
-            />
-            <StatCard
-              title="Monthly Revenue"
-              value={`$${businessMetrics?.financials.monthlyRevenue?.toLocaleString() || '0'}`}
-              icon={DollarSign}
-              color="green"
-              trend={18}
-              subtitle="Current month"
-            />
-            <StatCard
-              title="Customers Need Service"
-              value={businessMetrics?.customers.needsService || 0}
-              icon={AlertTriangle}
-              color="red"
-              subtitle="Require attention"
-            />
-          </div>
-        </div>
-
-        {/* Automation Engine Status */}
-        <div className="glass rounded-2xl p-6 mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-white">Automation Engine</h2>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-green-400 text-sm font-medium">Running</span>
+        {/* Activity Summary */}
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8 mb-10">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h3 className="text-2xl font-bold text-slate-900 mb-2">Platform Activity Summary</h3>
+              <p className="text-slate-600">Overview of your business operations</p>
+            </div>
+            <div className={`flex items-center space-x-3 px-4 py-2 rounded-xl border ${
+              (systemMetrics?.automation.testsCompleted || 0) > 0
+                ? 'bg-green-50 text-green-700 border-green-200'
+                : 'bg-slate-50 text-slate-600 border-slate-200'
+            }`}>
+              <div className={`w-3 h-3 rounded-full ${
+                (systemMetrics?.automation.testsCompleted || 0) > 0
+                  ? 'bg-green-500 animate-pulse'
+                  : 'bg-slate-400'
+              }`}></div>
+              <span className="font-semibold">
+                {(systemMetrics?.automation.testsCompleted || 0) > 0 ? 'Active' : 'Ready'}
+              </span>
             </div>
           </div>
           
-          <div className="grid md:grid-cols-4 gap-4 mb-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-400">6</div>
-              <div className="text-white/60 text-sm">Active Rules</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">{systemMetrics?.automation.testsCompleted || 0}</div>
+              <div className="text-slate-700 font-semibold">Tests Completed</div>
+              <div className="text-slate-500 text-sm">Last 7 days</div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-orange-400">12</div>
-              <div className="text-white/60 text-sm">Pending Actions</div>
+            <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-green-600 mb-2">{systemMetrics?.automation.invoicesGenerated || 0}</div>
+              <div className="text-slate-700 font-semibold">Invoices Created</div>
+              <div className="text-slate-500 text-sm">Last 7 days</div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-400">47</div>
-              <div className="text-white/60 text-sm">Sent Today</div>
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-emerald-600 mb-2">{systemMetrics?.automation.paymentsProcessed || 0}</div>
+              <div className="text-slate-700 font-semibold">Payments Received</div>
+              <div className="text-slate-500 text-sm">Last 7 days</div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-red-400">0</div>
-              <div className="text-white/60 text-sm">Failed Today</div>
+            <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">{systemMetrics?.automation.reportsSubmitted || 0}</div>
+              <div className="text-slate-700 font-semibold">Reports Submitted</div>
+              <div className="text-slate-500 text-sm">To water departments</div>
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="text-sm text-white/60">
-              Next cycle: {new Date(Date.now() + 3600000).toLocaleTimeString()}
+          {((systemMetrics?.automation.testsCompleted || 0) === 0 && 
+            (systemMetrics?.automation.invoicesGenerated || 0) === 0 && 
+            (systemMetrics?.automation.paymentsProcessed || 0) === 0) && (
+            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200 text-center">
+              <div className="text-slate-600 mb-4">
+                <Database className="h-12 w-12 text-slate-400 mx-auto mb-3" />
+                <p className="text-lg font-semibold">No Data Available Yet</p>
+                <p className="text-sm">Once you start using the platform, your real business metrics will appear here.</p>
+              </div>
+              <div className="flex justify-center space-x-4 mt-4">
+                <Button variant="outline" asChild>
+                  <Link href="/team-portal/customers/new">
+                    <Users className="h-4 w-4 mr-2" />
+                    Add Customer
+                  </Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link href="/team-portal/schedule/new">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    Schedule Test
+                  </Link>
+                </Button>
+              </div>
             </div>
-            <Button
-              onClick={() => fetch('/api/automation/engine', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'run_cycle' }) })}
-              className="btn-glass px-3 py-1 text-sm rounded-lg"
-            >
-              <Zap className="h-3 w-3 mr-1" />
-              Run Now
-            </Button>
-          </div>
+          )}
         </div>
 
         {/* Recent Activity */}
-        <div className="glass rounded-2xl p-6">
-          <h2 className="text-xl font-bold text-white mb-6">Recent Automation Activity</h2>
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8">
+          <div className="mb-8">
+            <h3 className="text-2xl font-bold text-slate-900 mb-2">Recent Business Activity</h3>
+            <p className="text-slate-600">Latest real business operations and transactions</p>
+          </div>
           
           <div className="space-y-4">
-            {activities.map((activity) => {
-              // Map icon names to components
-              const getIcon = (iconName: string) => {
-                switch (iconName) {
-                  case 'CheckCircle': return CheckCircle
-                  case 'Mail': return Mail
-                  case 'DollarSign': return DollarSign
-                  case 'Database': return Database
-                  case 'Clock': return Clock
-                  case 'Calendar': return Calendar
-                  case 'Activity': return Activity
-                  default: return CheckCircle
+            {activities.length > 0 ? (
+              activities.map((activity) => {
+                // Map icon names to components
+                const getIcon = (iconName: string) => {
+                  switch (iconName) {
+                    case 'CheckCircle': return CheckCircle
+                    case 'Mail': return Mail
+                    case 'DollarSign': return DollarSign
+                    case 'Database': return Database
+                    case 'Clock': return Clock
+                    case 'Calendar': return Calendar
+                    case 'Activity': return Activity
+                    default: return CheckCircle
+                  }
                 }
-              }
-              
-              const IconComponent = getIcon(activity.icon)
-              
-              return (
-                <div key={activity.id} className="flex items-center space-x-4 p-3 glass-darker rounded-xl">
-                  <IconComponent className={`h-5 w-5 ${activity.color}`} />
-                  <div className="flex-1">
-                    <p className="text-white/90">{activity.text}</p>
-                    <p className="text-white/50 text-sm">{activity.time}</p>
+                
+                const IconComponent = getIcon(activity.icon)
+                const iconColorClass = activity.type === 'test_completed' 
+                  ? 'bg-green-100 text-green-600'
+                  : activity.type === 'payment_received'
+                  ? 'bg-emerald-100 text-emerald-600'
+                  : activity.type === 'invoice_sent'
+                  ? 'bg-blue-100 text-blue-600'
+                  : 'bg-slate-100 text-slate-600'
+                
+                return (
+                  <div key={activity.id} className="flex items-center space-x-4 p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors duration-200">
+                    <div className={`p-2 rounded-lg ${iconColorClass}`}>
+                      <IconComponent className="h-5 w-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-slate-900 font-medium">{activity.text}</p>
+                      <p className="text-slate-500 text-sm">{activity.time}</p>
+                    </div>
                   </div>
+                )
+              })
+            ) : (
+              <div className="text-center py-12">
+                <div className="inline-flex p-4 bg-slate-100 rounded-full mb-4">
+                  <Activity className="h-8 w-8 text-slate-500" />
                 </div>
-              )
-            })}
+                <h4 className="text-lg font-semibold text-slate-900 mb-2">No Business Activity Yet</h4>
+                <p className="text-slate-600 mb-6">Once you start conducting tests, sending invoices, and processing payments, your activity will appear here</p>
+                <div className="flex justify-center space-x-4">
+                  <Button variant="outline" asChild>
+                    <Link href="/field/dashboard">
+                      <Wrench className="h-4 w-4 mr-2" />
+                      Field Dashboard
+                    </Link>
+                  </Button>
+                  <Button variant="outline" asChild>
+                    <Link href="/team-portal/invoices/new">
+                      <FileText className="h-4 w-4 mr-2" />
+                      Create Invoice
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

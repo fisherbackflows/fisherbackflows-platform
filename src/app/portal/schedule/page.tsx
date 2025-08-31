@@ -7,10 +7,13 @@ import {
   MapPin, 
   User, 
   Phone,
-  CheckCircle
+  CheckCircle,
+  ArrowLeft
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Navigation from '@/components/portal/Navigation';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import Link from 'next/link';
+import Logo from '@/components/ui/Logo';
 import Calendar from '@/components/ui/Calendar';
 
 // Mock customer data
@@ -127,250 +130,425 @@ export default function SchedulePage() {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-black">
-        <div className="fixed inset-0 bg-grid opacity-10" />
-        <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
-        
-        <Navigation customerName={mockCustomer.name} accountNumber="FB001" />
-        
-        <div className="max-w-2xl mx-auto px-4 py-16 text-center relative z-10">
-          <div className="glass-blue rounded-3xl p-12 glow-blue">
-            <div className="glass rounded-full p-6 mx-auto mb-6 w-20 h-20 flex items-center justify-center">
-              <CheckCircle className="h-10 w-10 text-green-400" />
+      <div className="min-h-screen bg-white">
+        {/* Header */}
+        <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+          <div className="max-w-7xl mx-auto px-6 py-4">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center space-x-8">
+                <Link href="/" className="flex items-center space-x-3">
+                  <Logo width={160} height={128} />
+                  <div>
+                    <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
+                    <p className="text-xs text-slate-600">Customer Portal</p>
+                  </div>
+                </Link>
+                <nav className="hidden md:flex space-x-1">
+                  <Link href="/portal/dashboard" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                    <ArrowLeft className="h-4 w-4 mr-2 inline" />
+                    Back to Dashboard
+                  </Link>
+                </nav>
+              </div>
+              <div className="text-sm text-slate-600">
+                Welcome, {mockCustomer.name}
+              </div>
             </div>
-            <h1 className="text-3xl font-bold mb-4 text-green-400">Request Submitted!</h1>
-            <p className="text-white/80 text-lg mb-8">
-              We'll call you within 24 hours to confirm your appointment details.
+          </div>
+        </header>
+
+        {/* Success Content */}
+        <main className="max-w-3xl mx-auto px-6 py-12">
+          <div className="bg-white border border-green-200 rounded-2xl p-12 text-center shadow-lg">
+            <div className="inline-flex p-4 rounded-full bg-green-100 mb-8">
+              <CheckCircle className="h-12 w-12 text-green-600" />
+            </div>
+            <h1 className="text-4xl font-bold text-slate-900 mb-4">Request Submitted!</h1>
+            <p className="text-slate-600 text-xl mb-8 leading-relaxed">
+              Thank you for scheduling your backflow test appointment.<br>
+              We'll call you within 24 hours to confirm the details.
             </p>
+            
+            <div className="bg-slate-50 rounded-xl p-6 mb-8">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">What happens next?</h3>
+              <div className="space-y-3 text-left">
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm font-bold flex items-center justify-center mt-0.5">1</div>
+                  <p className="text-slate-700">Our team will review your request and available time slots</p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm font-bold flex items-center justify-center mt-0.5">2</div>
+                  <p className="text-slate-700">We'll call you to confirm the appointment time and answer any questions</p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm font-bold flex items-center justify-center mt-0.5">3</div>
+                  <p className="text-slate-700">Our certified technician will arrive at the scheduled time</p>
+                </div>
+              </div>
+            </div>
+
             <div className="space-y-4">
               <Button 
                 onClick={() => window.location.href = '/portal/dashboard'}
-                className="btn-glow py-3 px-8 rounded-lg w-full"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition-all duration-200 w-full sm:w-auto"
               >
                 Back to Dashboard
               </Button>
-              <Button 
-                onClick={() => window.location.href = 'tel:2532788692'}
-                className="btn-glass py-3 px-8 rounded-lg w-full"
-              >
-                <Phone className="h-5 w-5 mr-2" />
-                Call Now: (253) 278-8692
-              </Button>
+              <div className="text-center">
+                <p className="text-slate-600 mb-2">Need immediate assistance?</p>
+                <Button 
+                  onClick={() => window.location.href = 'tel:2532788692'}
+                  variant="outline"
+                  className="border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-3 rounded-xl font-semibold transition-all duration-200"
+                >
+                  <Phone className="h-5 w-5 mr-2" />
+                  Call (253) 278-8692
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Effects */}
-      <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-8">
+              <Link href="/" className="flex items-center space-x-3">
+                <Logo width={160} height={128} />
+                <div>
+                  <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
+                  <p className="text-xs text-slate-600">Customer Portal</p>
+                </div>
+              </Link>
+              <nav className="hidden md:flex space-x-1">
+                <Link href="/portal/dashboard" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                  <ArrowLeft className="h-4 w-4 mr-2 inline" />
+                  Dashboard
+                </Link>
+                <Link href="/portal/schedule" className="px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 font-medium">
+                  Schedule Test
+                </Link>
+              </nav>
+            </div>
+            <div className="text-sm text-slate-600">
+              Welcome, {mockCustomer.name}
+            </div>
+          </div>
+        </div>
+      </header>
 
-      <Navigation customerName={mockCustomer.name} accountNumber="FB001" />
-
-      <div className="max-w-2xl mx-auto px-4 py-8 relative z-10">
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold gradient-text mb-4">Schedule Your Test</h1>
-          <p className="text-white/70 text-lg">
-            Quick and easy booking - we'll call you to confirm details
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-bold text-slate-900 mb-4">Schedule Your Backflow Test</h1>
+          <p className="text-slate-600 text-xl leading-relaxed">
+            Quick and easy booking - we'll call you to confirm the details and exact time
           </p>
         </div>
 
-        {/* Simple Booking Form */}
-        <div className="glass rounded-3xl p-8 glow-blue-sm">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Your Info */}
-            <div className="glass-blue rounded-2xl p-6">
-              <h2 className="text-lg font-bold text-blue-400 mb-4">Your Information</h2>
-              <div className="space-y-3 text-sm text-white/80">
-                <div className="flex items-center">
-                  <User className="h-4 w-4 mr-3 text-blue-400" />
-                  {mockCustomer.name}
-                </div>
-                <div className="flex items-center">
-                  <Phone className="h-4 w-4 mr-3 text-blue-400" />
-                  {mockCustomer.phone}
-                </div>
-                <div className="flex items-center">
-                  <MapPin className="h-4 w-4 mr-3 text-blue-400" />
-                  {mockCustomer.address}
+        {/* Booking Form */}
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-50 to-slate-50 px-8 py-6 border-b border-slate-200">
+            <h2 className="text-xl font-bold text-slate-900">Book Your Appointment</h2>
+            <p className="text-slate-600">Fill out the form below and we'll contact you within 24 hours</p>
+          </div>
+
+          <div className="p-8">
+            <form onSubmit={handleSubmit} className="space-y-8">
+              {/* Your Info */}
+              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                <h3 className="text-lg font-bold text-slate-900 mb-4">Your Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-blue-100 rounded-lg">
+                      <User className="h-5 w-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-600">Customer</p>
+                      <p className="font-semibold text-slate-900">{mockCustomer.name}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-green-100 rounded-lg">
+                      <Phone className="h-5 w-5 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-600">Phone</p>
+                      <p className="font-semibold text-slate-900">{mockCustomer.phone}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-purple-100 rounded-lg">
+                      <MapPin className="h-5 w-5 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-slate-600">Location</p>
+                      <p className="font-semibold text-slate-900">{mockCustomer.address}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Calendar View */}
-            <div>
-              <label className="block text-white/80 text-lg font-medium mb-4">
-                Choose from your available dates
-              </label>
-              
-              {loadingDates ? (
-                <div className="glass-blue rounded-xl p-8 text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto mb-4"></div>
-                  <p className="text-white/70">Loading available dates from your calendar...</p>
-                </div>
-              ) : availableDates.length === 0 ? (
-                <div className="glass-blue rounded-xl p-8 text-center">
-                  <div className="h-12 w-12 text-white/30 mx-auto mb-4 flex items-center justify-center">
-                    📅
+              {/* Calendar View */}
+              <div>
+                <label className="block text-slate-900 text-xl font-semibold mb-6">
+                  <CalendarIcon className="h-6 w-6 inline mr-3 text-blue-600" />
+                  Choose Your Preferred Date
+                </label>
+                
+                {loadingDates ? (
+                  <div className="bg-slate-50 rounded-xl p-12 text-center border border-slate-200">
+                    <LoadingSpinner size="lg" color="blue" text="Loading available dates from your calendar..." />
                   </div>
-                  <p className="text-white/70 mb-4">No available dates found</p>
-                  <p className="text-white/50 text-sm">Please call us to schedule: (253) 278-8692</p>
+                ) : availableDates.length === 0 ? (
+                  <div className="bg-slate-50 rounded-xl p-12 text-center border border-slate-200">
+                    <div className="inline-flex p-4 rounded-full bg-slate-200 mb-6">
+                      <CalendarIcon className="h-8 w-8 text-slate-500" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-900 mb-3">No Available Dates Found</h3>
+                    <p className="text-slate-600 mb-6">Please call us directly to schedule your appointment</p>
+                    <Button 
+                      onClick={() => window.location.href = 'tel:2532788692'}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold"
+                    >
+                      <Phone className="h-5 w-5 mr-2" />
+                      Call (253) 278-8692
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="border border-slate-200 rounded-xl overflow-hidden">
+                    <Calendar
+                      availableDates={availableDates}
+                      selectedDate={formData.preferredDate}
+                      onDateSelect={handleDateSelect}
+                      preferredTime={formData.preferredTime}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Time Preference */}
+              <div>
+                <label className="block text-slate-900 text-xl font-semibold mb-6">
+                  <Clock className="h-6 w-6 inline mr-3 text-blue-600" />
+                  Preferred Time of Day
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-50 ${
+                    formData.preferredTime === 'morning' 
+                      ? 'border-blue-500 bg-blue-50' 
+                      : 'border-slate-200 bg-white'
+                  }`}>
+                    <input
+                      type="radio"
+                      name="preferredTime"
+                      value="morning"
+                      checked={formData.preferredTime === 'morning'}
+                      onChange={handleInputChange}
+                      className="sr-only"
+                    />
+                    <div className="text-center">
+                      <div className={`inline-flex p-3 rounded-full mb-4 ${
+                        formData.preferredTime === 'morning' ? 'bg-blue-100' : 'bg-slate-100'
+                      }`}>
+                        <Clock className={`h-6 w-6 ${
+                          formData.preferredTime === 'morning' ? 'text-blue-600' : 'text-slate-600'
+                        }`} />
+                      </div>
+                      <h3 className="font-semibold text-slate-900 mb-1">Morning</h3>
+                      <p className="text-sm text-slate-600 mb-3">7:00 AM - 12:00 PM</p>
+                      {selectedDate && (
+                        <p className="text-xs text-green-600 font-medium">
+                          {selectedDate.availableSlots.filter(slot => slot.period === 'morning').length} slots available
+                        </p>
+                      )}
+                    </div>
+                    {formData.preferredTime === 'morning' && (
+                      <div className="absolute top-2 right-2">
+                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                          <CheckCircle className="h-4 w-4 text-white" />
+                        </div>
+                      </div>
+                    )}
+                  </label>
+
+                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-50 ${
+                    formData.preferredTime === 'afternoon' 
+                      ? 'border-blue-500 bg-blue-50' 
+                      : 'border-slate-200 bg-white'
+                  }`}>
+                    <input
+                      type="radio"
+                      name="preferredTime"
+                      value="afternoon"
+                      checked={formData.preferredTime === 'afternoon'}
+                      onChange={handleInputChange}
+                      className="sr-only"
+                    />
+                    <div className="text-center">
+                      <div className={`inline-flex p-3 rounded-full mb-4 ${
+                        formData.preferredTime === 'afternoon' ? 'bg-blue-100' : 'bg-slate-100'
+                      }`}>
+                        <Clock className={`h-6 w-6 ${
+                          formData.preferredTime === 'afternoon' ? 'text-blue-600' : 'text-slate-600'
+                        }`} />
+                      </div>
+                      <h3 className="font-semibold text-slate-900 mb-1">Afternoon</h3>
+                      <p className="text-sm text-slate-600 mb-3">12:00 PM - 6:00 PM</p>
+                      {selectedDate && (
+                        <p className="text-xs text-green-600 font-medium">
+                          {selectedDate.availableSlots.filter(slot => slot.period === 'afternoon').length} slots available
+                        </p>
+                      )}
+                    </div>
+                    {formData.preferredTime === 'afternoon' && (
+                      <div className="absolute top-2 right-2">
+                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                          <CheckCircle className="h-4 w-4 text-white" />
+                        </div>
+                      </div>
+                    )}
+                  </label>
+
+                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-50 ${
+                    formData.preferredTime === 'flexible' 
+                      ? 'border-blue-500 bg-blue-50' 
+                      : 'border-slate-200 bg-white'
+                  }`}>
+                    <input
+                      type="radio"
+                      name="preferredTime"
+                      value="flexible"
+                      checked={formData.preferredTime === 'flexible'}
+                      onChange={handleInputChange}
+                      className="sr-only"
+                    />
+                    <div className="text-center">
+                      <div className={`inline-flex p-3 rounded-full mb-4 ${
+                        formData.preferredTime === 'flexible' ? 'bg-blue-100' : 'bg-slate-100'
+                      }`}>
+                        <Clock className={`h-6 w-6 ${
+                          formData.preferredTime === 'flexible' ? 'text-blue-600' : 'text-slate-600'
+                        }`} />
+                      </div>
+                      <h3 className="font-semibold text-slate-900 mb-1">Flexible</h3>
+                      <p className="text-sm text-slate-600 mb-3">Any time works</p>
+                      {selectedDate && (
+                        <p className="text-xs text-green-600 font-medium">
+                          {selectedDate.availableSlots.length} total slots
+                        </p>
+                      )}
+                    </div>
+                    {formData.preferredTime === 'flexible' && (
+                      <div className="absolute top-2 right-2">
+                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                          <CheckCircle className="h-4 w-4 text-white" />
+                        </div>
+                      </div>
+                    )}
+                  </label>
                 </div>
-              ) : (
-                <Calendar
-                  availableDates={availableDates}
-                  selectedDate={formData.preferredDate}
-                  onDateSelect={handleDateSelect}
-                  preferredTime={formData.preferredTime}
+
+                {/* Show specific time slots for selected date */}
+                {selectedDate && formData.preferredTime !== 'flexible' && (
+                  <div className="mt-6 bg-slate-50 rounded-xl p-6 border border-slate-200">
+                    <h4 className="text-sm font-semibold text-slate-900 mb-3">
+                      Available times on {selectedDate.dayOfWeek}:
+                    </h4>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {selectedDate.availableSlots
+                        .filter(slot => slot.period === formData.preferredTime)
+                        .map((slot, index) => (
+                          <span key={index} className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium">
+                            {slot.time}
+                          </span>
+                        ))}
+                    </div>
+                    <p className="text-xs text-slate-600">
+                      💡 We'll call you to confirm the exact time that works best for both of us
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Special Instructions */}
+              <div>
+                <label htmlFor="specialInstructions" className="block text-slate-900 text-xl font-semibold mb-4">
+                  Special Instructions <span className="text-slate-500 font-normal text-base">(Optional)</span>
+                </label>
+                <textarea
+                  id="specialInstructions"
+                  name="specialInstructions"
+                  value={formData.specialInstructions}
+                  onChange={handleInputChange}
+                  placeholder="Gate codes, pet information, access instructions, or anything else we should know..."
+                  rows={4}
+                  className="w-full px-4 py-4 border border-slate-300 rounded-xl bg-white text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 resize-none"
                 />
-              )}
-            </div>
-
-            {/* Time Preference */}
-            <div>
-              <label className="block text-white/80 text-lg font-medium mb-3">
-                What time works best?
-              </label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <label className={`glass-blue rounded-xl p-4 cursor-pointer transition-all ${formData.preferredTime === 'morning' ? 'ring-2 ring-blue-400' : ''}`}>
-                  <input
-                    type="radio"
-                    name="preferredTime"
-                    value="morning"
-                    checked={formData.preferredTime === 'morning'}
-                    onChange={handleInputChange}
-                    className="sr-only"
-                  />
-                  <div className="text-center">
-                    <Clock className="h-6 w-6 text-blue-400 mx-auto mb-2" />
-                    <p className="font-medium">Morning</p>
-                    <p className="text-sm text-white/60">7AM - 12PM</p>
-                    {selectedDate && (
-                      <p className="text-xs text-green-400 mt-1">
-                        {selectedDate.availableSlots.filter(slot => slot.period === 'morning').length} slots available
-                      </p>
-                    )}
-                  </div>
-                </label>
-                <label className={`glass-blue rounded-xl p-4 cursor-pointer transition-all ${formData.preferredTime === 'afternoon' ? 'ring-2 ring-blue-400' : ''}`}>
-                  <input
-                    type="radio"
-                    name="preferredTime"
-                    value="afternoon"
-                    checked={formData.preferredTime === 'afternoon'}
-                    onChange={handleInputChange}
-                    className="sr-only"
-                  />
-                  <div className="text-center">
-                    <Clock className="h-6 w-6 text-blue-400 mx-auto mb-2" />
-                    <p className="font-medium">Afternoon</p>
-                    <p className="text-sm text-white/60">12PM - 6PM</p>
-                    {selectedDate && (
-                      <p className="text-xs text-green-400 mt-1">
-                        {selectedDate.availableSlots.filter(slot => slot.period === 'afternoon').length} slots available
-                      </p>
-                    )}
-                  </div>
-                </label>
-                <label className={`glass-blue rounded-xl p-4 cursor-pointer transition-all ${formData.preferredTime === 'flexible' ? 'ring-2 ring-blue-400' : ''}`}>
-                  <input
-                    type="radio"
-                    name="preferredTime"
-                    value="flexible"
-                    checked={formData.preferredTime === 'flexible'}
-                    onChange={handleInputChange}
-                    className="sr-only"
-                  />
-                  <div className="text-center">
-                    <Clock className="h-6 w-6 text-blue-400 mx-auto mb-2" />
-                    <p className="font-medium">Flexible</p>
-                    <p className="text-sm text-white/60">Anytime</p>
-                    {selectedDate && (
-                      <p className="text-xs text-green-400 mt-1">
-                        {selectedDate.availableSlots.length} total slots
-                      </p>
-                    )}
-                  </div>
-                </label>
+                <p className="text-sm text-slate-500 mt-2">
+                  This helps our technicians prepare and ensures a smooth service experience
+                </p>
               </div>
 
-              {/* Show specific time slots for selected date */}
-              {selectedDate && formData.preferredTime !== 'flexible' && (
-                <div className="mt-4 glass-darker rounded-xl p-4">
-                  <p className="text-white/70 text-sm mb-3">Available times on {selectedDate.dayOfWeek}:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedDate.availableSlots
-                      .filter(slot => slot.period === formData.preferredTime)
-                      .map((slot, index) => (
-                        <span key={index} className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm">
-                          {slot.time}
-                        </span>
-                      ))}
-                  </div>
-                  <p className="text-white/50 text-xs mt-2">
-                    We'll confirm the exact time when we call you
+              {/* Submit Button */}
+              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                <Button
+                  type="submit"
+                  disabled={isSubmitting || !formData.preferredDate}
+                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg transition-all duration-200 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <div className="flex items-center justify-center">
+                      <LoadingSpinner size="sm" color="white" />
+                      <span className="ml-3">Submitting Request...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center">
+                      <CalendarIcon className="h-6 w-6 mr-3" />
+                      <span>Submit Appointment Request</span>
+                    </div>
+                  )}
+                </Button>
+                
+                <div className="mt-4 text-center">
+                  <p className="text-slate-600 text-sm mb-2">
+                    ⚡ <strong>Quick Response:</strong> We'll call you within 24 hours to confirm
+                  </p>
+                  <p className="text-slate-500 text-xs">
+                    By submitting this request, you agree to be contacted by Fisher Backflows
                   </p>
                 </div>
-              )}
-            </div>
+              </div>
+            </form>
+          </div>
+        </div>
 
-            {/* Special Instructions */}
-            <div>
-              <label className="block text-white/80 text-lg font-medium mb-3">
-                Special instructions (optional)
-              </label>
-              <textarea
-                name="specialInstructions"
-                value={formData.specialInstructions}
-                onChange={handleInputChange}
-                placeholder="Gate codes, pet info, access instructions, etc."
-                rows={3}
-                className="input-glass w-full px-4 py-4 rounded-xl text-white placeholder-white/40 resize-none"
-              />
-            </div>
-
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full btn-glow py-4 text-xl font-bold rounded-2xl hover-glow"
+        {/* Alternative Contact */}
+        <div className="text-center mt-10">
+          <div className="bg-slate-50 rounded-xl p-8 border border-slate-200">
+            <h3 className="text-lg font-semibold text-slate-900 mb-3">Prefer to Call?</h3>
+            <p className="text-slate-600 mb-6">Speak directly with our scheduling team</p>
+            <Button 
+              onClick={() => window.location.href = 'tel:2532788692'}
+              variant="outline"
+              className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200"
             >
-              {isSubmitting ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                  Submitting...
-                </>
-              ) : (
-                <>
-                  <CalendarIcon className="h-5 w-5 mr-3" />
-                  Request Test Appointment
-                </>
-              )}
+              <Phone className="h-5 w-5 mr-3" />
+              Call (253) 278-8692
             </Button>
-            
-            <p className="text-center text-white/60 text-sm">
-              ⚡ We'll call you within 24 hours to confirm your appointment
+            <p className="text-slate-500 text-sm mt-3">
+              Available Monday - Friday, 7:00 AM - 6:00 PM
             </p>
-          </form>
+          </div>
         </div>
-
-        {/* Or Call */}
-        <div className="text-center mt-8">
-          <p className="text-white/60 mb-4">Prefer to call?</p>
-          <Button 
-            onClick={() => window.location.href = 'tel:2532788692'}
-            className="btn-glass py-3 px-6 rounded-xl"
-          >
-            <Phone className="h-5 w-5 mr-2" />
-            (253) 278-8692
-          </Button>
-        </div>
-      </div>
+      </main>
     </div>
   );
 }

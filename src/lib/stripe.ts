@@ -26,9 +26,8 @@ const stripeConfig = {
   telemetry: true
 };
 
-// Initialize Stripe with proper error handling
-let stripe: Stripe | null = null;
-try {
+// Lazy initialization function to avoid build-time errors
+function getStripe(): Stripe {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) {
     throw new Error('STRIPE_SECRET_KEY environment variable is required');
@@ -42,15 +41,11 @@ try {
     logger.warn('Stripe running in test mode');
   }
   
-  stripe = new Stripe(key, stripeConfig);
   logger.info('Stripe initialized successfully', { 
     mode: key.startsWith('sk_test_') ? 'test' : 'live' 
   });
-} catch (error: unknown) {
-  const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-  logger.error('Failed to initialize Stripe', { error: errorMessage });
-  // Don't initialize with dummy key - fail hard to prevent issues
-  stripe = null;
+  
+  return new Stripe(key, stripeConfig);
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -117,7 +112,7 @@ export class StripeCustomerManager {
    * Create or update a Stripe customer
    */
   static async upsertCustomer(data: CustomerData): Promise<Stripe.Customer> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       // Check if customer exists
@@ -181,7 +176,7 @@ export class StripeCustomerManager {
    * Get customer payment methods
    */
   static async getPaymentMethods(customerId: string): Promise<Stripe.PaymentMethod[]> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       const paymentMethods = await stripe.paymentMethods.list({
@@ -199,7 +194,7 @@ export class StripeCustomerManager {
    * Delete a payment method
    */
   static async deletePaymentMethod(paymentMethodId: string): Promise<boolean> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       await stripe.paymentMethods.detach(paymentMethodId);
@@ -224,7 +219,7 @@ export class StripePaymentProcessor {
     currency: string = 'usd',
     metadata?: Record<string, string>
   ): Promise<PaymentIntent> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       const intent = await stripe.paymentIntents.create({
@@ -264,7 +259,7 @@ export class StripePaymentProcessor {
     invoiceId?: string,
     savePaymentMethod: boolean = false
   ): Promise<PaymentResult> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       // Create payment intent
@@ -336,7 +331,7 @@ export class StripePaymentProcessor {
     cancelUrl: string,
     metadata?: Record<string, string>
   ): Promise<string> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       const session = await stripe.checkout.sessions.create({
@@ -384,7 +379,7 @@ export class StripePaymentProcessor {
     paymentIntentId: string,
     paymentMethodId?: string
   ): Promise<PaymentResult> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       const intent = await stripe.paymentIntents.confirm(paymentIntentId, {
@@ -428,7 +423,7 @@ export class StripeRefundManager {
     amount?: number,
     reason?: string
   ): Promise<RefundResult> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       const refund = await stripe.refunds.create({
@@ -460,7 +455,7 @@ export class StripeRefundManager {
    * Get refund status
    */
   static async getRefundStatus(refundId: string): Promise<string | null> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       const refund = await stripe.refunds.retrieve(refundId);
@@ -481,7 +476,7 @@ export class StripeSubscriptionManager {
    * Create a subscription
    */
   static async createSubscription(data: SubscriptionData): Promise<Stripe.Subscription> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       const subscription = await stripe.subscriptions.create({
@@ -516,7 +511,7 @@ export class StripeSubscriptionManager {
     subscriptionId: string,
     immediately: boolean = false
   ): Promise<Stripe.Subscription> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       if (immediately) {
@@ -543,7 +538,7 @@ export class StripeSubscriptionManager {
       trialEnd?: number | 'now';
     }
   ): Promise<Stripe.Subscription> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       const updateParams: Stripe.SubscriptionUpdateParams = {
@@ -581,7 +576,7 @@ export class StripeWebhookHandler {
     payload: string | Buffer,
     signature: string
   ): Stripe.Event | null {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
     if (!webhookSecret) {
@@ -883,7 +878,7 @@ export class StripeReporting {
     startDate: Date,
     endDate: Date
   ): Promise<{ totalRevenue: number; totalCharges: number; averageAmount: number }> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       const charges = await stripe.charges.list({
@@ -937,7 +932,7 @@ export class StripeReporting {
    * Get customer lifetime value
    */
   static async getCustomerLifetimeValue(customerId: string): Promise<number> {
-    if (!stripe) throw new Error('Stripe not initialized');
+    const stripe = getStripe();
 
     try {
       const charges = await stripe.charges.list({
@@ -1036,7 +1031,7 @@ export function getCardBrand(cardNumber: string): string {
 // ═══════════════════════════════════════════════════════════════════════
 
 const StripeService = {
-  isInitialized: () => stripe !== null,
+  isInitialized: () => !!process.env.STRIPE_SECRET_KEY,
   customer: StripeCustomerManager,
   payment: StripePaymentProcessor,
   refund: StripeRefundManager,

@@ -42,89 +42,31 @@ export default function CustomersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load sample customer data
-    const sampleCustomers: Customer[] = [
-      {
-        id: '1',
-        name: 'Johnson Properties LLC',
-        email: 'manager@johnsonproperties.com',
-        phone: '(253) 555-0123',
-        address: '1234 Pacific Ave',
-        city: 'Tacoma',
-        state: 'WA',
-        zip: '98402',
-        lastTestDate: '2024-03-15',
-        nextTestDue: '2025-03-15',
-        status: 'current',
-        deviceCount: 3,
-        totalPaid: 255.00
-      },
-      {
-        id: '2',
-        name: 'Smith Residence',
-        email: 'john.smith@gmail.com',
-        phone: '(253) 555-0124',
-        address: '5678 6th Ave',
-        city: 'Tacoma',
-        state: 'WA',
-        zip: '98406',
-        lastTestDate: '2024-01-20',
-        nextTestDue: '2025-01-20',
-        status: 'due',
-        deviceCount: 1,
-        totalPaid: 85.00
-      },
-      {
-        id: '3',
-        name: 'Parkland Medical Center',
-        email: 'facilities@parklandmedical.com',
-        phone: '(253) 555-0125',
-        address: '910 112th St E',
-        city: 'Parkland',
-        state: 'WA',
-        zip: '98444',
-        lastTestDate: '2023-11-10',
-        nextTestDue: '2024-11-10',
-        status: 'overdue',
-        deviceCount: 5,
-        totalPaid: 425.00
-      },
-      {
-        id: '4',
-        name: 'Harbor View Apartments',
-        email: 'maintenance@harborview.com',
-        phone: '(253) 555-0126',
-        address: '2500 Harborview Dr',
-        city: 'Gig Harbor',
-        state: 'WA',
-        zip: '98335',
-        lastTestDate: '2024-06-01',
-        nextTestDue: '2025-06-01',
-        status: 'current',
-        deviceCount: 8,
-        totalPaid: 680.00
-      },
-      {
-        id: '5',
-        name: 'Downtown Deli',
-        email: 'owner@downtowndeli.com',
-        phone: '(253) 555-0127',
-        address: '789 Commerce St',
-        city: 'Tacoma',
-        state: 'WA',
-        zip: '98402',
-        lastTestDate: '2024-09-15',
-        nextTestDue: '2025-09-15',
-        status: 'current',
-        deviceCount: 2,
-        totalPaid: 170.00
+    const loadRealCustomers = async () => {
+      try {
+        setLoading(true);
+        
+        const response = await fetch('/api/team/customers');
+        if (!response.ok) {
+          throw new Error(`Failed to load customers: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        if (data.success && data.customers) {
+          setCustomers(data.customers);
+        } else {
+          console.warn('No customer data available');
+          setCustomers([]);
+        }
+      } catch (error) {
+        console.error('Error loading customers:', error);
+        setCustomers([]);
+      } finally {
+        setLoading(false);
       }
-    ];
+    };
 
-    setTimeout(() => {
-      setCustomers(sampleCustomers);
-      setLoading(false);
-    }, 500);
+    loadRealCustomers();
   }, []);
 
   const filteredCustomers = customers.filter(customer => {
@@ -195,7 +137,7 @@ export default function CustomersPage() {
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
             <Button asChild>
-              <Link href="/app/customers/new">
+              <Link href="/team-portal/customers/new">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Customer
               </Link>
@@ -304,7 +246,7 @@ export default function CustomersPage() {
                       </div>
                     </div>
                     <Button variant="outline" size="sm" asChild>
-                      <Link href={`/app/customers/${customer.id}`}>
+                      <Link href={`/team-portal/customers/${customer.id}`}>
                         <Edit className="h-4 w-4" />
                       </Link>
                     </Button>
@@ -352,13 +294,13 @@ export default function CustomersPage() {
                   {/* Quick Actions */}
                   <div className="flex space-x-2 mt-4">
                     <Button size="sm" variant="outline" asChild>
-                      <Link href={`/app/test-report?customer=${customer.id}`}>
+                      <Link href={`/team-portal/test-report?customer=${customer.id}`}>
                         <FileText className="h-4 w-4 mr-1" />
                         Test
                       </Link>
                     </Button>
                     <Button size="sm" variant="outline" asChild>
-                      <Link href={`/app/schedule?customer=${customer.id}`}>
+                      <Link href={`/team-portal/schedule?customer=${customer.id}`}>
                         <Calendar className="h-4 w-4 mr-1" />
                         Schedule
                       </Link>
@@ -385,7 +327,7 @@ export default function CustomersPage() {
               </p>
               {(!searchTerm && statusFilter === 'all') && (
                 <Button asChild>
-                  <Link href="/app/customers/new">
+                  <Link href="/team-portal/customers/new">
                     <Plus className="h-4 w-4 mr-2" />
                     Add Your First Customer
                   </Link>
@@ -393,38 +335,9 @@ export default function CustomersPage() {
               )}
             </div>
           )}
+          </div>
         </div>
-      </div>
-
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-        <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <div className="h-6 w-6 bg-gray-400 rounded"></div>
-            <span className="text-xs">Home</span>
-          </Link>
-          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-blue-600 bg-blue-50">
-            <Users className="h-6 w-6" />
-            <span className="text-xs font-medium">Customers</span>
-          </Link>
-          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <Plus className="h-6 w-6" />
-            <span className="text-xs">Test</span>
-          </Link>
-          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <Calendar className="h-6 w-6" />
-            <span className="text-xs">Schedule</span>
-          </Link>
-          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
-            <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-            </div>
-            <span className="text-xs">More</span>
-          </Link>
-        </div>
-      </nav>
+      </main>
     </div>
   );
 }

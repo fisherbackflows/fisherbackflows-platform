@@ -15,8 +15,13 @@ import {
   FileText,
   RefreshCw,
   TrendingUp,
-  Activity
+  Activity,
+  ArrowLeft,
+  X
 } from 'lucide-react';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 interface AuditEvent {
   id: string;
@@ -62,10 +67,10 @@ export default function AuditLogViewer() {
   const [showExportModal, setShowExportModal] = useState(false);
 
   const severityColors = {
-    low: 'text-blue-400 bg-blue-500/20',
-    medium: 'text-yellow-400 bg-yellow-500/20',
-    high: 'text-orange-400 bg-orange-500/20',
-    critical: 'text-red-400 bg-red-500/20'
+    low: 'text-blue-600 bg-blue-50 border-blue-200',
+    medium: 'text-amber-700 bg-amber-50 border-amber-200',
+    high: 'text-orange-700 bg-orange-50 border-orange-200',
+    critical: 'text-red-700 bg-red-50 border-red-200'
   };
 
   const eventTypeIcons: Record<string, any> = {
@@ -96,8 +101,17 @@ export default function AuditLogViewer() {
       const response = await fetch(`/api/admin/audit-logs?${queryParams}`);
       if (response.ok) {
         const data = await response.json();
-        setEvents(data.events);
-        setTotalPages(Math.ceil(data.total / 50));
+        if (data.success) {
+          setEvents(data.events || []);
+          setTotalPages(Math.ceil((data.total || 0) / 50));
+        } else {
+          setEvents([]);
+          setTotalPages(1);
+        }
+      } else {
+        // API doesn't exist yet - show empty state
+        setEvents([]);
+        setTotalPages(1);
       }
     } catch (error) {
       console.error('Failed to load audit logs:', error);
@@ -111,7 +125,14 @@ export default function AuditLogViewer() {
       const response = await fetch('/api/admin/audit-stats?timeframe=week');
       if (response.ok) {
         const data = await response.json();
-        setStats(data.stats);
+        if (data.success) {
+          setStats(data.stats || null);
+        } else {
+          setStats(null);
+        }
+      } else {
+        // API doesn't exist yet
+        setStats(null);
       }
     } catch (error) {
       console.error('Failed to load audit stats:', error);
@@ -176,87 +197,91 @@ export default function AuditLogViewer() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5" />
-
-      <div className="max-w-7xl mx-auto px-4 py-8 relative z-10">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-blue-500/20 rounded-xl">
-                <Shield className="w-6 h-6 text-blue-400" />
+    <div className="min-h-screen bg-slate-50">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Professional Header */}
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="flex items-center gap-4">
+              <Link href="/admin/dashboard">
+                <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-lg">
+                  <ArrowLeft className="h-5 w-5" />
+                </Button>
+              </Link>
+              <div className="p-3 bg-blue-50 rounded-lg">
+                <Shield className="w-6 h-6 text-blue-600" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-white">Audit Logs</h1>
-                <p className="text-gray-400">Security and compliance monitoring</p>
+                <h1 className="text-3xl font-bold text-slate-900">Audit Logs</h1>
+                <p className="text-slate-600 mt-1">Security and compliance monitoring</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
-              <button
+            <div className="flex items-center gap-3">
+              <Button
                 onClick={() => setShowExportModal(true)}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg text-white transition-colors"
+                className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 mr-2" />
                 Export
-              </button>
+              </Button>
               
-              <button
+              <Button
                 onClick={() => { loadAuditLogs(); loadAuditStats(); }}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white transition-colors"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
               >
-                <RefreshCw className="w-4 h-4" />
+                <RefreshCw className="w-4 h-4 mr-2" />
                 Refresh
-              </button>
+              </Button>
             </div>
           </div>
         </div>
 
-        {/* Stats Overview */}
+        {/* Professional Stats Overview */}
         {stats && (
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-            <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-white">{stats.totalEvents.toLocaleString()}</div>
-              <div className="text-xs text-gray-400">Total Events</div>
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
+              <div className="text-2xl font-bold text-slate-900">{stats.totalEvents.toLocaleString()}</div>
+              <div className="text-sm text-slate-600 mt-1">Total Events</div>
             </div>
             
-            <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-red-400">
-                {Object.values(stats.eventsBySeverity).reduce((acc, count) => acc + count, 0)}
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
+              <div className="text-2xl font-bold text-red-600">
+                {stats.eventsBySeverity?.critical || 0}
               </div>
-              <div className="text-xs text-gray-400">Critical Events</div>
+              <div className="text-sm text-slate-600 mt-1">Critical Events</div>
             </div>
             
-            <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-orange-400">{stats.failureRate.toFixed(1)}%</div>
-              <div className="text-xs text-gray-400">Failure Rate</div>
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
+              <div className="text-2xl font-bold text-amber-600">{stats.failureRate.toFixed(1)}%</div>
+              <div className="text-sm text-slate-600 mt-1">Failure Rate</div>
             </div>
             
-            <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-green-400">{stats.topUsers.length}</div>
-              <div className="text-xs text-gray-400">Active Users</div>
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
+              <div className="text-2xl font-bold text-emerald-600">{stats.topUsers.length}</div>
+              <div className="text-sm text-slate-600 mt-1">Active Users</div>
             </div>
             
-            <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-blue-400">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
+              <div className="text-2xl font-bold text-blue-600">
                 {Object.keys(stats.eventsByAction).length}
               </div>
-              <div className="text-xs text-gray-400">Event Types</div>
+              <div className="text-sm text-slate-600 mt-1">Event Types</div>
             </div>
           </div>
         )}
 
-        {/* Filters */}
-        <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-xl p-6 mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <Filter className="w-5 h-5 text-blue-400" />
-            <h2 className="text-lg font-semibold text-white">Filters</h2>
+        {/* Professional Filters */}
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-slate-50 rounded-lg">
+              <Filter className="w-5 h-5 text-slate-600" />
+            </div>
+            <h2 className="text-lg font-semibold text-slate-900">Filters</h2>
             {Object.values(filters).some(v => v !== '') && (
               <button
                 onClick={resetFilters}
-                className="ml-auto text-sm text-gray-400 hover:text-white transition-colors"
+                className="ml-auto text-sm text-slate-500 hover:text-slate-700 transition-colors font-medium"
               >
                 Clear All
               </button>
@@ -265,7 +290,7 @@ export default function AuditLogViewer() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Search</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Search</label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <input
@@ -273,17 +298,17 @@ export default function AuditLogViewer() {
                   value={filters.search}
                   onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
                   placeholder="Search events..."
-                  className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none"
+                  className="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-colors duration-200"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Severity</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Severity</label>
               <select
                 value={filters.severity}
                 onChange={(e) => setFilters(prev => ({ ...prev, severity: e.target.value }))}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none"
+                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-colors duration-200"
               >
                 <option value="">All Severities</option>
                 <option value="low">Low</option>
@@ -294,53 +319,53 @@ export default function AuditLogViewer() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Event Type</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Event Type</label>
               <input
                 type="text"
                 value={filters.eventType}
                 onChange={(e) => setFilters(prev => ({ ...prev, eventType: e.target.value }))}
                 placeholder="e.g., auth.login"
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none"
+                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-colors duration-200"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">User</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">User</label>
               <input
                 type="text"
                 value={filters.user}
                 onChange={(e) => setFilters(prev => ({ ...prev, user: e.target.value }))}
                 placeholder="User email or ID"
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none"
+                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-colors duration-200"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Start Date</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Start Date</label>
               <input
                 type="date"
                 value={filters.startDate}
                 onChange={(e) => setFilters(prev => ({ ...prev, startDate: e.target.value }))}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none"
+                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-colors duration-200"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">End Date</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">End Date</label>
               <input
                 type="date"
                 value={filters.endDate}
                 onChange={(e) => setFilters(prev => ({ ...prev, endDate: e.target.value }))}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none"
+                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-colors duration-200"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Status</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Status</label>
               <select
                 value={filters.success}
                 onChange={(e) => setFilters(prev => ({ ...prev, success: e.target.value }))}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none"
+                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-colors duration-200"
               >
                 <option value="">All Statuses</option>
                 <option value="true">Success</option>
@@ -349,11 +374,11 @@ export default function AuditLogViewer() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Regulation</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Regulation</label>
               <select
                 value={filters.regulation}
                 onChange={(e) => setFilters(prev => ({ ...prev, regulation: e.target.value }))}
-                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 outline-none"
+                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-colors duration-200"
               >
                 <option value="">All Regulations</option>
                 <option value="GDPR">GDPR</option>
@@ -365,99 +390,109 @@ export default function AuditLogViewer() {
           </div>
         </div>
 
-        {/* Events List */}
-        <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-xl overflow-hidden">
-          <div className="p-4 border-b border-gray-700">
-            <h2 className="text-lg font-semibold text-white">Audit Events</h2>
+        {/* Professional Events List */}
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+          <div className="p-6 border-b border-slate-200">
+            <h2 className="text-lg font-semibold text-slate-900">Audit Events</h2>
+            {events.length === 0 && !loading && (
+              <p className="text-sm text-slate-600 mt-1">No audit events available yet</p>
+            )}
           </div>
 
           {loading ? (
-            <div className="p-8 text-center">
-              <RefreshCw className="w-8 h-8 text-blue-400 animate-spin mx-auto mb-4" />
-              <p className="text-gray-400">Loading audit events...</p>
+            <div className="p-12 text-center">
+              <LoadingSpinner size="lg" />
+              <p className="text-slate-600 mt-4">Loading audit events...</p>
             </div>
           ) : events.length === 0 ? (
-            <div className="p-8 text-center">
-              <Shield className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-400">No audit events found</p>
+            <div className="p-12 text-center">
+              <Shield className="w-16 h-16 text-slate-300 mx-auto mb-6" />
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">No Audit Events</h3>
+              <p className="text-slate-600 mb-6">Audit events will appear here when user activity and system events are logged.</p>
+              <div className="space-y-2 text-sm text-slate-500">
+                <p>• User authentication events</p>
+                <p>• Data access and modifications</p>
+                <p>• Administrative actions</p>
+                <p>• Security-related activities</p>
+              </div>
             </div>
           ) : (
             <>
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-800/50">
+                  <thead className="bg-slate-50">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                         Event
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                         User
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                         Severity
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                         Status
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                         Time
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      <th className="px-6 py-4 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-700">
+                  <tbody className="divide-y divide-slate-200">
                     {events.map((event) => {
                       const IconComponent = getEventTypeIcon(event.event_type);
                       return (
-                        <tr key={event.id} className="hover:bg-gray-800/30 transition-colors">
-                          <td className="px-4 py-4 whitespace-nowrap">
+                        <tr key={event.id} className="hover:bg-slate-50 transition-colors duration-150">
+                          <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              <div className="p-2 bg-gray-800 rounded-lg mr-3">
-                                <IconComponent className="w-4 h-4 text-blue-400" />
+                              <div className="p-2 bg-slate-100 rounded-lg mr-3">
+                                <IconComponent className="w-4 h-4 text-blue-600" />
                               </div>
                               <div>
-                                <div className="text-sm font-medium text-white">
+                                <div className="text-sm font-medium text-slate-900">
                                   {formatEventType(event.event_type)}
                                 </div>
                                 {event.entity_type && (
-                                  <div className="text-xs text-gray-400">
+                                  <div className="text-xs text-slate-500">
                                     {event.entity_type}: {event.entity_id?.substring(0, 8)}...
                                   </div>
                                 )}
                               </div>
                             </div>
                           </td>
-                          <td className="px-4 py-4 whitespace-nowrap">
-                            <div className="text-sm text-white">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-slate-900">
                               {event.user_email || event.user_id || 'System'}
                             </div>
                             {event.ip_address && (
-                              <div className="text-xs text-gray-400">{event.ip_address}</div>
+                              <div className="text-xs text-slate-500">{event.ip_address}</div>
                             )}
                           </td>
-                          <td className="px-4 py-4 whitespace-nowrap">
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${severityColors[event.severity]}`}>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 py-1 rounded-md text-xs font-medium border ${severityColors[event.severity]}`}>
                               {event.severity.toUpperCase()}
                             </span>
                           </td>
-                          <td className="px-4 py-4 whitespace-nowrap">
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={`px-2 py-1 rounded-md text-xs font-medium border ${
                               event.success 
-                                ? 'text-green-400 bg-green-500/20' 
-                                : 'text-red-400 bg-red-500/20'
+                                ? 'text-emerald-700 bg-emerald-50 border-emerald-200' 
+                                : 'text-red-700 bg-red-50 border-red-200'
                             }`}>
                               {event.success ? 'Success' : 'Failure'}
                             </span>
                           </td>
-                          <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-400">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
                             {new Date(event.timestamp).toLocaleString()}
                           </td>
-                          <td className="px-4 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <button
                               onClick={() => setSelectedEvent(event)}
-                              className="text-blue-400 hover:text-blue-300 transition-colors"
+                              className="text-blue-600 hover:text-blue-800 transition-colors p-1 rounded-md hover:bg-blue-50"
                             >
                               <Eye className="w-4 h-4" />
                             </button>
@@ -469,27 +504,27 @@ export default function AuditLogViewer() {
                 </table>
               </div>
 
-              {/* Pagination */}
+              {/* Professional Pagination */}
               {totalPages > 1 && (
-                <div className="px-4 py-3 bg-gray-800/30 border-t border-gray-700 flex items-center justify-between">
-                  <div className="text-sm text-gray-400">
+                <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                  <div className="text-sm text-slate-600">
                     Page {currentPage} of {totalPages}
                   </div>
                   <div className="flex items-center gap-2">
-                    <button
+                    <Button
                       onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                       disabled={currentPage === 1}
-                      className="px-3 py-1 bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed rounded text-sm text-white transition-colors"
+                      className="px-4 py-2 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed border border-slate-300 rounded-lg text-sm text-slate-700 transition-colors duration-200"
                     >
                       Previous
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                       onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                       disabled={currentPage === totalPages}
-                      className="px-3 py-1 bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed rounded text-sm text-white transition-colors"
+                      className="px-4 py-2 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed border border-slate-300 rounded-lg text-sm text-slate-700 transition-colors duration-200"
                     >
                       Next
-                    </button>
+                    </Button>
                   </div>
                 </div>
               )}

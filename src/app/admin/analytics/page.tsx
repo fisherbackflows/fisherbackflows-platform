@@ -23,17 +23,19 @@ import {
   TrendingDown,
   DollarSign,
   Users,
-  // Calendar,
   CheckCircle,
-  // XCircle,
-  // AlertTriangle,
   Download,
-  // Filter,
   RefreshCw,
-  ArrowLeft
+  ArrowLeft,
+  AlertTriangle,
+  BarChart3,
+  PieChart as PieChartIcon,
+  TrendingUpIcon
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface AnalyticsData {
   monthlyRevenue: Array<{ month: string; revenue: number; tests: number }>
@@ -70,70 +72,12 @@ export default function AnalyticsPage() {
       if (result.success) {
         setData(result.data)
       } else {
-        console.error('Error fetching analytics:', result.error)
-        // Set mock data for demonstration
-        setData({
-          monthlyRevenue: [
-            { month: 'Jan', revenue: 8450, tests: 23 },
-            { month: 'Feb', revenue: 9200, tests: 26 },
-            { month: 'Mar', revenue: 7800, tests: 21 },
-            { month: 'Apr', revenue: 10500, tests: 29 },
-            { month: 'May', revenue: 12200, tests: 34 },
-            { month: 'Jun', revenue: 11800, tests: 32 },
-            { month: 'Jul', revenue: 13500, tests: 38 },
-            { month: 'Aug', revenue: 12900, tests: 36 },
-            { month: 'Sep', revenue: 14200, tests: 41 },
-            { month: 'Oct', revenue: 13800, tests: 39 },
-            { month: 'Nov', revenue: 15600, tests: 45 },
-            { month: 'Dec', revenue: 16200, tests: 47 }
-          ],
-          testResults: [
-            { result: 'Passed', count: 387, percentage: 87.2 },
-            { result: 'Failed', count: 34, percentage: 7.7 },
-            { result: 'Needs Repair', count: 23, percentage: 5.1 }
-          ],
-          customerGrowth: [
-            { month: 'Jan', total: 95, new: 8 },
-            { month: 'Feb', total: 102, new: 7 },
-            { month: 'Mar', total: 108, new: 6 },
-            { month: 'Apr', total: 115, new: 7 },
-            { month: 'May', total: 123, new: 8 },
-            { month: 'Jun', total: 129, new: 6 },
-            { month: 'Jul', total: 136, new: 7 },
-            { month: 'Aug', total: 142, new: 6 },
-            { month: 'Sep', total: 149, new: 7 },
-            { month: 'Oct', total: 156, new: 7 },
-            { month: 'Nov', total: 164, new: 8 },
-            { month: 'Dec', total: 172, new: 8 }
-          ],
-          deviceTypes: [
-            { type: '3/4" RPZ', count: 89 },
-            { type: '1" RPZ', count: 67 },
-            { type: '1.5" RPZ', count: 23 },
-            { type: '2" RPZ', count: 12 },
-            { type: 'Double Check', count: 45 },
-            { type: 'PVB', count: 18 }
-          ],
-          performanceMetrics: {
-            averageTestTime: 18.5,
-            completionRate: 94.2,
-            customerSatisfaction: 4.7,
-            revenueGrowth: 23.5
-          },
-          businessInsights: {
-            peakMonths: ['November', 'December', 'January'],
-            topDistricts: [
-              { district: 'City of Tacoma', revenue: 89400 },
-              { district: 'Lakewood Water District', revenue: 34200 },
-              { district: 'Puyallup Water', revenue: 23100 }
-            ],
-            riskCustomers: 12,
-            upcomingTests: 34
-          }
-        })
+        // No mock data - show empty state
+        setData(null)
       }
     } catch (error) {
       console.error('Error fetching analytics:', error)
+      setData(null)
     } finally {
       setLoading(false)
       setRefreshing(false)
@@ -175,21 +119,21 @@ export default function AnalyticsPage() {
     color?: 'blue' | 'green' | 'orange' | 'red'
   }) => {
     const colorClasses = {
-      blue: 'text-blue-400 bg-blue-500/20',
-      green: 'text-green-400 bg-green-500/20',
-      orange: 'text-orange-400 bg-orange-500/20',
-      red: 'text-red-400 bg-red-500/20'
+      blue: 'text-blue-600 bg-blue-50',
+      green: 'text-emerald-600 bg-emerald-50',
+      orange: 'text-amber-600 bg-amber-50',
+      red: 'text-red-600 bg-red-50'
     }
 
     return (
-      <div className="glass rounded-2xl p-6">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
         <div className="flex items-center justify-between mb-4">
-          <div className={`p-3 rounded-xl ${colorClasses[color]}`}>
+          <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
             <Icon className="h-6 w-6" />
           </div>
           {change !== undefined && (
             <div className={`flex items-center space-x-1 text-sm ${
-              change > 0 ? 'text-green-400' : change < 0 ? 'text-red-400' : 'text-gray-400'
+              change > 0 ? 'text-emerald-600' : change < 0 ? 'text-red-600' : 'text-slate-500'
             }`}>
               {change > 0 ? (
                 <TrendingUp className="h-4 w-4" />
@@ -200,8 +144,8 @@ export default function AnalyticsPage() {
             </div>
           )}
         </div>
-        <h3 className="text-white/80 text-sm font-medium">{title}</h3>
-        <p className="text-2xl font-bold text-white mt-1">{value}</p>
+        <h3 className="text-slate-600 text-sm font-medium">{title}</h3>
+        <p className="text-2xl font-bold text-slate-900 mt-1">{value}</p>
       </div>
     )
   }
@@ -210,66 +154,118 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="flex items-center space-x-3">
-          <RefreshCw className="h-6 w-6 text-blue-400 animate-spin" />
-          <span className="text-white">Loading analytics...</span>
+      <div className="min-h-screen bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          <div className="flex items-center justify-center py-20">
+            <div className="text-center">
+              <LoadingSpinner size="lg" />
+              <p className="text-slate-600 mt-4">Loading analytics...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 py-8">
+          {/* Professional Header */}
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Link href="/admin/dashboard">
+                  <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-lg">
+                    <ArrowLeft className="h-5 w-5" />
+                  </Button>
+                </Link>
+                <div>
+                  <h1 className="text-3xl font-bold text-slate-900">Business Analytics</h1>
+                  <p className="text-slate-600 mt-2">
+                    Advanced insights and performance metrics
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Empty State */}
+          <div className="text-center py-20">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12">
+              <BarChart3 className="h-16 w-16 text-slate-300 mx-auto mb-6" />
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">Analytics Not Available</h2>
+              <p className="text-slate-600 mb-8 max-w-md mx-auto">
+                Analytics data will be available once you have customers, tests, and transactions in your system.
+              </p>
+              <div className="flex flex-wrap gap-3 justify-center">
+                <Link href="/admin/dashboard">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+                    Back to Dashboard
+                  </Button>
+                </Link>
+                <Link href="/team-portal/customers/new">
+                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg">
+                    Add First Customer
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
-
-      <div className="max-w-7xl mx-auto px-4 py-8 relative z-10">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
-            <Button
-              onClick={() => router.push('/admin/dashboard')}
-              className="btn-glass p-2 rounded-lg"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div>
-              <h1 className="text-3xl font-bold gradient-text">Business Analytics</h1>
-              <p className="text-white/60 mt-2">
-                Advanced insights and performance metrics
-              </p>
+    <div className="min-h-screen bg-slate-50">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Professional Header */}
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div className="flex items-center space-x-4">
+              <Link href="/admin/dashboard">
+                <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-lg">
+                  <ArrowLeft className="h-5 w-5" />
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-3xl font-bold text-slate-900">Business Analytics</h1>
+                <p className="text-slate-600 mt-2">
+                  Advanced insights and performance metrics
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-center space-x-4">
-            <select
-              value={dateRange}
-              onChange={(e) => setDateRange(e.target.value)}
-              className="input-glass px-3 py-2 rounded-lg text-white"
-            >
-              <option value="3months">Last 3 Months</option>
-              <option value="6months">Last 6 Months</option>
-              <option value="12months">Last 12 Months</option>
-              <option value="24months">Last 2 Years</option>
-            </select>
+            <div className="flex items-center space-x-4">
+              <select
+                value={dateRange}
+                onChange={(e) => setDateRange(e.target.value)}
+                className="bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="3months">Last 3 Months</option>
+                <option value="6months">Last 6 Months</option>
+                <option value="12months">Last 12 Months</option>
+                <option value="24months">Last 2 Years</option>
+              </select>
 
-            <Button
-              onClick={downloadReport}
-              className="btn-glass px-4 py-2 rounded-lg"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Export Report
-            </Button>
+              <Button
+                onClick={downloadReport}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Export Report
+              </Button>
 
-            <Button
-              onClick={fetchAnalytics}
-              disabled={refreshing}
-              className="btn-glass px-4 py-2 rounded-lg"
-            >
-              <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
-              Refresh
-            </Button>
+              <Button
+                onClick={fetchAnalytics}
+                disabled={refreshing}
+                className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center disabled:opacity-50"
+              >
+                <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+                Refresh
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -310,8 +306,8 @@ export default function AnalyticsPage() {
             {/* Charts Section */}
             <div className="grid lg:grid-cols-2 gap-8 mb-8">
               {/* Revenue Trend */}
-              <div className="glass rounded-2xl p-6">
-                <h2 className="text-xl font-bold text-white mb-6">Revenue & Test Volume Trend</h2>
+              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 className="text-xl font-bold text-slate-900 mb-6">Revenue & Test Volume Trend</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={data.monthlyRevenue}>
                     <defs>
@@ -324,16 +320,16 @@ export default function AnalyticsPage() {
                         <stop offset="95%" stopColor="#10B981" stopOpacity={0.1}/>
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                    <XAxis dataKey="month" stroke="#9CA3AF" />
-                    <YAxis yAxisId="left" stroke="#9CA3AF" />
-                    <YAxis yAxisId="right" orientation="right" stroke="#9CA3AF" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
+                    <XAxis dataKey="month" stroke="#64748B" />
+                    <YAxis yAxisId="left" stroke="#64748B" />
+                    <YAxis yAxisId="right" orientation="right" stroke="#64748B" />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid #E2E8F0',
                         borderRadius: '8px',
-                        color: '#F9FAFB'
+                        color: '#1E293B'
                       }}
                     />
                     <Legend />
@@ -360,8 +356,8 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Test Results Distribution */}
-              <div className="glass rounded-2xl p-6">
-                <h2 className="text-xl font-bold text-white mb-6">Test Results Distribution</h2>
+              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 className="text-xl font-bold text-slate-900 mb-6">Test Results Distribution</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
@@ -382,10 +378,10 @@ export default function AnalyticsPage() {
                     </Pie>
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid #E2E8F0',
                         borderRadius: '8px',
-                        color: '#F9FAFB'
+                        color: '#1E293B'
                       }}
                       formatter={(value: string | number, name: string, props: any) => [
                         `${value} tests (${props?.payload?.percentage || '0'}%)`,
@@ -400,19 +396,19 @@ export default function AnalyticsPage() {
 
             <div className="grid lg:grid-cols-2 gap-8 mb-8">
               {/* Customer Growth */}
-              <div className="glass rounded-2xl p-6">
-                <h2 className="text-xl font-bold text-white mb-6">Customer Growth</h2>
+              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 className="text-xl font-bold text-slate-900 mb-6">Customer Growth</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={data.customerGrowth}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                    <XAxis dataKey="month" stroke="#9CA3AF" />
-                    <YAxis stroke="#9CA3AF" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
+                    <XAxis dataKey="month" stroke="#64748B" />
+                    <YAxis stroke="#64748B" />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid #E2E8F0',
                         borderRadius: '8px',
-                        color: '#F9FAFB'
+                        color: '#1E293B'
                       }}
                     />
                     <Legend />
@@ -436,19 +432,19 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Device Types */}
-              <div className="glass rounded-2xl p-6">
-                <h2 className="text-xl font-bold text-white mb-6">Device Types</h2>
+              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 className="text-xl font-bold text-slate-900 mb-6">Device Types</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={data.deviceTypes}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                    <XAxis dataKey="type" stroke="#9CA3AF" />
-                    <YAxis stroke="#9CA3AF" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
+                    <XAxis dataKey="type" stroke="#64748B" />
+                    <YAxis stroke="#64748B" />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#1F2937',
-                        border: '1px solid #374151',
+                        backgroundColor: '#FFFFFF',
+                        border: '1px solid #E2E8F0',
                         borderRadius: '8px',
-                        color: '#F9FAFB'
+                        color: '#1E293B'
                       }}
                     />
                     <Bar dataKey="count" fill="#3B82F6" />
@@ -458,40 +454,40 @@ export default function AnalyticsPage() {
             </div>
 
             {/* Business Insights */}
-            <div className="glass rounded-2xl p-6">
-              <h2 className="text-xl font-bold text-white mb-6">Business Insights</h2>
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+              <h2 className="text-xl font-bold text-slate-900 mb-6">Business Insights</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-400 mb-2">
+                  <div className="text-2xl font-bold text-blue-600 mb-2">
                     {data.businessInsights.peakMonths.join(', ')}
                   </div>
-                  <div className="text-white/60 text-sm">Peak Season</div>
+                  <div className="text-slate-600 text-sm">Peak Season</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-green-400 mb-2">
+                  <div className="text-2xl font-bold text-emerald-600 mb-2">
                     ${data.businessInsights.topDistricts[0]?.revenue.toLocaleString()}
                   </div>
-                  <div className="text-white/60 text-sm">Top District Revenue</div>
-                  <div className="text-xs text-white/40 mt-1">
+                  <div className="text-slate-600 text-sm">Top District Revenue</div>
+                  <div className="text-xs text-slate-500 mt-1">
                     {data.businessInsights.topDistricts[0]?.district}
                   </div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-orange-400 mb-2">
+                  <div className="text-2xl font-bold text-amber-600 mb-2">
                     {data.businessInsights.riskCustomers}
                   </div>
-                  <div className="text-white/60 text-sm">At-Risk Customers</div>
-                  <div className="text-xs text-white/40 mt-1">Need attention</div>
+                  <div className="text-slate-600 text-sm">At-Risk Customers</div>
+                  <div className="text-xs text-slate-500 mt-1">Need attention</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-400 mb-2">
+                  <div className="text-2xl font-bold text-purple-600 mb-2">
                     {data.businessInsights.upcomingTests}
                   </div>
-                  <div className="text-white/60 text-sm">Upcoming Tests</div>
-                  <div className="text-xs text-white/40 mt-1">Next 30 days</div>
+                  <div className="text-slate-600 text-sm">Upcoming Tests</div>
+                  <div className="text-xs text-slate-500 mt-1">Next 30 days</div>
                 </div>
               </div>
             </div>
