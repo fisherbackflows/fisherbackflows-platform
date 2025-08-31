@@ -146,7 +146,7 @@ export default function CustomersPage() {
         </div>
       </header>
 
-      <div className="p-4">
+      <main className="p-4">
         {/* Quick Stats */}
         <div className="grid grid-cols-4 gap-3 mb-6">
           <div className="bg-white rounded-lg p-3 text-center shadow-sm">
