@@ -419,8 +419,6 @@ export default function FieldDashboard() {
           )}
         </div>
 
-        </div>
-
         {/* Daily Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-200">

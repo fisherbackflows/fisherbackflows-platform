@@ -335,7 +335,6 @@ export default function CustomersPage() {
               )}
             </div>
           )}
-          </div>
         </div>
       </main>
     </div>
