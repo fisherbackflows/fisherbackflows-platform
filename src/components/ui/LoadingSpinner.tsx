@@ -6,7 +6,7 @@ interface LoadingSpinnerProps {
   text?: string;
 }
 
-export default function LoadingSpinner({ 
+export function LoadingSpinner({ 
   size = 'md', 
   color = 'blue', 
   text 
@@ -36,3 +36,5 @@ export default function LoadingSpinner({
     </div>
   );
 }
+
+export default LoadingSpinner;
