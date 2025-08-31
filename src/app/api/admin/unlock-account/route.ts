@@ -1,0 +1,126 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { supabaseAdmin } from '@/lib/supabase';
+
+// Simple admin key check - in production use proper auth
+const ADMIN_KEY = process.env.ADMIN_BYPASS_KEY || 'FisherAdmin2025';
+
+export async function POST(request: NextRequest) {
+  try {
+    const { email, adminKey } = await request.json();
+    
+    // Verify admin key
+    if (adminKey !== ADMIN_KEY) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    if (!email) {
+      return NextResponse.json(
+        { error: 'Email is required' },
+        { status: 400 }
+      );
+    }
+
+    // Reset the account lock
+    const { data, error } = await supabaseAdmin
+      .from('team_users')
+      .update({
+        failed_login_attempts: 0,
+        last_failed_login: null,
+        account_locked_until: null
+      })
+      .eq('email', email.toLowerCase().trim())
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error unlocking account:', error);
+      return NextResponse.json(
+        { error: 'Failed to unlock account' },
+        { status: 500 }
+      );
+    }
+
+    if (!data) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Account unlocked for ${email}`,
+      user: {
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        role: data.role
+      }
+    });
+
+  } catch (error) {
+    console.error('Unlock account error:', error);
+    return NextResponse.json(
+      { error: 'Failed to unlock account' },
+      { status: 500 }
+    );
+  }
+}
+
+// GET endpoint to check account status
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get('email');
+    const adminKey = searchParams.get('key');
+    
+    // Verify admin key
+    if (adminKey !== ADMIN_KEY) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    if (!email) {
+      return NextResponse.json(
+        { error: 'Email is required' },
+        { status: 400 }
+      );
+    }
+
+    const { data, error } = await supabaseAdmin
+      .from('team_users')
+      .select('email, failed_login_attempts, account_locked_until, last_failed_login, is_active')
+      .eq('email', email.toLowerCase().trim())
+      .single();
+
+    if (error || !data) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    const isLocked = data.account_locked_until && new Date(data.account_locked_until) > new Date();
+
+    return NextResponse.json({
+      email: data.email,
+      isActive: data.is_active,
+      isLocked,
+      failedAttempts: data.failed_login_attempts || 0,
+      lockedUntil: data.account_locked_until,
+      lastFailedLogin: data.last_failed_login
+    });
+
+  } catch (error) {
+    console.error('Check account error:', error);
+    return NextResponse.json(
+      { error: 'Failed to check account status' },
+      { status: 500 }
+    );
+  }
+}
