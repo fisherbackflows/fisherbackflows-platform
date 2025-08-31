@@ -165,7 +165,7 @@ export default function SchedulePage() {
             </div>
             <h1 className="text-4xl font-bold text-slate-900 mb-4">Request Submitted!</h1>
             <p className="text-slate-600 text-xl mb-8 leading-relaxed">
-              Thank you for scheduling your backflow test appointment.<br>
+              Thank you for scheduling your backflow test appointment.<br />
               We'll call you within 24 hours to confirm the details.
             </p>
             
