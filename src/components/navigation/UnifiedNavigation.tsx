@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/ui/Logo';
-import { THEME, UnifiedNavItem } from '@/components/ui/UnifiedTheme';
+import { THEME, LIGHT_THEME, UnifiedNavItem } from '@/components/ui/UnifiedTheme';
 import { 
   Home, 
   Calendar, 
@@ -77,6 +77,9 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
   const navigationItems = NAVIGATION_CONFIG[section] || [];
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
+  // Use light theme for team portal (white backgrounds), dark theme for others
+  const currentTheme = section === 'team-portal' ? LIGHT_THEME : THEME;
+
   const handleLogout = async () => {
     if (confirm('Are you sure you want to log out?')) {
       try {
@@ -121,15 +124,15 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
   };
 
   return (
-    <header className={`sticky top-0 z-50 ${THEME.colors.surfaceGlass} ${THEME.colors.border} border-b`}>
+    <header className={`sticky top-0 z-50 ${currentTheme.colors.surfaceGlass} ${currentTheme.colors.border} border-b`}>
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo and Section Title */}
           <Link href={getHomeLink()} className="flex items-center space-x-3">
             <Logo width={40} height={32} />
             <div>
-              <h1 className={`text-lg font-bold ${THEME.colors.text.primary}`}>Fisher Backflows</h1>
-              <p className={`text-xs ${THEME.colors.text.muted}`}>{getSectionTitle()}</p>
+              <h1 className={`text-lg font-bold ${currentTheme.colors.text.primary}`}>Fisher Backflows</h1>
+              <p className={`text-xs ${currentTheme.colors.text.muted}`}>{getSectionTitle()}</p>
             </div>
           </Link>
 
@@ -142,6 +145,8 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
                 icon={item.icon}
                 label={item.label}
                 isActive={isActive(item.href)}
+                theme={currentTheme}
+                section={section}
               />
             ))}
           </nav>
@@ -150,16 +155,16 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
           <div className="hidden md:flex items-center space-x-4">
             {userInfo && (
               <div className="text-right">
-                <p className={`font-medium text-sm ${THEME.colors.text.secondary}`}>
+                <p className={`font-medium text-sm ${currentTheme.colors.text.secondary}`}>
                   {userInfo.name || userInfo.email}
                 </p>
                 {userInfo.accountNumber && (
-                  <p className={`text-xs ${THEME.colors.text.muted}`}>
+                  <p className={`text-xs ${currentTheme.colors.text.muted}`}>
                     Account: {userInfo.accountNumber}
                   </p>
                 )}
                 {userInfo.role && (
-                  <p className={`text-xs ${THEME.colors.text.muted} capitalize`}>
+                  <p className={`text-xs ${currentTheme.colors.text.muted} capitalize`}>
                     {userInfo.role}
                   </p>
                 )}
@@ -169,7 +174,7 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
               onClick={handleLogout}
               variant="ghost"
               size="sm"
-              className={`${THEME.colors.text.secondary} hover:${THEME.colors.text.primary} hover:bg-white/10`}
+              className={`${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} ${section === 'team-portal' ? 'hover:bg-slate-100' : 'hover:bg-white/10'}`}
             >
               <LogOut className="h-4 w-4" />
             </Button>
@@ -178,7 +183,7 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`md:hidden ${THEME.colors.text.secondary} hover:${THEME.colors.text.primary} p-2`}
+            className={`md:hidden ${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} p-2`}
           >
             {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -186,24 +191,24 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className={`md:hidden mt-4 ${THEME.colors.surfaceGlass} rounded-xl p-4 ${THEME.colors.border} border`}>
+          <div className={`md:hidden mt-4 ${currentTheme.colors.surfaceGlass} rounded-xl p-4 ${currentTheme.colors.border} border`}>
             {/* Mobile User Info */}
             {userInfo && (
-              <div className={`flex items-center space-x-3 mb-4 pb-4 ${THEME.colors.border} border-b`}>
-                <div className={`p-2 rounded-lg ${THEME.colors.accent.primary}`}>
+              <div className={`flex items-center space-x-3 mb-4 pb-4 ${currentTheme.colors.border} border-b`}>
+                <div className={`p-2 rounded-lg ${currentTheme.colors.accent.primary}`}>
                   <User className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className={`font-medium text-sm ${THEME.colors.text.primary}`}>
+                  <p className={`font-medium text-sm ${currentTheme.colors.text.primary}`}>
                     {userInfo.name || userInfo.email}
                   </p>
                   {userInfo.accountNumber && (
-                    <p className={`text-xs ${THEME.colors.text.muted}`}>
+                    <p className={`text-xs ${currentTheme.colors.text.muted}`}>
                       Account: {userInfo.accountNumber}
                     </p>
                   )}
                   {userInfo.role && (
-                    <p className={`text-xs ${THEME.colors.text.muted} capitalize`}>
+                    <p className={`text-xs ${currentTheme.colors.text.muted} capitalize`}>
                       {userInfo.role}
                     </p>
                   )}
@@ -221,22 +226,24 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
                   label={item.label}
                   isActive={isActive(item.href)}
                   onClick={() => setMobileMenuOpen(false)}
+                  theme={currentTheme}
+                  section={section}
                 />
               ))}
             </nav>
 
             {/* Mobile Actions */}
-            <div className={`pt-4 ${THEME.colors.border} border-t space-y-1`}>
+            <div className={`pt-4 ${currentTheme.colors.border} border-t space-y-1`}>
               <a
                 href="tel:2532788692"
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg ${THEME.colors.text.secondary} hover:${THEME.colors.text.primary} hover:bg-white/10 transition-colors`}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg ${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} ${section === 'team-portal' ? 'hover:bg-slate-100' : 'hover:bg-white/10'} transition-colors`}
               >
                 <Phone className="h-5 w-5" />
                 <span>Call Support</span>
               </a>
               <button
                 onClick={handleLogout}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg ${THEME.colors.text.secondary} hover:${THEME.colors.text.primary} hover:bg-white/10 transition-colors w-full text-left`}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg ${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} ${section === 'team-portal' ? 'hover:bg-slate-100' : 'hover:bg-white/10'} transition-colors w-full text-left`}
               >
                 <LogOut className="h-5 w-5" />
                 <span>Logout</span>

@@ -33,6 +33,34 @@ export const THEME = {
   }
 };
 
+// Light theme for team portal (white backgrounds)
+export const LIGHT_THEME = {
+  colors: {
+    background: 'bg-white',
+    surface: 'bg-slate-50',
+    surfaceGlass: 'bg-white/95 backdrop-blur-sm',
+    border: 'border-slate-200',
+    text: {
+      primary: 'text-slate-900',
+      secondary: 'text-slate-700',
+      muted: 'text-slate-500',
+      disabled: 'text-slate-400'
+    },
+    accent: {
+      primary: 'text-blue-600 bg-blue-50 border-blue-200',
+      hover: 'hover:bg-blue-100',
+      success: 'text-green-600 bg-green-50 border-green-200',
+      warning: 'text-amber-600 bg-amber-50 border-amber-200',
+      danger: 'text-red-600 bg-red-50 border-red-200'
+    }
+  },
+  gradients: {
+    background: 'bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5',
+    accent: 'bg-gradient-to-r from-blue-600 to-blue-500',
+    success: 'bg-gradient-to-r from-green-600 to-green-500'
+  }
+};
+
 // Base layout component
 interface UnifiedPageLayoutProps {
   children: React.ReactNode;
@@ -137,14 +165,18 @@ interface UnifiedNavItemProps {
   label: string;
   isActive?: boolean;
   onClick?: () => void;
+  theme?: typeof THEME;
+  section?: string;
 }
 
-export function UnifiedNavItem({ href, icon: Icon, label, isActive = false, onClick }: UnifiedNavItemProps) {
+export function UnifiedNavItem({ href, icon: Icon, label, isActive = false, onClick, theme = THEME, section = '' }: UnifiedNavItemProps) {
+  const hoverBg = section === 'team-portal' ? 'hover:bg-slate-100' : 'hover:bg-white/10';
+  
   const content = (
     <div className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
       isActive 
-        ? `${THEME.colors.accent.primary} shadow-lg shadow-blue-500/25`
-        : `${THEME.colors.text.secondary} hover:${THEME.colors.text.primary} hover:bg-white/10`
+        ? `${theme.colors.accent.primary} shadow-lg shadow-blue-500/25`
+        : `${theme.colors.text.secondary} hover:${theme.colors.text.primary} ${hoverBg}`
     }`}>
       <Icon className="h-5 w-5" />
       <span className="font-medium">{label}</span>
