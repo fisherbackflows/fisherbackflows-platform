@@ -228,7 +228,7 @@ export default function CustomersPage() {
 
         {/* Customer List */}
         <div className="space-y-3">
-          {filteredCustomers.length > 0 ? (
+          {filteredCustomers.length > 0 ? 
             filteredCustomers.map((customer) => (
               <div key={customer.id} className="bg-white rounded-lg shadow-sm">
                 <div className="p-4">
@@ -315,7 +315,7 @@ export default function CustomersPage() {
                 </div>
               </div>
             ))
-          ) : (
+          : (
             <div className="bg-white rounded-lg shadow-sm p-8 text-center">
               <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No customers found</h3>
@@ -334,8 +334,8 @@ export default function CustomersPage() {
                 </Button>
               )}
             </div>
-          )}
-        </div>
+          )
+          }
         </div>
       </main>
     </div>
