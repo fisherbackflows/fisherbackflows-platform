@@ -262,7 +262,7 @@ function TestReportContent() {
       <header className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Button variant="outline" size="sm" asChild>
+            <Button className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" size="sm" asChild>
               <Link href="/app">
                 <ArrowLeft className="h-4 w-4" />
               </Link>
@@ -620,7 +620,7 @@ function TestReportContent() {
           <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
             <Camera className="h-12 w-12 text-gray-400 mx-auto mb-4" />
             <p className="text-slate-600 mb-2">Take photos of the device</p>
-            <Button type="button" variant="outline" size="sm">
+            <Button type="button" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" size="sm">
               <Upload className="h-4 w-4 mr-2" />
               Add Photos
             </Button>
@@ -634,8 +634,7 @@ function TestReportContent() {
               type="button"
               onClick={(e) => handleSubmit(e, 'draft')}
               disabled={saving || !formData.customerId} 
-              className="flex-1"
-              variant="outline"
+              className="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300"
             >
               <Save className="h-4 w-4 mr-2" />
               {saving ? 'Saving...' : 'Save as Draft'}

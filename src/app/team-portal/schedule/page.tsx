@@ -398,13 +398,13 @@ export default function SchedulePage() {
                       </div>
                       
                       <div className="flex gap-2 sm:ml-auto">
-                        <Button size="sm" variant="outline" className="flex-1 sm:flex-initial" asChild>
+                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 flex-1 sm:flex-initial" asChild>
                           <Link href={`tel:${appointment.customerPhone}`}>
                             <Phone className="h-4 w-4 mr-2" />
                             Call
                           </Link>
                         </Button>
-                        <Button size="sm" variant="outline" className="flex-1 sm:flex-initial" asChild>
+                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 flex-1 sm:flex-initial" asChild>
                           <Link href={`/team-portal/test-report?customer=${appointment.customerId}`}>
                             <Edit className="h-4 w-4 mr-2" />
                             Start Test

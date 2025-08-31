@@ -472,16 +472,16 @@ Fisher Backflows`,
 
                 <div className="flex items-center justify-between pt-3 border-t mt-3">
                   <div className="flex space-x-2">
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300">
                       <Edit className="h-4 w-4 mr-1" />
                       Edit
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300">
                       <FileText className="h-4 w-4 mr-1" />
                       Template
                     </Button>
                   </div>
-                  <Button size="sm" variant="outline" className="text-red-600 hover:text-red-700">
+                  <Button size="sm" className="bg-white hover:bg-red-50 text-red-600 border border-red-300 hover:text-red-700">
                     <Trash2 className="h-4 w-4 mr-1" />
                     Delete
                   </Button>
@@ -566,12 +566,12 @@ Fisher Backflows`,
                       <Send className="h-4 w-4 mr-1" />
                       Send Now
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300">
                       <Edit className="h-4 w-4 mr-1" />
                       Edit
                     </Button>
                   </div>
-                  <Button size="sm" variant="outline" className="text-red-600">
+                  <Button size="sm" className="bg-white hover:bg-red-50 text-red-600 border border-red-300">
                     <Trash2 className="h-4 w-4 mr-1" />
                     Cancel
                   </Button>

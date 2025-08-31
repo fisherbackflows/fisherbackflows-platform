@@ -632,13 +632,13 @@ export default function CustomerDatabasePage() {
                     {/* Quick Actions */}
                     <div className="flex items-center justify-between pt-3 border-t">
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline" asChild>
+                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" asChild>
                           <Link href={`/app/test-report?customer=${customer.id}`}>
                             <FileText className="h-4 w-4 mr-1" />
                             Test
                           </Link>
                         </Button>
-                        <Button size="sm" variant="outline" asChild>
+                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" asChild>
                           <Link href={`/app/schedule?customer=${customer.id}`}>
                             <Calendar className="h-4 w-4 mr-1" />
                             Schedule
@@ -647,11 +647,11 @@ export default function CustomerDatabasePage() {
                       </div>
                       
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300">
                           <Bell className="h-4 w-4 mr-1" />
                           Notify
                         </Button>
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300">
                           <Settings className="h-4 w-4 mr-1" />
                           Manage
                         </Button>
