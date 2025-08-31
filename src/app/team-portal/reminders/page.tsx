@@ -399,7 +399,7 @@ Fisher Backflows`,
                     <div className="flex items-center space-x-2 mb-1">
                       <h3 className="font-semibold text-gray-900">{rule.name}</h3>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        rule.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'
+                        rule.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-900'
                       }`}>
                         {rule.active ? 'ACTIVE' : 'INACTIVE'}
                       </span>

@@ -124,14 +124,14 @@ export default function LabelsPage() {
                     <h3 className="font-medium text-gray-900">{template.name}</h3>
                     <p className="text-sm text-gray-600 mt-1">{template.description}</p>
                     <div className="flex items-center justify-between mt-3">
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                      <span className="text-xs bg-gray-100 text-gray-900 px-2 py-1 rounded">
                         {template.dimensions}
                       </span>
                       <span className={`text-xs px-2 py-1 rounded capitalize ${
                         template.type === 'address' ? 'bg-blue-100 text-blue-700' :
                         template.type === 'device' ? 'bg-green-100 text-green-700' :
                         template.type === 'invoice' ? 'bg-purple-100 text-purple-700' :
-                        'bg-gray-100 text-gray-700'
+                        'bg-gray-100 text-gray-900'
                       }`}>
                         {template.type}
                       </span>

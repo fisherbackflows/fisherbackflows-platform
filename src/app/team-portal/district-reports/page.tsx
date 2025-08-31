@@ -85,7 +85,7 @@ const statusConfig = {
   submitted: { label: 'Submitted', color: 'bg-blue-100 text-blue-800', icon: Send },
   confirmed: { label: 'Confirmed', color: 'bg-green-100 text-green-800', icon: CheckCircle },
   rejected: { label: 'Rejected', color: 'bg-red-100 text-red-800', icon: AlertTriangle },
-  expired: { label: 'Expired', color: 'bg-gray-100 text-gray-800', icon: AlertTriangle }
+  expired: { label: 'Expired', color: 'bg-gray-100 text-gray-900', icon: AlertTriangle }
 };
 
 export default function DistrictReportsPage() {
@@ -363,7 +363,7 @@ export default function DistrictReportsPage() {
                     className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                       statusFilter === filter.key
                         ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                     }`}
                   >
                     {filter.label} ({filter.count})

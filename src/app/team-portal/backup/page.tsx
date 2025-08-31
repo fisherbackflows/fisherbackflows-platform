@@ -209,7 +209,7 @@ export default function BackupPage() {
                             {backup.size}
                           </span>
                           <span className={`px-2 py-1 rounded-full text-xs ${
-                            backup.type === 'auto' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'
+                            backup.type === 'auto' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-900'
                           }`}>
                             {backup.type === 'auto' ? 'Automatic' : 'Manual'}
                           </span>

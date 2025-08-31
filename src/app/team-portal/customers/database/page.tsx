@@ -490,7 +490,7 @@ export default function CustomerDatabasePage() {
                   className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                     statusFilter === filter.key
                       ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                   }`}
                 >
                   {filter.label} ({filter.count})
@@ -511,7 +511,7 @@ export default function CustomerDatabasePage() {
                   className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                     typeFilter === filter.key
                       ? 'bg-green-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                   }`}
                 >
                   {filter.label}
@@ -534,7 +534,7 @@ export default function CustomerDatabasePage() {
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           customer.status === 'active' ? 'bg-green-100 text-green-800' :
                           customer.status === 'overdue' ? 'bg-red-100 text-red-800' :
-                          'bg-gray-100 text-gray-800'
+                          'bg-gray-100 text-gray-900'
                         }`}>
                           {customer.status.toUpperCase()}
                         </span>
@@ -622,7 +622,7 @@ export default function CustomerDatabasePage() {
                       </div>
                       <div className="flex items-center space-x-2">
                         <span className={`text-xs px-2 py-1 rounded-full ${
-                          customer.preferences.autoSchedule ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
+                          customer.preferences.autoSchedule ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-900'
                         }`}>
                           Auto-Schedule: {customer.preferences.autoSchedule ? 'ON' : 'OFF'}
                         </span>

@@ -48,7 +48,7 @@ const appointmentTypes = {
 };
 
 const statusConfig = {
-  scheduled: { label: 'Scheduled', color: 'bg-gray-100 text-gray-800' },
+  scheduled: { label: 'Scheduled', color: 'bg-gray-100 text-gray-900' },
   confirmed: { label: 'Confirmed', color: 'bg-blue-100 text-blue-800' },
   'in-progress': { label: 'In Progress', color: 'bg-yellow-100 text-yellow-800' },
   completed: { label: 'Completed', color: 'bg-green-100 text-green-800' },

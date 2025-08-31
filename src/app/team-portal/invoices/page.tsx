@@ -251,7 +251,7 @@ export default function InvoicesPage() {
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                         statusFilter === filter.key
                           ? 'bg-blue-600 text-white shadow-sm'
-                          : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                          : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
                       }`}
                     >
                       {filter.label} ({filter.count})

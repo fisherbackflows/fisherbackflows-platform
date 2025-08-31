@@ -117,7 +117,7 @@ export default function ExportPage() {
                         <h3 className="font-medium text-gray-900">{exportType.title}</h3>
                         <p className="text-sm text-gray-600 mt-1">{exportType.description}</p>
                         <div className="flex items-center mt-2">
-                          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                          <span className="text-xs bg-gray-100 text-gray-900 px-2 py-1 rounded">
                             {exportType.format}
                           </span>
                         </div>
