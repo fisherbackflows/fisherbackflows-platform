@@ -95,28 +95,28 @@ function PaymentCancelledContent() {
 
             {/* Payment Details (if available) */}
             {payment && (
-              <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left">
+              <div className="bg-gray-400 rounded-lg p-6 mb-8 text-left">
                 <h2 className="font-semibold text-gray-900 mb-4 flex items-center">
                   <CreditCard className="h-5 w-5 mr-2" />
                   Payment Information
                 </h2>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Amount:</span>
+                    <span className="text-gray-800">Amount:</span>
                     <span className="font-semibold">${payment.amount.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Status:</span>
-                    <span className="text-red-600 font-medium">Cancelled</span>
+                    <span className="text-gray-800">Status:</span>
+                    <span className="text-red-800 font-medium">Cancelled</span>
                   </div>
                   {payment.invoice && (
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Invoice:</span>
+                      <span className="text-gray-800">Invoice:</span>
                       <span>#{payment.invoice.invoice_number}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Date:</span>
+                    <span className="text-gray-800">Date:</span>
                     <span>{new Date().toLocaleDateString()}</span>
                   </div>
                 </div>

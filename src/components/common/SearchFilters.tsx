@@ -119,7 +119,7 @@ export default function SearchFilters({
     <div className={`bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-xl p-4 ${className}`}>
       {/* Search Bar */}
       <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 w-5 h-5" />
         <input
           type="text"
           placeholder="Search customers, invoices, appointments..."
@@ -138,7 +138,7 @@ export default function SearchFilters({
           <Filter className="w-4 h-4" />
           Advanced Filters
           {hasActiveFilters() && (
-            <span className="bg-blue-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+            <span className="bg-blue-700 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
               !
             </span>
           )}
@@ -147,7 +147,7 @@ export default function SearchFilters({
         {hasActiveFilters() && (
           <button
             onClick={clearFilters}
-            className="flex items-center gap-2 px-3 py-2 text-gray-400 hover:text-white transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-gray-800 hover:text-white transition-colors"
           >
             <X className="w-4 h-4" />
             Clear All
@@ -195,7 +195,7 @@ export default function SearchFilters({
                         type="checkbox"
                         checked={localFilters.status.includes(status.value)}
                         onChange={() => toggleArrayFilter('status', status.value)}
-                        className="rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500/20"
+                        className="rounded border-gray-600 bg-gray-800 text-blue-700 focus:ring-blue-500/20"
                       />
                       <span className={`ml-2 text-sm ${status.color || 'text-gray-300'}`}>
                         {status.label}
@@ -217,7 +217,7 @@ export default function SearchFilters({
                         type="checkbox"
                         checked={localFilters.serviceType.includes(type.value)}
                         onChange={() => toggleArrayFilter('serviceType', type.value)}
-                        className="rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500/20"
+                        className="rounded border-gray-600 bg-gray-800 text-blue-700 focus:ring-blue-500/20"
                       />
                       <span className="ml-2 text-sm text-gray-300">{type.label}</span>
                     </label>
@@ -307,12 +307,12 @@ export default function SearchFilters({
             {localFilters.status.map((status) => (
               <span
                 key={`status-${status}`}
-                className="inline-flex items-center gap-1 px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded-lg"
+                className="inline-flex items-center gap-1 px-2 py-1 bg-blue-700/20 text-blue-400 text-xs rounded-lg"
               >
                 Status: {availableStatuses.find(s => s.value === status)?.label || status}
                 <button
                   onClick={() => toggleArrayFilter('status', status)}
-                  className="hover:bg-blue-500/30 rounded"
+                  className="hover:bg-blue-700/30 rounded"
                 >
                   <X className="w-3 h-3" />
                 </button>
@@ -322,12 +322,12 @@ export default function SearchFilters({
             {localFilters.serviceType.map((type) => (
               <span
                 key={`type-${type}`}
-                className="inline-flex items-center gap-1 px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded-lg"
+                className="inline-flex items-center gap-1 px-2 py-1 bg-green-700/20 text-green-400 text-xs rounded-lg"
               >
                 Type: {availableServiceTypes.find(t => t.value === type)?.label || type}
                 <button
                   onClick={() => toggleArrayFilter('serviceType', type)}
-                  className="hover:bg-green-500/30 rounded"
+                  className="hover:bg-green-700/30 rounded"
                 >
                   <X className="w-3 h-3" />
                 </button>

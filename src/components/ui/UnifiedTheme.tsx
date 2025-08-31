@@ -19,9 +19,9 @@ export const THEME = {
       disabled: 'text-white/40'
     },
     accent: {
-      primary: 'text-blue-400 bg-blue-600/20 border-blue-500/30',
-      hover: 'hover:bg-blue-600/30',
-      success: 'text-green-400 bg-green-600/20 border-green-500/30',
+      primary: 'text-blue-400 bg-blue-700/20 border-blue-500/30',
+      hover: 'hover:bg-blue-700/30',
+      success: 'text-green-400 bg-green-700/20 border-green-500/30',
       warning: 'text-amber-400 bg-amber-600/20 border-amber-500/30',
       danger: 'text-red-400 bg-red-600/20 border-red-500/30'
     }
@@ -37,21 +37,21 @@ export const THEME = {
 export const LIGHT_THEME = {
   colors: {
     background: 'bg-white',
-    surface: 'bg-slate-50',
+    surface: 'bg-slate-400',
     surfaceGlass: 'bg-white/95 backdrop-blur-sm',
     border: 'border-slate-200',
     text: {
       primary: 'text-slate-900',
       secondary: 'text-slate-700',
-      muted: 'text-slate-500',
-      disabled: 'text-slate-400'
+      muted: 'text-slate-700',
+      disabled: 'text-slate-800'
     },
     accent: {
-      primary: 'text-blue-600 bg-blue-50 border-blue-200',
-      hover: 'hover:bg-blue-100',
-      success: 'text-green-600 bg-green-50 border-green-200',
+      primary: 'text-blue-800 bg-blue-200 border-blue-200',
+      hover: 'hover:bg-blue-300',
+      success: 'text-green-800 bg-green-200 border-green-200',
       warning: 'text-amber-600 bg-amber-50 border-amber-200',
-      danger: 'text-red-600 bg-red-50 border-red-200'
+      danger: 'text-red-800 bg-red-200 border-red-200'
     }
   },
   gradients: {
@@ -170,7 +170,7 @@ interface UnifiedNavItemProps {
 }
 
 export function UnifiedNavItem({ href, icon: Icon, label, isActive = false, onClick, theme = THEME, section = '' }: UnifiedNavItemProps) {
-  const hoverBg = section === 'team-portal' ? 'hover:bg-slate-100' : 'hover:bg-white/10';
+  const hoverBg = section === 'team-portal' ? 'hover:bg-slate-300' : 'hover:bg-white/10';
   
   const content = (
     <div className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all duration-200 ${
@@ -241,7 +241,7 @@ export function UnifiedStatCard({
   const changeColor = change ? {
     increase: 'text-green-400',
     decrease: 'text-red-400',
-    neutral: 'text-gray-400'
+    neutral: 'text-gray-800'
   }[change.type] : '';
 
   return (
@@ -269,7 +269,7 @@ export const UNIFIED_BUTTON_VARIANTS = {
   primary: `${THEME.gradients.accent} text-white hover:from-blue-700 hover:to-blue-600 shadow-lg shadow-blue-500/25`,
   secondary: `${THEME.colors.surfaceGlass} ${THEME.colors.border} border ${THEME.colors.text.primary} hover:bg-white/10`,
   accent: `${THEME.colors.accent.primary} hover:${THEME.colors.accent.hover}`,
-  success: `${THEME.colors.accent.success} hover:bg-green-600/30`,
+  success: `${THEME.colors.accent.success} hover:bg-green-700/30`,
   warning: `${THEME.colors.accent.warning} hover:bg-amber-600/30`,
   danger: `${THEME.colors.accent.danger} hover:bg-red-600/30`
 };

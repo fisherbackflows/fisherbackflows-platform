@@ -248,7 +248,7 @@ Please describe what you were doing when this error occurred:
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
             onClick={resetError}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2"
+            className="bg-blue-700 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2"
           >
             <RefreshCw className="h-4 w-4" />
             Try Again
@@ -270,7 +270,7 @@ Please describe what you were doing when this error occurred:
           </Button>
         </div>
 
-        <div className="mt-6 text-sm text-gray-400">
+        <div className="mt-6 text-sm text-gray-800">
           <p>If this problem persists, please contact support at</p>
           <a 
             href="mailto:support@fisherbackflows.com" 
@@ -289,7 +289,7 @@ export function AsyncErrorBoundary({ children }: { children: React.ReactNode }) 
   return (
     <ErrorBoundary
       fallback={({ error, resetError }) => (
-        <div className="p-6 bg-red-50 border-l-4 border-red-400 text-red-700">
+        <div className="p-6 bg-red-200 border-l-4 border-red-400 text-red-700">
           <h3 className="font-semibold">Failed to load content</h3>
           <p className="mt-1 text-sm">{error.message}</p>
           <Button onClick={resetError} className="mt-2 text-sm">
@@ -308,7 +308,7 @@ export function FormErrorBoundary({ children }: { children: React.ReactNode }) {
     <ErrorBoundary
       isolate
       fallback={({ error, resetError }) => (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+        <div className="p-4 bg-red-200 border border-red-200 rounded-lg text-red-700">
           <p className="text-sm font-medium">Form Error</p>
           <p className="mt-1 text-sm">{error.message}</p>
           <Button onClick={resetError} size="sm" className="mt-2">

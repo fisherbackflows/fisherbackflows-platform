@@ -82,10 +82,10 @@ const waterDistricts = [
 
 const statusConfig = {
   pending: { label: 'Pending Submission', color: 'bg-yellow-100 text-yellow-800', icon: Clock },
-  submitted: { label: 'Submitted', color: 'bg-blue-100 text-blue-800', icon: Send },
-  confirmed: { label: 'Confirmed', color: 'bg-green-100 text-green-800', icon: CheckCircle },
-  rejected: { label: 'Rejected', color: 'bg-red-100 text-red-800', icon: AlertTriangle },
-  expired: { label: 'Expired', color: 'bg-gray-100 text-gray-900', icon: AlertTriangle }
+  submitted: { label: 'Submitted', color: 'bg-blue-300 text-blue-800', icon: Send },
+  confirmed: { label: 'Confirmed', color: 'bg-green-300 text-green-800', icon: CheckCircle },
+  rejected: { label: 'Rejected', color: 'bg-red-300 text-red-800', icon: AlertTriangle },
+  expired: { label: 'Expired', color: 'bg-gray-300 text-gray-900', icon: AlertTriangle }
 };
 
 export default function DistrictReportsPage() {
@@ -290,7 +290,7 @@ export default function DistrictReportsPage() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading district reports...</p>
+          <p className="text-gray-800">Loading district reports...</p>
         </div>
       </div>
     );
@@ -326,17 +326,17 @@ export default function DistrictReportsPage() {
               <div className="text-lg font-bold text-yellow-700">{statusCounts.pending}</div>
               <div className="text-xs text-yellow-600">Pending</div>
             </div>
-            <div className="bg-blue-50 rounded-lg p-3 text-center">
+            <div className="bg-blue-200 rounded-lg p-3 text-center">
               <div className="text-lg font-bold text-blue-700">{statusCounts.submitted}</div>
-              <div className="text-xs text-blue-600">Submitted</div>
+              <div className="text-xs text-blue-800">Submitted</div>
             </div>
-            <div className="bg-green-50 rounded-lg p-3 text-center">
+            <div className="bg-green-200 rounded-lg p-3 text-center">
               <div className="text-lg font-bold text-green-700">{statusCounts.confirmed}</div>
-              <div className="text-xs text-green-600">Confirmed</div>
+              <div className="text-xs text-green-800">Confirmed</div>
             </div>
-            <div className="bg-red-50 rounded-lg p-3 text-center">
+            <div className="bg-red-200 rounded-lg p-3 text-center">
               <div className="text-lg font-bold text-red-700">{statusCounts.rejected}</div>
-              <div className="text-xs text-red-600">Rejected</div>
+              <div className="text-xs text-red-800">Rejected</div>
             </div>
           </div>
         </div>
@@ -362,8 +362,8 @@ export default function DistrictReportsPage() {
                     onClick={() => setStatusFilter(filter.key)}
                     className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                       statusFilter === filter.key
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                        ? 'bg-blue-700 text-white'
+                        : 'bg-gray-300 text-gray-900 hover:bg-gray-400'
                     }`}
                   >
                     {filter.label} ({filter.count})
@@ -417,9 +417,9 @@ export default function DistrictReportsPage() {
                             </span>
                           )}
                         </div>
-                        <p className="text-gray-600">{report.customerName}</p>
+                        <p className="text-gray-800">{report.customerName}</p>
                       </div>
-                      <div className="text-right text-sm text-gray-500">
+                      <div className="text-right text-sm text-gray-700">
                         Test: {formatDate(report.testDate)}
                       </div>
                     </div>
@@ -427,24 +427,24 @@ export default function DistrictReportsPage() {
                     <div className="space-y-2">
                       <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center space-x-2">
-                          <Building2 className="h-4 w-4 text-gray-400" />
+                          <Building2 className="h-4 w-4 text-gray-800" />
                           <span className="font-medium">{report.waterDistrict}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <span className="text-gray-500">Device:</span>
+                          <span className="text-gray-700">Device:</span>
                           <span className="font-medium">{report.deviceType} - {report.deviceSerial}</span>
                         </div>
                       </div>
                       
                       <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center space-x-2">
-                          <Mail className="h-4 w-4 text-gray-400" />
-                          <span className="text-gray-600">{report.districtEmail}</span>
+                          <Mail className="h-4 w-4 text-gray-800" />
+                          <span className="text-gray-800">{report.districtEmail}</span>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <span className="text-gray-500">Result:</span>
+                          <span className="text-gray-700">Result:</span>
                           <span className={`font-medium ${
-                            report.testResult === 'passed' ? 'text-green-600' : 'text-red-600'
+                            report.testResult === 'passed' ? 'text-green-800' : 'text-red-800'
                           }`}>
                             {report.testResult.toUpperCase()}
                           </span>
@@ -452,20 +452,20 @@ export default function DistrictReportsPage() {
                       </div>
 
                       {report.submissionDate && (
-                        <div className="text-sm text-gray-600">
-                          <span className="text-gray-500">Submitted:</span> {formatDate(report.submissionDate)}
+                        <div className="text-sm text-gray-800">
+                          <span className="text-gray-700">Submitted:</span> {formatDate(report.submissionDate)}
                         </div>
                       )}
 
                       {report.lastError && (
-                        <div className="text-sm text-red-600 bg-red-50 rounded p-2">
+                        <div className="text-sm text-red-800 bg-red-200 rounded p-2">
                           <AlertTriangle className="h-4 w-4 inline mr-1" />
                           {report.lastError}
                         </div>
                       )}
 
                       {report.notes && (
-                        <div className="text-sm text-gray-600 bg-white rounded p-2">
+                        <div className="text-sm text-gray-800 bg-white rounded p-2">
                           {report.notes}
                         </div>
                       )}
@@ -515,7 +515,7 @@ export default function DistrictReportsPage() {
             <div className="bg-white rounded-lg shadow-sm p-8 text-center">
               <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No reports found</h3>
-              <p className="text-gray-500 mb-4">
+              <p className="text-gray-700 mb-4">
                 No district reports match your current filters
               </p>
               <Button asChild>
@@ -537,17 +537,17 @@ export default function DistrictReportsPage() {
                 <div className="flex justify-between items-start">
                   <div>
                     <div className="font-medium text-gray-900">{district.name}</div>
-                    <div className="text-sm text-gray-600">{district.email}</div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-sm text-gray-800">{district.email}</div>
+                    <div className="text-xs text-gray-700">
                       {district.submitMethod === 'email' ? '📧 Email Submission' : '🌐 Online Portal'}
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm text-gray-600">{district.turnaround}</div>
-                    <div className="text-xs text-gray-500">response time</div>
+                    <div className="text-sm text-gray-800">{district.turnaround}</div>
+                    <div className="text-xs text-gray-700">response time</div>
                   </div>
                 </div>
-                <div className="mt-2 text-xs text-gray-500">
+                <div className="mt-2 text-xs text-gray-700">
                   Required: {district.requirements.join(', ')}
                 </div>
               </div>
@@ -559,27 +559,27 @@ export default function DistrictReportsPage() {
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
         <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <div className="h-6 w-6 bg-gray-400 rounded"></div>
             <span className="text-xs">Home</span>
           </Link>
-          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <Users className="h-6 w-6" />
             <span className="text-xs">Customers</span>
           </Link>
-          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <Plus className="h-6 w-6" />
             <span className="text-xs">Test</span>
           </Link>
-          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <Calendar className="h-6 w-6" />
             <span className="text-xs">Schedule</span>
           </Link>
-          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-blue-600 bg-blue-50">
+          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-blue-800 bg-blue-200">
             <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
+              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
+              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
+              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
             </div>
             <span className="text-xs font-medium">More</span>
           </Link>

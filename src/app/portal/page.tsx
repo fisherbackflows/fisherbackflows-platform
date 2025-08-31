@@ -26,12 +26,12 @@ export default function CustomerPortalLoginPage() {
             </Link>
             <nav className="hidden md:flex space-x-1">
               <Link href="/">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-all duration-200 font-medium">
                   Home
                 </Button>
               </Link>
               <Link href="/team-portal">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-all duration-200 font-medium">
                   Business Login
                 </Button>
               </Link>
@@ -46,7 +46,7 @@ export default function CustomerPortalLoginPage() {
           {/* Left Side - Info */}
           <div className="hidden lg:block">
             <div className="mb-8">
-              <div className="inline-block bg-blue-50 border border-blue-200 px-4 py-2 rounded-full text-blue-700 text-sm font-semibold mb-6">
+              <div className="inline-block bg-blue-200 border border-blue-200 px-4 py-2 rounded-full text-blue-700 text-sm font-semibold mb-6">
                 <Shield className="h-4 w-4 mr-2 inline" />
                 Secure Customer Portal
               </div>
@@ -56,7 +56,7 @@ export default function CustomerPortalLoginPage() {
               </h1>
             </div>
             
-            <p className="text-xl text-slate-600 mb-8 leading-relaxed">
+            <p className="text-xl text-slate-800 mb-8 leading-relaxed">
               Manage your backflow testing services, pay bills, schedule appointments, 
               and access all your test records in one secure place.
             </p>
@@ -64,11 +64,11 @@ export default function CustomerPortalLoginPage() {
             {/* Features Grid */}
             <div className="grid grid-cols-2 gap-4 mb-8">
               <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4">
-                  <CreditCard className="h-6 w-6 text-blue-600" />
+                <div className="w-12 h-12 bg-blue-300 rounded-xl flex items-center justify-center mb-4">
+                  <CreditCard className="h-6 w-6 text-blue-800" />
                 </div>
                 <h3 className="font-semibold mb-2 text-slate-900">Secure Payments</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">Pay bills online with multiple payment options</p>
+                <p className="text-slate-800 text-sm leading-relaxed">Pay bills online with multiple payment options</p>
               </div>
               
               <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200">
@@ -76,7 +76,7 @@ export default function CustomerPortalLoginPage() {
                   <Calendar className="h-6 w-6 text-emerald-600" />
                 </div>
                 <h3 className="font-semibold mb-2 text-slate-900">Easy Scheduling</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">Book appointments 24/7 at your convenience</p>
+                <p className="text-slate-800 text-sm leading-relaxed">Book appointments 24/7 at your convenience</p>
               </div>
               
               <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200">
@@ -84,7 +84,7 @@ export default function CustomerPortalLoginPage() {
                   <FileText className="h-6 w-6 text-amber-600" />
                 </div>
                 <h3 className="font-semibold mb-2 text-slate-900">Test Records</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">Access all certificates and compliance documents</p>
+                <p className="text-slate-800 text-sm leading-relaxed">Access all certificates and compliance documents</p>
               </div>
               
               <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200">
@@ -92,7 +92,7 @@ export default function CustomerPortalLoginPage() {
                   <Shield className="h-6 w-6 text-purple-600" />
                 </div>
                 <h3 className="font-semibold mb-2 text-slate-900">Account Management</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">Track service history and upcoming tests</p>
+                <p className="text-slate-800 text-sm leading-relaxed">Track service history and upcoming tests</p>
               </div>
             </div>
 
@@ -112,7 +112,7 @@ export default function CustomerPortalLoginPage() {
             <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-slate-900 mb-2">Customer Login</h2>
-                <p className="text-slate-600">Access your backflow testing account</p>
+                <p className="text-slate-800">Access your backflow testing account</p>
               </div>
               
               <LoginForm redirectTo="/portal/dashboard" />
@@ -121,40 +121,40 @@ export default function CustomerPortalLoginPage() {
             {/* Mobile Features Preview */}
             <div className="lg:hidden mt-8 grid grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="bg-blue-100 border border-blue-200 rounded-xl p-4 mb-2">
-                  <CreditCard className="h-6 w-6 mx-auto text-blue-600" />
+                <div className="bg-blue-300 border border-blue-200 rounded-xl p-4 mb-2">
+                  <CreditCard className="h-6 w-6 mx-auto text-blue-800" />
                 </div>
-                <div className="text-slate-600 text-sm">Easy Payments</div>
+                <div className="text-slate-800 text-sm">Easy Payments</div>
               </div>
               <div className="text-center">
                 <div className="bg-emerald-100 border border-emerald-200 rounded-xl p-4 mb-2">
                   <Calendar className="h-6 w-6 mx-auto text-emerald-600" />
                 </div>
-                <div className="text-slate-600 text-sm">Schedule Tests</div>
+                <div className="text-slate-800 text-sm">Schedule Tests</div>
               </div>
               <div className="text-center">
                 <div className="bg-amber-100 border border-amber-200 rounded-xl p-4 mb-2">
                   <CheckCircle className="h-6 w-6 mx-auto text-amber-600" />
                 </div>
-                <div className="text-slate-600 text-sm">Track Status</div>
+                <div className="text-slate-800 text-sm">Track Status</div>
               </div>
             </div>
 
             {/* Contact Info */}
-            <div className="mt-8 text-center text-slate-500 text-sm">
+            <div className="mt-8 text-center text-slate-700 text-sm">
               <p>Need help accessing your account?</p>
               <p className="mt-2">
                 Call us at{' '}
                 <a 
                   href="tel:2532788692" 
-                  className="text-blue-600 hover:text-blue-700 transition-colors font-semibold"
+                  className="text-blue-800 hover:text-blue-700 transition-colors font-semibold"
                 >
                   (253) 278-8692
                 </a>
                 {' '}or email{' '}
                 <a 
                   href="mailto:service@fisherbackflows.com" 
-                  className="text-blue-600 hover:text-blue-700 transition-colors font-semibold"
+                  className="text-blue-800 hover:text-blue-700 transition-colors font-semibold"
                 >
                   service@fisherbackflows.com
                 </a>

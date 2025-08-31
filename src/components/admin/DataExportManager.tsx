@@ -146,22 +146,22 @@ export default function DataExportManager() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
+    <div className="min-h-screen bg-slate-400 p-6">
       <div className="max-w-6xl mx-auto">
         {/* Professional Header */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
           <div className="flex items-center space-x-4">
             <Link href="/admin/dashboard">
-              <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-lg">
+              <Button className="bg-slate-300 hover:bg-slate-400 text-slate-700 p-2 rounded-lg">
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <div className="p-3 bg-blue-50 rounded-lg">
-              <Database className="w-6 h-6 text-blue-600" />
+            <div className="p-3 bg-blue-200 rounded-lg">
+              <Database className="w-6 h-6 text-blue-800" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-slate-900">Data Management</h1>
-              <p className="text-slate-600 mt-1">Export and import platform data</p>
+              <p className="text-slate-800 mt-1">Export and import platform data</p>
             </div>
           </div>
         </div>
@@ -170,8 +170,8 @@ export default function DataExportManager() {
           {/* Professional Export Section */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 bg-blue-50 rounded-lg">
-                <Download className="w-6 h-6 text-blue-600" />
+              <div className="p-2 bg-blue-200 rounded-lg">
+                <Download className="w-6 h-6 text-blue-800" />
               </div>
               <h2 className="text-xl font-semibold text-slate-900">Export Data</h2>
             </div>
@@ -190,8 +190,8 @@ export default function DataExportManager() {
                         onClick={() => setSelectedType(type.id)}
                         className={`p-3 rounded-lg border transition-colors duration-200 flex items-center gap-2 text-sm ${
                           selectedType === type.id
-                            ? 'border-blue-500 bg-blue-50 text-blue-700'
-                            : 'border-slate-300 hover:border-slate-400 text-slate-700 hover:bg-slate-50'
+                            ? 'border-blue-500 bg-blue-200 text-blue-700'
+                            : 'border-slate-300 hover:border-slate-400 text-slate-700 hover:bg-slate-400'
                         }`}
                       >
                         <Icon className="w-4 h-4" />
@@ -213,8 +213,8 @@ export default function DataExportManager() {
                       onClick={() => setSelectedFormat(format.id)}
                       className={`p-3 rounded-lg border transition-colors duration-200 text-sm font-medium ${
                         selectedFormat === format.id
-                          ? 'border-blue-500 bg-blue-50 text-blue-700'
-                          : 'border-slate-300 hover:border-slate-400 text-slate-700 hover:bg-slate-50'
+                          ? 'border-blue-500 bg-blue-200 text-blue-700'
+                          : 'border-slate-300 hover:border-slate-400 text-slate-700 hover:bg-slate-400'
                       }`}
                     >
                       {format.label}
@@ -226,7 +226,7 @@ export default function DataExportManager() {
               <Button
                 onClick={handleExport}
                 disabled={isExporting}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-blue-700 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2"
               >
                 {isExporting ? (
                   <>
@@ -261,10 +261,10 @@ export default function DataExportManager() {
                   type="file"
                   accept=".csv,.json,.xlsx"
                   onChange={(e) => setImportFile(e.target.files?.[0] || null)}
-                  className="w-full p-3 border border-slate-300 rounded-lg bg-white text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700 file:font-medium transition-colors duration-200"
+                  className="w-full p-3 border border-slate-300 rounded-lg bg-white text-slate-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-700 file:text-white hover:file:bg-blue-700 file:font-medium transition-colors duration-200"
                 />
                 {importFile && (
-                  <div className="mt-3 p-3 bg-slate-50 border border-slate-200 rounded-lg">
+                  <div className="mt-3 p-3 bg-slate-400 border border-slate-200 rounded-lg">
                     <p className="text-sm text-slate-700 font-medium">
                       Selected: {importFile.name} ({(importFile.size / 1024).toFixed(1)} KB)
                     </p>
@@ -294,7 +294,7 @@ export default function DataExportManager() {
                 <div className={`p-4 rounded-lg border ${
                   importResults.success 
                     ? 'border-emerald-200 bg-emerald-50' 
-                    : 'border-red-200 bg-red-50'
+                    : 'border-red-200 bg-red-200'
                 }`}>
                   {importResults.success ? (
                     <div className="flex items-start gap-3">
@@ -313,7 +313,7 @@ export default function DataExportManager() {
                     </div>
                   ) : (
                     <div className="flex items-start gap-3">
-                      <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                      <AlertCircle className="w-5 h-5 text-red-800 flex-shrink-0 mt-0.5" />
                       <div>
                         <p className="font-medium text-red-800 mb-2">Import Failed</p>
                         <p className="text-sm text-red-700">{importResults.error}</p>
@@ -332,14 +332,14 @@ export default function DataExportManager() {
             <h3 className="text-lg font-semibold text-slate-900 mb-6">Recent Exports</h3>
             <div className="space-y-3">
               {exportJobs.map(job => (
-                <div key={job.id} className="flex items-center justify-between p-4 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors duration-200">
+                <div key={job.id} className="flex items-center justify-between p-4 bg-slate-400 border border-slate-200 rounded-lg hover:bg-slate-300 transition-colors duration-200">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-slate-100 rounded-lg">
-                      <FileText className="w-4 h-4 text-slate-600" />
+                    <div className="p-2 bg-slate-300 rounded-lg">
+                      <FileText className="w-4 h-4 text-slate-800" />
                     </div>
                     <div>
                       <p className="font-medium text-slate-900">{job.type} ({job.format.toUpperCase()})</p>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-sm text-slate-800">
                         {new Date(job.createdAt).toLocaleString()}
                         {job.recordCount && ` • ${job.recordCount} records`}
                       </p>
@@ -349,7 +349,7 @@ export default function DataExportManager() {
                     job.status === 'completed' 
                       ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
                       : job.status === 'failed'
-                      ? 'bg-red-50 text-red-700 border-red-200'
+                      ? 'bg-red-200 text-red-700 border-red-200'
                       : 'bg-amber-50 text-amber-700 border-amber-200'
                   }`}>
                     {job.status}

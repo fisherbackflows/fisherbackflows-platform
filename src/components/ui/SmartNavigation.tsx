@@ -116,7 +116,7 @@ export default function SmartNavigation({
           {showBackToTop && (
             <button
               onClick={scrollToTop}
-              className="w-12 h-12 bg-blue-600/90 backdrop-blur-md rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center group"
+              className="w-12 h-12 bg-blue-700/90 backdrop-blur-md rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center group"
               aria-label="Scroll to top"
             >
               <ArrowLeft className="h-5 w-5 text-white rotate-90 group-hover:scale-110 transition-transform" />
@@ -152,7 +152,7 @@ export default function SmartNavigation({
 
           {/* Help Button */}
           {showHelpButton && (
-            <button className="w-12 h-12 bg-green-600/90 backdrop-blur-md rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center group">
+            <button className="w-12 h-12 bg-green-700/90 backdrop-blur-md rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-110 flex items-center justify-center group">
               <HelpCircle className="h-5 w-5 text-white group-hover:scale-110 transition-transform" />
             </button>
           )}

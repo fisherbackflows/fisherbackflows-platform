@@ -326,10 +326,10 @@ export default function FileUpload({
 
   const getProgressColor = (status: string): string => {
     switch (status) {
-      case 'complete': return 'bg-green-500';
+      case 'complete': return 'bg-green-700';
       case 'error': return 'bg-red-500';
       case 'processing': return 'bg-yellow-500';
-      default: return 'bg-blue-500';
+      default: return 'bg-blue-700';
     }
   };
 
@@ -340,7 +340,7 @@ export default function FileUpload({
         {...getRootProps()}
         className={`
           border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-          ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}
+          ${isDragActive ? 'border-blue-500 bg-blue-200' : 'border-gray-300 hover:border-gray-400'}
           ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
         `}
       >
@@ -352,13 +352,13 @@ export default function FileUpload({
         
         <div className="text-lg mb-2">
           {isDragActive ? (
-            <span className="text-blue-600">Drop files here</span>
+            <span className="text-blue-800">Drop files here</span>
           ) : (
             <span>Drag & drop files here, or click to select</span>
           )}
         </div>
         
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-700">
           <p>Accepted formats: {getAcceptedFileTypes()}</p>
           <p>Maximum size: {Math.round(getMaxFileSize() / 1024 / 1024)}MB</p>
           <p>Maximum files: {maxFiles}</p>
@@ -372,10 +372,10 @@ export default function FileUpload({
             <div key={progress.fileId} className="bg-white border rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium">Uploading...</span>
-                <span className="text-sm text-gray-500">{progress.progress}%</span>
+                <span className="text-sm text-gray-700">{progress.progress}%</span>
               </div>
               
-              <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+              <div className="w-full bg-gray-400 rounded-full h-2 mb-2">
                 <div
                   className={`h-2 rounded-full transition-all duration-300 ${getProgressColor(progress.status)}`}
                   style={{ width: `${progress.progress}%` }}
@@ -383,7 +383,7 @@ export default function FileUpload({
               </div>
               
               {progress.status === 'error' && progress.error && (
-                <div className="text-sm text-red-600">{progress.error}</div>
+                <div className="text-sm text-red-800">{progress.error}</div>
               )}
               
               {progress.status === 'processing' && (
@@ -405,7 +405,7 @@ export default function FileUpload({
                 <span className="text-2xl">{getCategoryIcon(file.category)}</span>
                 <div>
                   <div className="font-medium text-sm">{file.originalName}</div>
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-gray-700">
                     {formatFileSize(file.size)} • {file.mimeType}
                   </div>
                 </div>
@@ -422,14 +422,14 @@ export default function FileUpload({
                 
                 <button
                   onClick={() => window.open(file.url, '_blank')}
-                  className="text-blue-600 hover:text-blue-800 text-sm"
+                  className="text-blue-800 hover:text-blue-800 text-sm"
                 >
                   View
                 </button>
                 
                 <button
                   onClick={() => removeFile(file.id)}
-                  className="text-red-600 hover:text-red-800 text-sm ml-2"
+                  className="text-red-800 hover:text-red-800 text-sm ml-2"
                 >
                   Remove
                 </button>

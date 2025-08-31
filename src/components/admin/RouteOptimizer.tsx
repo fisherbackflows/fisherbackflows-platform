@@ -127,7 +127,7 @@ export default function RouteOptimizer({ initialLocations = [] }: RouteOptimizer
       case 'urgent': return 'text-red-400';
       case 'high': return 'text-orange-400';
       case 'medium': return 'text-blue-400';
-      case 'low': return 'text-gray-400';
+      case 'low': return 'text-gray-800';
       default: return 'text-blue-400';
     }
   };
@@ -283,7 +283,7 @@ export default function RouteOptimizer({ initialLocations = [] }: RouteOptimizer
                   {destinations.map((location, index) => (
                     <div key={location.id} className="flex items-center justify-between p-4 glass-darker rounded-xl">
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 text-sm font-bold">
+                        <div className="w-8 h-8 bg-blue-700/20 rounded-full flex items-center justify-center text-blue-400 text-sm font-bold">
                           {index + 1}
                         </div>
                         <div>
@@ -361,7 +361,7 @@ export default function RouteOptimizer({ initialLocations = [] }: RouteOptimizer
                   <div className="space-y-3 max-h-96 overflow-y-auto">
                     {optimizationResult.routes[0].route.map((location, index) => (
                       <div key={`${location.id}-${index}`} className="flex items-center space-x-3 p-3 glass-darker rounded-xl">
-                        <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 text-sm font-bold">
+                        <div className="w-8 h-8 bg-blue-700/20 rounded-full flex items-center justify-center text-blue-400 text-sm font-bold">
                           {index + 1}
                         </div>
                         <div className="flex-1">

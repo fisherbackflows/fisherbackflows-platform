@@ -115,9 +115,9 @@ function PaymentSuccessContent() {
       showUserActions={true}
     >
       <div className="max-w-4xl mx-auto px-4 py-16">
-        <UnifiedCard className="text-center bg-green-600/10 border-green-500/30">
+        <UnifiedCard className="text-center bg-green-700/10 border-green-500/30">
           {/* Success Icon */}
-          <div className="bg-green-600/20 border border-green-500/30 rounded-full p-4 w-16 h-16 mx-auto mb-6">
+          <div className="bg-green-700/20 border border-green-500/30 rounded-full p-4 w-16 h-16 mx-auto mb-6">
             <CheckCircle className="h-8 w-8 text-green-400" />
           </div>
 
@@ -201,7 +201,7 @@ function PaymentSuccessContent() {
           </div>
 
           {/* Important Notes */}
-          <div className="mt-8 p-4 bg-blue-600/10 border border-blue-500/30 rounded-lg">
+          <div className="mt-8 p-4 bg-blue-700/10 border border-blue-500/30 rounded-lg">
             <div className="flex items-start space-x-2">
               <Calendar className="h-5 w-5 text-blue-400 mt-0.5" />
               <div className="text-sm text-white/80 text-left">

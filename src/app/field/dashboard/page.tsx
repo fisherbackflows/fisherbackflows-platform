@@ -230,29 +230,29 @@ export default function FieldDashboard() {
                 <Logo width={160} height={128} />
                 <div>
                   <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
-                  <p className="text-xs text-slate-600">Field Dashboard</p>
+                  <p className="text-xs text-slate-800">Field Dashboard</p>
                 </div>
               </Link>
               <nav className="hidden md:flex space-x-1">
-                <Link href="/field" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                <Link href="/field" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 font-medium transition-colors">
                   <Home className="h-4 w-4 mr-2 inline" />
                   Field Portal
                 </Link>
-                <Link href="/field/dashboard" className="px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 font-medium">
+                <Link href="/field/dashboard" className="px-4 py-2 rounded-lg bg-blue-200 text-blue-700 border border-blue-200 font-medium">
                   <Calendar className="h-4 w-4 mr-2 inline" />
                   Dashboard
                 </Link>
               </nav>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-sm text-slate-600 bg-slate-50 px-3 py-2 rounded-lg border flex items-center space-x-2">
-                <Wrench className="h-4 w-4 text-green-600" />
+              <div className="text-sm text-slate-800 bg-slate-400 px-3 py-2 rounded-lg border flex items-center space-x-2">
+                <Wrench className="h-4 w-4 text-green-800" />
                 <span>Welcome, {techUser?.name || 'Technician'}</span>
               </div>
               <div className={`text-sm px-3 py-2 rounded-lg border flex items-center space-x-2 ${
                 connections.appointments 
-                  ? 'bg-green-50 text-green-700 border-green-200' 
-                  : 'bg-red-50 text-red-700 border-red-200'
+                  ? 'bg-green-200 text-green-700 border-green-200' 
+                  : 'bg-red-200 text-red-700 border-red-200'
               }`}>
                 {connections.appointments ? (
                   <>
@@ -270,7 +270,7 @@ export default function FieldDashboard() {
                 onClick={handleSignOut}
                 variant="outline"
                 size="sm"
-                className="border-red-300 text-red-700 hover:bg-red-50"
+                className="border-red-300 text-red-700 hover:bg-red-200"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 Sign Out
@@ -288,7 +288,7 @@ export default function FieldDashboard() {
             <h2 className="text-4xl font-bold text-slate-900 mb-4">
               Today's Field Schedule
             </h2>
-            <p className="text-slate-600 text-xl">
+            <p className="text-slate-800 text-xl">
               {new Date().toLocaleDateString('en-US', { 
                 weekday: 'long', 
                 year: 'numeric', 
@@ -300,13 +300,13 @@ export default function FieldDashboard() {
 
           {appointments.length === 0 ? (
             <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-12 text-center">
-              <div className="inline-flex p-4 bg-slate-100 rounded-full mb-6">
-                <Calendar className="h-12 w-12 text-slate-500" />
+              <div className="inline-flex p-4 bg-slate-300 rounded-full mb-6">
+                <Calendar className="h-12 w-12 text-slate-700" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-4">
                 No appointments scheduled for today
               </h3>
-              <p className="text-slate-600 text-lg">
+              <p className="text-slate-800 text-lg">
                 Enjoy your day off or check back tomorrow!
               </p>
             </div>
@@ -318,14 +318,14 @@ export default function FieldDashboard() {
                     {/* Appointment Header */}
                     <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6 space-y-4 lg:space-y-0">
                       <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-6">
-                        <div className="flex items-center space-x-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
-                          <Clock className="h-6 w-6 text-blue-600" />
+                        <div className="flex items-center space-x-3 bg-blue-200 border border-blue-200 rounded-xl px-4 py-3">
+                          <Clock className="h-6 w-6 text-blue-800" />
                           <span className="text-slate-900 font-bold text-xl">
                             {appointment.appointmentTime}
                           </span>
                         </div>
-                        <div className="flex items-center space-x-3 bg-green-50 border border-green-200 rounded-xl px-4 py-3">
-                          <User className="h-6 w-6 text-green-600" />
+                        <div className="flex items-center space-x-3 bg-green-200 border border-green-200 rounded-xl px-4 py-3">
+                          <User className="h-6 w-6 text-green-800" />
                           <span className="text-slate-900 font-bold text-lg">
                             {appointment.customerName}
                           </span>
@@ -333,7 +333,7 @@ export default function FieldDashboard() {
                       </div>
                       <div className={`px-4 py-2 rounded-xl text-sm font-semibold border ${
                         appointment.status === 'Scheduled' 
-                          ? 'bg-green-50 text-green-700 border-green-200' 
+                          ? 'bg-green-200 text-green-700 border-green-200' 
                           : 'bg-yellow-50 text-yellow-700 border-yellow-200'
                       }`}>
                         {appointment.status}
@@ -347,7 +347,7 @@ export default function FieldDashboard() {
                           <Wrench className="h-5 w-5 text-purple-600" />
                         </div>
                         <div>
-                          <p className="text-sm text-slate-600">Service Type</p>
+                          <p className="text-sm text-slate-800">Service Type</p>
                           <p className="font-semibold text-slate-900">
                             {appointment.serviceType}
                           </p>
@@ -358,7 +358,7 @@ export default function FieldDashboard() {
                           <MapPin className="h-5 w-5 text-emerald-600" />
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm text-slate-600">Location</p>
+                          <p className="text-sm text-slate-800">Location</p>
                           <p className="font-semibold text-slate-900 text-sm">
                             {appointment.deviceLocation}
                           </p>
@@ -369,7 +369,7 @@ export default function FieldDashboard() {
                           <Phone className="h-5 w-5 text-cyan-600" />
                         </div>
                         <div>
-                          <p className="text-sm text-slate-600">Phone</p>
+                          <p className="text-sm text-slate-800">Phone</p>
                           <p className="font-semibold text-slate-900">
                             <a href={`tel:${appointment.customerPhone}`} className="hover:text-cyan-600 transition-colors">
                               {appointment.customerPhone}
@@ -398,7 +398,7 @@ export default function FieldDashboard() {
                     <div className="flex flex-col sm:flex-row gap-3">
                       <Button
                         onClick={() => startTest(appointment.id)}
-                        className="flex-1 bg-green-600 hover:bg-green-700 text-white py-4 text-lg font-semibold rounded-xl shadow-lg transition-all duration-200"
+                        className="flex-1 bg-green-700 hover:bg-green-700 text-white py-4 text-lg font-semibold rounded-xl shadow-lg transition-all duration-200"
                       >
                         <Wrench className="h-5 w-5 mr-3" />
                         Start Test
@@ -407,7 +407,7 @@ export default function FieldDashboard() {
                       <Button
                         variant="outline"
                         onClick={() => window.open(`tel:${appointment.customerPhone}`)}
-                        className="border-slate-300 text-slate-700 hover:bg-slate-50 py-4 px-6 rounded-xl"
+                        className="border-slate-300 text-slate-700 hover:bg-slate-400 py-4 px-6 rounded-xl"
                       >
                         <Phone className="h-5 w-5" />
                       </Button>
@@ -422,23 +422,23 @@ export default function FieldDashboard() {
         {/* Daily Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-200">
-            <div className="inline-flex p-4 bg-green-100 rounded-2xl mb-4">
-              <CheckCircle className="h-8 w-8 text-green-600" />
+            <div className="inline-flex p-4 bg-green-300 rounded-2xl mb-4">
+              <CheckCircle className="h-8 w-8 text-green-800" />
             </div>
             <h3 className="text-lg font-semibold text-slate-900 mb-2">Tests Today</h3>
-            <p className="text-4xl font-bold text-green-600 mb-1">{appointments.length}</p>
-            <p className="text-slate-600 text-sm">Scheduled appointments</p>
+            <p className="text-4xl font-bold text-green-800 mb-1">{appointments.length}</p>
+            <p className="text-slate-800 text-sm">Scheduled appointments</p>
           </div>
           
           <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-200">
-            <div className="inline-flex p-4 bg-blue-100 rounded-2xl mb-4">
-              <Clock className="h-8 w-8 text-blue-600" />
+            <div className="inline-flex p-4 bg-blue-300 rounded-2xl mb-4">
+              <Clock className="h-8 w-8 text-blue-800" />
             </div>
             <h3 className="text-lg font-semibold text-slate-900 mb-2">Estimated Time</h3>
-            <p className="text-4xl font-bold text-blue-600 mb-1">
+            <p className="text-4xl font-bold text-blue-800 mb-1">
               {appointments.length > 0 ? `${appointments.length * 1}h` : '0h'}
             </p>
-            <p className="text-slate-600 text-sm">Total field time</p>
+            <p className="text-slate-800 text-sm">Total field time</p>
           </div>
           
           <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-200">
@@ -449,7 +449,7 @@ export default function FieldDashboard() {
             <p className="text-4xl font-bold text-orange-600 mb-1">
               {appointments.filter(a => a.serviceType.includes('Repair')).length}
             </p>
-            <p className="text-slate-600 text-sm">Repair & retest required</p>
+            <p className="text-slate-800 text-sm">Repair & retest required</p>
           </div>
         </div>
       </main>

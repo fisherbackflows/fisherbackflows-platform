@@ -44,7 +44,7 @@ export default function TeamPortalLoginPage() {
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Team Portal</h1>
-          <p className="text-gray-600 mt-2">Sign in to access the Fisher Backflows team portal</p>
+          <p className="text-gray-800 mt-2">Sign in to access the Fisher Backflows team portal</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -81,14 +81,14 @@ export default function TeamPortalLoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-blue-700 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <Link href="/login" className="text-blue-600 hover:text-blue-700 text-sm">
+          <Link href="/login" className="text-blue-800 hover:text-blue-700 text-sm">
             Back to main login
           </Link>
         </div>

@@ -180,12 +180,12 @@ export default function AdminSearchPage() {
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 bg-blue-500/20 rounded-xl">
+            <div className="p-3 bg-blue-700/20 rounded-xl">
               <Search className="w-6 h-6 text-blue-400" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-white">Advanced Search</h1>
-              <p className="text-gray-400">Search across customers, appointments, and invoices</p>
+              <p className="text-gray-800">Search across customers, appointments, and invoices</p>
             </div>
           </div>
 
@@ -202,7 +202,7 @@ export default function AdminSearchPage() {
                 onClick={() => setSearchType(value as any)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
                   searchType === value
-                    ? 'border-blue-500 bg-blue-500/20 text-blue-400'
+                    ? 'border-blue-500 bg-blue-700/20 text-blue-400'
                     : 'border-gray-700 bg-gray-800/50 text-gray-300 hover:border-gray-600'
                 }`}
               >
@@ -217,29 +217,29 @@ export default function AdminSearchPage() {
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
               <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-lg p-3 text-center">
                 <div className="text-2xl font-bold text-white">{stats.totalResults}</div>
-                <div className="text-xs text-gray-400">Total Results</div>
+                <div className="text-xs text-gray-800">Total Results</div>
               </div>
               
               {searchType === 'all' && (
                 <>
                   <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-lg p-3 text-center">
                     <div className="text-2xl font-bold text-blue-400">{stats.customerCount}</div>
-                    <div className="text-xs text-gray-400">Customers</div>
+                    <div className="text-xs text-gray-800">Customers</div>
                   </div>
                   <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-lg p-3 text-center">
                     <div className="text-2xl font-bold text-green-400">{stats.appointmentCount}</div>
-                    <div className="text-xs text-gray-400">Appointments</div>
+                    <div className="text-xs text-gray-800">Appointments</div>
                   </div>
                   <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-lg p-3 text-center">
                     <div className="text-2xl font-bold text-orange-400">{stats.invoiceCount}</div>
-                    <div className="text-xs text-gray-400">Invoices</div>
+                    <div className="text-xs text-gray-800">Invoices</div>
                   </div>
                 </>
               )}
               
               <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-lg p-3 text-center">
                 <div className="text-2xl font-bold text-purple-400">{stats.searchTime}ms</div>
-                <div className="text-xs text-gray-400">Search Time</div>
+                <div className="text-xs text-gray-800">Search Time</div>
               </div>
             </div>
           )}
@@ -262,14 +262,14 @@ export default function AdminSearchPage() {
         {hasResults && (
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <span className="text-gray-400 text-sm">
+              <span className="text-gray-800 text-sm">
                 Showing {results.length} of {stats.totalResults} results
               </span>
               
               {hasFilters && (
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gray-400" />
-                  <span className="text-gray-400 text-sm">Filtered</span>
+                  <Filter className="w-4 h-4 text-gray-800" />
+                  <span className="text-gray-800 text-sm">Filtered</span>
                 </div>
               )}
             </div>
@@ -304,7 +304,7 @@ export default function AdminSearchPage() {
               Previous
             </button>
             
-            <span className="text-gray-400">
+            <span className="text-gray-800">
               Page {pagination.currentPage} of {pagination.totalPages}
             </span>
             

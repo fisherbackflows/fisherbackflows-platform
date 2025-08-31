@@ -122,8 +122,8 @@ export function UnifiedButton({
   
   const variants = {
     primary: "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white",
-    secondary: "bg-blue-600/20 border border-blue-500/30 text-blue-400 hover:bg-blue-600/30",
-    success: "bg-green-600/20 border border-green-500/30 text-green-400 hover:bg-green-600/30",
+    secondary: "bg-blue-700/20 border border-blue-500/30 text-blue-400 hover:bg-blue-700/30",
+    success: "bg-green-700/20 border border-green-500/30 text-green-400 hover:bg-green-700/30",
     outline: "border border-gray-500/30 text-white/80 hover:bg-white/10 hover:text-white",
     ghost: "text-white/80 hover:bg-white/10 hover:text-white"
   };

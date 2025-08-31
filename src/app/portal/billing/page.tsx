@@ -105,7 +105,7 @@ export default function BillingPage() {
       case 'paid': return 'text-green-400 bg-green-400/20 border-green-400/30';
       case 'pending': return 'text-yellow-400 bg-yellow-400/20 border-yellow-400/30';
       case 'overdue': return 'text-red-400 bg-red-400/20 border-red-400/30';
-      case 'cancelled': return 'text-gray-400 bg-gray-400/20 border-gray-400/30';
+      case 'cancelled': return 'text-gray-800 bg-gray-400/20 border-gray-400/30';
       default: return 'text-blue-400 bg-blue-400/20 border-blue-400/30';
     }
   };
@@ -248,7 +248,7 @@ export default function BillingPage() {
                   onClick={() => setActiveTab('invoices')}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     activeTab === 'invoices' 
-                      ? 'bg-blue-500/20 text-blue-400' 
+                      ? 'bg-blue-700/20 text-blue-400' 
                       : 'text-white/60 hover:text-white/80'
                   }`}
                 >
@@ -259,7 +259,7 @@ export default function BillingPage() {
                   onClick={() => setActiveTab('payments')}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                     activeTab === 'payments' 
-                      ? 'bg-blue-500/20 text-blue-400' 
+                      ? 'bg-blue-700/20 text-blue-400' 
                       : 'text-white/60 hover:text-white/80'
                   }`}
                 >
@@ -525,7 +525,7 @@ export default function BillingPage() {
                         <p className="text-white/60 text-xs">Expires 12/27</p>
                       </div>
                     </div>
-                    <span className="text-xs px-2 py-1 bg-green-500/20 text-green-400 rounded">
+                    <span className="text-xs px-2 py-1 bg-green-700/20 text-green-400 rounded">
                       Default
                     </span>
                   </div>

@@ -126,7 +126,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
           onClick={() => setFormData(prev => ({ ...prev, loginType: 'email' }))}
           className={`flex-1 flex items-center justify-center px-4 py-2 rounded-md transition-all ${
             formData.loginType === 'email' 
-              ? 'bg-blue-500/20 text-blue-400' 
+              ? 'bg-blue-700/20 text-blue-400' 
               : 'text-white/60 hover:text-white/80'
           }`}
         >
@@ -138,7 +138,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
           onClick={() => setFormData(prev => ({ ...prev, loginType: 'phone' }))}
           className={`flex-1 flex items-center justify-center px-4 py-2 rounded-md transition-all ${
             formData.loginType === 'phone' 
-              ? 'bg-blue-500/20 text-blue-400' 
+              ? 'bg-blue-700/20 text-blue-400' 
               : 'text-white/60 hover:text-white/80'
           }`}
         >
@@ -264,7 +264,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
         
         <Button
           type="button"
-          className="w-full border border-blue-500/30 bg-blue-600/10 text-blue-400 hover:bg-blue-600/20 py-3 rounded-lg transition-all"
+          className="w-full border border-blue-500/30 bg-blue-700/10 text-blue-400 hover:bg-blue-700/20 py-3 rounded-lg transition-all"
           onClick={() => window.location.href = '/portal/register'}
         >
           Create New Account

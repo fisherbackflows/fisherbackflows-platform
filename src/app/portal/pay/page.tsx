@@ -123,7 +123,7 @@ function PaymentPageContent() {
                   key={invoice.id}
                   className={`border rounded-lg p-6 transition-all cursor-pointer ${
                     selectedInvoice === invoice.id
-                      ? 'border-blue-500 bg-blue-500/10'
+                      ? 'border-blue-500 bg-blue-700/10'
                       : 'border-gray-600 hover:border-gray-500'
                   }`}
                   onClick={() => setSelectedInvoice(selectedInvoice === invoice.id ? null : invoice.id)}
@@ -185,7 +185,7 @@ function PaymentPageContent() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <AlertCircle className="h-12 w-12 text-gray-800 mx-auto mb-4" />
               <p className="text-white/60">No outstanding invoices</p>
               <p className="text-white/40 text-sm mt-1">All payments are up to date!</p>
             </div>
@@ -233,9 +233,9 @@ function PaymentPageContent() {
         </div>
 
         {/* Payment Security */}
-        <UnifiedCard className="bg-green-600/10 border-green-500/30">
+        <UnifiedCard className="bg-green-700/10 border-green-500/30">
           <div className="flex items-start space-x-4">
-            <div className="bg-green-600/20 border border-green-500/30 rounded-lg p-3">
+            <div className="bg-green-700/20 border border-green-500/30 rounded-lg p-3">
               <Shield className="h-6 w-6 text-green-400" />
             </div>
             <div className="flex-1">

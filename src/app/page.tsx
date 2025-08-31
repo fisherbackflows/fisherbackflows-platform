@@ -96,17 +96,17 @@ export default function HomePage() {
             </div>
             
             <nav className="hidden md:flex space-x-1">
-              <a href="#services" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 font-medium">
+              <a href="#services" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-all duration-200 font-medium">
                 Services
               </a>
-              <a href="#about" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 font-medium">
+              <a href="#about" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-all duration-200 font-medium">
                 About
               </a>
-              <a href="#contact" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 font-medium">
+              <a href="#contact" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-all duration-200 font-medium">
                 Contact
               </a>
               <div className="w-px h-8 bg-slate-300 mx-2"></div>
-              <Link href="/portal" className="px-6 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white transition-all duration-200 font-semibold shadow-sm">
+              <Link href="/portal" className="px-6 py-2.5 rounded-lg bg-blue-700 hover:bg-blue-700 text-white transition-all duration-200 font-semibold shadow-sm">
                 Customer Portal
               </Link>
               <Link href="/team-portal" className="px-6 py-2.5 rounded-lg bg-slate-800 hover:bg-slate-900 text-white transition-all duration-200 font-semibold shadow-sm">
@@ -134,7 +134,7 @@ export default function HomePage() {
             <span className="bg-gradient-to-r from-blue-600 via-blue-700 to-emerald-600 bg-clip-text text-transparent">Testing & Certification</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-slate-600 mb-12 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-slate-800 mb-12 max-w-4xl mx-auto leading-relaxed">
             Protecting Pierce County's water supply with expert backflow prevention services. 
             <strong className="text-slate-800">Fast scheduling, same-week service, and full compliance guaranteed.</strong>
           </p>
@@ -142,7 +142,7 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
             <Button 
               size="lg" 
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-xl group transition-all duration-200 shadow-lg hover:shadow-xl"
+              className="bg-blue-700 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-xl group transition-all duration-200 shadow-lg hover:shadow-xl"
               onClick={() => window.location.href = '/portal/schedule'}
             >
               Schedule Testing Now
@@ -150,7 +150,7 @@ export default function HomePage() {
             </Button>
             <Button 
               size="lg" 
-              className="bg-white border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 shadow-sm"
+              className="bg-white border-2 border-slate-300 text-slate-700 hover:bg-slate-400 hover:border-slate-400 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 shadow-sm"
               onClick={() => window.location.href = 'tel:2532788692'}
             >
               <Phone className="mr-2 h-5 w-5" />
@@ -165,34 +165,34 @@ export default function HomePage() {
                 <Shield className="h-8 w-8 text-emerald-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Licensed & Insured</h3>
-              <p className="text-slate-600 leading-relaxed">Fully certified contractor with comprehensive insurance for your complete protection and peace of mind.</p>
+              <p className="text-slate-800 leading-relaxed">Fully certified contractor with comprehensive insurance for your complete protection and peace of mind.</p>
             </div>
             <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-200">
-              <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Clock className="h-8 w-8 text-blue-600" />
+              <div className="w-16 h-16 bg-blue-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Clock className="h-8 w-8 text-blue-800" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Same Week Service</h3>
-              <p className="text-slate-600 leading-relaxed">Fast scheduling with same-week appointments available to meet your testing deadlines and requirements.</p>
+              <p className="text-slate-800 leading-relaxed">Fast scheduling with same-week appointments available to meet your testing deadlines and requirements.</p>
             </div>
             <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm hover:shadow-md transition-all duration-200">
               <div className="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Award className="h-8 w-8 text-amber-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">BAT Certified</h3>
-              <p className="text-slate-600 leading-relaxed">Certified Backflow Assembly Tester with years of experience and up-to-date certifications.</p>
+              <p className="text-slate-800 leading-relaxed">Certified Backflow Assembly Tester with years of experience and up-to-date certifications.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Customer Portal Section */}
-      <section className="py-20 px-6 bg-slate-50">
+      <section className="py-20 px-6 bg-slate-400">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
               Customer Portal
             </h2>
-            <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-slate-800 max-w-3xl mx-auto leading-relaxed">
               Manage your backflow testing services online with our secure customer portal. 
               Schedule appointments, pay bills, and access your compliance records anytime.
             </p>
@@ -200,11 +200,11 @@ export default function HomePage() {
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="bg-white border border-slate-200 rounded-xl p-8 text-center shadow-sm hover:shadow-lg transition-all duration-200">
-              <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Calendar className="h-8 w-8 text-blue-600" />
+              <div className="w-16 h-16 bg-blue-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Calendar className="h-8 w-8 text-blue-800" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-4">Easy Scheduling</h3>
-              <p className="text-slate-600 leading-relaxed">Book appointments online 24/7 with real-time availability and instant confirmation.</p>
+              <p className="text-slate-800 leading-relaxed">Book appointments online 24/7 with real-time availability and instant confirmation.</p>
             </div>
             
             <div className="bg-white border border-slate-200 rounded-xl p-8 text-center shadow-sm hover:shadow-lg transition-all duration-200">
@@ -212,7 +212,7 @@ export default function HomePage() {
                 <CreditCard className="h-8 w-8 text-emerald-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-4">Secure Payments</h3>
-              <p className="text-slate-600 leading-relaxed">Pay your bills online with multiple payment options and automated billing features.</p>
+              <p className="text-slate-800 leading-relaxed">Pay your bills online with multiple payment options and automated billing features.</p>
             </div>
             
             <div className="bg-white border border-slate-200 rounded-xl p-8 text-center shadow-sm hover:shadow-lg transition-all duration-200">
@@ -220,7 +220,7 @@ export default function HomePage() {
                 <FileText className="h-8 w-8 text-amber-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-4">Digital Records</h3>
-              <p className="text-slate-600 leading-relaxed">Access all your test reports, compliance certificates, and service history instantly.</p>
+              <p className="text-slate-800 leading-relaxed">Access all your test reports, compliance certificates, and service history instantly.</p>
             </div>
           </div>
           
@@ -228,7 +228,7 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg" 
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="bg-blue-700 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
                 onClick={() => window.location.href = '/portal'}
               >
                 <User className="mr-2 h-5 w-5" />
@@ -236,7 +236,7 @@ export default function HomePage() {
               </Button>
               <Button 
                 size="lg" 
-                className="bg-white border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 shadow-sm"
+                className="bg-white border-2 border-slate-300 text-slate-700 hover:bg-slate-400 hover:border-slate-400 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 shadow-sm"
                 onClick={() => window.location.href = '/team-portal'}
               >
                 Business Portal
@@ -252,7 +252,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Our Services</h2>
-            <p className="text-slate-400 text-2xl">Professional backflow testing and certification services</p>
+            <p className="text-slate-800 text-2xl">Professional backflow testing and certification services</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -282,7 +282,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold mb-6 text-white">Why Choose Fisher Backflows?</h2>
-            <p className="text-slate-400 text-xl">Professional service you can trust</p>
+            <p className="text-slate-800 text-xl">Professional service you can trust</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
@@ -304,12 +304,12 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold mb-6 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Get Started Today</h2>
-            <p className="text-2xl text-slate-400">Choose the most convenient way to reach us</p>
+            <p className="text-2xl text-slate-800">Choose the most convenient way to reach us</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <div className="bg-gradient-to-br from-blue-600/10 to-blue-800/10 backdrop-blur-sm border border-blue-400/20 rounded-2xl p-8 text-center hover:scale-105 transition-all duration-300">
-              <div className="inline-block p-6 bg-blue-600/20 rounded-2xl mb-6">
+              <div className="inline-block p-6 bg-blue-700/20 rounded-2xl mb-6">
                 <Phone className="h-12 w-12 text-blue-400" />
               </div>
               <h3 className="text-2xl font-semibold mb-4 text-white">Call or Text</h3>
@@ -344,7 +344,7 @@ export default function HomePage() {
 
           <div className="bg-gradient-to-r from-slate-800/30 to-slate-700/30 backdrop-blur-sm border border-slate-600/20 rounded-2xl p-8 max-w-3xl mx-auto text-center">
             <div className="flex items-center justify-center mb-6">
-              <Clock className="h-8 w-8 text-slate-400 mr-3" />
+              <Clock className="h-8 w-8 text-slate-800 mr-3" />
               <h3 className="text-2xl font-bold text-white">Business Hours</h3>
             </div>
             <div className="grid md:grid-cols-3 gap-4 text-slate-300 text-lg">
@@ -379,7 +379,7 @@ export default function HomePage() {
                   className="brightness-110 contrast-105"
                 />
               </div>
-              <p className="text-slate-400 text-lg mb-6 leading-relaxed">
+              <p className="text-slate-800 text-lg mb-6 leading-relaxed">
                 Professional backflow testing and prevention services for Pierce County. 
                 Protecting your water quality with certified expertise.
               </p>
@@ -398,10 +398,10 @@ export default function HomePage() {
             <div>
               <h4 className="text-xl font-bold mb-6 text-white">Quick Links</h4>
               <div className="space-y-3">
-                <a href="/portal" className="block text-slate-400 hover:text-white text-lg transition-colors">Customer Portal</a>
-                <a href="/portal/schedule" className="block text-slate-400 hover:text-white text-lg transition-colors">Schedule Service</a>
-                <a href="/portal/pay" className="block text-slate-400 hover:text-white text-lg transition-colors">Pay Bill</a>
-                <a href="/team-portal" className="block text-slate-400 hover:text-white text-lg transition-colors">Team Portal</a>
+                <a href="/portal" className="block text-slate-800 hover:text-white text-lg transition-colors">Customer Portal</a>
+                <a href="/portal/schedule" className="block text-slate-800 hover:text-white text-lg transition-colors">Schedule Service</a>
+                <a href="/portal/pay" className="block text-slate-800 hover:text-white text-lg transition-colors">Pay Bill</a>
+                <a href="/team-portal" className="block text-slate-800 hover:text-white text-lg transition-colors">Team Portal</a>
               </div>
             </div>
             
@@ -425,10 +425,10 @@ export default function HomePage() {
           </div>
           
           <div className="border-t border-slate-700/50 pt-8 text-center">
-            <p className="text-slate-500 text-lg mb-2">
+            <p className="text-slate-700 text-lg mb-2">
               © {currentYear} Fisher Backflows LLC. All rights reserved. Licensed & Insured.
             </p>
-            <p className="text-slate-600 text-sm">
+            <p className="text-slate-800 text-sm">
               BAT Certified | Washington State Contractor License
             </p>
           </div>

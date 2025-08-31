@@ -151,7 +151,7 @@ export function ErrorDisplay({
   className?: string;
 }) {
   return (
-    <div className={`p-6 bg-red-50 border border-red-200 rounded-lg ${className}`}>
+    <div className={`p-6 bg-red-200 border border-red-200 rounded-lg ${className}`}>
       <div className="flex items-center">
         <div className="flex-shrink-0">
           <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -165,10 +165,10 @@ export function ErrorDisplay({
           </div>
           {showDetails && error.stack && (
             <details className="mt-2">
-              <summary className="cursor-pointer text-xs text-red-600 hover:text-red-800">
+              <summary className="cursor-pointer text-xs text-red-800 hover:text-red-800">
                 Technical Details
               </summary>
-              <pre className="mt-1 text-xs text-red-600 whitespace-pre-wrap">
+              <pre className="mt-1 text-xs text-red-800 whitespace-pre-wrap">
                 {error.stack}
               </pre>
             </details>
@@ -179,7 +179,7 @@ export function ErrorDisplay({
             <button
               type="button"
               onClick={onRetry}
-              className="bg-red-100 text-red-800 hover:bg-red-200 px-3 py-1 text-sm font-medium rounded-md"
+              className="bg-red-300 text-red-800 hover:bg-red-200 px-3 py-1 text-sm font-medium rounded-md"
             >
               Retry
             </button>

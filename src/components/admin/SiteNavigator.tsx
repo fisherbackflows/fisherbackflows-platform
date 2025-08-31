@@ -53,14 +53,14 @@ const categoryConfig = {
     label: 'Customer Portal',
     color: 'text-blue-400',
     bgColor: 'bg-gradient-to-r from-blue-600 to-blue-500',
-    glassColor: 'bg-blue-500/10 border-blue-500/20'
+    glassColor: 'bg-blue-700/10 border-blue-500/20'
   },
   team: {
     icon: UserGroupIcon,
     label: 'Team Portal',
     color: 'text-green-400',
     bgColor: 'bg-gradient-to-r from-green-600 to-green-500',
-    glassColor: 'bg-green-500/10 border-green-500/20'
+    glassColor: 'bg-green-700/10 border-green-500/20'
   },
   admin: {
     icon: CogIcon,
@@ -98,7 +98,7 @@ const statusConfig = {
     icon: CheckCircleIcon,
     label: 'Active',
     color: 'text-green-400',
-    bgColor: 'bg-green-500/10 border-green-500/20'
+    bgColor: 'bg-green-700/10 border-green-500/20'
   },
   development: {
     icon: ClockIcon,

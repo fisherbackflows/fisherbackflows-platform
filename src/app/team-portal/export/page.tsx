@@ -34,14 +34,14 @@ export default function ExportPage() {
       id: 'customers',
       title: 'Customer Database',
       description: 'Export all customer information and device details',
-      icon: <Users className="h-6 w-6 text-blue-600" />,
+      icon: <Users className="h-6 w-6 text-blue-800" />,
       format: 'CSV/Excel'
     },
     {
       id: 'test-reports',
       title: 'Test Reports',
       description: 'Export test reports with results and compliance data',
-      icon: <FileText className="h-6 w-6 text-green-600" />,
+      icon: <FileText className="h-6 w-6 text-green-800" />,
       format: 'CSV/PDF'
     },
     {
@@ -106,7 +106,7 @@ export default function ExportPage() {
                     key={exportType.id}
                     className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                       selectedExport === exportType.id
-                        ? 'border-blue-500 bg-blue-50'
+                        ? 'border-blue-500 bg-blue-200'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                     onClick={() => setSelectedExport(exportType.id)}
@@ -115,15 +115,15 @@ export default function ExportPage() {
                       {exportType.icon}
                       <div className="flex-1">
                         <h3 className="font-medium text-gray-900">{exportType.title}</h3>
-                        <p className="text-sm text-gray-600 mt-1">{exportType.description}</p>
+                        <p className="text-sm text-gray-800 mt-1">{exportType.description}</p>
                         <div className="flex items-center mt-2">
-                          <span className="text-xs bg-gray-100 text-gray-900 px-2 py-1 rounded">
+                          <span className="text-xs bg-gray-300 text-gray-900 px-2 py-1 rounded">
                             {exportType.format}
                           </span>
                         </div>
                       </div>
                       {selectedExport === exportType.id && (
-                        <CheckCircle className="h-5 w-5 text-blue-600" />
+                        <CheckCircle className="h-5 w-5 text-blue-800" />
                       )}
                     </div>
                   </div>
@@ -164,7 +164,7 @@ export default function ExportPage() {
                   </div>
                 </div>
                 
-                <p className="text-sm text-gray-600 mt-2">
+                <p className="text-sm text-gray-800 mt-2">
                   Leave blank to export all records
                 </p>
               </div>
@@ -184,7 +184,7 @@ export default function ExportPage() {
                       type="checkbox"
                       checked={includeFields.customerInfo}
                       onChange={(e) => setIncludeFields(prev => ({ ...prev, customerInfo: e.target.checked }))}
-                      className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
                     />
                     <span className="text-sm font-medium text-gray-700">Customer Information</span>
                   </label>
@@ -194,7 +194,7 @@ export default function ExportPage() {
                       type="checkbox"
                       checked={includeFields.deviceInfo}
                       onChange={(e) => setIncludeFields(prev => ({ ...prev, deviceInfo: e.target.checked }))}
-                      className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
                     />
                     <span className="text-sm font-medium text-gray-700">Device Information</span>
                   </label>
@@ -204,7 +204,7 @@ export default function ExportPage() {
                       type="checkbox"
                       checked={includeFields.testResults}
                       onChange={(e) => setIncludeFields(prev => ({ ...prev, testResults: e.target.checked }))}
-                      className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
                     />
                     <span className="text-sm font-medium text-gray-700">Test Results</span>
                   </label>
@@ -214,7 +214,7 @@ export default function ExportPage() {
                       type="checkbox"
                       checked={includeFields.invoiceData}
                       onChange={(e) => setIncludeFields(prev => ({ ...prev, invoiceData: e.target.checked }))}
-                      className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
                     />
                     <span className="text-sm font-medium text-gray-700">Invoice Data</span>
                   </label>
@@ -224,7 +224,7 @@ export default function ExportPage() {
                       type="checkbox"
                       checked={includeFields.notes}
                       onChange={(e) => setIncludeFields(prev => ({ ...prev, notes: e.target.checked }))}
-                      className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
                     />
                     <span className="text-sm font-medium text-gray-700">Notes & Comments</span>
                   </label>
@@ -269,7 +269,7 @@ export default function ExportPage() {
                   <div className="pt-4">
                     <Button 
                       onClick={handleExport}
-                      className="w-full bg-blue-600 hover:bg-blue-700"
+                      className="w-full bg-blue-700 hover:bg-blue-700"
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Export Data
@@ -279,7 +279,7 @@ export default function ExportPage() {
               ) : (
                 <div className="text-center py-8">
                   <Download className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500">Select an export type to begin</p>
+                  <p className="text-gray-700">Select an export type to begin</p>
                 </div>
               )}
             </div>

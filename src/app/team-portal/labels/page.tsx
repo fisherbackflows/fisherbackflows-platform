@@ -116,22 +116,22 @@ export default function LabelsPage() {
                     key={template.id}
                     className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                       selectedTemplate === template.id
-                        ? 'border-blue-500 bg-blue-50'
+                        ? 'border-blue-500 bg-blue-200'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                     onClick={() => setSelectedTemplate(template.id)}
                   >
                     <h3 className="font-medium text-gray-900">{template.name}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{template.description}</p>
+                    <p className="text-sm text-gray-800 mt-1">{template.description}</p>
                     <div className="flex items-center justify-between mt-3">
-                      <span className="text-xs bg-gray-100 text-gray-900 px-2 py-1 rounded">
+                      <span className="text-xs bg-gray-300 text-gray-900 px-2 py-1 rounded">
                         {template.dimensions}
                       </span>
                       <span className={`text-xs px-2 py-1 rounded capitalize ${
-                        template.type === 'address' ? 'bg-blue-100 text-blue-700' :
-                        template.type === 'device' ? 'bg-green-100 text-green-700' :
+                        template.type === 'address' ? 'bg-blue-300 text-blue-700' :
+                        template.type === 'device' ? 'bg-green-300 text-green-700' :
                         template.type === 'invoice' ? 'bg-purple-100 text-purple-700' :
-                        'bg-gray-100 text-gray-900'
+                        'bg-gray-300 text-gray-900'
                       }`}>
                         {template.type}
                       </span>
@@ -214,7 +214,7 @@ export default function LabelsPage() {
                           ...prev,
                           includeFields: { ...prev.includeFields, name: e.target.checked }
                         }))}
-                        className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
                       />
                       <span className="text-sm font-medium text-gray-700">Customer Name</span>
                     </label>
@@ -227,7 +227,7 @@ export default function LabelsPage() {
                           ...prev,
                           includeFields: { ...prev.includeFields, address: e.target.checked }
                         }))}
-                        className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
                       />
                       <span className="text-sm font-medium text-gray-700">Address</span>
                     </label>
@@ -240,7 +240,7 @@ export default function LabelsPage() {
                           ...prev,
                           includeFields: { ...prev.includeFields, deviceInfo: e.target.checked }
                         }))}
-                        className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
                       />
                       <span className="text-sm font-medium text-gray-700">Device Info</span>
                     </label>
@@ -253,7 +253,7 @@ export default function LabelsPage() {
                           ...prev,
                           includeFields: { ...prev.includeFields, dueDate: e.target.checked }
                         }))}
-                        className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
                       />
                       <span className="text-sm font-medium text-gray-700">Due Date</span>
                     </label>
@@ -317,17 +317,17 @@ export default function LabelsPage() {
                           </div>
                         )}
                         {labelData.includeFields.deviceInfo && (
-                          <div className="mt-1 text-gray-600">
+                          <div className="mt-1 text-gray-800">
                             RPZ Device #12345
                           </div>
                         )}
                         {labelData.includeFields.dueDate && (
-                          <div className="mt-1 text-gray-600">
+                          <div className="mt-1 text-gray-800">
                             Due: 2024-12-15
                           </div>
                         )}
                         {labelData.includeFields.customText && (
-                          <div className="mt-2 text-gray-600 italic">
+                          <div className="mt-2 text-gray-800 italic">
                             {labelData.includeFields.customText}
                           </div>
                         )}
@@ -338,28 +338,28 @@ export default function LabelsPage() {
                   <div className="space-y-2 text-sm">
                     <div>
                       <span className="font-medium">Template:</span>
-                      <p className="text-gray-600">{selectedTemplateInfo.name}</p>
+                      <p className="text-gray-800">{selectedTemplateInfo.name}</p>
                     </div>
                     <div>
                       <span className="font-medium">Size:</span>
-                      <p className="text-gray-600">{selectedTemplateInfo.dimensions}</p>
+                      <p className="text-gray-800">{selectedTemplateInfo.dimensions}</p>
                     </div>
                     <div>
                       <span className="font-medium">Filter:</span>
-                      <p className="text-gray-600 capitalize">
+                      <p className="text-gray-800 capitalize">
                         {labelData.customerFilter.replace('-', ' ')}
                       </p>
                     </div>
                     <div>
                       <span className="font-medium">Quantity:</span>
-                      <p className="text-gray-600">{labelData.quantity} per customer</p>
+                      <p className="text-gray-800">{labelData.quantity} per customer</p>
                     </div>
                   </div>
 
                   <div className="pt-4 space-y-2">
                     <Button 
                       onClick={handlePrint}
-                      className="w-full bg-blue-600 hover:bg-blue-700"
+                      className="w-full bg-blue-700 hover:bg-blue-700"
                     >
                       <Printer className="h-4 w-4 mr-2" />
                       Print Labels
@@ -378,7 +378,7 @@ export default function LabelsPage() {
               ) : (
                 <div className="text-center py-8">
                   <Tag className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500">Select a template to preview</p>
+                  <p className="text-gray-700">Select a template to preview</p>
                 </div>
               )}
             </div>

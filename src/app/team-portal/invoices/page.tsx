@@ -48,12 +48,12 @@ interface Invoice {
 }
 
 const statusConfig = {
-  draft: { label: 'Draft', color: 'bg-slate-50 text-slate-700 border-slate-200', icon: Edit },
-  sent: { label: 'Sent', color: 'bg-blue-50 text-blue-700 border-blue-200', icon: Send },
+  draft: { label: 'Draft', color: 'bg-slate-400 text-slate-700 border-slate-200', icon: Edit },
+  sent: { label: 'Sent', color: 'bg-blue-200 text-blue-700 border-blue-200', icon: Send },
   viewed: { label: 'Viewed', color: 'bg-purple-50 text-purple-700 border-purple-200', icon: Eye },
   paid: { label: 'Paid', color: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: CheckCircle },
-  overdue: { label: 'Overdue', color: 'bg-red-50 text-red-700 border-red-200', icon: AlertTriangle },
-  cancelled: { label: 'Cancelled', color: 'bg-slate-50 text-slate-600 border-slate-200', icon: Clock }
+  overdue: { label: 'Overdue', color: 'bg-red-200 text-red-700 border-red-200', icon: AlertTriangle },
+  cancelled: { label: 'Cancelled', color: 'bg-slate-400 text-slate-800 border-slate-200', icon: Clock }
 };
 
 export default function InvoicesPage() {
@@ -154,7 +154,7 @@ export default function InvoicesPage() {
             <div className="flex items-center justify-center py-20">
               <div className="text-center">
                 <LoadingSpinner size="lg" />
-                <p className="text-slate-600 mt-4">Loading invoices...</p>
+                <p className="text-slate-800 mt-4">Loading invoices...</p>
               </div>
             </div>
           </div>
@@ -174,7 +174,7 @@ export default function InvoicesPage() {
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div className="flex items-center space-x-4">
                 <Link href="/team-portal/dashboard">
-                  <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 p-2 rounded-lg">
+                  <Button className="bg-slate-300 hover:bg-slate-400 text-slate-700 p-2 rounded-lg">
                     <ArrowLeft className="h-5 w-5" />
                   </Button>
                 </Link>
@@ -183,12 +183,12 @@ export default function InvoicesPage() {
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold text-slate-900">Invoice Management</h1>
-                  <p className="text-slate-600 mt-1">Track and manage all your invoices and payments</p>
+                  <p className="text-slate-800 mt-1">Track and manage all your invoices and payments</p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
                 <Link href="/team-portal/invoices/new">
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center">
+                  <Button className="bg-blue-700 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center">
                     <PlusCircle className="h-4 w-4 mr-2" />
                     New Invoice
                   </Button>
@@ -201,19 +201,19 @@ export default function InvoicesPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
               <div className="text-2xl font-bold text-emerald-600">{invoices.length > 0 ? formatCurrency(totals.paid) : '$0'}</div>
-              <div className="text-sm text-slate-600 mt-1">Paid This Month</div>
+              <div className="text-sm text-slate-800 mt-1">Paid This Month</div>
             </div>
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
-              <div className="text-2xl font-bold text-blue-600">{invoices.length > 0 ? formatCurrency(totals.outstanding) : '$0'}</div>
-              <div className="text-sm text-slate-600 mt-1">Outstanding</div>
+              <div className="text-2xl font-bold text-blue-800">{invoices.length > 0 ? formatCurrency(totals.outstanding) : '$0'}</div>
+              <div className="text-sm text-slate-800 mt-1">Outstanding</div>
             </div>
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
-              <div className="text-2xl font-bold text-red-600">{invoices.length > 0 ? formatCurrency(totals.overdue) : '$0'}</div>
-              <div className="text-sm text-slate-600 mt-1">Overdue</div>
+              <div className="text-2xl font-bold text-red-800">{invoices.length > 0 ? formatCurrency(totals.overdue) : '$0'}</div>
+              <div className="text-sm text-slate-800 mt-1">Overdue</div>
             </div>
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 text-center hover:shadow-md transition-shadow duration-200">
               <div className="text-2xl font-bold text-slate-900">{invoices.length > 0 ? formatCurrency(totals.total) : '$0'}</div>
-              <div className="text-sm text-slate-600 mt-1">Total Revenue</div>
+              <div className="text-sm text-slate-800 mt-1">Total Revenue</div>
             </div>
           </div>
 
@@ -223,7 +223,7 @@ export default function InvoicesPage() {
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">Search Invoices</label>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-800 h-4 w-4" />
                   <input
                     type="text"
                     placeholder="Search by invoice number, customer, or email..."
@@ -250,8 +250,8 @@ export default function InvoicesPage() {
                       onClick={() => setStatusFilter(filter.key)}
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                         statusFilter === filter.key
-                          ? 'bg-blue-600 text-white shadow-sm'
-                          : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
+                          ? 'bg-blue-700 text-white shadow-sm'
+                          : 'bg-slate-300 text-slate-900 hover:bg-slate-400'
                       }`}
                     >
                       {filter.label} ({filter.count})
@@ -281,13 +281,13 @@ export default function InvoicesPage() {
                             {statusConfig[invoice.status].label}
                           </span>
                         </div>
-                        <p className="text-slate-600 font-medium">{invoice.customerName}</p>
+                        <p className="text-slate-800 font-medium">{invoice.customerName}</p>
                       </div>
                       <div className="text-right">
                         <div className="text-2xl font-bold text-slate-900">
                           {formatCurrency(invoice.total)}
                         </div>
-                        <div className="text-sm text-slate-500 font-medium">
+                        <div className="text-sm text-slate-700 font-medium">
                           Due {formatDate(invoice.dueDate)}
                         </div>
                       </div>
@@ -296,13 +296,13 @@ export default function InvoicesPage() {
                     <div className="space-y-4 mt-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-slate-500 font-medium">Issued:</span>
+                          <span className="text-slate-700 font-medium">Issued:</span>
                           <span className="text-slate-900 font-semibold">{formatDate(invoice.issueDate)}</span>
                         </div>
                         
                         {invoice.paidDate && (
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-slate-500 font-medium">Paid:</span>
+                            <span className="text-slate-700 font-medium">Paid:</span>
                             <span className="font-semibold text-emerald-600">
                               {formatDate(invoice.paidDate)} ({invoice.paymentMethod})
                             </span>
@@ -310,12 +310,12 @@ export default function InvoicesPage() {
                         )}
                       </div>
 
-                      <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+                      <div className="bg-slate-400 border border-slate-200 rounded-lg p-4">
                         <h4 className="text-sm font-medium text-slate-700 mb-3">Services</h4>
                         <div className="space-y-2">
                           {invoice.services.map((service, index) => (
                             <div key={index} className="flex justify-between items-center text-sm">
-                              <span className="text-slate-600">{service.description} (×{service.quantity})</span>
+                              <span className="text-slate-800">{service.description} (×{service.quantity})</span>
                               <span className="font-semibold text-slate-900">{formatCurrency(service.amount)}</span>
                             </div>
                           ))}
@@ -327,14 +327,14 @@ export default function InvoicesPage() {
                     <div className="flex items-center justify-between pt-4 border-t border-slate-200 mt-6">
                       <div className="flex space-x-2">
                         <Link href={`/team-portal/invoices/${invoice.id}`}>
-                          <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
+                          <Button className="bg-slate-300 hover:bg-slate-400 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
                             <Eye className="h-4 w-4 mr-2" />
                             View
                           </Button>
                         </Link>
                         {(invoice.status === 'draft' || invoice.status === 'sent') && (
                           <Link href={`/team-portal/invoices/${invoice.id}/edit`}>
-                            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
+                            <Button className="bg-blue-700 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
                               <Edit className="h-4 w-4 mr-2" />
                               Edit
                             </Button>
@@ -343,7 +343,7 @@ export default function InvoicesPage() {
                       </div>
                       
                       <div className="flex space-x-2">
-                        <Button className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
+                        <Button className="bg-slate-300 hover:bg-slate-400 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
                           <Download className="h-4 w-4 mr-2" />
                           PDF
                         </Button>
@@ -363,7 +363,7 @@ export default function InvoicesPage() {
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
                 <DollarSign className="h-16 w-16 text-slate-300 mx-auto mb-6" />
                 <h3 className="text-2xl font-bold text-slate-900 mb-3">No invoices found</h3>
-                <p className="text-slate-600 mb-8 max-w-md mx-auto">
+                <p className="text-slate-800 mb-8 max-w-md mx-auto">
                   {searchTerm || statusFilter !== 'all' 
                     ? "Try adjusting your search or filters to find the invoices you're looking for." 
                     : "Get started by creating your first invoice after completing a backflow test."
@@ -372,13 +372,13 @@ export default function InvoicesPage() {
                 {(!searchTerm && statusFilter === 'all') && (
                   <div className="space-y-4">
                     <Link href="/team-portal/invoices/new">
-                      <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center mx-auto">
+                      <Button className="bg-blue-700 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center mx-auto">
                         <PlusCircle className="h-5 w-5 mr-2" />
                         Create Your First Invoice
                       </Button>
                     </Link>
-                    <p className="text-sm text-slate-500">
-                      Or <Link href="/team-portal/test-report" className="text-blue-600 hover:text-blue-800 font-medium">complete a test first</Link>
+                    <p className="text-sm text-slate-700">
+                      Or <Link href="/team-portal/test-report" className="text-blue-800 hover:text-blue-800 font-medium">complete a test first</Link>
                     </p>
                   </div>
                 )}

@@ -125,7 +125,7 @@ export default function ErrorBoundaryTest() {
               pageName="Error Boundary Test - Page Level"
               showDebugInfo={true}
             >
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 text-center">
+              <div className="bg-blue-700/10 border border-blue-500/20 rounded-lg p-4 text-center">
                 {testError && ['render', 'reference'].includes(testError) ? (
                   <ErrorThrowingComponent errorType={testError} />
                 ) : (

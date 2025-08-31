@@ -80,13 +80,13 @@ export default function SearchResults({
   if (results.length === 0) {
     return (
       <div className={`bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-xl p-8 text-center ${className}`}>
-        <div className="text-gray-400 mb-4">
+        <div className="text-gray-800 mb-4">
           <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
           </svg>
         </div>
         <h3 className="text-white font-medium mb-2">No results found</h3>
-        <p className="text-gray-400 text-sm">Try adjusting your search terms or filters</p>
+        <p className="text-gray-800 text-sm">Try adjusting your search terms or filters</p>
       </div>
     );
   }
@@ -115,17 +115,17 @@ export default function SearchResults({
 
   const getStatusColor = (status: string) => {
     const statusColors: Record<string, string> = {
-      'active': 'text-green-400 bg-green-500/20',
-      'completed': 'text-green-400 bg-green-500/20',
-      'paid': 'text-green-400 bg-green-500/20',
-      'scheduled': 'text-blue-400 bg-blue-500/20',
+      'active': 'text-green-400 bg-green-700/20',
+      'completed': 'text-green-400 bg-green-700/20',
+      'paid': 'text-green-400 bg-green-700/20',
+      'scheduled': 'text-blue-400 bg-blue-700/20',
       'pending': 'text-yellow-400 bg-yellow-500/20',
       'overdue': 'text-red-400 bg-red-500/20',
       'cancelled': 'text-red-400 bg-red-500/20',
-      'inactive': 'text-gray-400 bg-gray-500/20',
-      'draft': 'text-gray-400 bg-gray-500/20'
+      'inactive': 'text-gray-800 bg-gray-500/20',
+      'draft': 'text-gray-800 bg-gray-500/20'
     };
-    return statusColors[status.toLowerCase()] || 'text-gray-400 bg-gray-500/20';
+    return statusColors[status.toLowerCase()] || 'text-gray-800 bg-gray-500/20';
   };
 
   const renderCustomerResult = (result: any) => (
@@ -142,25 +142,25 @@ export default function SearchResults({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-300">
         {result.email && (
           <div className="flex items-center space-x-2">
-            <Mail className="w-4 h-4 text-gray-400" />
+            <Mail className="w-4 h-4 text-gray-800" />
             <span>{result.email}</span>
           </div>
         )}
         {result.phone && (
           <div className="flex items-center space-x-2">
-            <Phone className="w-4 h-4 text-gray-400" />
+            <Phone className="w-4 h-4 text-gray-800" />
             <span>{result.phone}</span>
           </div>
         )}
         {result.address && (
           <div className="flex items-center space-x-2">
-            <MapPin className="w-4 h-4 text-gray-400" />
+            <MapPin className="w-4 h-4 text-gray-800" />
             <span>{result.address}, {result.city} {result.state}</span>
           </div>
         )}
         {result.account_number && (
           <div className="flex items-center space-x-2">
-            <span className="text-gray-400">Account:</span>
+            <span className="text-gray-800">Account:</span>
             <span className="font-mono">{result.account_number}</span>
           </div>
         )}
@@ -170,7 +170,7 @@ export default function SearchResults({
         <div className="mt-4 pt-4 border-t border-gray-700">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div>
-              <h4 className="text-gray-400 font-medium mb-2">Devices</h4>
+              <h4 className="text-gray-800 font-medium mb-2">Devices</h4>
               {result.devices?.length > 0 ? (
                 <ul className="space-y-1">
                   {result.devices.slice(0, 3).map((device: any) => (
@@ -179,16 +179,16 @@ export default function SearchResults({
                     </li>
                   ))}
                   {result.devices.length > 3 && (
-                    <li className="text-gray-400">+{result.devices.length - 3} more</li>
+                    <li className="text-gray-800">+{result.devices.length - 3} more</li>
                   )}
                 </ul>
               ) : (
-                <p className="text-gray-400">No devices</p>
+                <p className="text-gray-800">No devices</p>
               )}
             </div>
             
             <div>
-              <h4 className="text-gray-400 font-medium mb-2">Recent Tests</h4>
+              <h4 className="text-gray-800 font-medium mb-2">Recent Tests</h4>
               {result.test_reports?.length > 0 ? (
                 <ul className="space-y-1">
                   {result.test_reports.slice(0, 3).map((test: any) => (
@@ -198,12 +198,12 @@ export default function SearchResults({
                   ))}
                 </ul>
               ) : (
-                <p className="text-gray-400">No tests recorded</p>
+                <p className="text-gray-800">No tests recorded</p>
               )}
             </div>
 
             <div>
-              <h4 className="text-gray-400 font-medium mb-2">Balance</h4>
+              <h4 className="text-gray-800 font-medium mb-2">Balance</h4>
               <p className="text-white font-medium">
                 ${result.balance?.toFixed(2) || '0.00'}
               </p>
@@ -229,22 +229,22 @@ export default function SearchResults({
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-300">
         <div className="flex items-center space-x-2">
-          <Calendar className="w-4 h-4 text-gray-400" />
+          <Calendar className="w-4 h-4 text-gray-800" />
           <span>{new Date(result.scheduled_date).toLocaleDateString()}</span>
         </div>
         <div className="flex items-center space-x-2">
-          <Clock className="w-4 h-4 text-gray-400" />
+          <Clock className="w-4 h-4 text-gray-800" />
           <span>{result.estimated_duration || 60} minutes</span>
         </div>
         {result.service_type && (
           <div className="flex items-center space-x-2">
-            <span className="text-gray-400">Service:</span>
+            <span className="text-gray-800">Service:</span>
             <span>{result.service_type}</span>
           </div>
         )}
         {result.team_members?.name && (
           <div className="flex items-center space-x-2">
-            <User className="w-4 h-4 text-gray-400" />
+            <User className="w-4 h-4 text-gray-800" />
             <span>{result.team_members.name}</span>
           </div>
         )}
@@ -275,20 +275,20 @@ export default function SearchResults({
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-300">
         <div className="flex items-center space-x-2">
-          <User className="w-4 h-4 text-gray-400" />
+          <User className="w-4 h-4 text-gray-800" />
           <span>{result.customers?.name || 'Unknown Customer'}</span>
         </div>
         <div className="flex items-center space-x-2">
-          <DollarSign className="w-4 h-4 text-gray-400" />
+          <DollarSign className="w-4 h-4 text-gray-800" />
           <span className="font-medium text-white">${result.amount?.toFixed(2)}</span>
         </div>
         <div className="flex items-center space-x-2">
-          <Calendar className="w-4 h-4 text-gray-400" />
+          <Calendar className="w-4 h-4 text-gray-800" />
           <span>Due: {new Date(result.due_date).toLocaleDateString()}</span>
         </div>
         {result.payments?.length > 0 && (
           <div className="flex items-center space-x-2">
-            <span className="text-gray-400">Payments:</span>
+            <span className="text-gray-800">Payments:</span>
             <span>{result.payments.length}</span>
           </div>
         )}
@@ -322,7 +322,7 @@ export default function SearchResults({
                 
                 <div className="flex-1">
                   {showType && (
-                    <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                    <div className="text-xs text-gray-800 uppercase tracking-wide mb-1">
                       {result._type}
                     </div>
                   )}
@@ -336,14 +336,14 @@ export default function SearchResults({
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => setExpandedResult(isExpanded ? null : resultId)}
-                  className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800 transition-colors"
+                  className="p-2 text-gray-800 hover:text-white rounded-lg hover:bg-gray-800 transition-colors"
                 >
                   <ChevronRight className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
                 </button>
                 
                 <Link
                   href={getResultLink(result)}
-                  className="p-2 text-gray-400 hover:text-white rounded-lg hover:bg-gray-800 transition-colors"
+                  className="p-2 text-gray-800 hover:text-white rounded-lg hover:bg-gray-800 transition-colors"
                   onClick={() => onResultClick?.(result)}
                 >
                   <ExternalLink className="w-4 h-4" />

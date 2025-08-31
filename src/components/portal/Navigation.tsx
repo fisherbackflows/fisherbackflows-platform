@@ -107,7 +107,7 @@ export default function Navigation({ customerName, accountNumber }: NavigationPr
                   href={item.href}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
                     isActive(item.href)
-                      ? 'text-blue-400 bg-blue-500/20'
+                      ? 'text-blue-400 bg-blue-700/20'
                       : 'text-white/80 hover:text-white hover:bg-white/10'
                   }`}
                 >
@@ -171,7 +171,7 @@ export default function Navigation({ customerName, accountNumber }: NavigationPr
                     href={item.href}
                     className={`flex items-center space-x-3 px-3 py-3 rounded-lg transition-colors ${
                       isActive(item.href)
-                        ? 'text-blue-400 bg-blue-500/20'
+                        ? 'text-blue-400 bg-blue-700/20'
                         : 'text-white/80 hover:text-white hover:bg-white/10'
                     }`}
                     onClick={() => setMobileMenuOpen(false)}

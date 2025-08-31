@@ -239,7 +239,7 @@ export default function NewInvoicePage() {
             </Button>
             <div>
               <h1 className="text-xl font-bold text-gray-900">New Invoice</h1>
-              <p className="text-sm text-gray-600">Create a new invoice for services</p>
+              <p className="text-sm text-gray-800">Create a new invoice for services</p>
             </div>
           </div>
         </div>
@@ -276,8 +276,8 @@ export default function NewInvoicePage() {
             {formData.customerName && (
               <div className="bg-white rounded-lg p-3">
                 <div className="font-medium text-gray-900">{formData.customerName}</div>
-                <div className="text-sm text-gray-600">{formData.customerEmail}</div>
-                <div className="text-sm text-gray-600">{formData.customerAddress}</div>
+                <div className="text-sm text-gray-800">{formData.customerEmail}</div>
+                <div className="text-sm text-gray-800">{formData.customerAddress}</div>
               </div>
             )}
           </div>
@@ -336,14 +336,14 @@ export default function NewInvoicePage() {
           {/* Service Templates */}
           {formData.services.length === 0 && (
             <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-2">Quick Add Common Services:</p>
+              <p className="text-sm text-gray-800 mb-2">Quick Add Common Services:</p>
               <div className="flex flex-wrap gap-2">
                 {serviceTemplates.slice(0, 3).map((template, index) => (
                   <button
                     key={index}
                     type="button"
                     onClick={() => addServiceFromTemplate(template)}
-                    className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded hover:bg-blue-100"
+                    className="text-xs bg-blue-200 text-blue-700 px-2 py-1 rounded hover:bg-blue-300"
                   >
                     {template.description} - {formatCurrency(template.rate)}
                   </button>
@@ -353,7 +353,7 @@ export default function NewInvoicePage() {
           )}
 
           {formData.services.length === 0 ? (
-            <div className="text-center py-6 text-gray-500">
+            <div className="text-center py-6 text-gray-700">
               <DollarSign className="h-8 w-8 mx-auto mb-2 text-gray-300" />
               <p>No services added yet</p>
               <p className="text-sm">Add the services provided to this customer</p>
@@ -369,7 +369,7 @@ export default function NewInvoicePage() {
                       variant="outline" 
                       size="sm"
                       onClick={() => removeService(service.id)}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      className="text-red-800 hover:text-red-700 hover:bg-red-200"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -391,7 +391,7 @@ export default function NewInvoicePage() {
                       {serviceTemplates.length > 0 && (
                         <div className="mt-1">
                           <select
-                            className="text-xs text-gray-600 bg-transparent border-none"
+                            className="text-xs text-gray-800 bg-transparent border-none"
                             onChange={(e) => {
                               const template = serviceTemplates.find(t => t.description === e.target.value);
                               if (template) {
@@ -461,13 +461,13 @@ export default function NewInvoicePage() {
             <div className="mt-6 bg-white rounded-lg p-4">
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Subtotal:</span>
+                  <span className="text-gray-800">Subtotal:</span>
                   <span className="font-medium">{formatCurrency(formData.subtotal)}</span>
                 </div>
                 
                 <div className="flex justify-between items-center">
                   <div className="flex items-center space-x-2">
-                    <span className="text-gray-600">Tax:</span>
+                    <span className="text-gray-800">Tax:</span>
                     <input
                       type="number"
                       step="0.1"
@@ -477,7 +477,7 @@ export default function NewInvoicePage() {
                       value={formData.taxRate}
                       onChange={(e) => handleInputChange('taxRate', parseFloat(e.target.value) || 0)}
                     />
-                    <span className="text-xs text-gray-500">%</span>
+                    <span className="text-xs text-gray-700">%</span>
                   </div>
                   <span className="font-medium">{formatCurrency(formData.taxAmount)}</span>
                 </div>

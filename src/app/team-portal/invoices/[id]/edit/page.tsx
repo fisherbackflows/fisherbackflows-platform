@@ -273,7 +273,7 @@ export default function EditInvoicePage() {
                                 onClick={() => removeItem(index)}
                                 variant="ghost"
                                 size="sm"
-                                className="text-red-600 hover:text-red-700"
+                                className="text-red-800 hover:text-red-700"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
@@ -322,7 +322,7 @@ export default function EditInvoicePage() {
 
               {/* Submit Button */}
               <div className="flex justify-end pt-6 border-t">
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                <Button type="submit" className="bg-blue-700 hover:bg-blue-700">
                   <Save className="h-4 w-4 mr-2" />
                   Update Invoice
                 </Button>

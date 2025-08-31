@@ -291,7 +291,7 @@ export default function FieldTestPage() {
               {appointment.address}
             </div>
             {appointment.notes && (
-              <div className="mt-3 p-2 bg-blue-500/20 rounded text-blue-300 text-xs">
+              <div className="mt-3 p-2 bg-blue-700/20 rounded text-blue-300 text-xs">
                 📝 {appointment.notes}
               </div>
             )}
@@ -339,7 +339,7 @@ export default function FieldTestPage() {
             <div className="space-y-4">
               {/* Timer Display */}
               {testStartTime && (
-                <div className="text-center p-3 bg-green-500/20 rounded-xl">
+                <div className="text-center p-3 bg-green-700/20 rounded-xl">
                   <p className="text-green-400 text-lg font-bold">
                     ⏱️ Test Started: {testStartTime.toLocaleTimeString()}
                   </p>
@@ -382,7 +382,7 @@ export default function FieldTestPage() {
               {testResult && (
                 <div className={`text-center p-3 rounded-xl ${
                   testResult === 'Passed' 
-                    ? 'bg-green-500/20 text-green-400' 
+                    ? 'bg-green-700/20 text-green-400' 
                     : testResult === 'Failed'
                       ? 'bg-red-500/20 text-red-400'
                       : 'bg-yellow-500/20 text-yellow-400'

@@ -174,7 +174,7 @@ Fisher Backflows Team`
                   ))}
                 </select>
                 {selectedCustomer && (
-                  <div className="mt-2 text-sm text-gray-600">
+                  <div className="mt-2 text-sm text-gray-800">
                     <p>Email: {selectedCustomer.email}</p>
                     <p>Phone: {selectedCustomer.phone}</p>
                     <p>Next Testing Due: {selectedCustomer.nextDue}</p>
@@ -190,7 +190,7 @@ Fisher Backflows Team`
                     name="isAutomated"
                     checked={formData.isAutomated}
                     onChange={handleInputChange}
-                    className="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
                   />
                   <span className="text-sm font-medium text-gray-700">
                     Automated reminder based on due date
@@ -253,7 +253,7 @@ Fisher Backflows Team`
                       onChange={handleInputChange}
                       className="mr-3"
                     />
-                    <Mail className="h-4 w-4 mr-2 text-blue-600" />
+                    <Mail className="h-4 w-4 mr-2 text-blue-800" />
                     <span>Email</span>
                   </label>
                   <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-white">
@@ -265,7 +265,7 @@ Fisher Backflows Team`
                       onChange={handleInputChange}
                       className="mr-3"
                     />
-                    <Phone className="h-4 w-4 mr-2 text-green-600" />
+                    <Phone className="h-4 w-4 mr-2 text-green-800" />
                     <span>SMS</span>
                   </label>
                 </div>
@@ -286,14 +286,14 @@ Fisher Backflows Team`
                   placeholder="Enter your reminder message..."
                   required
                 />
-                <p className="mt-2 text-xs text-gray-500">
+                <p className="mt-2 text-xs text-gray-700">
                   You can use [Customer Name] and [Due Date] as placeholders that will be automatically replaced.
                 </p>
               </div>
 
               {/* Submit Button */}
               <div className="flex justify-end pt-4">
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                <Button type="submit" className="bg-blue-700 hover:bg-blue-700">
                   <Save className="h-4 w-4 mr-2" />
                   Create Reminder
                 </Button>

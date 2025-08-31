@@ -141,7 +141,7 @@ export default function OnboardingWizard({ onComplete, userType }: OnboardingWiz
           </h2>
           <div className="w-full bg-white/10 rounded-full h-2">
             <div 
-              className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+              className="bg-blue-700 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -161,17 +161,17 @@ export default function OnboardingWizard({ onComplete, userType }: OnboardingWiz
                 key={step.id}
                 className={`flex items-center space-x-3 p-3 rounded-lg transition-all ${
                   isCurrent 
-                    ? 'bg-blue-500/20 border border-blue-500/30' 
+                    ? 'bg-blue-700/20 border border-blue-500/30' 
                     : isCompleted
-                    ? 'bg-green-500/10'
+                    ? 'bg-green-700/10'
                     : 'bg-white/5'
                 }`}
               >
                 <div className={`p-2 rounded-lg ${
                   isCompleted 
-                    ? 'bg-green-500 text-white'
+                    ? 'bg-green-700 text-white'
                     : isCurrent
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-blue-700 text-white'
                     : 'bg-white/10 text-white/60'
                 }`}>
                   {isCompleted ? (
@@ -229,7 +229,7 @@ export default function OnboardingWizard({ onComplete, userType }: OnboardingWiz
               
               <Button
                 onClick={handleNext}
-                className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700"
+                className="flex items-center space-x-2 bg-blue-700 hover:bg-blue-700"
               >
                 <span>{currentStep === steps.length - 1 ? 'Get Started' : 'Continue'}</span>
                 <ArrowRight className="h-4 w-4" />
@@ -274,7 +274,7 @@ function WelcomeStep({ onNext }: { onNext: () => void; onSkip?: () => void }) {
         </div>
       </div>
 
-      <Button onClick={onNext} size="lg" className="bg-blue-600 hover:bg-blue-700">
+      <Button onClick={onNext} size="lg" className="bg-blue-700 hover:bg-blue-700">
         Let's Get Started
         <ArrowRight className="h-4 w-4 ml-2" />
       </Button>
@@ -381,7 +381,7 @@ function ProfileStep({ onNext }: { onNext: () => void; onSkip?: () => void }) {
         <Button 
           onClick={onNext} 
           disabled={!isValid}
-          className="w-full mt-6 bg-blue-600 hover:bg-blue-700 disabled:opacity-50"
+          className="w-full mt-6 bg-blue-700 hover:bg-blue-700 disabled:opacity-50"
         >
           Save Profile Information
         </Button>
@@ -470,7 +470,7 @@ function PropertyStep({ onNext }: { onNext: () => void; onSkip?: () => void }) {
           </div>
         </div>
 
-        <Button onClick={onNext} className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
+        <Button onClick={onNext} className="w-full mt-6 bg-blue-700 hover:bg-blue-700">
           Continue
         </Button>
       </div>
@@ -494,19 +494,19 @@ function ScheduleStep({ onNext, onSkip }: { onNext: () => void; onSkip?: () => v
           <h3 className="font-semibold text-white mb-4">What happens next:</h3>
           <div className="space-y-3">
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <div className="w-6 h-6 bg-blue-700 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                 <span className="text-white text-xs font-medium">1</span>
               </div>
               <p className="text-white/80 text-sm">We'll contact you to schedule at your convenience</p>
             </div>
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <div className="w-6 h-6 bg-blue-700 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                 <span className="text-white text-xs font-medium">2</span>
               </div>
               <p className="text-white/80 text-sm">Our certified technician will visit your property</p>
             </div>
             <div className="flex items-start space-x-3">
-              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+              <div className="w-6 h-6 bg-blue-700 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                 <span className="text-white text-xs font-medium">3</span>
               </div>
               <p className="text-white/80 text-sm">You'll receive your official test report within 24 hours</p>
@@ -518,7 +518,7 @@ function ScheduleStep({ onNext, onSkip }: { onNext: () => void; onSkip?: () => v
           <Button onClick={onSkip} variant="outline" className="flex-1">
             Schedule Later
           </Button>
-          <Button onClick={onNext} className="flex-1 bg-blue-600 hover:bg-blue-700">
+          <Button onClick={onNext} className="flex-1 bg-blue-700 hover:bg-blue-700">
             Schedule Now
           </Button>
         </div>
@@ -555,7 +555,7 @@ function PaymentStep({ onNext, onSkip }: { onNext: () => void; onSkip?: () => vo
         </div>
 
         <div className="space-y-4 mb-6">
-          <div className="glass-light p-4 rounded-lg border border-green-500/30 bg-green-500/10">
+          <div className="glass-light p-4 rounded-lg border border-green-500/30 bg-green-700/10">
             <div className="flex items-center">
               <input type="radio" name="payment" className="mr-3" defaultChecked />
               <div className="flex-1">
@@ -580,7 +580,7 @@ function PaymentStep({ onNext, onSkip }: { onNext: () => void; onSkip?: () => vo
           <Button onClick={onSkip} variant="outline" className="flex-1">
             Add Later
           </Button>
-          <Button onClick={onNext} className="flex-1 bg-green-600 hover:bg-green-700">
+          <Button onClick={onNext} className="flex-1 bg-green-700 hover:bg-green-700">
             Add Payment Method
           </Button>
         </div>
@@ -664,7 +664,7 @@ function NotificationStep({ onNext }: { onNext: () => void; onSkip?: () => void 
           </div>
         </div>
 
-        <Button onClick={onNext} className="w-full bg-blue-600 hover:bg-blue-700">
+        <Button onClick={onNext} className="w-full bg-blue-700 hover:bg-blue-700">
           Complete Setup
         </Button>
       </div>
@@ -684,7 +684,7 @@ function TeamWelcomeStep({ onNext }: { onNext: () => void; onSkip?: () => void }
         Everything you need to manage customers, schedule tests, and track your work.
       </p>
       
-      <Button onClick={onNext} size="lg" className="bg-blue-600 hover:bg-blue-700">
+      <Button onClick={onNext} size="lg" className="bg-blue-700 hover:bg-blue-700">
         Let's Get Started
       </Button>
     </div>
@@ -714,7 +714,7 @@ function TeamProfileStep({ onNext }: { onNext: () => void; onSkip?: () => void }
               className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50"
             />
           </div>
-          <Button onClick={onNext} className="w-full mt-6 bg-blue-600 hover:bg-blue-700">
+          <Button onClick={onNext} className="w-full mt-6 bg-blue-700 hover:bg-blue-700">
             Continue
           </Button>
         </div>
@@ -746,7 +746,7 @@ function PlatformOverviewStep({ onNext }: { onNext: () => void; onSkip?: () => v
       </div>
 
       <div className="text-center">
-        <Button onClick={onNext} className="bg-blue-600 hover:bg-blue-700">
+        <Button onClick={onNext} className="bg-blue-700 hover:bg-blue-700">
           Start Using the Platform
         </Button>
       </div>

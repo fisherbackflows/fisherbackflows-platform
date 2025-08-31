@@ -24,7 +24,7 @@ export default function StatusIndicator({
     success: {
       icon: CheckCircle,
       color: 'text-green-400',
-      bg: 'bg-green-500/20',
+      bg: 'bg-green-700/20',
       border: 'border-green-500/30',
       glow: 'shadow-green-500/20'
     },
@@ -45,13 +45,13 @@ export default function StatusIndicator({
     info: {
       icon: Info,
       color: 'text-blue-400',
-      bg: 'bg-blue-500/20',
+      bg: 'bg-blue-700/20',
       border: 'border-blue-500/30',
       glow: 'shadow-blue-500/20'
     },
     pending: {
       icon: Clock,
-      color: 'text-gray-400',
+      color: 'text-gray-800',
       bg: 'bg-gray-500/20',
       border: 'border-gray-500/30',
       glow: 'shadow-gray-500/20'

@@ -93,19 +93,19 @@ export default function FeedbackDashboard({ feedbackData }: FeedbackDashboardPro
     switch (priority) {
       case 'urgent': return 'text-red-400 bg-red-500/20';
       case 'high': return 'text-orange-400 bg-orange-500/20';
-      case 'medium': return 'text-blue-400 bg-blue-500/20';
-      case 'low': return 'text-gray-400 bg-gray-500/20';
-      default: return 'text-gray-400 bg-gray-500/20';
+      case 'medium': return 'text-blue-400 bg-blue-700/20';
+      case 'low': return 'text-gray-800 bg-gray-500/20';
+      default: return 'text-gray-800 bg-gray-500/20';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'submitted': return 'text-blue-400 bg-blue-500/20';
+      case 'submitted': return 'text-blue-400 bg-blue-700/20';
       case 'reviewed': return 'text-yellow-400 bg-yellow-500/20';
-      case 'addressed': return 'text-green-400 bg-green-500/20';
-      case 'closed': return 'text-gray-400 bg-gray-500/20';
-      default: return 'text-gray-400 bg-gray-500/20';
+      case 'addressed': return 'text-green-400 bg-green-700/20';
+      case 'closed': return 'text-gray-800 bg-gray-500/20';
+      default: return 'text-gray-800 bg-gray-500/20';
     }
   };
 
@@ -138,7 +138,7 @@ export default function FeedbackDashboard({ feedbackData }: FeedbackDashboardPro
         {/* Key Metrics */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
           <div className="glass rounded-2xl p-6 text-center">
-            <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-blue-700/20 rounded-lg flex items-center justify-center mx-auto mb-4">
               <MessageCircle className="h-6 w-6 text-blue-400" />
             </div>
             <div className="text-2xl font-bold text-white">{analytics.totalFeedback}</div>
@@ -154,7 +154,7 @@ export default function FeedbackDashboard({ feedbackData }: FeedbackDashboardPro
           </div>
 
           <div className="glass rounded-2xl p-6 text-center">
-            <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-green-700/20 rounded-lg flex items-center justify-center mx-auto mb-4">
               <TrendingUp className="h-6 w-6 text-green-400" />
             </div>
             <div className="text-2xl font-bold text-white">{analytics.sentimentAnalysis.positive}</div>
@@ -498,7 +498,7 @@ export default function FeedbackDashboard({ feedbackData }: FeedbackDashboardPro
                       {selectedFeedback.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm"
+                          className="px-3 py-1 bg-blue-700/20 text-blue-400 rounded-full text-sm"
                         >
                           {tag}
                         </span>

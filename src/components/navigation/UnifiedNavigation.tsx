@@ -174,7 +174,7 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
               onClick={handleLogout}
               variant="ghost"
               size="sm"
-              className={`${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} ${section === 'team-portal' ? 'hover:bg-slate-100' : 'hover:bg-white/10'}`}
+              className={`${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} ${section === 'team-portal' ? 'hover:bg-slate-300' : 'hover:bg-white/10'}`}
             >
               <LogOut className="h-4 w-4" />
             </Button>
@@ -236,14 +236,14 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
             <div className={`pt-4 ${currentTheme.colors.border} border-t space-y-1`}>
               <a
                 href="tel:2532788692"
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg ${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} ${section === 'team-portal' ? 'hover:bg-slate-100' : 'hover:bg-white/10'} transition-colors`}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg ${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} ${section === 'team-portal' ? 'hover:bg-slate-300' : 'hover:bg-white/10'} transition-colors`}
               >
                 <Phone className="h-5 w-5" />
                 <span>Call Support</span>
               </a>
               <button
                 onClick={handleLogout}
-                className={`flex items-center space-x-3 px-4 py-3 rounded-lg ${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} ${section === 'team-portal' ? 'hover:bg-slate-100' : 'hover:bg-white/10'} transition-colors w-full text-left`}
+                className={`flex items-center space-x-3 px-4 py-3 rounded-lg ${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} ${section === 'team-portal' ? 'hover:bg-slate-300' : 'hover:bg-white/10'} transition-colors w-full text-left`}
               >
                 <LogOut className="h-5 w-5" />
                 <span>Logout</span>

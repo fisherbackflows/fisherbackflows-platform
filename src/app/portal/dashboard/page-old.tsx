@@ -125,7 +125,7 @@ export default function PortalDashboard() {
             <div className="flex items-center space-x-4">
               <div className="hidden md:block text-right">
                 <p className="font-semibold text-white">{customer.name}</p>
-                <p className="text-sm text-slate-400">Account: {customer.accountNumber}</p>
+                <p className="text-sm text-slate-800">Account: {customer.accountNumber}</p>
               </div>
               <div className="flex space-x-2">
                 <Button variant="ghost" size="sm" className="text-slate-300 hover:text-white">
@@ -181,40 +181,40 @@ export default function PortalDashboard() {
             </div>
             <h3 className="text-2xl font-bold text-white">{customer.devices.length}</h3>
             <p className="text-emerald-300 font-medium">Active Device</p>
-            <p className="text-slate-400 text-sm mt-1">Last tested: Jan 15, 2024</p>
+            <p className="text-slate-800 text-sm mt-1">Last tested: Jan 15, 2024</p>
           </div>
 
           {/* Next Test */}
           <div className="bg-gradient-to-br from-blue-600/20 to-blue-800/20 backdrop-blur-sm border border-blue-400/30 rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl">
             <div className="flex items-center justify-between mb-4">
               <Calendar className="h-12 w-12 text-blue-400" />
-              <span className="px-3 py-1 bg-blue-500/20 text-blue-300 text-xs font-semibold rounded-full">UPCOMING</span>
+              <span className="px-3 py-1 bg-blue-700/20 text-blue-300 text-xs font-semibold rounded-full">UPCOMING</span>
             </div>
             <h3 className="text-2xl font-bold text-white">45</h3>
             <p className="text-blue-300 font-medium">Days Until Test</p>
-            <p className="text-slate-400 text-sm mt-1">Due: Jan 15, 2025</p>
+            <p className="text-slate-800 text-sm mt-1">Due: Jan 15, 2025</p>
           </div>
 
           {/* Account Balance */}
           <div className="bg-gradient-to-br from-purple-600/20 to-purple-800/20 backdrop-blur-sm border border-purple-400/30 rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl">
             <div className="flex items-center justify-between mb-4">
               <CreditCard className="h-12 w-12 text-purple-400" />
-              <span className="px-3 py-1 bg-green-500/20 text-green-300 text-xs font-semibold rounded-full">PAID</span>
+              <span className="px-3 py-1 bg-green-700/20 text-green-300 text-xs font-semibold rounded-full">PAID</span>
             </div>
             <h3 className="text-2xl font-bold text-white">${customer.balance.toFixed(2)}</h3>
             <p className="text-purple-300 font-medium">Account Balance</p>
-            <p className="text-slate-400 text-sm mt-1">No outstanding charges</p>
+            <p className="text-slate-800 text-sm mt-1">No outstanding charges</p>
           </div>
 
           {/* Compliance Status */}
           <div className="bg-gradient-to-br from-amber-600/20 to-amber-800/20 backdrop-blur-sm border border-amber-400/30 rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl">
             <div className="flex items-center justify-between mb-4">
               <Award className="h-12 w-12 text-amber-400" />
-              <span className="px-3 py-1 bg-green-500/20 text-green-300 text-xs font-semibold rounded-full">COMPLIANT</span>
+              <span className="px-3 py-1 bg-green-700/20 text-green-300 text-xs font-semibold rounded-full">COMPLIANT</span>
             </div>
             <h3 className="text-2xl font-bold text-white">100%</h3>
             <p className="text-amber-300 font-medium">Compliance Rate</p>
-            <p className="text-slate-400 text-sm mt-1">All devices current</p>
+            <p className="text-slate-800 text-sm mt-1">All devices current</p>
           </div>
         </div>
 
@@ -279,22 +279,22 @@ export default function PortalDashboard() {
                         {device.location}
                       </p>
                     </div>
-                    <span className="px-3 py-1 bg-green-500/20 text-green-300 text-sm font-semibold rounded-full">
+                    <span className="px-3 py-1 bg-green-700/20 text-green-300 text-sm font-semibold rounded-full">
                       {device.status}
                     </span>
                   </div>
                   
                   <div className="grid md:grid-cols-3 gap-4 mb-4">
                     <div>
-                      <p className="text-slate-400 text-sm">Serial Number</p>
+                      <p className="text-slate-800 text-sm">Serial Number</p>
                       <p className="text-white font-medium">{device.serialNumber}</p>
                     </div>
                     <div>
-                      <p className="text-slate-400 text-sm">Size</p>
+                      <p className="text-slate-800 text-sm">Size</p>
                       <p className="text-white font-medium">{device.size}</p>
                     </div>
                     <div>
-                      <p className="text-slate-400 text-sm">Last Test</p>
+                      <p className="text-slate-800 text-sm">Last Test</p>
                       <p className="text-white font-medium">{device.lastTestDate}</p>
                     </div>
                   </div>
@@ -331,17 +331,17 @@ export default function PortalDashboard() {
                       <span className="px-2 py-1 bg-emerald-500/20 text-emerald-300 text-xs font-semibold rounded">
                         {apt.status}
                       </span>
-                      <span className="text-slate-400 text-sm">{apt.date}</span>
+                      <span className="text-slate-800 text-sm">{apt.date}</span>
                     </div>
                     <h4 className="font-semibold text-white">{apt.type}</h4>
                     <p className="text-slate-300 text-sm">{apt.time} with {apt.technician}</p>
-                    <p className="text-slate-400 text-xs mt-1">{apt.deviceLocation}</p>
+                    <p className="text-slate-800 text-xs mt-1">{apt.deviceLocation}</p>
                   </div>
                 ))
               ) : (
                 <div className="text-center py-8">
-                  <Calendar className="h-12 w-12 text-slate-500 mx-auto mb-3" />
-                  <p className="text-slate-400">No upcoming appointments</p>
+                  <Calendar className="h-12 w-12 text-slate-700 mx-auto mb-3" />
+                  <p className="text-slate-800">No upcoming appointments</p>
                   <Link href="/portal/schedule">
                     <Button className="mt-3 bg-emerald-600 hover:bg-emerald-700">
                       Schedule Now
@@ -358,19 +358,19 @@ export default function PortalDashboard() {
                 Recent Reports
               </h3>
               {customer.recentReports.map((report) => (
-                <div key={report.id} className="bg-blue-600/10 border border-blue-500/20 rounded-lg p-4 mb-4 hover:bg-blue-600/20 transition-all cursor-pointer">
+                <div key={report.id} className="bg-blue-700/10 border border-blue-500/20 rounded-lg p-4 mb-4 hover:bg-blue-700/20 transition-all cursor-pointer">
                   <div className="flex items-center justify-between mb-2">
                     <span className={`px-2 py-1 text-xs font-semibold rounded ${
                       report.result === 'Passed' 
-                        ? 'bg-green-500/20 text-green-300' 
+                        ? 'bg-green-700/20 text-green-300' 
                         : 'bg-red-500/20 text-red-300'
                     }`}>
                       {report.result}
                     </span>
-                    <span className="text-slate-400 text-sm">{report.date}</span>
+                    <span className="text-slate-800 text-sm">{report.date}</span>
                   </div>
                   <h4 className="font-semibold text-white">{report.testType}</h4>
-                  <p className="text-slate-400 text-xs">{report.deviceLocation}</p>
+                  <p className="text-slate-800 text-xs">{report.deviceLocation}</p>
                   <div className="flex items-center justify-between mt-3">
                     <span className="text-blue-300 text-sm">Next due: {report.nextTestDue}</span>
                     <Button size="sm" variant="ghost" className="text-blue-300 hover:text-blue-200">

@@ -184,19 +184,19 @@ function AdminDashboard() {
                 <Logo width={160} height={128} />
                 <div>
                   <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
-                  <p className="text-xs text-slate-600">Admin Portal</p>
+                  <p className="text-xs text-slate-800">Admin Portal</p>
                 </div>
               </Link>
               <nav className="hidden md:flex space-x-1">
-                <Link href="/admin/dashboard" className="px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 font-medium">
+                <Link href="/admin/dashboard" className="px-4 py-2 rounded-lg bg-blue-200 text-blue-700 border border-blue-200 font-medium">
                   <Home className="h-4 w-4 mr-2 inline" />
                   Dashboard
                 </Link>
-                <Link href="/admin/analytics" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                <Link href="/admin/analytics" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 font-medium transition-colors">
                   <TrendingUp className="h-4 w-4 mr-2 inline" />
                   Analytics
                 </Link>
-                <Link href="/admin/data-management" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                <Link href="/admin/data-management" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 font-medium transition-colors">
                   <Database className="h-4 w-4 mr-2 inline" />
                   Data Export
                 </Link>
@@ -204,14 +204,14 @@ function AdminDashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <NotificationManagerComponent />
-              <div className="text-sm text-slate-600 bg-slate-50 px-3 py-2 rounded-lg border">
+              <div className="text-sm text-slate-800 bg-slate-400 px-3 py-2 rounded-lg border">
                 Last updated: {lastRefresh.toLocaleTimeString()}
               </div>
               <Button
                 onClick={fetchMetrics}
                 variant="outline"
                 size="sm"
-                className="border-slate-300 text-slate-700 hover:bg-slate-50"
+                className="border-slate-300 text-slate-700 hover:bg-slate-400"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Refresh
@@ -226,7 +226,7 @@ function AdminDashboard() {
 
           <div>
             <h2 className="text-4xl font-bold text-slate-900 mb-2">System Control Center</h2>
-            <p className="text-slate-600 text-xl">
+            <p className="text-slate-800 text-xl">
               Real business data and operational insights for Fisher Backflows
             </p>
           </div>
@@ -240,24 +240,24 @@ function AdminDashboard() {
             <Button
               onClick={() => window.location.href = '/admin/analytics'}
               variant="outline"
-              className="h-auto p-6 flex-col space-y-3 border-blue-200 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200"
+              className="h-auto p-6 flex-col space-y-3 border-blue-200 hover:bg-blue-200 hover:border-blue-300 transition-all duration-200"
             >
-              <TrendingUp className="h-8 w-8 text-blue-600" />
+              <TrendingUp className="h-8 w-8 text-blue-800" />
               <div className="text-center">
                 <div className="font-semibold text-slate-900">Analytics</div>
-                <div className="text-sm text-slate-600">View detailed reports</div>
+                <div className="text-sm text-slate-800">View detailed reports</div>
               </div>
             </Button>
 
             <Button
               onClick={() => window.location.href = '/admin/data-management'}
               variant="outline"
-              className="h-auto p-6 flex-col space-y-3 border-green-200 hover:bg-green-50 hover:border-green-300 transition-all duration-200"
+              className="h-auto p-6 flex-col space-y-3 border-green-200 hover:bg-green-200 hover:border-green-300 transition-all duration-200"
             >
-              <Database className="h-8 w-8 text-green-600" />
+              <Database className="h-8 w-8 text-green-800" />
               <div className="text-center">
                 <div className="font-semibold text-slate-900">Data Export</div>
-                <div className="text-sm text-slate-600">Manage data exports</div>
+                <div className="text-sm text-slate-800">Manage data exports</div>
               </div>
             </Button>
 
@@ -269,19 +269,19 @@ function AdminDashboard() {
               <Search className="h-8 w-8 text-purple-600" />
               <div className="text-center">
                 <div className="font-semibold text-slate-900">Search</div>
-                <div className="text-sm text-slate-600">Find records</div>
+                <div className="text-sm text-slate-800">Find records</div>
               </div>
             </Button>
 
             <Button
               onClick={() => window.location.href = '/admin/audit-logs'}
               variant="outline"
-              className="h-auto p-6 flex-col space-y-3 border-red-200 hover:bg-red-50 hover:border-red-300 transition-all duration-200"
+              className="h-auto p-6 flex-col space-y-3 border-red-200 hover:bg-red-200 hover:border-red-300 transition-all duration-200"
             >
-              <Shield className="h-8 w-8 text-red-600" />
+              <Shield className="h-8 w-8 text-red-800" />
               <div className="text-center">
                 <div className="font-semibold text-slate-900">Security</div>
-                <div className="text-sm text-slate-600">View audit logs</div>
+                <div className="text-sm text-slate-800">View audit logs</div>
               </div>
             </Button>
           </div>
@@ -292,14 +292,14 @@ function AdminDashboard() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="text-3xl font-bold text-slate-900 mb-2">Platform Status</h3>
-              <p className="text-slate-600 text-lg">Real business operations data</p>
+              <p className="text-slate-800 text-lg">Real business operations data</p>
             </div>
             <div className={`flex items-center space-x-3 px-6 py-3 rounded-xl text-lg font-semibold border ${
               systemMetrics?.automationHealth.status === 'healthy' 
-                ? 'bg-green-50 text-green-700 border-green-200' 
+                ? 'bg-green-200 text-green-700 border-green-200' 
                 : systemMetrics?.automationHealth.status === 'initializing'
                 ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
-                : 'bg-red-50 text-red-700 border-red-200'
+                : 'bg-red-200 text-red-700 border-red-200'
             }`}>
               <Activity className="h-6 w-6" />
               <span className="capitalize">{systemMetrics?.automationHealth.status || 'Loading'}</span>
@@ -307,31 +307,31 @@ function AdminDashboard() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-3">{systemMetrics?.automationHealth.uptime || '100%'}</div>
+            <div className="bg-blue-200 border border-blue-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold text-blue-800 mb-3">{systemMetrics?.automationHealth.uptime || '100%'}</div>
               <div className="text-slate-700 font-semibold">System Uptime</div>
-              <div className="text-slate-500 text-sm mt-1">Platform availability</div>
+              <div className="text-slate-700 text-sm mt-1">Platform availability</div>
             </div>
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center">
               <div className="text-4xl font-bold text-emerald-600 mb-3">
                 {systemMetrics?.automation.testsCompleted || 0}
               </div>
               <div className="text-slate-700 font-semibold">Tests Completed</div>
-              <div className="text-slate-500 text-sm mt-1">Last 7 days</div>
+              <div className="text-slate-700 text-sm mt-1">Last 7 days</div>
             </div>
-            <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
-              <div className="text-4xl font-bold text-green-600 mb-3">
+            <div className="bg-green-200 border border-green-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold text-green-800 mb-3">
                 {systemMetrics?.automation.invoicesGenerated || 0}
               </div>
               <div className="text-slate-700 font-semibold">Invoices Generated</div>
-              <div className="text-slate-500 text-sm mt-1">Last 7 days</div>
+              <div className="text-slate-700 text-sm mt-1">Last 7 days</div>
             </div>
             <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 text-center">
               <div className="text-4xl font-bold text-purple-600 mb-3">
                 {systemMetrics?.automation.paymentsProcessed || 0}
               </div>
               <div className="text-slate-700 font-semibold">Payments Processed</div>
-              <div className="text-slate-500 text-sm mt-1">Last 7 days</div>
+              <div className="text-slate-700 text-sm mt-1">Last 7 days</div>
             </div>
           </div>
         </div>
@@ -340,25 +340,25 @@ function AdminDashboard() {
         <div className="mb-10">
           <div className="mb-8">
             <h3 className="text-3xl font-bold text-slate-900 mb-2">Business Overview</h3>
-            <p className="text-slate-600 text-lg">Key business metrics and operational insights</p>
+            <p className="text-slate-800 text-lg">Key business metrics and operational insights</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
-              <div className="inline-flex p-3 bg-blue-100 rounded-lg mb-4">
-                <Users className="h-8 w-8 text-blue-600" />
+            <div className="bg-blue-200 border border-blue-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-blue-300 rounded-lg mb-4">
+                <Users className="h-8 w-8 text-blue-800" />
               </div>
               <div className="text-3xl font-bold text-blue-700 mb-2">{businessMetrics?.customers.total || 0}</div>
               <div className="text-slate-700 font-semibold mb-1">Total Customers</div>
-              <div className="text-slate-500 text-sm">{businessMetrics?.customers.active || 0} active</div>
+              <div className="text-slate-700 text-sm">{businessMetrics?.customers.active || 0} active</div>
             </div>
             
-            <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
-              <div className="inline-flex p-3 bg-green-100 rounded-lg mb-4">
-                <Calendar className="h-8 w-8 text-green-600" />
+            <div className="bg-green-200 border border-green-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-green-300 rounded-lg mb-4">
+                <Calendar className="h-8 w-8 text-green-800" />
               </div>
               <div className="text-3xl font-bold text-green-700 mb-2">{businessMetrics?.appointments.scheduled || 0}</div>
               <div className="text-slate-700 font-semibold mb-1">Scheduled Appointments</div>
-              <div className="text-slate-500 text-sm">This month</div>
+              <div className="text-slate-700 text-sm">This month</div>
             </div>
             
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
@@ -367,16 +367,16 @@ function AdminDashboard() {
               </div>
               <div className="text-3xl font-bold text-emerald-700 mb-2">${businessMetrics?.financials.monthlyRevenue?.toLocaleString() || '0'}</div>
               <div className="text-slate-700 font-semibold mb-1">Monthly Revenue</div>
-              <div className="text-slate-500 text-sm">Current month</div>
+              <div className="text-slate-700 text-sm">Current month</div>
             </div>
             
-            <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
-              <div className="inline-flex p-3 bg-red-100 rounded-lg mb-4">
-                <AlertTriangle className="h-8 w-8 text-red-600" />
+            <div className="bg-red-200 border border-red-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-red-300 rounded-lg mb-4">
+                <AlertTriangle className="h-8 w-8 text-red-800" />
               </div>
               <div className="text-3xl font-bold text-red-700 mb-2">{businessMetrics?.customers.needsService || 0}</div>
               <div className="text-slate-700 font-semibold mb-1">Need Service</div>
-              <div className="text-slate-500 text-sm">Require attention</div>
+              <div className="text-slate-700 text-sm">Require attention</div>
             </div>
           </div>
         </div>
@@ -386,16 +386,16 @@ function AdminDashboard() {
           <div className="flex items-center justify-between mb-8">
             <div>
               <h3 className="text-2xl font-bold text-slate-900 mb-2">Platform Activity Summary</h3>
-              <p className="text-slate-600">Overview of your business operations</p>
+              <p className="text-slate-800">Overview of your business operations</p>
             </div>
             <div className={`flex items-center space-x-3 px-4 py-2 rounded-xl border ${
               (systemMetrics?.automation.testsCompleted || 0) > 0
-                ? 'bg-green-50 text-green-700 border-green-200'
-                : 'bg-slate-50 text-slate-600 border-slate-200'
+                ? 'bg-green-200 text-green-700 border-green-200'
+                : 'bg-slate-400 text-slate-800 border-slate-200'
             }`}>
               <div className={`w-3 h-3 rounded-full ${
                 (systemMetrics?.automation.testsCompleted || 0) > 0
-                  ? 'bg-green-500 animate-pulse'
+                  ? 'bg-green-700 animate-pulse'
                   : 'bg-slate-400'
               }`}></div>
               <span className="font-semibold">
@@ -405,34 +405,34 @@ function AdminDashboard() {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-blue-600 mb-2">{systemMetrics?.automation.testsCompleted || 0}</div>
+            <div className="bg-blue-200 border border-blue-200 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-blue-800 mb-2">{systemMetrics?.automation.testsCompleted || 0}</div>
               <div className="text-slate-700 font-semibold">Tests Completed</div>
-              <div className="text-slate-500 text-sm">Last 7 days</div>
+              <div className="text-slate-700 text-sm">Last 7 days</div>
             </div>
-            <div className="bg-green-50 border border-green-200 rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-green-600 mb-2">{systemMetrics?.automation.invoicesGenerated || 0}</div>
+            <div className="bg-green-200 border border-green-200 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-green-800 mb-2">{systemMetrics?.automation.invoicesGenerated || 0}</div>
               <div className="text-slate-700 font-semibold">Invoices Created</div>
-              <div className="text-slate-500 text-sm">Last 7 days</div>
+              <div className="text-slate-700 text-sm">Last 7 days</div>
             </div>
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center">
               <div className="text-3xl font-bold text-emerald-600 mb-2">{systemMetrics?.automation.paymentsProcessed || 0}</div>
               <div className="text-slate-700 font-semibold">Payments Received</div>
-              <div className="text-slate-500 text-sm">Last 7 days</div>
+              <div className="text-slate-700 text-sm">Last 7 days</div>
             </div>
             <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 text-center">
               <div className="text-3xl font-bold text-purple-600 mb-2">{systemMetrics?.automation.reportsSubmitted || 0}</div>
               <div className="text-slate-700 font-semibold">Reports Submitted</div>
-              <div className="text-slate-500 text-sm">To water departments</div>
+              <div className="text-slate-700 text-sm">To water departments</div>
             </div>
           </div>
 
           {((systemMetrics?.automation.testsCompleted || 0) === 0 && 
             (systemMetrics?.automation.invoicesGenerated || 0) === 0 && 
             (systemMetrics?.automation.paymentsProcessed || 0) === 0) && (
-            <div className="bg-slate-50 rounded-xl p-6 border border-slate-200 text-center">
-              <div className="text-slate-600 mb-4">
-                <Database className="h-12 w-12 text-slate-400 mx-auto mb-3" />
+            <div className="bg-slate-400 rounded-xl p-6 border border-slate-200 text-center">
+              <div className="text-slate-800 mb-4">
+                <Database className="h-12 w-12 text-slate-800 mx-auto mb-3" />
                 <p className="text-lg font-semibold">No Data Available Yet</p>
                 <p className="text-sm">Once you start using the platform, your real business metrics will appear here.</p>
               </div>
@@ -458,7 +458,7 @@ function AdminDashboard() {
         <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8">
           <div className="mb-8">
             <h3 className="text-2xl font-bold text-slate-900 mb-2">Recent Business Activity</h3>
-            <p className="text-slate-600">Latest real business operations and transactions</p>
+            <p className="text-slate-800">Latest real business operations and transactions</p>
           </div>
           
           <div className="space-y-4">
@@ -480,32 +480,32 @@ function AdminDashboard() {
                 
                 const IconComponent = getIcon(activity.icon)
                 const iconColorClass = activity.type === 'test_completed' 
-                  ? 'bg-green-100 text-green-600'
+                  ? 'bg-green-300 text-green-800'
                   : activity.type === 'payment_received'
                   ? 'bg-emerald-100 text-emerald-600'
                   : activity.type === 'invoice_sent'
-                  ? 'bg-blue-100 text-blue-600'
-                  : 'bg-slate-100 text-slate-600'
+                  ? 'bg-blue-300 text-blue-800'
+                  : 'bg-slate-300 text-slate-800'
                 
                 return (
-                  <div key={activity.id} className="flex items-center space-x-4 p-4 bg-slate-50 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors duration-200">
+                  <div key={activity.id} className="flex items-center space-x-4 p-4 bg-slate-400 rounded-xl border border-slate-200 hover:bg-slate-300 transition-colors duration-200">
                     <div className={`p-2 rounded-lg ${iconColorClass}`}>
                       <IconComponent className="h-5 w-5" />
                     </div>
                     <div className="flex-1">
                       <p className="text-slate-900 font-medium">{activity.text}</p>
-                      <p className="text-slate-500 text-sm">{activity.time}</p>
+                      <p className="text-slate-700 text-sm">{activity.time}</p>
                     </div>
                   </div>
                 )
               })
             ) : (
               <div className="text-center py-12">
-                <div className="inline-flex p-4 bg-slate-100 rounded-full mb-4">
-                  <Activity className="h-8 w-8 text-slate-500" />
+                <div className="inline-flex p-4 bg-slate-300 rounded-full mb-4">
+                  <Activity className="h-8 w-8 text-slate-700" />
                 </div>
                 <h4 className="text-lg font-semibold text-slate-900 mb-2">No Business Activity Yet</h4>
-                <p className="text-slate-600 mb-6">Once you start conducting tests, sending invoices, and processing payments, your activity will appear here</p>
+                <p className="text-slate-800 mb-6">Once you start conducting tests, sending invoices, and processing payments, your activity will appear here</p>
                 <div className="flex justify-center space-x-4">
                   <Button variant="outline" asChild>
                     <Link href="/field/dashboard">

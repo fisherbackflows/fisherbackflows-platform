@@ -88,16 +88,16 @@ export default function UnlockAccountsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12">
+    <div className="min-h-screen bg-slate-400 py-12">
       <div className="max-w-2xl mx-auto px-4">
         <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-8">
           <div className="flex items-center mb-6">
-            <div className="p-3 bg-red-100 rounded-lg mr-4">
-              <Shield className="h-8 w-8 text-red-600" />
+            <div className="p-3 bg-red-300 rounded-lg mr-4">
+              <Shield className="h-8 w-8 text-red-800" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-slate-900">Account Unlock Tool</h1>
-              <p className="text-slate-600">Administrative tool to unlock locked accounts</p>
+              <p className="text-slate-800">Administrative tool to unlock locked accounts</p>
             </div>
           </div>
 
@@ -139,16 +139,16 @@ export default function UnlockAccountsPage() {
             </div>
 
             {accountStatus && (
-              <div className={`rounded-lg p-4 ${accountStatus.isLocked ? 'bg-red-50 border border-red-200' : 'bg-green-50 border border-green-200'}`}>
+              <div className={`rounded-lg p-4 ${accountStatus.isLocked ? 'bg-red-200 border border-red-200' : 'bg-green-200 border border-green-200'}`}>
                 <h3 className="font-semibold mb-2 flex items-center">
                   {accountStatus.isLocked ? (
                     <>
-                      <Lock className="h-5 w-5 text-red-600 mr-2" />
+                      <Lock className="h-5 w-5 text-red-800 mr-2" />
                       <span className="text-red-900">Account Locked</span>
                     </>
                   ) : (
                     <>
-                      <Unlock className="h-5 w-5 text-green-600 mr-2" />
+                      <Unlock className="h-5 w-5 text-green-800 mr-2" />
                       <span className="text-green-900">Account Active</span>
                     </>
                   )}
@@ -172,13 +172,13 @@ export default function UnlockAccountsPage() {
             )}
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <div className="bg-red-200 border border-red-200 rounded-lg p-4">
                 <p className="text-red-700 text-sm">{error}</p>
               </div>
             )}
 
             {message && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="bg-green-200 border border-green-200 rounded-lg p-4">
                 <p className="text-green-700 text-sm flex items-center">
                   <CheckCircle className="h-4 w-4 mr-2" />
                   {message}
@@ -209,7 +209,7 @@ export default function UnlockAccountsPage() {
 
           <div className="mt-8 pt-6 border-t border-slate-200">
             <h3 className="font-semibold text-slate-900 mb-2">Common Issues:</h3>
-            <ul className="text-sm text-slate-600 space-y-1">
+            <ul className="text-sm text-slate-800 space-y-1">
               <li>• Account locks automatically after 3 failed attempts</li>
               <li>• Lock duration is 15 minutes by default</li>
               <li>• Rate limiting may also apply (5 attempts per 5 minutes)</li>

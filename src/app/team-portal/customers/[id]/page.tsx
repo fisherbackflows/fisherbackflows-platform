@@ -142,15 +142,15 @@ export default function CustomerDetailPage() {
               <h2 className="text-lg font-semibold mb-4">Contact Information</h2>
               <div className="space-y-4">
                 <div className="flex items-center">
-                  <Phone className="h-4 w-4 text-gray-400 mr-3" />
+                  <Phone className="h-4 w-4 text-gray-800 mr-3" />
                   <span>{customer.phone}</span>
                 </div>
                 <div className="flex items-center">
-                  <Mail className="h-4 w-4 text-gray-400 mr-3" />
+                  <Mail className="h-4 w-4 text-gray-800 mr-3" />
                   <span>{customer.email}</span>
                 </div>
                 <div className="flex items-start">
-                  <MapPin className="h-4 w-4 text-gray-400 mr-3 mt-1" />
+                  <MapPin className="h-4 w-4 text-gray-800 mr-3 mt-1" />
                   <span>{customer.address}</span>
                 </div>
               </div>
@@ -190,7 +190,7 @@ export default function CustomerDetailPage() {
               </div>
               <div className="p-6">
                 {testReports.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-gray-700">
                     <FileText className="h-12 w-12 mx-auto mb-4 text-gray-300" />
                     <p>No test reports yet</p>
                     <Link href={`/app/test-report?customer=${customerId}`}>
@@ -203,17 +203,17 @@ export default function CustomerDetailPage() {
                       <div key={report.id} className="border rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center">
-                            <Calendar className="h-4 w-4 text-gray-400 mr-2" />
+                            <Calendar className="h-4 w-4 text-gray-800 mr-2" />
                             <span className="font-medium">{report.date}</span>
                             <div className={`ml-3 px-2 py-1 rounded-full text-xs ${
-                              report.result === 'pass' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                              report.result === 'pass' ? 'bg-green-300 text-green-800' : 'bg-red-300 text-red-800'
                             }`}>
                               {report.result.toUpperCase()}
                             </div>
                           </div>
-                          <span className="text-sm text-gray-500">by {report.technician}</span>
+                          <span className="text-sm text-gray-700">by {report.technician}</span>
                         </div>
-                        <p className="text-gray-600">{report.notes}</p>
+                        <p className="text-gray-800">{report.notes}</p>
                       </div>
                     ))}
                   </div>

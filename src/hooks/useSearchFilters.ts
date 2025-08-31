@@ -232,7 +232,7 @@ export const filterConfigurations = {
   customers: {
     availableStatuses: [
       { label: 'Active', value: 'active', color: 'text-green-400' },
-      { label: 'Inactive', value: 'inactive', color: 'text-gray-400' },
+      { label: 'Inactive', value: 'inactive', color: 'text-gray-800' },
       { label: 'Pending', value: 'pending', color: 'text-yellow-400' },
       { label: 'Suspended', value: 'suspended', color: 'text-red-400' }
     ],
@@ -263,11 +263,11 @@ export const filterConfigurations = {
 
   invoices: {
     availableStatuses: [
-      { label: 'Draft', value: 'draft', color: 'text-gray-400' },
+      { label: 'Draft', value: 'draft', color: 'text-gray-800' },
       { label: 'Sent', value: 'sent', color: 'text-blue-400' },
       { label: 'Paid', value: 'paid', color: 'text-green-400' },
       { label: 'Overdue', value: 'overdue', color: 'text-red-400' },
-      { label: 'Cancelled', value: 'cancelled', color: 'text-gray-400' }
+      { label: 'Cancelled', value: 'cancelled', color: 'text-gray-800' }
     ]
   }
 };

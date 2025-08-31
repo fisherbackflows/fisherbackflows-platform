@@ -114,7 +114,7 @@ export default function FeedbackForm({
                 onClick={() => handleResponseChange(question.id, value)}
                 className={`w-10 h-10 rounded-full border-2 transition-all duration-200 ${
                   currentValue === value
-                    ? 'bg-blue-500 border-blue-500 text-white'
+                    ? 'bg-blue-700 border-blue-500 text-white'
                     : 'border-white/20 text-white/60 hover:border-blue-400 hover:text-blue-400'
                 }`}
               >
@@ -139,7 +139,7 @@ export default function FeedbackForm({
           onClick={() => handleResponseChange(question.id, true)}
           className={`px-6 py-3 rounded-lg border-2 transition-all duration-200 ${
             currentValue === true
-              ? 'bg-green-500 border-green-500 text-white'
+              ? 'bg-green-700 border-green-500 text-white'
               : 'border-white/20 text-white/60 hover:border-green-400 hover:text-green-400'
           }`}
         >
@@ -172,8 +172,8 @@ export default function FeedbackForm({
             onClick={() => handleResponseChange(question.id, option)}
             className={`w-full p-4 rounded-lg border-2 text-left transition-all duration-200 ${
               currentValue === option
-                ? 'bg-blue-500/20 border-blue-500 text-blue-400'
-                : 'border-white/20 text-white/80 hover:border-blue-400 hover:bg-blue-500/10'
+                ? 'bg-blue-700/20 border-blue-500 text-blue-400'
+                : 'border-white/20 text-white/80 hover:border-blue-400 hover:bg-blue-700/10'
             }`}
           >
             {option}
@@ -299,7 +299,7 @@ export default function FeedbackForm({
   if (isSubmitted) {
     return (
       <div className="glass rounded-2xl p-8 max-w-md mx-auto text-center">
-        <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div className="w-16 h-16 bg-green-700/20 rounded-full flex items-center justify-center mx-auto mb-6">
           <ThumbsUp className="h-8 w-8 text-green-400" />
         </div>
         <h2 className="text-2xl font-bold text-white mb-4">Thank You!</h2>
@@ -394,7 +394,7 @@ export default function FeedbackForm({
               id="anonymous"
               checked={isAnonymous}
               onChange={(e) => setIsAnonymous(e.target.checked)}
-              className="w-4 h-4 text-blue-600 bg-transparent border-white/20 rounded focus:ring-blue-500"
+              className="w-4 h-4 text-blue-800 bg-transparent border-white/20 rounded focus:ring-blue-500"
             />
             <label htmlFor="anonymous" className="text-white/80 text-sm">
               Submit anonymously

@@ -140,7 +140,7 @@ export default function HealthMonitoringPage() {
   const getStatusColor = (status: HealthCheck['status']) => {
     switch (status) {
       case 'healthy':
-        return 'bg-green-500/10 border-green-500/20';
+        return 'bg-green-700/10 border-green-500/20';
       case 'degraded':
         return 'bg-yellow-500/10 border-yellow-500/20';
       case 'down':
@@ -324,7 +324,7 @@ export default function HealthMonitoringPage() {
           System Status Summary
         </UnifiedText>
         <UnifiedGrid cols={3} gap="sm">
-          <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
+          <div className="p-4 bg-green-700/10 border border-green-500/20 rounded-lg">
             <UnifiedFlex gap="sm">
               <CheckCircleIcon className="h-5 w-5 text-green-400" />
               <div>

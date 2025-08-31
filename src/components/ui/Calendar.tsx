@@ -104,11 +104,11 @@ export default function Calendar({ availableDates, selectedDate, onDateSelect, p
         className={`
           relative p-1 text-sm rounded-lg transition-all font-bold aspect-square flex flex-col items-center justify-center min-h-[44px] w-full
           ${isSelected 
-            ? 'bg-blue-600 text-white ring-2 ring-blue-400 shadow-lg shadow-blue-500/50' 
+            ? 'bg-blue-700 text-white ring-2 ring-blue-400 shadow-lg shadow-blue-500/50' 
             : todayIndicator && isAvailable
-              ? 'bg-blue-500/40 text-white hover:bg-blue-500/60 ring-2 ring-blue-400/60 shadow-md shadow-blue-500/30'
+              ? 'bg-blue-700/40 text-white hover:bg-blue-700/60 ring-2 ring-blue-400/60 shadow-md shadow-blue-500/30'
             : isAvailable
-              ? 'bg-blue-400/30 text-white hover:bg-blue-500/50 shadow-sm shadow-blue-500/20' 
+              ? 'bg-blue-400/30 text-white hover:bg-blue-700/50 shadow-sm shadow-blue-500/20' 
               : 'text-white/40 cursor-not-allowed bg-gray-700/20'
           }
         `}

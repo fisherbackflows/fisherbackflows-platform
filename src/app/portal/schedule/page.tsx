@@ -140,17 +140,17 @@ export default function SchedulePage() {
                   <Logo width={160} height={128} />
                   <div>
                     <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
-                    <p className="text-xs text-slate-600">Customer Portal</p>
+                    <p className="text-xs text-slate-800">Customer Portal</p>
                   </div>
                 </Link>
                 <nav className="hidden md:flex space-x-1">
-                  <Link href="/portal/dashboard" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                  <Link href="/portal/dashboard" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 font-medium transition-colors">
                     <ArrowLeft className="h-4 w-4 mr-2 inline" />
                     Back to Dashboard
                   </Link>
                 </nav>
               </div>
-              <div className="text-sm text-slate-600">
+              <div className="text-sm text-slate-800">
                 Welcome, {mockCustomer.name}
               </div>
             </div>
@@ -160,28 +160,28 @@ export default function SchedulePage() {
         {/* Success Content */}
         <main className="max-w-3xl mx-auto px-6 py-12">
           <div className="bg-white border border-green-200 rounded-2xl p-12 text-center shadow-lg">
-            <div className="inline-flex p-4 rounded-full bg-green-100 mb-8">
-              <CheckCircle className="h-12 w-12 text-green-600" />
+            <div className="inline-flex p-4 rounded-full bg-green-300 mb-8">
+              <CheckCircle className="h-12 w-12 text-green-800" />
             </div>
             <h1 className="text-4xl font-bold text-slate-900 mb-4">Request Submitted!</h1>
-            <p className="text-slate-600 text-xl mb-8 leading-relaxed">
+            <p className="text-slate-800 text-xl mb-8 leading-relaxed">
               Thank you for scheduling your backflow test appointment.<br />
               We'll call you within 24 hours to confirm the details.
             </p>
             
-            <div className="bg-slate-50 rounded-xl p-6 mb-8">
+            <div className="bg-slate-400 rounded-xl p-6 mb-8">
               <h3 className="text-lg font-semibold text-slate-900 mb-4">What happens next?</h3>
               <div className="space-y-3 text-left">
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm font-bold flex items-center justify-center mt-0.5">1</div>
+                  <div className="w-6 h-6 rounded-full bg-blue-300 text-blue-800 text-sm font-bold flex items-center justify-center mt-0.5">1</div>
                   <p className="text-slate-700">Our team will review your request and available time slots</p>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm font-bold flex items-center justify-center mt-0.5">2</div>
+                  <div className="w-6 h-6 rounded-full bg-blue-300 text-blue-800 text-sm font-bold flex items-center justify-center mt-0.5">2</div>
                   <p className="text-slate-700">We'll call you to confirm the appointment time and answer any questions</p>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 text-sm font-bold flex items-center justify-center mt-0.5">3</div>
+                  <div className="w-6 h-6 rounded-full bg-blue-300 text-blue-800 text-sm font-bold flex items-center justify-center mt-0.5">3</div>
                   <p className="text-slate-700">Our certified technician will arrive at the scheduled time</p>
                 </div>
               </div>
@@ -190,16 +190,16 @@ export default function SchedulePage() {
             <div className="space-y-4">
               <Button 
                 onClick={() => window.location.href = '/portal/dashboard'}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition-all duration-200 w-full sm:w-auto"
+                className="bg-blue-700 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold shadow-lg transition-all duration-200 w-full sm:w-auto"
               >
                 Back to Dashboard
               </Button>
               <div className="text-center">
-                <p className="text-slate-600 mb-2">Need immediate assistance?</p>
+                <p className="text-slate-800 mb-2">Need immediate assistance?</p>
                 <Button 
                   onClick={() => window.location.href = 'tel:2532788692'}
                   variant="outline"
-                  className="border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-3 rounded-xl font-semibold transition-all duration-200"
+                  className="border-slate-300 text-slate-700 hover:bg-slate-400 px-6 py-3 rounded-xl font-semibold transition-all duration-200"
                 >
                   <Phone className="h-5 w-5 mr-2" />
                   Call (253) 278-8692
@@ -223,20 +223,20 @@ export default function SchedulePage() {
                 <Logo width={160} height={128} />
                 <div>
                   <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
-                  <p className="text-xs text-slate-600">Customer Portal</p>
+                  <p className="text-xs text-slate-800">Customer Portal</p>
                 </div>
               </Link>
               <nav className="hidden md:flex space-x-1">
-                <Link href="/portal/dashboard" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-medium transition-colors">
+                <Link href="/portal/dashboard" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 font-medium transition-colors">
                   <ArrowLeft className="h-4 w-4 mr-2 inline" />
                   Dashboard
                 </Link>
-                <Link href="/portal/schedule" className="px-4 py-2 rounded-lg bg-blue-50 text-blue-700 border border-blue-200 font-medium">
+                <Link href="/portal/schedule" className="px-4 py-2 rounded-lg bg-blue-200 text-blue-700 border border-blue-200 font-medium">
                   Schedule Test
                 </Link>
               </nav>
             </div>
-            <div className="text-sm text-slate-600">
+            <div className="text-sm text-slate-800">
               Welcome, {mockCustomer.name}
             </div>
           </div>
@@ -248,7 +248,7 @@ export default function SchedulePage() {
         {/* Header */}
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-slate-900 mb-4">Schedule Your Backflow Test</h1>
-          <p className="text-slate-600 text-xl leading-relaxed">
+          <p className="text-slate-800 text-xl leading-relaxed">
             Quick and easy booking - we'll call you to confirm the details and exact time
           </p>
         </div>
@@ -257,30 +257,30 @@ export default function SchedulePage() {
         <div className="bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden">
           <div className="bg-gradient-to-r from-blue-50 to-slate-50 px-8 py-6 border-b border-slate-200">
             <h2 className="text-xl font-bold text-slate-900">Book Your Appointment</h2>
-            <p className="text-slate-600">Fill out the form below and we'll contact you within 24 hours</p>
+            <p className="text-slate-800">Fill out the form below and we'll contact you within 24 hours</p>
           </div>
 
           <div className="p-8">
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Your Info */}
-              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+              <div className="bg-slate-400 rounded-xl p-6 border border-slate-200">
                 <h3 className="text-lg font-bold text-slate-900 mb-4">Your Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <User className="h-5 w-5 text-blue-600" />
+                    <div className="p-2 bg-blue-300 rounded-lg">
+                      <User className="h-5 w-5 text-blue-800" />
                     </div>
                     <div>
-                      <p className="text-sm text-slate-600">Customer</p>
+                      <p className="text-sm text-slate-800">Customer</p>
                       <p className="font-semibold text-slate-900">{mockCustomer.name}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-green-100 rounded-lg">
-                      <Phone className="h-5 w-5 text-green-600" />
+                    <div className="p-2 bg-green-300 rounded-lg">
+                      <Phone className="h-5 w-5 text-green-800" />
                     </div>
                     <div>
-                      <p className="text-sm text-slate-600">Phone</p>
+                      <p className="text-sm text-slate-800">Phone</p>
                       <p className="font-semibold text-slate-900">{mockCustomer.phone}</p>
                     </div>
                   </div>
@@ -289,7 +289,7 @@ export default function SchedulePage() {
                       <MapPin className="h-5 w-5 text-purple-600" />
                     </div>
                     <div>
-                      <p className="text-sm text-slate-600">Location</p>
+                      <p className="text-sm text-slate-800">Location</p>
                       <p className="font-semibold text-slate-900">{mockCustomer.address}</p>
                     </div>
                   </div>
@@ -299,24 +299,24 @@ export default function SchedulePage() {
               {/* Calendar View */}
               <div>
                 <label className="block text-slate-900 text-xl font-semibold mb-6">
-                  <CalendarIcon className="h-6 w-6 inline mr-3 text-blue-600" />
+                  <CalendarIcon className="h-6 w-6 inline mr-3 text-blue-800" />
                   Choose Your Preferred Date
                 </label>
                 
                 {loadingDates ? (
-                  <div className="bg-slate-50 rounded-xl p-12 text-center border border-slate-200">
+                  <div className="bg-slate-400 rounded-xl p-12 text-center border border-slate-200">
                     <LoadingSpinner size="lg" color="blue" text="Loading available dates from your calendar..." />
                   </div>
                 ) : availableDates.length === 0 ? (
-                  <div className="bg-slate-50 rounded-xl p-12 text-center border border-slate-200">
-                    <div className="inline-flex p-4 rounded-full bg-slate-200 mb-6">
-                      <CalendarIcon className="h-8 w-8 text-slate-500" />
+                  <div className="bg-slate-400 rounded-xl p-12 text-center border border-slate-200">
+                    <div className="inline-flex p-4 rounded-full bg-slate-400 mb-6">
+                      <CalendarIcon className="h-8 w-8 text-slate-700" />
                     </div>
                     <h3 className="text-lg font-semibold text-slate-900 mb-3">No Available Dates Found</h3>
-                    <p className="text-slate-600 mb-6">Please call us directly to schedule your appointment</p>
+                    <p className="text-slate-800 mb-6">Please call us directly to schedule your appointment</p>
                     <Button 
                       onClick={() => window.location.href = 'tel:2532788692'}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold"
+                      className="bg-blue-700 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold"
                     >
                       <Phone className="h-5 w-5 mr-2" />
                       Call (253) 278-8692
@@ -337,13 +337,13 @@ export default function SchedulePage() {
               {/* Time Preference */}
               <div>
                 <label className="block text-slate-900 text-xl font-semibold mb-6">
-                  <Clock className="h-6 w-6 inline mr-3 text-blue-600" />
+                  <Clock className="h-6 w-6 inline mr-3 text-blue-800" />
                   Preferred Time of Day
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-50 ${
+                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-400 ${
                     formData.preferredTime === 'morning' 
-                      ? 'border-blue-500 bg-blue-50' 
+                      ? 'border-blue-500 bg-blue-200' 
                       : 'border-slate-200 bg-white'
                   }`}>
                     <input
@@ -356,32 +356,32 @@ export default function SchedulePage() {
                     />
                     <div className="text-center">
                       <div className={`inline-flex p-3 rounded-full mb-4 ${
-                        formData.preferredTime === 'morning' ? 'bg-blue-100' : 'bg-slate-100'
+                        formData.preferredTime === 'morning' ? 'bg-blue-300' : 'bg-slate-300'
                       }`}>
                         <Clock className={`h-6 w-6 ${
-                          formData.preferredTime === 'morning' ? 'text-blue-600' : 'text-slate-600'
+                          formData.preferredTime === 'morning' ? 'text-blue-800' : 'text-slate-800'
                         }`} />
                       </div>
                       <h3 className="font-semibold text-slate-900 mb-1">Morning</h3>
-                      <p className="text-sm text-slate-600 mb-3">7:00 AM - 12:00 PM</p>
+                      <p className="text-sm text-slate-800 mb-3">7:00 AM - 12:00 PM</p>
                       {selectedDate && (
-                        <p className="text-xs text-green-600 font-medium">
+                        <p className="text-xs text-green-800 font-medium">
                           {selectedDate.availableSlots.filter(slot => slot.period === 'morning').length} slots available
                         </p>
                       )}
                     </div>
                     {formData.preferredTime === 'morning' && (
                       <div className="absolute top-2 right-2">
-                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 bg-blue-700 rounded-full flex items-center justify-center">
                           <CheckCircle className="h-4 w-4 text-white" />
                         </div>
                       </div>
                     )}
                   </label>
 
-                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-50 ${
+                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-400 ${
                     formData.preferredTime === 'afternoon' 
-                      ? 'border-blue-500 bg-blue-50' 
+                      ? 'border-blue-500 bg-blue-200' 
                       : 'border-slate-200 bg-white'
                   }`}>
                     <input
@@ -394,32 +394,32 @@ export default function SchedulePage() {
                     />
                     <div className="text-center">
                       <div className={`inline-flex p-3 rounded-full mb-4 ${
-                        formData.preferredTime === 'afternoon' ? 'bg-blue-100' : 'bg-slate-100'
+                        formData.preferredTime === 'afternoon' ? 'bg-blue-300' : 'bg-slate-300'
                       }`}>
                         <Clock className={`h-6 w-6 ${
-                          formData.preferredTime === 'afternoon' ? 'text-blue-600' : 'text-slate-600'
+                          formData.preferredTime === 'afternoon' ? 'text-blue-800' : 'text-slate-800'
                         }`} />
                       </div>
                       <h3 className="font-semibold text-slate-900 mb-1">Afternoon</h3>
-                      <p className="text-sm text-slate-600 mb-3">12:00 PM - 6:00 PM</p>
+                      <p className="text-sm text-slate-800 mb-3">12:00 PM - 6:00 PM</p>
                       {selectedDate && (
-                        <p className="text-xs text-green-600 font-medium">
+                        <p className="text-xs text-green-800 font-medium">
                           {selectedDate.availableSlots.filter(slot => slot.period === 'afternoon').length} slots available
                         </p>
                       )}
                     </div>
                     {formData.preferredTime === 'afternoon' && (
                       <div className="absolute top-2 right-2">
-                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 bg-blue-700 rounded-full flex items-center justify-center">
                           <CheckCircle className="h-4 w-4 text-white" />
                         </div>
                       </div>
                     )}
                   </label>
 
-                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-50 ${
+                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-400 ${
                     formData.preferredTime === 'flexible' 
-                      ? 'border-blue-500 bg-blue-50' 
+                      ? 'border-blue-500 bg-blue-200' 
                       : 'border-slate-200 bg-white'
                   }`}>
                     <input
@@ -432,23 +432,23 @@ export default function SchedulePage() {
                     />
                     <div className="text-center">
                       <div className={`inline-flex p-3 rounded-full mb-4 ${
-                        formData.preferredTime === 'flexible' ? 'bg-blue-100' : 'bg-slate-100'
+                        formData.preferredTime === 'flexible' ? 'bg-blue-300' : 'bg-slate-300'
                       }`}>
                         <Clock className={`h-6 w-6 ${
-                          formData.preferredTime === 'flexible' ? 'text-blue-600' : 'text-slate-600'
+                          formData.preferredTime === 'flexible' ? 'text-blue-800' : 'text-slate-800'
                         }`} />
                       </div>
                       <h3 className="font-semibold text-slate-900 mb-1">Flexible</h3>
-                      <p className="text-sm text-slate-600 mb-3">Any time works</p>
+                      <p className="text-sm text-slate-800 mb-3">Any time works</p>
                       {selectedDate && (
-                        <p className="text-xs text-green-600 font-medium">
+                        <p className="text-xs text-green-800 font-medium">
                           {selectedDate.availableSlots.length} total slots
                         </p>
                       )}
                     </div>
                     {formData.preferredTime === 'flexible' && (
                       <div className="absolute top-2 right-2">
-                        <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
+                        <div className="w-6 h-6 bg-blue-700 rounded-full flex items-center justify-center">
                           <CheckCircle className="h-4 w-4 text-white" />
                         </div>
                       </div>
@@ -458,7 +458,7 @@ export default function SchedulePage() {
 
                 {/* Show specific time slots for selected date */}
                 {selectedDate && formData.preferredTime !== 'flexible' && (
-                  <div className="mt-6 bg-slate-50 rounded-xl p-6 border border-slate-200">
+                  <div className="mt-6 bg-slate-400 rounded-xl p-6 border border-slate-200">
                     <h4 className="text-sm font-semibold text-slate-900 mb-3">
                       Available times on {selectedDate.dayOfWeek}:
                     </h4>
@@ -466,12 +466,12 @@ export default function SchedulePage() {
                       {selectedDate.availableSlots
                         .filter(slot => slot.period === formData.preferredTime)
                         .map((slot, index) => (
-                          <span key={index} className="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium">
+                          <span key={index} className="px-3 py-2 bg-blue-300 text-blue-700 rounded-lg text-sm font-medium">
                             {slot.time}
                           </span>
                         ))}
                     </div>
-                    <p className="text-xs text-slate-600">
+                    <p className="text-xs text-slate-800">
                       💡 We'll call you to confirm the exact time that works best for both of us
                     </p>
                   </div>
@@ -481,7 +481,7 @@ export default function SchedulePage() {
               {/* Special Instructions */}
               <div>
                 <label htmlFor="specialInstructions" className="block text-slate-900 text-xl font-semibold mb-4">
-                  Special Instructions <span className="text-slate-500 font-normal text-base">(Optional)</span>
+                  Special Instructions <span className="text-slate-700 font-normal text-base">(Optional)</span>
                 </label>
                 <textarea
                   id="specialInstructions"
@@ -492,17 +492,17 @@ export default function SchedulePage() {
                   rows={4}
                   className="w-full px-4 py-4 border border-slate-300 rounded-xl bg-white text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 resize-none"
                 />
-                <p className="text-sm text-slate-500 mt-2">
+                <p className="text-sm text-slate-700 mt-2">
                   This helps our technicians prepare and ensures a smooth service experience
                 </p>
               </div>
 
               {/* Submit Button */}
-              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+              <div className="bg-slate-400 rounded-xl p-6 border border-slate-200">
                 <Button
                   type="submit"
                   disabled={isSubmitting || !formData.preferredDate}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg transition-all duration-200 disabled:cursor-not-allowed"
+                  className="w-full bg-blue-700 hover:bg-blue-700 disabled:bg-slate-400 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg transition-all duration-200 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center justify-center">
@@ -518,10 +518,10 @@ export default function SchedulePage() {
                 </Button>
                 
                 <div className="mt-4 text-center">
-                  <p className="text-slate-600 text-sm mb-2">
+                  <p className="text-slate-800 text-sm mb-2">
                     ⚡ <strong>Quick Response:</strong> We'll call you within 24 hours to confirm
                   </p>
-                  <p className="text-slate-500 text-xs">
+                  <p className="text-slate-700 text-xs">
                     By submitting this request, you agree to be contacted by Fisher Backflows
                   </p>
                 </div>
@@ -532,18 +532,18 @@ export default function SchedulePage() {
 
         {/* Alternative Contact */}
         <div className="text-center mt-10">
-          <div className="bg-slate-50 rounded-xl p-8 border border-slate-200">
+          <div className="bg-slate-400 rounded-xl p-8 border border-slate-200">
             <h3 className="text-lg font-semibold text-slate-900 mb-3">Prefer to Call?</h3>
-            <p className="text-slate-600 mb-6">Speak directly with our scheduling team</p>
+            <p className="text-slate-800 mb-6">Speak directly with our scheduling team</p>
             <Button 
               onClick={() => window.location.href = 'tel:2532788692'}
               variant="outline"
-              className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200"
+              className="border-slate-300 text-slate-700 hover:bg-slate-400 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200"
             >
               <Phone className="h-5 w-5 mr-3" />
               Call (253) 278-8692
             </Button>
-            <p className="text-slate-500 text-sm mt-3">
+            <p className="text-slate-700 text-sm mt-3">
               Available Monday - Friday, 7:00 AM - 6:00 PM
             </p>
           </div>

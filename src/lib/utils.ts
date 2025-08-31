@@ -216,28 +216,28 @@ export function downloadAsCSV(data: Record<string, unknown>[], filename: string)
 export function getStatusColor(status: string): string {
   const colors: Record<string, string> = {
     // Test status
-    'PASSED': 'bg-green-100 text-green-800',
-    'FAILED': 'bg-red-100 text-red-800',
+    'PASSED': 'bg-green-300 text-green-800',
+    'FAILED': 'bg-red-300 text-red-800',
     'PENDING': 'bg-yellow-100 text-yellow-800',
     
     // Appointment status
-    'scheduled': 'bg-blue-100 text-blue-800',
+    'scheduled': 'bg-blue-300 text-blue-800',
     'in-progress': 'bg-orange-100 text-orange-800',
-    'completed': 'bg-green-100 text-green-800',
-    'cancelled': 'bg-gray-100 text-gray-800',
+    'completed': 'bg-green-300 text-green-800',
+    'cancelled': 'bg-gray-300 text-gray-800',
     
     // Invoice status
-    'paid': 'bg-green-100 text-green-800',
+    'paid': 'bg-green-300 text-green-800',
     'pending': 'bg-yellow-100 text-yellow-800',
-    'overdue': 'bg-red-100 text-red-800',
-    'draft': 'bg-gray-100 text-gray-800',
+    'overdue': 'bg-red-300 text-red-800',
+    'draft': 'bg-gray-300 text-gray-800',
     
     // Due status
-    'current': 'bg-green-100 text-green-800',
+    'current': 'bg-green-300 text-green-800',
     'due': 'bg-yellow-100 text-yellow-800'
   }
   
-  return colors[status.toLowerCase()] || 'bg-gray-100 text-gray-800'
+  return colors[status.toLowerCase()] || 'bg-gray-300 text-gray-800'
 }
 
 // Route optimization utilities

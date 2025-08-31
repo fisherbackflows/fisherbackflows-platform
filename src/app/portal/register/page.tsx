@@ -100,7 +100,7 @@ export default function CustomerRegistrationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-400">
       {/* Professional Header */}
       <header className="bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -110,12 +110,12 @@ export default function CustomerRegistrationPage() {
             </Link>
             <nav className="hidden md:flex space-x-3 items-center">
               <Link href="/">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-colors duration-200 font-medium">
                   Home
                 </Button>
               </Link>
               <Link href="/portal">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-sm transition-colors duration-200">
+                <Button className="bg-blue-700 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-sm transition-colors duration-200">
                   Sign In
                 </Button>
               </Link>
@@ -135,7 +135,7 @@ export default function CustomerRegistrationPage() {
             <h1 className="text-4xl font-bold text-slate-900 mb-4">
               Create Your Customer Account
             </h1>
-            <p className="text-xl text-slate-600">
+            <p className="text-xl text-slate-800">
               Join Fisher Backflows to manage your backflow testing services online
             </p>
           </div>
@@ -153,7 +153,7 @@ export default function CustomerRegistrationPage() {
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-slate-400" />
+                        <User className="h-5 w-5 text-slate-800" />
                       </div>
                       <input
                         id="firstName"
@@ -173,7 +173,7 @@ export default function CustomerRegistrationPage() {
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-slate-400" />
+                        <User className="h-5 w-5 text-slate-800" />
                       </div>
                       <input
                         id="lastName"
@@ -194,7 +194,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-slate-400" />
+                      <Mail className="h-5 w-5 text-slate-800" />
                     </div>
                     <input
                       id="email"
@@ -214,7 +214,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Phone className="h-5 w-5 text-slate-400" />
+                      <Phone className="h-5 w-5 text-slate-800" />
                     </div>
                     <input
                       id="phone"
@@ -239,7 +239,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Home className="h-5 w-5 text-slate-400" />
+                      <Home className="h-5 w-5 text-slate-800" />
                     </div>
                     <input
                       id="street"
@@ -339,7 +339,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-slate-400" />
+                      <Lock className="h-5 w-5 text-slate-800" />
                     </div>
                     <input
                       id="password"
@@ -354,7 +354,7 @@ export default function CustomerRegistrationPage() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-800 hover:text-slate-800 transition-colors"
                     >
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
@@ -367,7 +367,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-slate-400" />
+                      <Lock className="h-5 w-5 text-slate-800" />
                     </div>
                     <input
                       id="confirmPassword"
@@ -382,7 +382,7 @@ export default function CustomerRegistrationPage() {
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-800 hover:text-slate-800 transition-colors"
                     >
                       {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
@@ -397,16 +397,16 @@ export default function CustomerRegistrationPage() {
                   type="checkbox"
                   checked={formData.agreeToTerms}
                   onChange={(e) => setFormData(prev => ({ ...prev, agreeToTerms: e.target.checked }))}
-                  className="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="mt-1 h-4 w-4 text-blue-800 border-gray-300 rounded focus:ring-blue-500"
                   required
                 />
                 <label htmlFor="agreeToTerms" className="text-sm text-slate-700">
                   I agree to the{' '}
-                  <a href="/terms" className="text-blue-600 hover:text-blue-700 underline font-medium">
+                  <a href="/terms" className="text-blue-800 hover:text-blue-700 underline font-medium">
                     Terms of Service
                   </a>{' '}
                   and{' '}
-                  <a href="/privacy" className="text-blue-600 hover:text-blue-700 underline font-medium">
+                  <a href="/privacy" className="text-blue-800 hover:text-blue-700 underline font-medium">
                     Privacy Policy
                   </a>
                 </label>
@@ -414,16 +414,16 @@ export default function CustomerRegistrationPage() {
 
               {/* Error Message */}
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center">
-                  <AlertCircle className="h-5 w-5 text-red-600 mr-3 flex-shrink-0" />
+                <div className="bg-red-200 border border-red-200 rounded-lg p-4 flex items-center">
+                  <AlertCircle className="h-5 w-5 text-red-800 mr-3 flex-shrink-0" />
                   <p className="text-red-700 text-sm">{error}</p>
                 </div>
               )}
 
               {/* Success Message */}
               {success && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
+                <div className="bg-green-200 border border-green-200 rounded-lg p-4 flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-800 mr-3 flex-shrink-0" />
                   <p className="text-green-700 text-sm">{success}</p>
                 </div>
               )}
@@ -432,7 +432,7 @@ export default function CustomerRegistrationPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white py-3 text-lg font-semibold rounded-lg shadow-sm transition-colors duration-200"
+                className="w-full bg-blue-700 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white py-3 text-lg font-semibold rounded-lg shadow-sm transition-colors duration-200"
               >
                 {loading ? (
                   <>
@@ -449,13 +449,13 @@ export default function CustomerRegistrationPage() {
             <div className="mt-6 text-center">
               <div className="flex items-center my-4">
                 <div className="flex-1 border-t border-slate-200"></div>
-                <span className="px-4 text-slate-500 text-xs">Already have an account?</span>
+                <span className="px-4 text-slate-700 text-xs">Already have an account?</span>
                 <div className="flex-1 border-t border-slate-200"></div>
               </div>
               
               <Link
                 href="/portal"
-                className="inline-flex items-center justify-center w-full border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:border-blue-300 py-3 rounded-lg transition-colors duration-200 font-medium"
+                className="inline-flex items-center justify-center w-full border border-blue-200 bg-blue-200 text-blue-700 hover:bg-blue-300 hover:border-blue-300 py-3 rounded-lg transition-colors duration-200 font-medium"
               >
                 Sign In to Your Account
               </Link>
@@ -464,9 +464,9 @@ export default function CustomerRegistrationPage() {
 
           {/* Security Notice */}
           <div className="mt-8 text-center">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-md mx-auto">
+            <div className="bg-blue-200 border border-blue-200 rounded-lg p-4 max-w-md mx-auto">
               <div className="flex items-center justify-center space-x-3 text-slate-700 text-sm">
-                <Shield className="h-5 w-5 flex-shrink-0 text-blue-600" />
+                <Shield className="h-5 w-5 flex-shrink-0 text-blue-800" />
                 <span>
                   Your information is protected with bank-level security.
                 </span>

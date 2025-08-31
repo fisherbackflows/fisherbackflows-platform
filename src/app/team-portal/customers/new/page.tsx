@@ -317,7 +317,7 @@ export default function NewCustomerPage() {
           </div>
 
           {formData.devices.length === 0 ? (
-            <div className="text-center py-6 text-gray-500">
+            <div className="text-center py-6 text-gray-700">
               <Building className="h-8 w-8 mx-auto mb-2 text-gray-300" />
               <p>No devices added yet</p>
               <p className="text-sm">Add backflow prevention devices for this customer</p>
@@ -333,7 +333,7 @@ export default function NewCustomerPage() {
                       variant="outline" 
                       size="sm"
                       onClick={() => removeDevice(device.id)}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      className="text-red-800 hover:text-red-700 hover:bg-red-200"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

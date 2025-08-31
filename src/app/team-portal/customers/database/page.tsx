@@ -389,7 +389,7 @@ export default function CustomerDatabasePage() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading customer database...</p>
+          <p className="text-gray-800">Loading customer database...</p>
         </div>
       </div>
     );
@@ -425,17 +425,17 @@ export default function CustomerDatabasePage() {
 
           {/* Database Stats */}
           <div className="grid grid-cols-4 gap-3 mb-4">
-            <div className="bg-blue-50 rounded-lg p-3 text-center">
+            <div className="bg-blue-200 rounded-lg p-3 text-center">
               <div className="text-xl font-bold text-blue-700">{customers.length}</div>
-              <div className="text-xs text-blue-600">Total Customers</div>
+              <div className="text-xs text-blue-800">Total Customers</div>
             </div>
-            <div className="bg-green-50 rounded-lg p-3 text-center">
+            <div className="bg-green-200 rounded-lg p-3 text-center">
               <div className="text-xl font-bold text-green-700">{statusCounts.active}</div>
-              <div className="text-xs text-green-600">Active</div>
+              <div className="text-xs text-green-800">Active</div>
             </div>
-            <div className="bg-red-50 rounded-lg p-3 text-center">
+            <div className="bg-red-200 rounded-lg p-3 text-center">
               <div className="text-xl font-bold text-red-700">{statusCounts.overdue}</div>
-              <div className="text-xs text-red-600">Overdue</div>
+              <div className="text-xs text-red-800">Overdue</div>
             </div>
             <div className="bg-purple-50 rounded-lg p-3 text-center">
               <div className="text-xl font-bold text-purple-700">
@@ -449,15 +449,15 @@ export default function CustomerDatabasePage() {
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-white rounded-lg p-2 text-center">
               <div className="text-lg font-semibold text-gray-700">{typeStats.residential}</div>
-              <div className="text-xs text-gray-600">Residential</div>
+              <div className="text-xs text-gray-800">Residential</div>
             </div>
             <div className="bg-white rounded-lg p-2 text-center">
               <div className="text-lg font-semibold text-gray-700">{typeStats.commercial}</div>
-              <div className="text-xs text-gray-600">Commercial</div>
+              <div className="text-xs text-gray-800">Commercial</div>
             </div>
             <div className="bg-white rounded-lg p-2 text-center">
               <div className="text-lg font-semibold text-gray-700">{typeStats.industrial}</div>
-              <div className="text-xs text-gray-600">Industrial</div>
+              <div className="text-xs text-gray-800">Industrial</div>
             </div>
           </div>
         </div>
@@ -468,7 +468,7 @@ export default function CustomerDatabasePage() {
         <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
           <div className="flex flex-col space-y-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 h-4 w-4" />
               <input
                 type="text"
                 placeholder="Search customers, phone, email, address..."
@@ -489,8 +489,8 @@ export default function CustomerDatabasePage() {
                   onClick={() => setStatusFilter(filter.key)}
                   className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                     statusFilter === filter.key
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                      ? 'bg-blue-700 text-white'
+                      : 'bg-gray-300 text-gray-900 hover:bg-gray-400'
                   }`}
                 >
                   {filter.label} ({filter.count})
@@ -510,8 +510,8 @@ export default function CustomerDatabasePage() {
                   onClick={() => setTypeFilter(filter.key)}
                   className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                     typeFilter === filter.key
-                      ? 'bg-green-600 text-white'
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                      ? 'bg-green-700 text-white'
+                      : 'bg-gray-300 text-gray-900 hover:bg-gray-400'
                   }`}
                 >
                   {filter.label}
@@ -532,21 +532,21 @@ export default function CustomerDatabasePage() {
                       <div className="flex items-center space-x-2 mb-1">
                         <h3 className="font-semibold text-gray-900 text-lg">{customer.name}</h3>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          customer.status === 'active' ? 'bg-green-100 text-green-800' :
-                          customer.status === 'overdue' ? 'bg-red-100 text-red-800' :
-                          'bg-gray-100 text-gray-900'
+                          customer.status === 'active' ? 'bg-green-300 text-green-800' :
+                          customer.status === 'overdue' ? 'bg-red-300 text-red-800' :
+                          'bg-gray-300 text-gray-900'
                         }`}>
                           {customer.status.toUpperCase()}
                         </span>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          customer.customerType === 'residential' ? 'bg-blue-100 text-blue-800' :
+                          customer.customerType === 'residential' ? 'bg-blue-300 text-blue-800' :
                           customer.customerType === 'commercial' ? 'bg-purple-100 text-purple-800' :
                           'bg-orange-100 text-orange-800'
                         }`}>
                           {customer.customerType.toUpperCase()}
                         </span>
                       </div>
-                      <div className="text-sm text-gray-600">
+                      <div className="text-sm text-gray-800">
                         {customer.devices.length} device{customer.devices.length !== 1 ? 's' : ''} • 
                         Customer since {formatDate(customer.createdDate)}
                       </div>
@@ -562,11 +562,11 @@ export default function CustomerDatabasePage() {
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center space-x-4">
                         <div className="flex items-center">
-                          <MapPin className="h-4 w-4 mr-1 text-gray-400" />
+                          <MapPin className="h-4 w-4 mr-1 text-gray-800" />
                           <span>{customer.city}, {customer.state}</span>
                         </div>
                         <div className="flex items-center">
-                          <Building2 className="h-4 w-4 mr-1 text-gray-400" />
+                          <Building2 className="h-4 w-4 mr-1 text-gray-800" />
                           <span>{customer.waterDistrict}</span>
                         </div>
                       </div>
@@ -575,14 +575,14 @@ export default function CustomerDatabasePage() {
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center space-x-4">
                         <div className="flex items-center">
-                          <Phone className="h-4 w-4 mr-1 text-gray-400" />
-                          <a href={`tel:${customer.phone}`} className="text-blue-600 hover:underline">
+                          <Phone className="h-4 w-4 mr-1 text-gray-800" />
+                          <a href={`tel:${customer.phone}`} className="text-blue-800 hover:underline">
                             {customer.phone}
                           </a>
                         </div>
                         <div className="flex items-center">
-                          <Mail className="h-4 w-4 mr-1 text-gray-400" />
-                          <a href={`mailto:${customer.email}`} className="text-blue-600 hover:underline">
+                          <Mail className="h-4 w-4 mr-1 text-gray-800" />
+                          <a href={`mailto:${customer.email}`} className="text-blue-800 hover:underline">
                             {customer.email}
                           </a>
                         </div>
@@ -596,9 +596,9 @@ export default function CustomerDatabasePage() {
                         <div key={device.id} className="flex items-center justify-between text-sm mb-1 last:mb-0">
                           <span>{device.type} - {device.serialNumber} ({device.location})</span>
                           <span className={`px-2 py-1 rounded-full text-xs ${
-                            device.status === 'current' ? 'bg-green-100 text-green-700' :
+                            device.status === 'current' ? 'bg-green-300 text-green-700' :
                             device.status === 'due' ? 'bg-yellow-100 text-yellow-700' :
-                            'bg-red-100 text-red-700'
+                            'bg-red-300 text-red-700'
                           }`}>
                             Next: {formatDate(device.nextTestDue)}
                           </span>
@@ -610,19 +610,19 @@ export default function CustomerDatabasePage() {
                     <div className="flex items-center justify-between pt-2 border-t">
                       <div className="flex items-center space-x-4 text-sm">
                         <div>
-                          <span className="text-gray-500">Total Paid:</span>
-                          <span className="ml-1 font-medium text-green-600">{formatCurrency(customer.totalPaid)}</span>
+                          <span className="text-gray-700">Total Paid:</span>
+                          <span className="ml-1 font-medium text-green-800">{formatCurrency(customer.totalPaid)}</span>
                         </div>
                         {customer.outstandingBalance > 0 && (
                           <div>
-                            <span className="text-gray-500">Outstanding:</span>
-                            <span className="ml-1 font-medium text-red-600">{formatCurrency(customer.outstandingBalance)}</span>
+                            <span className="text-gray-700">Outstanding:</span>
+                            <span className="ml-1 font-medium text-red-800">{formatCurrency(customer.outstandingBalance)}</span>
                           </div>
                         )}
                       </div>
                       <div className="flex items-center space-x-2">
                         <span className={`text-xs px-2 py-1 rounded-full ${
-                          customer.preferences.autoSchedule ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-900'
+                          customer.preferences.autoSchedule ? 'bg-green-300 text-green-700' : 'bg-gray-300 text-gray-900'
                         }`}>
                           Auto-Schedule: {customer.preferences.autoSchedule ? 'ON' : 'OFF'}
                         </span>
@@ -632,13 +632,13 @@ export default function CustomerDatabasePage() {
                     {/* Quick Actions */}
                     <div className="flex items-center justify-between pt-3 border-t">
                       <div className="flex space-x-2">
-                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" asChild>
+                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" asChild>
                           <Link href={`/app/test-report?customer=${customer.id}`}>
                             <FileText className="h-4 w-4 mr-1" />
                             Test
                           </Link>
                         </Button>
-                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" asChild>
+                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" asChild>
                           <Link href={`/app/schedule?customer=${customer.id}`}>
                             <Calendar className="h-4 w-4 mr-1" />
                             Schedule
@@ -647,11 +647,11 @@ export default function CustomerDatabasePage() {
                       </div>
                       
                       <div className="flex space-x-2">
-                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300">
+                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300">
                           <Bell className="h-4 w-4 mr-1" />
                           Notify
                         </Button>
-                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300">
+                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300">
                           <Settings className="h-4 w-4 mr-1" />
                           Manage
                         </Button>
@@ -665,7 +665,7 @@ export default function CustomerDatabasePage() {
             <div className="bg-white rounded-lg shadow-sm p-8 text-center">
               <Database className="h-12 w-12 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No customers found</h3>
-              <p className="text-gray-500 mb-4">
+              <p className="text-gray-700 mb-4">
                 {searchTerm || statusFilter !== 'all' || typeFilter !== 'all'
                   ? "Try adjusting your search or filters" 
                   : "Get started by adding your first customer"
@@ -687,23 +687,23 @@ export default function CustomerDatabasePage() {
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
         <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <div className="h-6 w-6 bg-gray-400 rounded"></div>
             <span className="text-xs">Home</span>
           </Link>
-          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-blue-600 bg-blue-50">
+          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-blue-800 bg-blue-200">
             <Users className="h-6 w-6" />
             <span className="text-xs font-medium">Customers</span>
           </Link>
-          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <Plus className="h-6 w-6" />
             <span className="text-xs">Test</span>
           </Link>
-          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <Calendar className="h-6 w-6" />
             <span className="text-xs">Schedule</span>
           </Link>
-          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <div className="flex space-x-1">
               <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
               <div className="w-1 h-1 bg-gray-600 rounded-full"></div>

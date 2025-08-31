@@ -121,7 +121,7 @@ export function NotificationManagerComponent({ className = '' }: NotificationMan
         {isSubscribed ? (
           <BellRing className="h-5 w-5 text-green-400" />
         ) : (
-          <Bell className="h-5 w-5 text-gray-400" />
+          <Bell className="h-5 w-5 text-gray-800" />
         )}
         <span className="text-sm text-white/80">
           {isSubscribed ? 'Notifications ON' : 'Notifications OFF'}

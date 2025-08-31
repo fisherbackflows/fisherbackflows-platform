@@ -126,7 +126,7 @@ export default function BackupPage() {
                     <Database className="h-5 w-5 inline mr-2" />
                     Create Manual Backup
                   </h2>
-                  <p className="text-gray-600">
+                  <p className="text-gray-800">
                     Create a backup of all your business data including customers, test reports, and invoices.
                   </p>
                 </div>
@@ -136,7 +136,7 @@ export default function BackupPage() {
                 <Button
                   onClick={handleCreateBackup}
                   disabled={isCreatingBackup}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-blue-700 hover:bg-blue-700"
                 >
                   {isCreatingBackup ? (
                     <>
@@ -151,20 +151,20 @@ export default function BackupPage() {
                   )}
                 </Button>
 
-                <div className="text-sm text-gray-500">
+                <div className="text-sm text-gray-700">
                   Last backup: Today at 2:00 AM (Automatic)
                 </div>
               </div>
 
               {backupResult && (
                 <div className={`mt-4 p-4 rounded-lg ${
-                  backupResult.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
+                  backupResult.success ? 'bg-green-200 border border-green-200' : 'bg-red-200 border border-red-200'
                 }`}>
                   <div className="flex items-start">
                     {backupResult.success ? (
-                      <CheckCircle className="h-5 w-5 text-green-600 mr-3 mt-0.5" />
+                      <CheckCircle className="h-5 w-5 text-green-800 mr-3 mt-0.5" />
                     ) : (
-                      <AlertCircle className="h-5 w-5 text-red-600 mr-3 mt-0.5" />
+                      <AlertCircle className="h-5 w-5 text-red-800 mr-3 mt-0.5" />
                     )}
                     <p className={`text-sm ${
                       backupResult.success ? 'text-green-800' : 'text-red-800'
@@ -188,18 +188,18 @@ export default function BackupPage() {
                   <div key={backup.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                     <div className="flex items-center space-x-4">
                       <div className={`p-2 rounded-lg ${
-                        backup.status === 'complete' ? 'bg-green-100' : 'bg-red-100'
+                        backup.status === 'complete' ? 'bg-green-300' : 'bg-red-300'
                       }`}>
                         {backup.status === 'complete' ? (
-                          <CheckCircle className="h-5 w-5 text-green-600" />
+                          <CheckCircle className="h-5 w-5 text-green-800" />
                         ) : (
-                          <AlertCircle className="h-5 w-5 text-red-600" />
+                          <AlertCircle className="h-5 w-5 text-red-800" />
                         )}
                       </div>
                       
                       <div>
                         <h3 className="font-medium text-gray-900">{backup.name}</h3>
-                        <div className="flex items-center space-x-4 text-sm text-gray-500 mt-1">
+                        <div className="flex items-center space-x-4 text-sm text-gray-700 mt-1">
                           <span className="flex items-center">
                             <Calendar className="h-4 w-4 mr-1" />
                             {backup.date}
@@ -209,7 +209,7 @@ export default function BackupPage() {
                             {backup.size}
                           </span>
                           <span className={`px-2 py-1 rounded-full text-xs ${
-                            backup.type === 'auto' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-900'
+                            backup.type === 'auto' ? 'bg-blue-300 text-blue-700' : 'bg-gray-300 text-gray-900'
                           }`}>
                             {backup.type === 'auto' ? 'Automatic' : 'Manual'}
                           </span>
@@ -247,10 +247,10 @@ export default function BackupPage() {
             <div className="bg-white rounded-lg shadow-sm p-6 sticky top-8 space-y-6">
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">Backup Schedule</h3>
-                <div className="space-y-2 text-sm text-gray-600">
+                <div className="space-y-2 text-sm text-gray-800">
                   <div className="flex justify-between">
                     <span>Daily backups:</span>
-                    <span className="text-green-600 font-medium">Enabled</span>
+                    <span className="text-green-800 font-medium">Enabled</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Time:</span>
@@ -265,7 +265,7 @@ export default function BackupPage() {
 
               <div className="border-t pt-6">
                 <h3 className="font-semibold text-gray-900 mb-3">What's Included</h3>
-                <ul className="space-y-2 text-sm text-gray-600">
+                <ul className="space-y-2 text-sm text-gray-800">
                   <li className="flex items-center">
                     <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     Customer database
@@ -290,9 +290,9 @@ export default function BackupPage() {
               </div>
 
               <div className="border-t pt-6">
-                <div className="p-4 bg-blue-50 rounded-lg">
+                <div className="p-4 bg-blue-200 rounded-lg">
                   <div className="flex items-start">
-                    <Shield className="h-5 w-5 text-blue-600 mr-3 mt-0.5" />
+                    <Shield className="h-5 w-5 text-blue-800 mr-3 mt-0.5" />
                     <div className="text-sm text-blue-800">
                       <p className="font-medium mb-1">Secure Backups</p>
                       <p className="text-blue-700">

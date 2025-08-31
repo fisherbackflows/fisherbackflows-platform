@@ -398,7 +398,7 @@ export default function DeviceForm({ device, onClose, onSave, isOpen }: DeviceFo
                   type="checkbox"
                   checked={formData.testingRequired}
                   onChange={(e) => setFormData(prev => ({ ...prev, testingRequired: e.target.checked }))}
-                  className="form-checkbox h-5 w-5 text-blue-500 rounded border-white/20 bg-white/10"
+                  className="form-checkbox h-5 w-5 text-blue-700 rounded border-white/20 bg-white/10"
                 />
                 <span>Annual testing required</span>
               </label>

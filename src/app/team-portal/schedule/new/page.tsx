@@ -190,7 +190,7 @@ export default function NewSchedulePage() {
 
               {/* Submit Button */}
               <div className="flex justify-end pt-4">
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                <Button type="submit" className="bg-blue-700 hover:bg-blue-700">
                   <Save className="h-4 w-4 mr-2" />
                   Schedule Appointment
                 </Button>

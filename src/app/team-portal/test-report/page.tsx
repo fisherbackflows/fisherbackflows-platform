@@ -262,14 +262,14 @@ function TestReportContent() {
       <header className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Button className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" size="sm" asChild>
+            <Button className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" size="sm" asChild>
               <Link href="/app">
                 <ArrowLeft className="h-4 w-4" />
               </Link>
             </Button>
             <div>
               <h1 className="text-xl font-bold text-slate-900">Test Report</h1>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-800">
                 {formData.customerName || 'New Test Report'}
               </p>
             </div>
@@ -475,8 +475,8 @@ function TestReportContent() {
                       onClick={() => updateTestResult(test.id, 'passedTest', true)}
                       className={`flex items-center px-2 py-0.5 rounded-full text-xs font-medium transition-colors ${
                         test.passedTest 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-gray-100 text-gray-700 hover:bg-green-50'
+                          ? 'bg-green-300 text-green-800' 
+                          : 'bg-gray-300 text-gray-700 hover:bg-green-200'
                       }`}
                     >
                       <CheckCircle className="h-3 w-3 mr-0.5" />
@@ -487,8 +487,8 @@ function TestReportContent() {
                       onClick={() => updateTestResult(test.id, 'passedTest', false)}
                       className={`flex items-center px-2 py-0.5 rounded-full text-xs font-medium transition-colors ${
                         !test.passedTest 
-                          ? 'bg-red-100 text-red-800' 
-                          : 'bg-gray-100 text-gray-700 hover:bg-red-50'
+                          ? 'bg-red-300 text-red-800' 
+                          : 'bg-gray-300 text-gray-700 hover:bg-red-200'
                       }`}
                     >
                       <XCircle className="h-3 w-3 mr-0.5" />
@@ -499,7 +499,7 @@ function TestReportContent() {
 
                 <div className="grid grid-cols-3 gap-2">
                   <div>
-                    <label className="block text-xs font-medium text-slate-600 mb-0.5">
+                    <label className="block text-xs font-medium text-slate-800 mb-0.5">
                       Initial PSI
                     </label>
                     <input
@@ -512,7 +512,7 @@ function TestReportContent() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-600 mb-0.5">
+                    <label className="block text-xs font-medium text-slate-800 mb-0.5">
                       Final PSI
                     </label>
                     <input
@@ -525,7 +525,7 @@ function TestReportContent() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-600 mb-0.5">
+                    <label className="block text-xs font-medium text-slate-800 mb-0.5">
                       Notes
                     </label>
                     <input
@@ -542,13 +542,13 @@ function TestReportContent() {
           </div>
 
           {/* Overall Status - COMPACT */}
-          <div className="mt-3 p-3 rounded-md bg-slate-50 border border-slate-200">
+          <div className="mt-3 p-3 rounded-md bg-slate-400 border border-slate-200">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-slate-900">Overall Result</h3>
               <div className={`flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
                 formData.overallPass 
-                  ? 'bg-green-100 text-green-800' 
-                  : 'bg-red-100 text-red-800'
+                  ? 'bg-green-300 text-green-800' 
+                  : 'bg-red-300 text-red-800'
               }`}>
                 {formData.overallPass ? (
                   <>
@@ -572,7 +572,7 @@ function TestReportContent() {
                     id="repairsNeeded"
                     checked={formData.repairsNeeded}
                     onChange={(e) => handleInputChange('repairsNeeded', e.target.checked)}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 h-3 w-3"
+                    className="rounded border-gray-300 text-blue-800 focus:ring-blue-500 h-3 w-3"
                   />
                   <label htmlFor="repairsNeeded" className="text-xs font-medium text-slate-700">
                     Repairs needed
@@ -614,8 +614,8 @@ function TestReportContent() {
               Photos
             </h2>
             <div className="text-center py-4 border border-dashed border-gray-300 rounded">
-              <Camera className="h-6 w-6 text-gray-500 mx-auto mb-1" />
-              <Button type="button" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs px-2 py-1" size="sm">
+              <Camera className="h-6 w-6 text-gray-700 mx-auto mb-1" />
+              <Button type="button" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300 text-xs px-2 py-1" size="sm">
                 <Upload className="h-3 w-3 mr-1" />
                 Add Photos
               </Button>
@@ -629,7 +629,7 @@ function TestReportContent() {
             type="button"
             onClick={(e) => handleSubmit(e, 'draft')}
             disabled={saving || !formData.customerId} 
-            className="flex-1 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-sm py-2"
+            className="flex-1 bg-white hover:bg-slate-400 text-slate-700 border border-slate-300 text-sm py-2"
           >
             <Save className="h-3 w-3 mr-1" />
             {saving ? 'Saving...' : 'Draft'}
@@ -638,7 +638,7 @@ function TestReportContent() {
             type="button"
             onClick={(e) => handleSubmit(e, 'submit')}
             disabled={saving || !formData.customerId} 
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm py-2"
+            className="flex-1 bg-blue-700 hover:bg-blue-700 text-white text-sm py-2"
           >
             <Save className="h-3 w-3 mr-1" />
             {saving ? 'Saving...' : 'Save'}
@@ -647,7 +647,7 @@ function TestReportContent() {
             type="button"
             onClick={(e) => handleSubmit(e, 'district')}
             disabled={saving || !formData.customerId} 
-            className="flex-1 bg-green-600 hover:bg-green-700 text-white text-sm py-2"
+            className="flex-1 bg-green-700 hover:bg-green-700 text-white text-sm py-2"
           >
             <Send className="h-3 w-3 mr-1" />
             {saving ? 'Sending...' : 'Send to District'}
@@ -664,7 +664,7 @@ export default function TestReportPage() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="text-slate-600 mt-4">Loading...</p>
+          <p className="text-slate-800 mt-4">Loading...</p>
         </div>
       </div>
     }>

@@ -178,19 +178,19 @@ export default function NavigationTestPage() {
           <h3 className="text-xl font-bold gradient-text mb-4">Complete Automation Flow</h3>
           <div className="text-white/80 space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-bold">1</div>
+              <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-sm font-bold">1</div>
               <p><strong>Lead Generation:</strong> /api/leads/generate → Auto-qualify → Convert to customer</p>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+              <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-sm font-bold">2</div>
               <p><strong>Customer Booking:</strong> /portal/schedule → /api/appointments → Google Calendar sync</p>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-bold">3</div>
+              <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-sm font-bold">3</div>
               <p><strong>Field Work:</strong> /field/test/[id] → Enter readings → Complete test</p>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-sm font-bold">4</div>
+              <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-sm font-bold">4</div>
               <p><strong>Automation:</strong> /api/test-reports/complete → Invoice + Email + Water Dept + Payment</p>
             </div>
           </div>

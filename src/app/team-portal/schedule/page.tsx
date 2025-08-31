@@ -41,19 +41,19 @@ interface Appointment {
 }
 
 const appointmentTypes = {
-  test: { label: 'Test', color: 'bg-blue-100 text-blue-800', icon: '🔍' },
+  test: { label: 'Test', color: 'bg-blue-300 text-blue-800', icon: '🔍' },
   repair: { label: 'Repair', color: 'bg-orange-100 text-orange-800', icon: '🔧' },
-  installation: { label: 'Install', color: 'bg-green-100 text-green-800', icon: '⚙️' },
+  installation: { label: 'Install', color: 'bg-green-300 text-green-800', icon: '⚙️' },
   consultation: { label: 'Consult', color: 'bg-purple-100 text-purple-800', icon: '💬' }
 };
 
 const statusConfig = {
-  scheduled: { label: 'Scheduled', color: 'bg-gray-100 text-gray-900' },
-  confirmed: { label: 'Confirmed', color: 'bg-blue-100 text-blue-800' },
+  scheduled: { label: 'Scheduled', color: 'bg-gray-300 text-gray-900' },
+  confirmed: { label: 'Confirmed', color: 'bg-blue-300 text-blue-800' },
   'in-progress': { label: 'In Progress', color: 'bg-yellow-100 text-yellow-800' },
-  completed: { label: 'Completed', color: 'bg-green-100 text-green-800' },
-  cancelled: { label: 'Cancelled', color: 'bg-red-100 text-red-800' },
-  'no-show': { label: 'No Show', color: 'bg-red-100 text-red-800' }
+  completed: { label: 'Completed', color: 'bg-green-300 text-green-800' },
+  cancelled: { label: 'Cancelled', color: 'bg-red-300 text-red-800' },
+  'no-show': { label: 'No Show', color: 'bg-red-300 text-red-800' }
 };
 
 export default function SchedulePage() {
@@ -197,9 +197,9 @@ export default function SchedulePage() {
             <div className="flex justify-between items-center">
               <div>
                 <h1 className="text-2xl font-bold text-slate-900">Schedule</h1>
-                <p className="text-slate-600">Manage appointments and scheduling</p>
+                <p className="text-slate-800">Manage appointments and scheduling</p>
               </div>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
+              <Button className="bg-blue-700 hover:bg-blue-700 text-white" asChild>
                 <Link href="/team-portal/schedule/new">
                   <Plus className="h-4 w-4 mr-2" />
                   New Appointment
@@ -210,7 +210,7 @@ export default function SchedulePage() {
           </header>
 
           {/* Date Navigation */}
-          <div className="bg-slate-50 rounded-xl p-6 mb-6 border border-slate-200">
+          <div className="bg-slate-400 rounded-xl p-6 mb-6 border border-slate-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Button variant="outline" size="sm" onClick={() => navigateDate('prev')}>
@@ -234,14 +234,14 @@ export default function SchedulePage() {
             </div>
           </div>
           {/* Filter Tabs */}
-          <div className="bg-slate-50 rounded-xl p-6 mb-6 border border-slate-200">
+          <div className="bg-slate-400 rounded-xl p-6 mb-6 border border-slate-200">
           <h3 className="text-lg font-semibold text-slate-900 mb-4">Filter Appointments</h3>
           <div className="flex flex-wrap gap-3">
             {[
-              { key: 'active', label: 'Active', count: appointments.filter(a => ['scheduled', 'confirmed', 'in-progress'].includes(a.status)).length, color: 'bg-blue-100 text-blue-700 border-blue-200' },
-              { key: 'all', label: 'All', count: appointments.length, color: 'bg-slate-100 text-slate-700 border-slate-200' },
+              { key: 'active', label: 'Active', count: appointments.filter(a => ['scheduled', 'confirmed', 'in-progress'].includes(a.status)).length, color: 'bg-blue-300 text-blue-700 border-blue-200' },
+              { key: 'all', label: 'All', count: appointments.length, color: 'bg-slate-300 text-slate-700 border-slate-200' },
               { key: 'scheduled', label: 'Scheduled', count: appointments.filter(a => a.status === 'scheduled').length, color: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
-              { key: 'confirmed', label: 'Confirmed', count: appointments.filter(a => a.status === 'confirmed').length, color: 'bg-green-100 text-green-700 border-green-200' },
+              { key: 'confirmed', label: 'Confirmed', count: appointments.filter(a => a.status === 'confirmed').length, color: 'bg-green-300 text-green-700 border-green-200' },
               { key: 'completed', label: 'Completed', count: appointments.filter(a => a.status === 'completed').length, color: 'bg-purple-100 text-purple-700 border-purple-200' }
             ].map(filter => (
               <button
@@ -249,7 +249,7 @@ export default function SchedulePage() {
                 onClick={() => setStatusFilter(filter.key)}
                 className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 hover:shadow-md ${
                   statusFilter === filter.key
-                    ? 'bg-blue-600 text-white border-blue-600 shadow-lg'
+                    ? 'bg-blue-700 text-white border-blue-600 shadow-lg'
                     : `${filter.color} hover:bg-opacity-80`
                 }`}
               >
@@ -263,15 +263,15 @@ export default function SchedulePage() {
           <div className="space-y-4">
           {getDayAppointments.length > 0 ? (
             getDayAppointments.map((appointment) => (
-              <div key={appointment.id} className="bg-slate-50 border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+              <div key={appointment.id} className="bg-slate-400 border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center space-x-4">
-                      <div className="bg-blue-100 rounded-xl px-4 py-2">
+                      <div className="bg-blue-300 rounded-xl px-4 py-2">
                         <div className="text-blue-700 font-bold text-xl">
                           {formatTime(appointment.time)}
                         </div>
-                        <div className="text-blue-600 text-xs font-medium">
+                        <div className="text-blue-800 text-xs font-medium">
                           {formatDuration(appointment.duration)}
                         </div>
                       </div>
@@ -284,7 +284,7 @@ export default function SchedulePage() {
                           {statusConfig[appointment.status].label}
                         </span>
                         {appointment.priority === 'high' && (
-                          <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-semibold bg-red-100 text-red-700">
+                          <span className="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-semibold bg-red-300 text-red-700">
                             <AlertTriangle className="h-4 w-4 mr-1" />
                             High Priority
                           </span>
@@ -293,10 +293,10 @@ export default function SchedulePage() {
                     </div>
                     <div className="flex items-center space-x-2">
                       <div className="text-right">
-                        <div className="text-2xl font-bold text-green-600">
+                        <div className="text-2xl font-bold text-green-800">
                           ${appointment.estimatedCost}
                         </div>
-                        <div className="text-xs text-slate-500">
+                        <div className="text-xs text-slate-700">
                           Estimated
                         </div>
                       </div>
@@ -318,18 +318,18 @@ export default function SchedulePage() {
                           </div>
                           <div>
                             <p className="font-semibold text-slate-900">{appointment.address}</p>
-                            <p className="text-slate-600 text-sm">{appointment.city}</p>
+                            <p className="text-slate-800 text-sm">{appointment.city}</p>
                           </div>
                         </div>
                         <div className="flex items-center space-x-3">
-                          <div className="p-2 bg-green-100 rounded-lg">
-                            <Phone className="h-5 w-5 text-green-600" />
+                          <div className="p-2 bg-green-300 rounded-lg">
+                            <Phone className="h-5 w-5 text-green-800" />
                           </div>
                           <div>
-                            <a href={`tel:${appointment.customerPhone}`} className="font-semibold text-slate-900 hover:text-blue-600 transition-colors">
+                            <a href={`tel:${appointment.customerPhone}`} className="font-semibold text-slate-900 hover:text-blue-800 transition-colors">
                               {appointment.customerPhone}
                             </a>
-                            <p className="text-slate-600 text-sm">Customer Phone</p>
+                            <p className="text-slate-800 text-sm">Customer Phone</p>
                           </div>
                         </div>
                       </div>
@@ -340,7 +340,7 @@ export default function SchedulePage() {
                         <div className="text-2xl font-bold text-slate-900">
                           {appointment.deviceCount}
                         </div>
-                        <div className="text-sm text-slate-600">
+                        <div className="text-sm text-slate-800">
                           Device{appointment.deviceCount !== 1 ? 's' : ''}
                         </div>
                       </div>
@@ -349,7 +349,7 @@ export default function SchedulePage() {
                         <div className="text-lg font-semibold text-slate-900">
                           {formatDuration(appointment.duration)}
                         </div>
-                        <div className="text-sm text-slate-600">
+                        <div className="text-sm text-slate-800">
                           Duration
                         </div>
                       </div>
@@ -368,7 +368,7 @@ export default function SchedulePage() {
                         {appointment.status === 'scheduled' && (
                           <Button
                             size="sm"
-                            className="bg-green-600 hover:bg-green-700 text-white"
+                            className="bg-green-700 hover:bg-green-700 text-white"
                             onClick={() => updateAppointmentStatus(appointment.id, 'confirmed')}
                           >
                             <CheckCircle className="h-4 w-4 mr-2" />
@@ -378,7 +378,7 @@ export default function SchedulePage() {
                         {appointment.status === 'confirmed' && (
                           <Button
                             size="sm"
-                            className="bg-blue-600 hover:bg-blue-700 text-white"
+                            className="bg-blue-700 hover:bg-blue-700 text-white"
                             onClick={() => updateAppointmentStatus(appointment.id, 'in-progress')}
                           >
                             <Clock className="h-4 w-4 mr-2" />
@@ -388,7 +388,7 @@ export default function SchedulePage() {
                         {appointment.status === 'in-progress' && (
                           <Button
                             size="sm"
-                            className="bg-green-600 hover:bg-green-700 text-white"
+                            className="bg-green-700 hover:bg-green-700 text-white"
                             onClick={() => updateAppointmentStatus(appointment.id, 'completed')}
                           >
                             <CheckCircle className="h-4 w-4 mr-2" />
@@ -398,13 +398,13 @@ export default function SchedulePage() {
                       </div>
                       
                       <div className="flex gap-2 sm:ml-auto">
-                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 flex-1 sm:flex-initial" asChild>
+                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300 flex-1 sm:flex-initial" asChild>
                           <Link href={`tel:${appointment.customerPhone}`}>
                             <Phone className="h-4 w-4 mr-2" />
                             Call
                           </Link>
                         </Button>
-                        <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 flex-1 sm:flex-initial" asChild>
+                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300 flex-1 sm:flex-initial" asChild>
                           <Link href={`/team-portal/test-report?customer=${appointment.customerId}`}>
                             <Edit className="h-4 w-4 mr-2" />
                             Start Test
@@ -417,20 +417,20 @@ export default function SchedulePage() {
               </div>
             ))
           ) : (
-            <div className="bg-slate-50 border border-slate-200 rounded-2xl shadow-sm p-12 text-center">
-              <div className="inline-flex p-4 rounded-full bg-slate-100 mb-6">
-                <Calendar className="h-12 w-12 text-slate-500" />
+            <div className="bg-slate-400 border border-slate-200 rounded-2xl shadow-sm p-12 text-center">
+              <div className="inline-flex p-4 rounded-full bg-slate-300 mb-6">
+                <Calendar className="h-12 w-12 text-slate-700" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">
                 No appointments found
               </h3>
-              <p className="text-slate-600 text-lg mb-2">
+              <p className="text-slate-800 text-lg mb-2">
                 {statusFilter === 'all' ? 'No appointments scheduled' : `No ${statusFilter} appointments`}
               </p>
-              <p className="text-slate-500 mb-8">
+              <p className="text-slate-700 mb-8">
                 {getDateTitle()}
               </p>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold" asChild>
+              <Button className="bg-blue-700 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold" asChild>
                 <Link href="/team-portal/schedule/new">
                   <Plus className="h-5 w-5 mr-3" />
                   Schedule New Appointment

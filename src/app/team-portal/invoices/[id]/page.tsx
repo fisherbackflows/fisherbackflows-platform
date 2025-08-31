@@ -80,10 +80,10 @@ export default function InvoiceDetailPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'paid': return 'bg-green-100 text-green-800';
-      case 'sent': return 'bg-blue-100 text-blue-800';
-      case 'overdue': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-900';
+      case 'paid': return 'bg-green-300 text-green-800';
+      case 'sent': return 'bg-blue-300 text-blue-800';
+      case 'overdue': return 'bg-red-300 text-red-800';
+      default: return 'bg-gray-300 text-gray-900';
     }
   };
 
@@ -167,7 +167,7 @@ export default function InvoiceDetailPage() {
             <div className="flex justify-between items-start">
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">Fisher Backflows</h2>
-                <p className="text-gray-600">
+                <p className="text-gray-800">
                   Professional Backflow Testing<br />
                   Pierce County, WA<br />
                   (253) 278-8692<br />
@@ -176,7 +176,7 @@ export default function InvoiceDetailPage() {
               </div>
               <div className="text-right">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">INVOICE</h3>
-                <p className="text-gray-600">
+                <p className="text-gray-800">
                   <strong>Invoice #:</strong> {invoice.number}<br />
                   <strong>Date:</strong> {invoice.date}<br />
                   <strong>Due Date:</strong> {invoice.dueDate}
@@ -190,7 +190,7 @@ export default function InvoiceDetailPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">Bill To:</h4>
-                <div className="text-gray-600">
+                <div className="text-gray-800">
                   <p className="font-medium">{invoice.customerName}</p>
                   <p className="whitespace-pre-line">{invoice.customerAddress}</p>
                   <p>{invoice.customerEmail}</p>
@@ -198,7 +198,7 @@ export default function InvoiceDetailPage() {
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900 mb-2">Service Details:</h4>
-                <div className="text-gray-600">
+                <div className="text-gray-800">
                   <div className="flex items-center mb-1">
                     <Calendar className="h-4 w-4 mr-2" />
                     Service Date: {invoice.date}
@@ -265,7 +265,7 @@ export default function InvoiceDetailPage() {
                   <FileText className="h-4 w-4 inline mr-2" />
                   Notes:
                 </h4>
-                <p className="text-gray-600">{invoice.notes}</p>
+                <p className="text-gray-800">{invoice.notes}</p>
               </div>
             )}
           </div>

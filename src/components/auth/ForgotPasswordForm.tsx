@@ -126,7 +126,7 @@ export default function ForgotPasswordForm({ onBack, onSuccess }: ForgotPassword
           onClick={() => setFormData(prev => ({ ...prev, type: 'email', identifier: '' }))}
           className={`flex-1 flex items-center justify-center px-4 py-2 rounded-md transition-all ${
             formData.type === 'email' 
-              ? 'bg-blue-500/20 text-blue-400' 
+              ? 'bg-blue-700/20 text-blue-400' 
               : 'text-white/60 hover:text-white/80'
           }`}
         >
@@ -138,7 +138,7 @@ export default function ForgotPasswordForm({ onBack, onSuccess }: ForgotPassword
           onClick={() => setFormData(prev => ({ ...prev, type: 'phone', identifier: '' }))}
           className={`flex-1 flex items-center justify-center px-4 py-2 rounded-md transition-all ${
             formData.type === 'phone' 
-              ? 'bg-blue-500/20 text-blue-400' 
+              ? 'bg-blue-700/20 text-blue-400' 
               : 'text-white/60 hover:text-white/80'
           }`}
         >

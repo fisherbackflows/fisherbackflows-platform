@@ -101,11 +101,11 @@ export default function CustomersPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'current': return 'bg-green-100 text-green-800';
+      case 'current': return 'bg-green-300 text-green-800';
       case 'due': return 'bg-yellow-100 text-yellow-800';
-      case 'overdue': return 'bg-red-100 text-red-800';
-      case 'inactive': return 'bg-gray-100 text-gray-900';
-      default: return 'bg-gray-100 text-gray-900';
+      case 'overdue': return 'bg-red-300 text-red-800';
+      case 'inactive': return 'bg-gray-300 text-gray-900';
+      default: return 'bg-gray-300 text-gray-900';
     }
   };
 
@@ -158,17 +158,17 @@ export default function CustomersPage() {
       <main className="p-6">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Professional Header */}
-          <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-8">
+          <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div>
                 <h1 className="text-4xl font-bold text-slate-900 mb-3">
                   Customer Management
                 </h1>
-                <p className="text-xl text-slate-600 leading-relaxed">
+                <p className="text-xl text-slate-800 leading-relaxed">
                   View and manage your customer database
                 </p>
               </div>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-sm font-medium transition-colors duration-200 flex items-center" asChild>
+              <Button className="bg-blue-700 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-sm font-medium transition-colors duration-200 flex items-center" asChild>
                 <Link href="/team-portal/customers/new">
                   <PlusCircle className="h-5 w-5 mr-2" />
                   Add Customer
@@ -178,57 +178,57 @@ export default function CustomersPage() {
           </div>
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-blue-50 rounded-lg">
-                  <Users className="h-8 w-8 text-blue-600" />
+                <div className="p-3 bg-blue-200 rounded-lg">
+                  <Users className="h-8 w-8 text-blue-800" />
                 </div>
                 <div className="text-right">
                   <div className="text-3xl font-bold text-slate-900">{statusCounts.all}</div>
-                  <div className="text-sm text-slate-500">Total Customers</div>
+                  <div className="text-sm text-slate-700">Total Customers</div>
                 </div>
               </div>
             </div>
-            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-green-50 rounded-lg">
-                  <CheckCircle className="h-8 w-8 text-green-600" />
+                <div className="p-3 bg-green-200 rounded-lg">
+                  <CheckCircle className="h-8 w-8 text-green-800" />
                 </div>
                 <div className="text-right">
                   <div className="text-3xl font-bold text-slate-900">{statusCounts.current}</div>
-                  <div className="text-sm text-slate-500">Current</div>
+                  <div className="text-sm text-slate-700">Current</div>
                 </div>
               </div>
             </div>
-            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-yellow-50 rounded-lg">
                   <Clock className="h-8 w-8 text-yellow-600" />
                 </div>
                 <div className="text-right">
                   <div className="text-3xl font-bold text-slate-900">{statusCounts.due}</div>
-                  <div className="text-sm text-slate-500">Due Soon</div>
+                  <div className="text-sm text-slate-700">Due Soon</div>
                 </div>
               </div>
             </div>
-            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-red-50 rounded-lg">
-                  <AlertTriangle className="h-8 w-8 text-red-600" />
+                <div className="p-3 bg-red-200 rounded-lg">
+                  <AlertTriangle className="h-8 w-8 text-red-800" />
                 </div>
                 <div className="text-right">
                   <div className="text-3xl font-bold text-slate-900">{statusCounts.overdue}</div>
-                  <div className="text-sm text-slate-500">Overdue</div>
+                  <div className="text-sm text-slate-700">Overdue</div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Search and Filters */}
-          <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex flex-col space-y-4">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-800 h-4 w-4" />
               <input
                 type="text"
                 placeholder="Search customers..."
@@ -243,8 +243,8 @@ export default function CustomersPage() {
                 onClick={() => setStatusFilter('all')}
                 className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
                   statusFilter === 'all' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
+                    ? 'bg-blue-700 text-white' 
+                    : 'bg-gray-300 text-slate-800 hover:bg-gray-400'
                 }`}
               >
                 All ({statusCounts.all})
@@ -253,8 +253,8 @@ export default function CustomersPage() {
                 onClick={() => setStatusFilter('current')}
                 className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
                   statusFilter === 'current' 
-                    ? 'bg-green-600 text-white' 
-                    : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
+                    ? 'bg-green-700 text-white' 
+                    : 'bg-gray-300 text-slate-800 hover:bg-gray-400'
                 }`}
               >
                 Current ({statusCounts.current})
@@ -264,7 +264,7 @@ export default function CustomersPage() {
                 className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
                   statusFilter === 'due' 
                     ? 'bg-yellow-600 text-white' 
-                    : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
+                    : 'bg-gray-300 text-slate-800 hover:bg-gray-400'
                 }`}
               >
                 Due ({statusCounts.due})
@@ -274,7 +274,7 @@ export default function CustomersPage() {
                 className={`px-3 py-1 rounded-full text-sm whitespace-nowrap ${
                   statusFilter === 'overdue' 
                     ? 'bg-red-600 text-white' 
-                    : 'bg-gray-100 text-slate-600 hover:bg-gray-200'
+                    : 'bg-gray-300 text-slate-800 hover:bg-gray-400'
                 }`}
               >
                 Overdue ({statusCounts.overdue})
@@ -287,7 +287,7 @@ export default function CustomersPage() {
           <div className="space-y-4">
             {filteredCustomers.length > 0 ? (
               filteredCustomers.map((customer) => (
-                <div key={customer.id} className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200">
+                <div key={customer.id} className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200">
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
@@ -297,7 +297,7 @@ export default function CustomersPage() {
                           {getStatusIcon(customer.status)}
                           <span className="ml-1 capitalize">{customer.status}</span>
                         </span>
-                        <span className="ml-2 text-sm text-slate-500">
+                        <span className="ml-2 text-sm text-slate-700">
                           {customer.deviceCount} device{customer.deviceCount !== 1 ? 's' : ''}
                         </span>
                       </div>
@@ -310,21 +310,21 @@ export default function CustomersPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <div className="flex items-center text-sm text-slate-600">
-                      <MapPin className="h-4 w-4 mr-2 text-slate-400" />
+                    <div className="flex items-center text-sm text-slate-800">
+                      <MapPin className="h-4 w-4 mr-2 text-slate-800" />
                       {customer.address}, {customer.city}, {customer.state} {customer.zip}
                     </div>
                     
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-slate-600">
-                        <Phone className="h-4 w-4 mr-2 text-slate-400" />
-                        <a href={`tel:${customer.phone}`} className="hover:text-blue-600">
+                      <div className="flex items-center text-sm text-slate-800">
+                        <Phone className="h-4 w-4 mr-2 text-slate-800" />
+                        <a href={`tel:${customer.phone}`} className="hover:text-blue-800">
                           {customer.phone}
                         </a>
                       </div>
-                      <div className="flex items-center text-sm text-slate-600">
-                        <Mail className="h-4 w-4 mr-2 text-slate-400" />
-                        <a href={`mailto:${customer.email}`} className="hover:text-blue-600 truncate">
+                      <div className="flex items-center text-sm text-slate-800">
+                        <Mail className="h-4 w-4 mr-2 text-slate-800" />
+                        <a href={`mailto:${customer.email}`} className="hover:text-blue-800 truncate">
                           {customer.email}
                         </a>
                       </div>
@@ -332,13 +332,13 @@ export default function CustomersPage() {
 
                     <div className="flex items-center justify-between pt-2 border-t">
                       <div className="text-sm">
-                        <span className="text-slate-500">Last Test:</span>
+                        <span className="text-slate-700">Last Test:</span>
                         <span className="ml-1 font-medium">{formatDate(customer.lastTestDate)}</span>
                       </div>
                       <div className="text-sm">
-                        <span className="text-slate-500">Next Due:</span>
+                        <span className="text-slate-700">Next Due:</span>
                         <span className={`ml-1 font-medium ${
-                          customer.status === 'overdue' ? 'text-red-600' : 
+                          customer.status === 'overdue' ? 'text-red-800' : 
                           customer.status === 'due' ? 'text-yellow-600' : 
                           'text-slate-900'
                         }`}>
@@ -350,19 +350,19 @@ export default function CustomersPage() {
 
                   {/* Quick Actions */}
                   <div className="flex space-x-2 mt-4">
-                    <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" asChild>
+                    <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" asChild>
                       <Link href={`/team-portal/test-report?customer=${customer.id}`}>
                         <FileText className="h-4 w-4 mr-1" />
                         Test
                       </Link>
                     </Button>
-                    <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" asChild>
+                    <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" asChild>
                       <Link href={`/team-portal/schedule?customer=${customer.id}`}>
                         <Calendar className="h-4 w-4 mr-1" />
                         Schedule
                       </Link>
                     </Button>
-                    <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" asChild>
+                    <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" asChild>
                       <Link href={`tel:${customer.phone}`}>
                         <Phone className="h-4 w-4 mr-1" />
                         Call
@@ -373,10 +373,10 @@ export default function CustomersPage() {
               </div>
             ))
           ) : (
-            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-8 text-center">
+            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-8 text-center">
               <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-slate-900 mb-2">No customers found</h3>
-              <p className="text-slate-500 mb-4">
+              <p className="text-slate-700 mb-4">
                 {searchTerm || statusFilter !== 'all' 
                   ? "Try adjusting your search or filters" 
                   : "Get started by adding your first customer"

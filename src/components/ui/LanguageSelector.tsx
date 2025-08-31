@@ -26,7 +26,7 @@ export default function LanguageSelector({
             onClick={() => setLocale(localeOption)}
             className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center space-x-1 ${
               locale === localeOption
-                ? 'bg-blue-500 text-white shadow-lg'
+                ? 'bg-blue-700 text-white shadow-lg'
                 : 'bg-white/10 text-white/80 hover:bg-white/20 hover:text-white'
             }`}
           >
@@ -72,7 +72,7 @@ export default function LanguageSelector({
                   }}
                   className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-all duration-200 ${
                     locale === localeOption
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-blue-700 text-white'
                       : 'text-white/80 hover:bg-white/10 hover:text-white'
                   }`}
                 >

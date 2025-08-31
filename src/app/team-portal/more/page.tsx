@@ -65,14 +65,14 @@ export default function MorePage() {
       description: 'Complete customer records',
       icon: <Users className="h-6 w-6" />,
       href: '/team-portal/customers/database',
-      color: 'bg-blue-500'
+      color: 'bg-blue-700'
     },
     {
       title: 'Invoices',
       description: 'Manage billing and payments',
       icon: <DollarSign className="h-6 w-6" />,
       href: '/team-portal/invoices',
-      color: 'bg-green-500'
+      color: 'bg-green-700'
     },
     {
       title: 'Water Districts',
@@ -143,7 +143,7 @@ export default function MorePage() {
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
+          <p className="text-gray-800">Loading...</p>
         </div>
       </div>
     );
@@ -155,7 +155,7 @@ export default function MorePage() {
       <header className="bg-slate-900 text-white">
         <div className="px-4 py-6">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-blue-600 rounded-full p-2">
+            <div className="bg-blue-700 rounded-full p-2">
               <Smartphone className="h-6 w-6" />
             </div>
             <div>
@@ -172,9 +172,9 @@ export default function MorePage() {
                 <div className="flex items-center space-x-2">
                   <div className="text-lg font-bold">{stat.value}</div>
                   <div className={`text-xs px-1.5 py-0.5 rounded ${
-                    stat.changeType === 'positive' ? 'bg-green-100 text-green-800' :
-                    stat.changeType === 'negative' ? 'bg-red-100 text-red-800' :
-                    'bg-gray-100 text-gray-900'
+                    stat.changeType === 'positive' ? 'bg-green-300 text-green-800' :
+                    stat.changeType === 'negative' ? 'bg-red-300 text-red-800' :
+                    'bg-gray-300 text-gray-900'
                   }`}>
                     {stat.change}
                   </div>
@@ -202,7 +202,7 @@ export default function MorePage() {
                   </div>
                   <div className="flex-1">
                     <div className="font-semibold text-gray-900">{feature.title}</div>
-                    <div className="text-sm text-gray-600">{feature.description}</div>
+                    <div className="text-sm text-gray-800">{feature.description}</div>
                   </div>
                 </div>
               </Link>
@@ -226,7 +226,7 @@ export default function MorePage() {
                   </div>
                   <div className="flex-1">
                     <div className="font-semibold text-gray-900">{feature.title}</div>
-                    <div className="text-sm text-gray-600">{feature.description}</div>
+                    <div className="text-sm text-gray-800">{feature.description}</div>
                   </div>
                 </div>
               </Link>
@@ -240,7 +240,7 @@ export default function MorePage() {
           <div className="space-y-3">
             <Link
               href="/team-portal/test-report"
-              className="flex items-center justify-between bg-blue-600 text-white rounded-lg p-4 hover:bg-blue-700 transition-colors"
+              className="flex items-center justify-between bg-blue-700 text-white rounded-lg p-4 hover:bg-blue-700 transition-colors"
             >
               <div className="flex items-center space-x-3">
                 <FileText className="h-6 w-6" />
@@ -254,7 +254,7 @@ export default function MorePage() {
 
             <Link
               href="/team-portal/customers/new"
-              className="flex items-center justify-between bg-green-600 text-white rounded-lg p-4 hover:bg-green-700 transition-colors"
+              className="flex items-center justify-between bg-green-700 text-white rounded-lg p-4 hover:bg-green-700 transition-colors"
             >
               <div className="flex items-center space-x-3">
                 <Users className="h-6 w-6" />
@@ -288,36 +288,36 @@ export default function MorePage() {
           <div className="bg-white rounded-lg shadow-sm p-4">
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-gray-400" />
+                <Phone className="h-5 w-5 text-gray-800" />
                 <div>
                   <div className="font-medium text-gray-900">Phone</div>
-                  <a href="tel:2532788692" className="text-blue-600">(253) 278-8692</a>
+                  <a href="tel:2532788692" className="text-blue-800">(253) 278-8692</a>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-gray-400" />
+                <Mail className="h-5 w-5 text-gray-800" />
                 <div>
                   <div className="font-medium text-gray-900">Email</div>
-                  <a href="mailto:service@fisherbackflows.com" className="text-blue-600">
+                  <a href="mailto:service@fisherbackflows.com" className="text-blue-800">
                     service@fisherbackflows.com
                   </a>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
-                <Shield className="h-5 w-5 text-gray-400" />
+                <Shield className="h-5 w-5 text-gray-800" />
                 <div>
                   <div className="font-medium text-gray-900">License</div>
-                  <div className="text-gray-600">BAT Certified | Pierce County Contractor</div>
+                  <div className="text-gray-800">BAT Certified | Pierce County Contractor</div>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5 text-gray-400" />
+                <MapPin className="h-5 w-5 text-gray-800" />
                 <div>
                   <div className="font-medium text-gray-900">Service Area</div>
-                  <div className="text-gray-600">Tacoma, Puyallup, Gig Harbor, All Pierce County</div>
+                  <div className="text-gray-800">Tacoma, Puyallup, Gig Harbor, All Pierce County</div>
                 </div>
               </div>
             </div>
@@ -340,10 +340,10 @@ export default function MorePage() {
                   </div>
                   <div>
                     <div className="font-semibold text-gray-900">{feature.title}</div>
-                    <div className="text-sm text-gray-600">{feature.description}</div>
+                    <div className="text-sm text-gray-800">{feature.description}</div>
                   </div>
                 </div>
-                <div className="text-gray-400">→</div>
+                <div className="text-gray-800">→</div>
               </Link>
             ))}
           </div>
@@ -351,14 +351,14 @@ export default function MorePage() {
 
         {/* App Information */}
         <section className="mb-6">
-          <div className="bg-gray-100 rounded-lg p-4 text-center">
-            <div className="text-sm text-gray-600 mb-2">
+          <div className="bg-gray-300 rounded-lg p-4 text-center">
+            <div className="text-sm text-gray-800 mb-2">
               Fisher Backflows Team App
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-700">
               Version 1.0.0 • Next.js with Turbopack
             </div>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-gray-700">
               © 2024 Fisher Backflows • Licensed & Insured
             </div>
           </div>
@@ -368,27 +368,27 @@ export default function MorePage() {
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
         <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <div className="h-6 w-6 bg-gray-400 rounded"></div>
             <span className="text-xs">Home</span>
           </Link>
-          <Link href="/team-portal/customers" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/team-portal/customers" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <Users className="h-6 w-6" />
             <span className="text-xs">Customers</span>
           </Link>
-          <Link href="/team-portal/test-report" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/team-portal/test-report" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <Plus className="h-6 w-6" />
             <span className="text-xs">Test</span>
           </Link>
-          <Link href="/team-portal/schedule" className="flex flex-col items-center py-2 px-1 text-gray-600 hover:text-gray-900">
+          <Link href="/team-portal/schedule" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
             <Calendar className="h-6 w-6" />
             <span className="text-xs">Schedule</span>
           </Link>
-          <Link href="/team-portal/more" className="flex flex-col items-center py-2 px-1 text-blue-600 bg-blue-50">
+          <Link href="/team-portal/more" className="flex flex-col items-center py-2 px-1 text-blue-800 bg-blue-200">
             <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-blue-600 rounded-full"></div>
+              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
+              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
+              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
             </div>
             <span className="text-xs font-medium">More</span>
           </Link>

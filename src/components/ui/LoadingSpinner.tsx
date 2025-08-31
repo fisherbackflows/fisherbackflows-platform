@@ -28,7 +28,7 @@ export function LoadingSpinner({
       <div className="flex flex-col items-center space-y-3">
         <div className={`animate-spin rounded-full border-2 border-transparent border-t-current ${sizeClasses[size]} ${colorClasses[color]}`}></div>
         {text && (
-          <p className={`text-sm font-medium ${color === 'white' ? 'text-white' : color === 'blue' ? 'text-blue-600' : 'text-slate-600'}`}>
+          <p className={`text-sm font-medium ${color === 'white' ? 'text-white' : color === 'blue' ? 'text-blue-800' : 'text-slate-800'}`}>
             {text}
           </p>
         )}

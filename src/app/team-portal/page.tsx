@@ -85,18 +85,18 @@ export default function TeamPortalPage() {
               <Logo width={160} height={128} />
               <div>
                 <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
-                <p className="text-xs text-slate-600">Business Portal</p>
+                <p className="text-xs text-slate-800">Business Portal</p>
               </div>
             </Link>
             <nav className="hidden md:flex space-x-1">
               <Link href="/">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-all duration-200 font-medium">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Home
                 </Button>
               </Link>
               <Link href="/portal">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-all duration-200 font-medium">
                   Customer Portal
                 </Button>
               </Link>
@@ -110,15 +110,15 @@ export default function TeamPortalPage() {
         <div className="w-full max-w-md">
           <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg">
             <div className="text-center mb-8">
-              <div className="inline-flex p-4 rounded-2xl bg-slate-100 mb-6">
+              <div className="inline-flex p-4 rounded-2xl bg-slate-300 mb-6">
                 <Lock className="h-8 w-8 text-slate-700" />
               </div>
               <h1 className="text-3xl font-bold text-slate-900 mb-2">Business Portal</h1>
-              <p className="text-slate-600">Sign in to access team management tools</p>
+              <p className="text-slate-800">Sign in to access team management tools</p>
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+              <div className="bg-red-200 border border-red-200 rounded-xl p-4 mb-6">
                 <p className="text-sm text-center text-red-700">{error}</p>
               </div>
             )}
@@ -156,7 +156,7 @@ export default function TeamPortalPage() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-800 hover:text-slate-800 transition-colors"
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
@@ -182,13 +182,13 @@ export default function TeamPortalPage() {
               </Button>
             </form>
 
-            <div className="mt-8 text-center text-slate-500 text-sm">
+            <div className="mt-8 text-center text-slate-700 text-sm">
               <p>Need help accessing your account?</p>
               <p className="mt-2">
                 Contact IT support at{' '}
                 <a 
                   href="mailto:support@fisherbackflows.com" 
-                  className="text-blue-600 hover:text-blue-700 transition-colors font-semibold"
+                  className="text-blue-800 hover:text-blue-700 transition-colors font-semibold"
                 >
                   support@fisherbackflows.com
                 </a>
