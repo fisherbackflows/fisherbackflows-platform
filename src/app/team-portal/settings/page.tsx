@@ -68,7 +68,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -80,7 +80,7 @@ export default function SettingsPage() {
                   Back
                 </Button>
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+              <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
             </div>
             <Button onClick={handleSave} className="bg-blue-600 hover:bg-blue-700">
               <Save className="h-4 w-4 mr-2" />
@@ -93,7 +93,7 @@ export default function SettingsPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="space-y-6">
           {/* Business Information */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-slate-50 rounded-lg shadow-sm border border-slate-200 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <User className="h-5 w-5 inline mr-2" />
               Business Information
@@ -101,7 +101,7 @@ export default function SettingsPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Business Name
                 </label>
                 <input
@@ -114,7 +114,7 @@ export default function SettingsPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Contact Email
                 </label>
                 <input
@@ -127,7 +127,7 @@ export default function SettingsPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Contact Phone
                 </label>
                 <input
@@ -140,7 +140,7 @@ export default function SettingsPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Business Address
                 </label>
                 <input
@@ -155,7 +155,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Notification Settings */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-slate-50 rounded-lg shadow-sm border border-slate-200 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <Bell className="h-5 w-5 inline mr-2" />
               Notification Settings
@@ -164,8 +164,8 @@ export default function SettingsPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-medium text-gray-900">Email Notifications</h3>
-                  <p className="text-sm text-gray-600">Receive notifications via email</p>
+                  <h3 className="font-medium text-slate-900">Email Notifications</h3>
+                  <p className="text-sm text-slate-600">Receive notifications via email</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
@@ -181,8 +181,8 @@ export default function SettingsPage() {
               
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-medium text-gray-900">SMS Notifications</h3>
-                  <p className="text-sm text-gray-600">Receive notifications via text message</p>
+                  <h3 className="font-medium text-slate-900">SMS Notifications</h3>
+                  <p className="text-sm text-slate-600">Receive notifications via text message</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
@@ -198,7 +198,7 @@ export default function SettingsPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Default Reminder Days Before Due
                   </label>
                   <select
@@ -218,7 +218,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Invoicing Settings */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-slate-50 rounded-lg shadow-sm border border-slate-200 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <Mail className="h-5 w-5 inline mr-2" />
               Invoicing Settings
@@ -226,7 +226,7 @@ export default function SettingsPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Invoice Number Prefix
                 </label>
                 <input
@@ -239,7 +239,7 @@ export default function SettingsPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Tax Rate (%)
                 </label>
                 <input
@@ -253,7 +253,7 @@ export default function SettingsPage() {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Payment Terms (Days)
                 </label>
                 <select
@@ -271,7 +271,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Security Settings */}
-          <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="bg-slate-50 rounded-lg shadow-sm border border-slate-200 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <Shield className="h-5 w-5 inline mr-2" />
               Security Settings
@@ -280,7 +280,7 @@ export default function SettingsPage() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
                     Auto Logout (minutes)
                   </label>
                   <select
@@ -300,8 +300,8 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-gray-900">Require Strong Passwords</h3>
-                    <p className="text-sm text-gray-600">Enforce strong password requirements</p>
+                    <h3 className="font-medium text-slate-900">Require Strong Passwords</h3>
+                    <p className="text-sm text-slate-600">Enforce strong password requirements</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -317,8 +317,8 @@ export default function SettingsPage() {
                 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-gray-900">Two-Factor Authentication</h3>
-                    <p className="text-sm text-gray-600">Add extra security to your account</p>
+                    <h3 className="font-medium text-slate-900">Two-Factor Authentication</h3>
+                    <p className="text-sm text-slate-600">Add extra security to your account</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input

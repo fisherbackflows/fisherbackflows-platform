@@ -386,7 +386,7 @@ export default function CustomerDatabasePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading customer database...</p>
@@ -396,7 +396,7 @@ export default function CustomerDatabasePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="px-4 py-4">
@@ -447,15 +447,15 @@ export default function CustomerDatabasePage() {
 
           {/* Customer Type Breakdown */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-gray-50 rounded-lg p-2 text-center">
+            <div className="bg-white rounded-lg p-2 text-center">
               <div className="text-lg font-semibold text-gray-700">{typeStats.residential}</div>
               <div className="text-xs text-gray-600">Residential</div>
             </div>
-            <div className="bg-gray-50 rounded-lg p-2 text-center">
+            <div className="bg-white rounded-lg p-2 text-center">
               <div className="text-lg font-semibold text-gray-700">{typeStats.commercial}</div>
               <div className="text-xs text-gray-600">Commercial</div>
             </div>
-            <div className="bg-gray-50 rounded-lg p-2 text-center">
+            <div className="bg-white rounded-lg p-2 text-center">
               <div className="text-lg font-semibold text-gray-700">{typeStats.industrial}</div>
               <div className="text-xs text-gray-600">Industrial</div>
             </div>
@@ -590,7 +590,7 @@ export default function CustomerDatabasePage() {
                     </div>
 
                     {/* Device Summary */}
-                    <div className="bg-gray-50 rounded-lg p-3 mt-3">
+                    <div className="bg-white rounded-lg p-3 mt-3">
                       <div className="text-sm font-medium text-gray-900 mb-2">Devices & Test Status</div>
                       {customer.devices.map((device, idx) => (
                         <div key={device.id} className="flex items-center justify-between text-sm mb-1 last:mb-0">

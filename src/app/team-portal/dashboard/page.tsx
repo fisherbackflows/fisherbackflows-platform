@@ -157,13 +157,13 @@ export default function TeamPortalDashboard() {
   const hasData = stats.customers.total > 0 || stats.appointments.scheduled > 0 || stats.testing.totalTests > 0;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-white">
       <TeamPortalNavigation userInfo={userInfo} />
       
       <main className="p-6">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Professional Header */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+          <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div>
                 <h1 className="text-4xl font-bold text-slate-900 mb-3">
@@ -193,7 +193,7 @@ export default function TeamPortalDashboard() {
           {/* Professional Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Total Customers */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-blue-50 rounded-lg">
                   <Users className="h-8 w-8 text-blue-600" />
@@ -207,7 +207,7 @@ export default function TeamPortalDashboard() {
             </div>
 
             {/* Scheduled Appointments */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-emerald-50 rounded-lg">
                   <Calendar className="h-8 w-8 text-emerald-600" />
@@ -221,7 +221,7 @@ export default function TeamPortalDashboard() {
             </div>
 
             {/* Test Results */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-amber-50 rounded-lg">
                   <FileText className="h-8 w-8 text-amber-600" />
@@ -235,7 +235,7 @@ export default function TeamPortalDashboard() {
             </div>
 
             {/* Monthly Revenue */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-purple-50 rounded-lg">
                   <CreditCard className="h-8 w-8 text-purple-600" />
@@ -252,7 +252,7 @@ export default function TeamPortalDashboard() {
           {/* Dashboard Sections */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Recent Activity */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-8">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-slate-900 mb-2">Recent Activity</h2>
@@ -300,14 +300,14 @@ export default function TeamPortalDashboard() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+            <div className="bg-slate-50 rounded-xl shadow-sm border border-slate-200 p-8">
               <div className="mb-6">
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">Quick Actions</h2>
                 <p className="text-slate-600">Common tasks and shortcuts</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <Link href="/team-portal/customers">
-                  <div className="group bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
+                  <div className="group bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
                     <Users className="h-10 w-10 text-blue-600 mb-4 group-hover:scale-105 transition-transform duration-200" />
                     <h3 className="font-bold text-slate-900 mb-2">Manage Customers</h3>
                     <p className="text-sm text-slate-600">View and edit customer information</p>
@@ -315,7 +315,7 @@ export default function TeamPortalDashboard() {
                 </Link>
 
                 <Link href="/team-portal/schedule">
-                  <div className="group bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
+                  <div className="group bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
                     <Calendar className="h-10 w-10 text-emerald-600 mb-4 group-hover:scale-105 transition-transform duration-200" />
                     <h3 className="font-bold text-slate-900 mb-2">Schedule Tests</h3>
                     <p className="text-sm text-slate-600">Book and manage appointments</p>
@@ -323,7 +323,7 @@ export default function TeamPortalDashboard() {
                 </Link>
 
                 <Link href="/team-portal/test-report">
-                  <div className="group bg-slate-50 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
+                  <div className="group bg-white hover:bg-amber-50 border border-slate-200 hover:border-amber-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
                     <FileText className="h-10 w-10 text-amber-600 mb-4 group-hover:scale-105 transition-transform duration-200" />
                     <h3 className="font-bold text-slate-900 mb-2">Test Reports</h3>
                     <p className="text-sm text-slate-600">Create and manage test reports</p>
@@ -331,7 +331,7 @@ export default function TeamPortalDashboard() {
                 </Link>
 
                 <Link href="/team-portal/invoices">
-                  <div className="group bg-slate-50 hover:bg-purple-50 border border-slate-200 hover:border-purple-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
+                  <div className="group bg-white hover:bg-purple-50 border border-slate-200 hover:border-purple-200 rounded-lg p-6 hover:shadow-md transition-all duration-200 cursor-pointer">
                     <CreditCard className="h-10 w-10 text-purple-600 mb-4 group-hover:scale-105 transition-transform duration-200" />
                     <h3 className="font-bold text-slate-900 mb-2">Invoices</h3>
                     <p className="text-sm text-slate-600">Generate and send invoices</p>

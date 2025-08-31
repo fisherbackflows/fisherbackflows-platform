@@ -90,7 +90,7 @@ export default function HelpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -197,7 +197,7 @@ export default function HelpPage() {
                       <div key={faq.id} className="border border-gray-200 rounded-lg">
                         <button
                           onClick={() => toggleFAQ(faq.id)}
-                          className="w-full flex items-center justify-between p-4 text-left hover:bg-gray-50 transition-colors"
+                          className="w-full flex items-center justify-between p-4 text-left hover:bg-white transition-colors"
                         >
                           <h3 className="font-medium text-gray-900">{faq.question}</h3>
                           {expandedFAQ === faq.id ? (

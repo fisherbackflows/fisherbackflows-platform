@@ -287,7 +287,7 @@ export default function DistrictReportsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading district reports...</p>
@@ -297,7 +297,7 @@ export default function DistrictReportsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="px-4 py-4">
@@ -465,7 +465,7 @@ export default function DistrictReportsPage() {
                       )}
 
                       {report.notes && (
-                        <div className="text-sm text-gray-600 bg-gray-50 rounded p-2">
+                        <div className="text-sm text-gray-600 bg-white rounded p-2">
                           {report.notes}
                         </div>
                       )}

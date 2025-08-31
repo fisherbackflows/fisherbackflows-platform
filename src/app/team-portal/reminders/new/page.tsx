@@ -133,7 +133,7 @@ Fisher Backflows Team`
   const selectedCustomer = customers.find(c => c.id === formData.customerId);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-2xl mx-auto px-4 py-4">
@@ -244,7 +244,7 @@ Fisher Backflows Team`
                   Reminder Type
                 </label>
                 <div className="grid grid-cols-2 gap-4">
-                  <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                  <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-white">
                     <input
                       type="radio"
                       name="reminderType"
@@ -256,7 +256,7 @@ Fisher Backflows Team`
                     <Mail className="h-4 w-4 mr-2 text-blue-600" />
                     <span>Email</span>
                   </label>
-                  <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50">
+                  <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-white">
                     <input
                       type="radio"
                       name="reminderType"

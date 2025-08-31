@@ -98,7 +98,7 @@ export default function InvoiceDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
@@ -106,7 +106,7 @@ export default function InvoiceDetailPage() {
 
   if (!invoice) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Invoice Not Found</h1>
           <Link href="/app/invoices">
@@ -118,7 +118,7 @@ export default function InvoiceDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -260,7 +260,7 @@ export default function InvoiceDetailPage() {
             </div>
 
             {invoice.notes && (
-              <div className="mt-8 p-4 bg-gray-50 rounded-lg">
+              <div className="mt-8 p-4 bg-white rounded-lg">
                 <h4 className="font-semibold mb-2">
                   <FileText className="h-4 w-4 inline mr-2" />
                   Notes:

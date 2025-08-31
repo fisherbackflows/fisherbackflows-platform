@@ -227,7 +227,7 @@ export default function NewInvoicePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="px-4 py-4">
@@ -274,7 +274,7 @@ export default function NewInvoicePage() {
             </div>
 
             {formData.customerName && (
-              <div className="bg-gray-50 rounded-lg p-3">
+              <div className="bg-white rounded-lg p-3">
                 <div className="font-medium text-gray-900">{formData.customerName}</div>
                 <div className="text-sm text-gray-600">{formData.customerEmail}</div>
                 <div className="text-sm text-gray-600">{formData.customerAddress}</div>
@@ -445,7 +445,7 @@ export default function NewInvoicePage() {
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Amount
                         </label>
-                        <div className="form-input bg-gray-50 text-gray-900 font-medium">
+                        <div className="form-input bg-white text-gray-900 font-medium">
                           {formatCurrency(service.amount)}
                         </div>
                       </div>
@@ -458,7 +458,7 @@ export default function NewInvoicePage() {
 
           {/* Invoice Totals */}
           {formData.services.length > 0 && (
-            <div className="mt-6 bg-gray-50 rounded-lg p-4">
+            <div className="mt-6 bg-white rounded-lg p-4">
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Subtotal:</span>

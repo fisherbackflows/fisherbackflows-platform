@@ -257,7 +257,7 @@ function TestReportContent() {
   const currentDeviceType = deviceTypes.find(d => d.value === formData.deviceType);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="px-4 py-4">
@@ -268,8 +268,8 @@ function TestReportContent() {
               </Link>
             </Button>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Test Report</h1>
-              <p className="text-sm text-gray-600">
+              <h1 className="text-xl font-bold text-slate-900">Test Report</h1>
+              <p className="text-sm text-slate-600">
                 {formData.customerName || 'New Test Report'}
               </p>
             </div>
@@ -280,14 +280,14 @@ function TestReportContent() {
       <form onSubmit={handleSubmit} className="p-4 pb-20">
         {/* Customer & Device Info */}
         <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
             <User className="h-5 w-5 mr-2" />
             Customer & Device
           </h2>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Customer *
               </label>
               <select
@@ -352,7 +352,7 @@ function TestReportContent() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Manufacturer
                 </label>
                 <input
@@ -364,7 +364,7 @@ function TestReportContent() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Model
                 </label>
                 <input
@@ -379,7 +379,7 @@ function TestReportContent() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Serial Number
                 </label>
                 <input
@@ -391,7 +391,7 @@ function TestReportContent() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Location
                 </label>
                 <input
@@ -416,7 +416,7 @@ function TestReportContent() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Test Date *
                 </label>
                 <input
@@ -428,7 +428,7 @@ function TestReportContent() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-slate-700 mb-1">
                   Test Time *
                 </label>
                 <input
@@ -442,7 +442,7 @@ function TestReportContent() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-slate-700 mb-1">
                 Water District
               </label>
               <select
@@ -460,7 +460,7 @@ function TestReportContent() {
 
         {/* Test Results */}
         <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
             <Settings className="h-5 w-5 mr-2" />
             Test Results - {currentDeviceType?.label}
           </h2>
@@ -469,7 +469,7 @@ function TestReportContent() {
             {formData.testResults.map((test, index) => (
               <div key={test.id} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-3">
-                  <h3 className="font-medium text-gray-900">
+                  <h3 className="font-medium text-slate-900">
                     {index + 1}. {test.testName}
                   </h3>
                   <div className="flex items-center space-x-2">
@@ -479,7 +479,7 @@ function TestReportContent() {
                       className={`flex items-center px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                         test.passedTest 
                           ? 'bg-green-100 text-green-800' 
-                          : 'bg-gray-100 text-gray-600 hover:bg-green-50'
+                          : 'bg-gray-100 text-slate-600 hover:bg-green-50'
                       }`}
                     >
                       <CheckCircle className="h-4 w-4 mr-1" />
@@ -491,7 +491,7 @@ function TestReportContent() {
                       className={`flex items-center px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                         !test.passedTest 
                           ? 'bg-red-100 text-red-800' 
-                          : 'bg-gray-100 text-gray-600 hover:bg-red-50'
+                          : 'bg-gray-100 text-slate-600 hover:bg-red-50'
                       }`}
                     >
                       <XCircle className="h-4 w-4 mr-1" />
@@ -502,7 +502,7 @@ function TestReportContent() {
 
                 <div className="grid grid-cols-2 gap-3 mb-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-700 mb-1">
                       Initial Pressure (PSI)
                     </label>
                     <input
@@ -515,7 +515,7 @@ function TestReportContent() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-slate-700 mb-1">
                       Final Pressure (PSI)
                     </label>
                     <input
@@ -530,7 +530,7 @@ function TestReportContent() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-slate-700 mb-1">
                     Test Notes
                   </label>
                   <textarea
@@ -546,9 +546,9 @@ function TestReportContent() {
           </div>
 
           {/* Overall Status */}
-          <div className="mt-6 p-4 rounded-lg bg-gray-50">
+          <div className="mt-6 p-4 rounded-lg bg-slate-100 border border-slate-200">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">Overall Test Result</h3>
+              <h3 className="text-lg font-semibold text-slate-900">Overall Test Result</h3>
               <div className={`flex items-center px-4 py-2 rounded-full font-semibold ${
                 formData.overallPass 
                   ? 'bg-green-100 text-green-800' 
@@ -578,7 +578,7 @@ function TestReportContent() {
                     onChange={(e) => handleInputChange('repairsNeeded', e.target.checked)}
                     className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                   />
-                  <label htmlFor="repairsNeeded" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="repairsNeeded" className="text-sm font-medium text-slate-700">
                     Repairs needed
                   </label>
                 </div>
@@ -599,7 +599,7 @@ function TestReportContent() {
 
         {/* Additional Notes */}
         <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <h2 className="text-lg font-semibold text-slate-900 mb-4">
             Additional Notes
           </h2>
           <textarea
@@ -613,13 +613,13 @@ function TestReportContent() {
 
         {/* Photos Section */}
         <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
             <Camera className="h-5 w-5 mr-2" />
             Photos
           </h2>
           <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
             <Camera className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500 mb-2">Take photos of the device</p>
+            <p className="text-slate-600 mb-2">Take photos of the device</p>
             <Button type="button" variant="outline" size="sm">
               <Upload className="h-4 w-4 mr-2" />
               Add Photos
@@ -678,10 +678,10 @@ function TestReportContent() {
 export default function TestReportPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="text-gray-600 mt-4">Loading...</p>
+          <p className="text-slate-600 mt-4">Loading...</p>
         </div>
       </div>
     }>

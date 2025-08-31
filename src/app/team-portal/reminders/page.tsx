@@ -314,7 +314,7 @@ Fisher Backflows`,
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading reminder system...</p>
@@ -324,7 +324,7 @@ Fisher Backflows`,
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
         <div className="px-4 py-4">
@@ -463,7 +463,7 @@ Fisher Backflows`,
                 </div>
 
                 {/* Preview of message template */}
-                <div className="mt-3 bg-gray-50 rounded-lg p-3">
+                <div className="mt-3 bg-white rounded-lg p-3">
                   <div className="text-sm font-medium text-gray-700 mb-1">Message Preview:</div>
                   <div className="text-sm text-gray-600 line-clamp-3">
                     {rule.template.split('\n')[0]}...
@@ -549,7 +549,7 @@ Fisher Backflows`,
                     </div>
                   </div>
 
-                  <div className="bg-gray-50 rounded-lg p-3 mt-3">
+                  <div className="bg-white rounded-lg p-3 mt-3">
                     <div className="text-sm font-medium text-gray-700 mb-1">Message:</div>
                     <div className="text-sm text-gray-600 line-clamp-4">
                       {reminder.message}

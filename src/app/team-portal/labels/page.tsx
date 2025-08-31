@@ -83,7 +83,7 @@ export default function LabelsPage() {
   const selectedTemplateInfo = labelTemplates.find(t => t.id === selectedTemplate);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -308,7 +308,7 @@ export default function LabelsPage() {
                   <div className="border-2 border-dashed border-gray-300 p-4 rounded-lg">
                     <div className="text-center">
                       <h3 className="font-medium text-gray-900 text-sm">Preview</h3>
-                      <div className="mt-2 p-3 bg-gray-50 rounded text-xs">
+                      <div className="mt-2 p-3 bg-white rounded text-xs">
                         {labelData.includeFields.name && <div className="font-medium">John Smith</div>}
                         {labelData.includeFields.address && (
                           <div className="mt-1">

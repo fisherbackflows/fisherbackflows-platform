@@ -147,7 +147,7 @@ export default function InvoicesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-white">
         <TeamPortalNavigation userInfo={null} />
         <main className="p-6">
           <div className="max-w-7xl mx-auto">
@@ -164,7 +164,7 @@ export default function InvoicesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-white">
       <TeamPortalNavigation userInfo={null} />
       
       <main className="p-6">
