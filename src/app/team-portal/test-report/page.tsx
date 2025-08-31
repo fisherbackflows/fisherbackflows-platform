@@ -291,7 +291,7 @@ function TestReportContent() {
                 Customer *
               </label>
               <select
-                className="form-select"
+                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
                 value={formData.customerId}
                 onChange={(e) => {
                   const customerId = e.target.value;
@@ -421,7 +421,7 @@ function TestReportContent() {
                 </label>
                 <input
                   type="date"
-                  className="form-input"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
                   value={formData.testDate}
                   onChange={(e) => handleInputChange('testDate', e.target.value)}
                   required
@@ -433,7 +433,7 @@ function TestReportContent() {
                 </label>
                 <input
                   type="time"
-                  className="form-input"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
                   value={formData.testTime}
                   onChange={(e) => handleInputChange('testTime', e.target.value)}
                   required
@@ -446,7 +446,7 @@ function TestReportContent() {
                 Water District
               </label>
               <select
-                className="form-select"
+                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
                 value={formData.waterDistrict}
                 onChange={(e) => handleInputChange('waterDistrict', e.target.value)}
               >
@@ -467,7 +467,7 @@ function TestReportContent() {
           
           <div className="space-y-4">
             {formData.testResults.map((test, index) => (
-              <div key={test.id} className="border border-gray-200 rounded-lg p-4">
+              <div key={test.id} className="border border-gray-300 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-3">
                   <h3 className="font-medium text-slate-900">
                     {index + 1}. {test.testName}
@@ -479,7 +479,7 @@ function TestReportContent() {
                       className={`flex items-center px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                         test.passedTest 
                           ? 'bg-green-100 text-green-800' 
-                          : 'bg-gray-100 text-slate-600 hover:bg-green-50'
+                          : 'bg-gray-100 text-gray-700 hover:bg-green-50'
                       }`}
                     >
                       <CheckCircle className="h-4 w-4 mr-1" />
@@ -491,7 +491,7 @@ function TestReportContent() {
                       className={`flex items-center px-3 py-1 rounded-full text-sm font-medium transition-colors ${
                         !test.passedTest 
                           ? 'bg-red-100 text-red-800' 
-                          : 'bg-gray-100 text-slate-600 hover:bg-red-50'
+                          : 'bg-gray-100 text-gray-700 hover:bg-red-50'
                       }`}
                     >
                       <XCircle className="h-4 w-4 mr-1" />
@@ -508,7 +508,7 @@ function TestReportContent() {
                     <input
                       type="number"
                       step="0.1"
-                      className="form-input"
+                      className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
                       value={test.initialPressure}
                       onChange={(e) => updateTestResult(test.id, 'initialPressure', e.target.value)}
                       placeholder="0.0"
@@ -521,7 +521,7 @@ function TestReportContent() {
                     <input
                       type="number"
                       step="0.1"
-                      className="form-input"
+                      className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
                       value={test.finalPressure}
                       onChange={(e) => updateTestResult(test.id, 'finalPressure', e.target.value)}
                       placeholder="0.0"
@@ -534,7 +534,7 @@ function TestReportContent() {
                     Test Notes
                   </label>
                   <textarea
-                    className="form-textarea"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 resize-none"
                     rows={2}
                     value={test.notes}
                     onChange={(e) => updateTestResult(test.id, 'notes', e.target.value)}
@@ -585,7 +585,7 @@ function TestReportContent() {
                 
                 {formData.repairsNeeded && (
                   <textarea
-                    className="form-textarea mt-2"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 resize-none mt-2"
                     rows={3}
                     value={formData.repairDescription}
                     onChange={(e) => handleInputChange('repairDescription', e.target.value)}
@@ -603,7 +603,7 @@ function TestReportContent() {
             Additional Notes
           </h2>
           <textarea
-            className="form-textarea"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 resize-none"
             rows={4}
             value={formData.notes}
             onChange={(e) => handleInputChange('notes', e.target.value)}
@@ -617,9 +617,9 @@ function TestReportContent() {
             <Camera className="h-5 w-5 mr-2" />
             Photos
           </h2>
-          <div className="text-center py-8 border-2 border-dashed border-gray-300 rounded-lg">
-            <Camera className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-slate-600 mb-2">Take photos of the device</p>
+          <div className="text-center py-8 border-2 border-dashed border-gray-400 rounded-lg">
+            <Camera className="h-12 w-12 text-gray-500 mx-auto mb-4" />
+            <p className="text-slate-700 mb-2">Take photos of the device</p>
             <Button type="button" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" size="sm">
               <Upload className="h-4 w-4 mr-2" />
               Add Photos
