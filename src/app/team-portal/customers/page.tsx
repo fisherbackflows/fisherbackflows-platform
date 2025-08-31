@@ -350,19 +350,19 @@ export default function CustomersPage() {
 
                   {/* Quick Actions */}
                   <div className="flex space-x-2 mt-4">
-                    <Button size="sm" variant="outline" asChild>
+                    <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" asChild>
                       <Link href={`/team-portal/test-report?customer=${customer.id}`}>
                         <FileText className="h-4 w-4 mr-1" />
                         Test
                       </Link>
                     </Button>
-                    <Button size="sm" variant="outline" asChild>
+                    <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" asChild>
                       <Link href={`/team-portal/schedule?customer=${customer.id}`}>
                         <Calendar className="h-4 w-4 mr-1" />
                         Schedule
                       </Link>
                     </Button>
-                    <Button size="sm" variant="outline" asChild>
+                    <Button size="sm" className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300" asChild>
                       <Link href={`tel:${customer.phone}`}>
                         <Phone className="h-4 w-4 mr-1" />
                         Call
