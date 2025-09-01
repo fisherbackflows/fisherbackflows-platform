@@ -26,8 +26,6 @@ function ResetPasswordContent() {
 export default function ResetPasswordPage() {
   return (
     <div className="min-h-screen bg-white relative">
-      {
-      
       {/* Header */}
       <header className="bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4">

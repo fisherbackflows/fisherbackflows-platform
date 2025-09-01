@@ -168,8 +168,6 @@ export default function ReportsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {
-
       {/* Header */}
       <header className="bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4">
