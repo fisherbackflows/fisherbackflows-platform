@@ -8,7 +8,21 @@ const PROTECTED_ROUTES = [
   '/admin',
   '/api/admin',
   '/field',
-  '/api/field'
+  '/api/field',
+  '/portal' // Customer portal also needs authentication
+];
+
+// Routes that should remain public (no authentication required)
+const PUBLIC_ROUTES = [
+  '/',
+  '/login',
+  '/maintenance',
+  '/test-navigation',
+  '/portal/login',
+  '/portal/register',
+  '/portal/forgot-password',
+  '/api/auth',
+  '/api/register'
 ];
 
 // Routes that should redirect if already authenticated
@@ -24,6 +38,12 @@ const RATE_LIMITED_ROUTES = [
   '/api/auth/login',
   '/api/auth/register'
 ];
+
+function isPublicRoute(pathname: string): boolean {
+  return PUBLIC_ROUTES.some(route => 
+    pathname === route || (route !== '/' && pathname.startsWith(route))
+  );
+}
 
 function isProtectedRoute(pathname: string): boolean {
   return PROTECTED_ROUTES.some(route => pathname.startsWith(route));
@@ -101,6 +121,11 @@ export async function productionAuthMiddleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/team-portal/dashboard', request.url));
       }
     }
+    return NextResponse.next();
+  }
+  
+  // Allow public routes through without authentication
+  if (isPublicRoute(pathname)) {
     return NextResponse.next();
   }
   
