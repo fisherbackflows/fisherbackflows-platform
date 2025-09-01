@@ -16,3 +16,116 @@
  ✓ Compiled in 1309ms (422 modules)
 ⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
  GET / 200 in 27111ms
+ ○ Compiling /api/payments/test-checkout ...
+ ✓ Compiled /api/payments/test-checkout in 2.8s (712 modules)
+ POST /api/payments/test-checkout 200 in 4037ms
+ ✓ Compiled /api/health in 294ms (714 modules)
+ GET /api/health 200 in 1628ms
+ ○ Compiling /api/auth/register ...
+ ✓ Compiled /api/auth/register in 1959ms (576 modules)
+Auth creation error: Error [AuthApiError]: User not allowed
+    at async POST (src/app/api/auth/register/route.ts:90:52)
+  88 |     try {
+  89 |       // Create user in Supabase Auth
+> 90 |       const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+     |                                                    ^
+  91 |         email,
+  92 |         password,
+  93 |         email_confirm: false, // We'll send confirmation email manually {
+  __isAuthError: true,
+  status: 403,
+  code: 'not_admin'
+}
+ POST /api/auth/register 500 in 3755ms
+Auth creation error: Error [AuthApiError]: User not allowed
+    at async POST (src/app/api/auth/register/route.ts:90:52)
+  88 |     try {
+  89 |       // Create user in Supabase Auth
+> 90 |       const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+     |                                                    ^
+  91 |         email,
+  92 |         password,
+  93 |         email_confirm: false, // We'll send confirmation email manually {
+  __isAuthError: true,
+  status: 403,
+  code: 'not_admin'
+}
+ POST /api/auth/register 500 in 1619ms
+ ✓ Compiled /api/health in 212ms (169 modules)
+ POST /api/health 405 in 468ms
+ GET /api/health 200 in 408ms
+ GET /api/health 200 in 365ms
+Auth creation error: Error [AuthApiError]: User not allowed
+    at async POST (src/app/api/auth/register/route.ts:90:52)
+  88 |     try {
+  89 |       // Create user in Supabase Auth
+> 90 |       const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+     |                                                    ^
+  91 |         email,
+  92 |         password,
+  93 |         email_confirm: false, // We'll send confirmation email manually {
+  __isAuthError: true,
+  status: 403,
+  code: 'not_admin'
+}
+ POST /api/auth/register 500 in 2002ms
+Auth creation error: Error [AuthApiError]: User not allowed
+    at async POST (src/app/api/auth/register/route.ts:90:52)
+  88 |     try {
+  89 |       // Create user in Supabase Auth
+> 90 |       const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+     |                                                    ^
+  91 |         email,
+  92 |         password,
+  93 |         email_confirm: false, // We'll send confirmation email manually {
+  __isAuthError: true,
+  status: 403,
+  code: 'not_admin'
+}
+ POST /api/auth/register 500 in 1329ms
+ ○ Compiling /api/customers/[id] ...
+ ✓ Compiled /api/customers/[id] in 714ms (534 modules)
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+🔍 Auth check - teamSession: missing
+🔍 Trying Supabase fallback auth...
+🔍 Supabase auth result: null
+ GET /api/customers/1 401 in 12667ms
+ ✓ Compiled /api/customers in 479ms (536 modules)
+🔍 Auth check - teamSession: missing
+🔍 Trying Supabase fallback auth...
+🔍 Supabase auth result: null
+ POST /api/customers 401 in 898ms
+ ⨯ ./src/app/api/calendar/available-dates/route.ts
+Module parse failed: Identifier 'availableDates' has already been declared (33:14)
+|         });
+|         // Transform data to match frontend expectations
+>         const availableDates = availability.filter((day)=>day.available).map((day)=>({
+|                 date: day.date,
+|                 dayOfWeek: new Date(day.date).toLocaleDateString('en-US', {
+
+Import trace for requested module:
+./src/app/api/calendar/available-dates/route.ts
+ ○ Compiling /api/calendar/available-dates ...
+ ⨯ ./src/app/api/calendar/available-dates/route.ts
+Module parse failed: Identifier 'availableDates' has already been declared (33:14)
+|         });
+|         // Transform data to match frontend expectations
+>         const availableDates = availability.filter((day)=>day.available).map((day)=>({
+|                 date: day.date,
+|                 dayOfWeek: new Date(day.date).toLocaleDateString('en-US', {
+
+Import trace for requested module:
+./src/app/api/calendar/available-dates/route.ts
+ ⨯ ./src/app/api/calendar/available-dates/route.ts
+Module parse failed: Identifier 'availableDates' has already been declared (33:14)
+|         });
+|         // Transform data to match frontend expectations
+>         const availableDates = availability.filter((day)=>day.available).map((day)=>({
+|                 date: day.date,
+|                 dayOfWeek: new Date(day.date).toLocaleDateString('en-US', {
+
+Import trace for requested module:
+./src/app/api/calendar/available-dates/route.ts
+ GET /api/calendar/available-dates 500 in 9447ms
+ GET /api/calendar/available-dates 500 in 222ms
+[?25h

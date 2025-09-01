@@ -1,51 +1,98 @@
 import { NextRequest, NextResponse } from 'next/server'
-import type { Customer } from '@/lib/types'
+import { createRouteHandlerClient } from '@/lib/supabase'
+import { auth } from '@/lib/auth'
 
-// Mock customer data - replace with database connection
-const customers: Customer[] = [
-  {
-    id: '1',
-    name: 'John Smith',
-    email: 'john.smith@email.com',
-    phone: '555-0123',
-    address: '123 Main St, City, State 12345',
-    accountNumber: 'FB001',
-    devices: [
-      {
-        id: 'dev1',
-        location: '123 Main St - Backyard',
-        serialNumber: 'BF-2023-001',
-        size: '3/4"',
-        make: 'Watts',
-        model: 'Series 909',
-        installDate: '2023-01-15',
-        lastTestDate: '2024-01-15',
-        nextTestDate: '2025-01-15',
-        status: 'Passed'
-      }
-    ],
-    balance: 0,
-    nextTestDate: '2025-01-15',
-    status: 'Active'
-  }
-]
+// Types matching database schema
+interface Customer {
+  id: string
+  account_number: string
+  first_name: string
+  last_name: string
+  email: string
+  phone: string
+  address_line1: string
+  address_line2?: string
+  city: string
+  state: string
+  zip_code: string
+  account_status: string
+  created_at: string
+  updated_at: string
+}
+
+interface Device {
+  id: string
+  device_type: string
+  manufacturer: string
+  model: string
+  size_inches: string
+  location_description: string
+  installation_date?: string
+  last_test_date?: string
+  next_test_due?: string
+  device_status: string
+}
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    // Check authentication
+    const user = await auth.getApiUser(request)
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
     const { id } = await params;
-    const customer = customers.find(c => c.id === id)
-    
-    if (!customer) {
+    const supabase = createRouteHandlerClient(request);
+
+    // Fetch customer with their devices
+    const { data: customer, error: customerError } = await supabase
+      .from('customers')
+      .select(`
+        *,
+        devices (
+          id,
+          device_type,
+          manufacturer,
+          model,
+          size_inches,
+          location_description,
+          installation_date,
+          last_test_date,
+          next_test_due,
+          device_status
+        )
+      `)
+      .eq('id', id)
+      .single();
+
+    if (customerError || !customer) {
       return NextResponse.json(
         { error: 'Customer not found' },
         { status: 404 }
       )
     }
+
+    // Transform data to match frontend expectations
+    const transformedCustomer = {
+      id: customer.id,
+      name: `${customer.first_name} ${customer.last_name}`,
+      email: customer.email,
+      phone: customer.phone,
+      address: `${customer.address_line1}${customer.address_line2 ? ', ' + customer.address_line2 : ''}, ${customer.city}, ${customer.state} ${customer.zip_code}`,
+      accountNumber: customer.account_number,
+      devices: customer.devices || [],
+      status: customer.account_status,
+      created_at: customer.created_at,
+      updated_at: customer.updated_at
+    }
     
-    return NextResponse.json(customer)
+    return NextResponse.json(transformedCustomer)
   } catch (error) {
     console.error('Error fetching customer:', error)
     return NextResponse.json(

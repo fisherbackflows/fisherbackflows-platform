@@ -6,17 +6,21 @@ const PROTECTED_ROUTES = [
   '/team-portal',
   '/api/team',
   '/admin',
-  '/api/admin'
+  '/api/admin',
+  '/field',
+  '/api/field'
 ];
 
 // Routes that should redirect if already authenticated
 const AUTH_ROUTES = [
-  '/team-portal/login'
+  '/team-portal/login',
+  '/field/login'
 ];
 
 // Rate-limited routes (higher security)
 const RATE_LIMITED_ROUTES = [
   '/api/team/auth/login',
+  '/api/field/auth/login',
   '/api/auth/login',
   '/api/auth/register'
 ];

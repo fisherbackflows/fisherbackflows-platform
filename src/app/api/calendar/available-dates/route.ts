@@ -19,16 +19,16 @@ export async function GET(request: NextRequest) {
       .not('status', 'eq', 'cancelled');
 
     // Generate available dates (excluding weekends)
-    const availableDates: string[] = [];
+    const possibleDates: string[] = [];
     for (let d = new Date(today); d <= thirtyDaysOut; d.setDate(d.getDate() + 1)) {
       // Skip weekends
       if (d.getDay() !== 0 && d.getDay() !== 6) {
-        availableDates.push(d.toISOString().split('T')[0]);
+        possibleDates.push(d.toISOString().split('T')[0]);
       }
     }
 
     // Calculate availability for each date
-    const availability = availableDates.map(date => {
+    const availability = possibleDates.map(date => {
       const dayAppointments = appointments?.filter(apt => apt.scheduled_date === date) || [];
       const slotsBooked = dayAppointments.length;
       const maxSlots = 8; // 8 appointments per day
@@ -41,7 +41,27 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    return NextResponse.json({ availability });
+    // Transform data to match frontend expectations
+    const availableDates = availability
+      .filter(day => day.available)
+      .map(day => ({
+        date: day.date,
+        dayOfWeek: new Date(day.date).toLocaleDateString('en-US', { weekday: 'long' }),
+        availableSlots: [
+          { time: '09:00', period: 'morning' as const },
+          { time: '10:00', period: 'morning' as const },
+          { time: '11:00', period: 'morning' as const },
+          { time: '14:00', period: 'afternoon' as const },
+          { time: '15:00', period: 'afternoon' as const },
+          { time: '16:00', period: 'afternoon' as const }
+        ].slice(0, day.slotsRemaining) // Only show available slots
+      }));
+
+    return NextResponse.json({ 
+      success: true,
+      availableDates: availableDates,
+      totalDays: availableDates.length
+    });
   } catch (error) {
     console.error('Error fetching available dates:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });

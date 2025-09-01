@@ -89,9 +89,10 @@ async function handlePaymentSucceeded(paymentIntent: Stripe.PaymentIntent) {
       .insert({
         invoice_id: invoice.id,
         customer_id: invoice.customer_id,
+        payment_date: new Date().toISOString(),
         amount: paymentIntent.amount / 100, // Convert cents to dollars
-        payment_method: 'card',
-        stripe_payment_id: paymentIntent.id,
+        payment_method: 'credit_card',
+        stripe_payment_intent_id: paymentIntent.id,
         status: 'completed'
       });
 
@@ -161,9 +162,10 @@ async function handlePaymentFailed(paymentIntent: Stripe.PaymentIntent) {
       .insert({
         invoice_id: invoice.id,
         customer_id: invoice.customer_id,
+        payment_date: new Date().toISOString(),
         amount: paymentIntent.amount / 100,
-        payment_method: 'card',
-        stripe_payment_id: paymentIntent.id,
+        payment_method: 'credit_card',
+        stripe_payment_intent_id: paymentIntent.id,
         status: 'failed'
       });
 

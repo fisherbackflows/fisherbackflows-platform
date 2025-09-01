@@ -49,33 +49,55 @@ export default function InvoiceDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Mock data - replace with actual API call
-    const mockInvoice: Invoice = {
-      id: invoiceId,
-      number: `INV-${invoiceId.padStart(4, '0')}`,
-      customerId: '1',
-      customerName: 'John Smith',
-      customerEmail: 'john.smith@example.com',
-      customerAddress: '123 Main St\nTacoma, WA 98401',
-      date: '2024-03-15',
-      dueDate: '2024-04-14',
-      status: Math.random() > 0.5 ? 'sent' : 'paid',
-      items: [
-        {
-          description: 'Annual Backflow Preventer Testing',
-          quantity: 1,
-          rate: 85.00,
-          amount: 85.00
+    const fetchInvoice = async () => {
+      try {
+        setLoading(true);
+        
+        // Fetch invoice data from API
+        const response = await fetch(`/api/invoices/${invoiceId}`);
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error('Invoice not found');
+          }
+          throw new Error('Failed to fetch invoice');
         }
-      ],
-      subtotal: 85.00,
-      tax: 8.33,
-      total: 93.33,
-      notes: 'Annual testing completed successfully. Device is functioning properly.'
+        
+        const invoiceData = await response.json();
+        setInvoice(invoiceData);
+        
+      } catch (error) {
+        console.error('Error fetching invoice:', error);
+        // For now, show mock data if API fails to prevent blank page
+        const mockInvoice: Invoice = {
+          id: invoiceId,
+          number: `INV-${invoiceId.padStart(4, '0')}`,
+          customerId: '1',
+          customerName: 'Error - Could not load invoice',
+          customerEmail: 'error@example.com',
+          customerAddress: 'API Error',
+          date: '2024-03-15',
+          dueDate: '2024-04-14',
+          status: 'draft',
+          items: [{
+            description: 'Error loading invoice data',
+            quantity: 1,
+            rate: 0,
+            amount: 0
+          }],
+          subtotal: 0,
+          tax: 0,
+          total: 0,
+          notes: 'Could not load invoice data. Please check if invoice exists.'
+        };
+        setInvoice(mockInvoice);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setInvoice(mockInvoice);
-    setLoading(false);
+    if (invoiceId) {
+      fetchInvoice();
+    }
   }, [invoiceId]);
 
   const getStatusColor = (status: string) => {

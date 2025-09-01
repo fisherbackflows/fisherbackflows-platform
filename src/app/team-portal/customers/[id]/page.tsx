@@ -45,39 +45,47 @@ export default function CustomerDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Mock data - replace with actual API call
-    const mockCustomer: Customer = {
-      id: customerId,
-      name: `Customer ${customerId}`,
-      email: `customer${customerId}@example.com`,
-      phone: '(253) 555-0123',
-      address: '123 Main St, Tacoma, WA 98401',
-      deviceType: 'Reduced Pressure Zone',
-      lastTested: '2024-03-15',
-      nextDue: '2025-03-15',
-      status: Math.random() > 0.5 ? 'active' : 'upcoming'
+    const fetchCustomer = async () => {
+      try {
+        setLoading(true);
+        
+        // Fetch customer data from API
+        const response = await fetch(`/api/customers/${customerId}`);
+        if (!response.ok) {
+          throw new Error('Customer not found');
+        }
+        const customerData = await response.json();
+        
+        // Transform API data to match component expectations
+        const transformedCustomer: Customer = {
+          id: customerData.id,
+          name: customerData.name,
+          email: customerData.email,
+          phone: customerData.phone,
+          address: customerData.address,
+          deviceType: customerData.devices?.[0]?.device_type || 'No devices',
+          lastTested: customerData.devices?.[0]?.last_test_date || 'Never',
+          nextDue: customerData.devices?.[0]?.next_test_due || 'Unknown',
+          status: customerData.status === 'active' ? 'active' : 'inactive'
+        };
+        
+        setCustomer(transformedCustomer);
+        
+        // TODO: Fetch test reports from API
+        // For now, using empty array
+        setTestReports([]);
+        
+      } catch (error) {
+        console.error('Error fetching customer:', error);
+        // Handle error - could set an error state
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const mockReports: TestReport[] = [
-      {
-        id: '1',
-        date: '2024-03-15',
-        result: 'pass',
-        notes: 'All tests passed. Device functioning properly.',
-        technician: 'John Fisher'
-      },
-      {
-        id: '2',
-        date: '2023-03-10',
-        result: 'pass',
-        notes: 'Annual test completed successfully.',
-        technician: 'John Fisher'
-      }
-    ];
-
-    setCustomer(mockCustomer);
-    setTestReports(mockReports);
-    setLoading(false);
+    if (customerId) {
+      fetchCustomer();
+    }
   }, [customerId]);
 
   if (loading) {

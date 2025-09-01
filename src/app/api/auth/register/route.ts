@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { createRouteHandlerClient } from '@/lib/supabase';
+import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';
 
 export async function POST(request: NextRequest) {
@@ -57,16 +57,7 @@ export async function POST(request: NextRequest) {
     // Initialize Supabase client
     const supabase = createRouteHandlerClient(request);
 
-    // Check if user already exists in Supabase Auth
-    const { data: existingUser } = await supabase.auth.admin.listUsers();
-    const userExists = existingUser?.users?.some(user => user.email === email);
-
-    if (userExists) {
-      return NextResponse.json(
-        { error: 'An account with this email already exists' },
-        { status: 409 }
-      );
-    }
+    // Note: We'll let Supabase handle checking for existing auth users
 
     // Check if customer already exists in database
     const { data: existingCustomer } = await supabase
@@ -86,23 +77,31 @@ export async function POST(request: NextRequest) {
     const accountNumber = generateId('FB');
 
     try {
-      // Create user in Supabase Auth
-      const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+      // Create user in Supabase Auth using regular signup
+      const { data: authUser, error: authError } = await supabase.auth.signUp({
         email,
         password,
-        email_confirm: false, // We'll send confirmation email manually
-        user_metadata: {
-          first_name: firstName,
-          last_name: lastName,
-          phone,
-          account_type: 'customer'
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            phone,
+            account_type: 'customer'
+          }
         }
       });
 
       if (authError) {
         console.error('Auth creation error:', authError);
         return NextResponse.json(
-          { error: 'Failed to create authentication account' },
+          { error: authError.message || 'Failed to create authentication account' },
+          { status: 500 }
+        );
+      }
+
+      if (!authUser.user) {
+        return NextResponse.json(
+          { error: 'Failed to create user' },
           { status: 500 }
         );
       }
@@ -113,22 +112,23 @@ export async function POST(request: NextRequest) {
         .insert({
           id: authUser.user!.id,
           account_number: accountNumber,
-          name: `${firstName} ${lastName}`,
+          first_name: firstName,
+          last_name: lastName,
           email,
           phone,
-          address,
-          balance: 0.00,
-          status: 'Active'
+          address_line1: address.street,
+          city: address.city,
+          state: address.state,
+          zip_code: address.zipCode,
+          account_status: 'active'
         })
         .select()
         .single();
 
       if (customerError) {
         console.error('Customer creation error:', customerError);
-        // Clean up auth user if customer creation fails
-        await supabase.auth.admin.deleteUser(authUser.user!.id);
         return NextResponse.json(
-          { error: 'Failed to create customer record' },
+          { error: 'Failed to create customer record: ' + customerError.message },
           { status: 500 }
         );
       }
@@ -137,7 +137,8 @@ export async function POST(request: NextRequest) {
       console.log('New customer registration:', {
         id: customer.id,
         accountNumber: customer.account_number,
-        name: customer.name,
+        firstName: customer.first_name,
+        lastName: customer.last_name,
         email: customer.email,
         phone: customer.phone,
         propertyType

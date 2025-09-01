@@ -140,25 +140,87 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = await auth.getApiUser(request);
-    if (!user || !['admin', 'technician'].includes(user.role)) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
+    
+    // Allow customers to create their own appointments, admin/technician can create any appointments
+    console.log('Creating appointment for user:', user.email, 'role:', user.role);
 
     const body = await request.json();
+    const { customerId, serviceType, date, time, timeSlot, duration, deviceLocation, deviceInfo, notes, specialInstructions } = body;
+    
+    // Support both 'time' and 'timeSlot' field names for flexibility
+    const appointmentTime = time || timeSlot;
+    
+    console.log('📍 Appointment API Debug:', {
+      customerId,
+      date,
+      time,
+      timeSlot,
+      appointmentTime,
+      serviceType
+    });
+    
+    // Validate required fields
+    if (!appointmentTime) {
+      return NextResponse.json({
+        success: false,
+        error: 'Appointment time is required'
+      }, { status: 400 });
+    }
+    
+    if (!date) {
+      return NextResponse.json({
+        success: false,
+        error: 'Appointment date is required'
+      }, { status: 400 });
+    }
+    
     const supabase = createRouteHandlerClient(request);
+    
+    // For customer users, ensure they can only create appointments for themselves
+    let finalCustomerId = customerId;
+    if (user.role === 'customer') {
+      finalCustomerId = user.id; // Use the authenticated user's ID
+    }
+    
+    // Map frontend data to database schema
+    const appointmentData = {
+      customer_id: finalCustomerId,
+      appointment_type: serviceType || 'annual_test',
+      scheduled_date: date,
+      scheduled_time_start: appointmentTime,
+      estimated_duration: duration || 60,
+      special_instructions: notes || specialInstructions || deviceInfo,
+      status: 'scheduled',
+      created_at: new Date().toISOString()
+    };
+    
+    console.log('📍 Final appointment data for database:', appointmentData);
     
     const { data: appointment, error } = await supabase
       .from('appointments')
-      .insert(body)
-      .select()
+      .insert(appointmentData)
+      .select(`
+        *,
+        customer:customers(first_name, last_name, email, phone)
+      `)
       .single();
 
     if (error) {
       console.error('Database error:', error);
-      return NextResponse.json({ error: 'Failed to create appointment' }, { status: 500 });
+      return NextResponse.json({ 
+        success: false,
+        error: 'Failed to create appointment: ' + error.message 
+      }, { status: 500 });
     }
 
-    return NextResponse.json({ appointment }, { status: 201 });
+    return NextResponse.json({ 
+      success: true,
+      appointment: appointment,
+      message: 'Appointment created successfully'
+    }, { status: 201 });
   } catch (error) {
     console.error('API error:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
