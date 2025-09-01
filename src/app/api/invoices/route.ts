@@ -132,37 +132,87 @@ const mockInvoices: Invoice[] = [
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('Invoices API v2.0 - DEPLOYMENT TEST - using clean mock data');
-    const { searchParams } = new URL(request.url)
-    const customerId = searchParams.get('customerId')
-    const status = searchParams.get('status')
+    console.log('Invoices API v3.0 - Using real database data');
     
-    // Use mock data for now (invoices table not yet created in database)  
-    let filteredInvoices = mockInvoices;
+    const { createRouteHandlerClient } = require('@/lib/supabase');
+    const { auth } = require('@/lib/auth');
+    
+    // Check authentication
+    const user = await auth.getApiUser(request);
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const { searchParams } = new URL(request.url);
+    const customerId = searchParams.get('customerId');
+    const status = searchParams.get('status');
+    
+    const supabase = createRouteHandlerClient(request);
+    
+    // Build query
+    let query = supabase
+      .from('invoices')
+      .select(`
+        *,
+        customer:customers(
+          first_name,
+          last_name,
+          email
+        )
+      `);
     
     // Apply filters
     if (customerId) {
-      filteredInvoices = filteredInvoices.filter(invoice =>
-        invoice.customerId === customerId
-      );
+      query = query.eq('customer_id', customerId);
     }
     if (status && status !== 'All') {
-      filteredInvoices = filteredInvoices.filter(invoice =>
-        invoice.status === status
+      query = query.eq('status', status.toLowerCase());
+    }
+    
+    const { data: invoices, error } = await query.order('created_at', { ascending: false });
+    
+    if (error) {
+      console.error('Database error:', error);
+      return NextResponse.json(
+        { error: 'Failed to fetch invoices' },
+        { status: 500 }
       );
     }
     
+    // Transform data to match frontend expectations
+    const transformedInvoices = (invoices || []).map(invoice => ({
+      id: invoice.id,
+      invoiceNumber: invoice.invoice_number,
+      customerId: invoice.customer_id,
+      customerName: invoice.customer ? 
+        `${invoice.customer.first_name} ${invoice.customer.last_name}` : 
+        'Unknown Customer',
+      customerEmail: invoice.customer?.email || '',
+      issueDate: invoice.invoice_date,
+      dueDate: invoice.due_date,
+      amount: invoice.subtotal || 0,
+      tax: invoice.tax_amount || 0,
+      total: invoice.total_amount || 0,
+      status: invoice.status,
+      services: [], // Could be populated from line items if needed
+      notes: invoice.notes
+    }));
+    
     return NextResponse.json({
       success: true,
-      message: 'FIXED - Vercel deployment working v3.0.0', 
-      invoices: filteredInvoices
+      message: 'Real database data loaded successfully',
+      invoices: transformedInvoices
     });
+    
   } catch (error) {
-    console.error('Error fetching invoices:', error)
-    return NextResponse.json({
-      success: true,
-      invoices: mockInvoices
-    });
+    console.error('Error fetching invoices:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch invoices' },
+      { status: 500 }
+    );
   }
 }
 

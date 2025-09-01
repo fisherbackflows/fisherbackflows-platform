@@ -67,7 +67,7 @@ export default function InvoicesPage() {
       try {
         setLoading(true);
         
-        const response = await fetch('/api/team/invoices');
+        const response = await fetch('/api/invoices');
         if (response.ok) {
           const data = await response.json();
           if (data.success) {

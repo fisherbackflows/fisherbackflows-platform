@@ -1,0 +1,68 @@
+
+> fisherbackflows@0.1.0 dev
+> next dev -H 0.0.0.0 -p 3010
+
+   ▲ Next.js 15.5.2
+   - Local:        http://localhost:3010
+   - Network:      http://0.0.0.0:3010
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ scrollRestoration
+
+ ✓ Starting...
+ ✓ Ready in 13.4s
+ ○ Compiling /team-portal/invoices/[id] ...
+ ✓ Compiled /team-portal/invoices/[id] in 13s (891 modules)
+ ✓ Compiled in 1390ms (402 modules)
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+ HEAD /team-portal/invoices/test-id 200 in 21525ms
+ GET /team-portal/invoices/5d3ac014-02bf-4f3d-9c85-3ee98f6abdfb 200 in 374ms
+ ○ Compiling /team-portal/customers/[id] ...
+ ✓ Compiled /team-portal/customers/[id] in 1181ms (892 modules)
+ GET /team-portal/customers/e8adbeee-2bf9-4670-a18c-e45b71773cba 200 in 6689ms
+ ○ Compiling /field/test/[appointmentId] ...
+ ✓ Compiled /field/test/[appointmentId] in 914ms (913 modules)
+ HEAD /field/test/test-appointment-id 200 in 6283ms
+ ○ Compiling /api/auth/register ...
+ ✓ Compiled /api/auth/register in 912ms (926 modules)
+ POST /api/auth/register 400 in 1490ms
+Auth creation error: Error [AuthApiError]: Email address "test-1756765291333@example.com" is invalid
+    at async POST (src/app/api/auth/register/route.ts:81:52)
+  79 |     try {
+  80 |       // Create user in Supabase Auth using regular signup
+> 81 |       const { data: authUser, error: authError } = await supabase.auth.signUp({
+     |                                                    ^
+  82 |         email,
+  83 |         password,
+  84 |         options: { {
+  __isAuthError: true,
+  status: 400,
+  code: 'email_address_invalid'
+}
+ POST /api/auth/register 500 in 1939ms
+New customer registration: {
+  id: '81e53ace-80c8-48dd-9326-e2a73020c42a',
+  accountNumber: 'FB1756765304209-ufirdh',
+  firstName: 'Test',
+  lastName: 'Customer',
+  email: 'test1756765303371@gmail.com',
+  phone: '(253) 555-9999',
+  propertyType: 'residential'
+}
+ POST /api/auth/register 201 in 2648ms
+ ○ Compiling /team-portal/invoices ...
+ ✓ Compiled /team-portal/invoices in 2.1s (964 modules)
+ GET /team-portal/invoices 200 in 3001ms
+ ○ Compiling /api/invoices ...
+ ✓ Compiled /api/invoices in 752ms (562 modules)
+Invoices API v2.0 - DEPLOYMENT TEST - using clean mock data
+ GET /api/invoices 200 in 1166ms
+Invoices API v2.0 - DEPLOYMENT TEST - using clean mock data
+ GET /api/invoices 200 in 198ms
+Invoices API v2.0 - DEPLOYMENT TEST - using clean mock data
+ GET /api/invoices 200 in 213ms
+Invoices API v2.0 - DEPLOYMENT TEST - using clean mock data
+ GET /api/invoices 200 in 196ms
+Invoices API v2.0 - DEPLOYMENT TEST - using clean mock data
+ GET /api/invoices 200 in 217ms
+[?25h
