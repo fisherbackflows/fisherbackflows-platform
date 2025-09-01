@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 import ResetPasswordForm from '@/components/auth/ResetPasswordForm';
 import Logo from '@/components/ui/Logo';
+import { Button } from '@/components/ui/button';
 
 function ResetPasswordContent() {
   const searchParams = useSearchParams();
