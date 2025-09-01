@@ -174,18 +174,18 @@ export default function AdminSearchPage() {
   return (
     <div className="min-h-screen bg-black">
       <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5" />
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-purple-500/5" />
 
       <div className="max-w-7xl mx-auto px-4 py-8 relative z-10">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="p-3 bg-blue-700/20 rounded-xl">
+            <div className="p-3 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 rounded-xl">
               <Search className="w-6 h-6 text-blue-400" />
             </div>
             <div>
               <h1 className="text-3xl font-bold text-white">Advanced Search</h1>
-              <p className="text-gray-800">Search across customers, appointments, and invoices</p>
+              <p className="text-white/80">Search across customers, appointments, and invoices</p>
             </div>
           </div>
 
@@ -200,10 +200,10 @@ export default function AdminSearchPage() {
               <button
                 key={value}
                 onClick={() => setSearchType(value as any)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-colors ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-2xl border transition-colors ${
                   searchType === value
-                    ? 'border-blue-500 bg-blue-700/20 text-blue-400'
-                    : 'border-gray-700 bg-gray-800/50 text-gray-300 hover:border-gray-600'
+                    ? 'border-blue-500 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 text-blue-400'
+                    : 'border-blue-500/50 bg-black/30 backdrop-blur-lg/50 text-white/80 hover:border-blue-500/50'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -215,31 +215,31 @@ export default function AdminSearchPage() {
           {/* Stats Bar */}
           {(hasResults || hasFilters) && (
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-              <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-lg p-3 text-center">
+              <div className="bg-black/30 backdrop-blur-lg/30 backdrop-blur-sm border border-blue-500/50 rounded-2xl p-3 text-center">
                 <div className="text-2xl font-bold text-white">{stats.totalResults}</div>
-                <div className="text-xs text-gray-800">Total Results</div>
+                <div className="text-xs text-white/80">Total Results</div>
               </div>
               
               {searchType === 'all' && (
                 <>
-                  <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-lg p-3 text-center">
+                  <div className="bg-black/30 backdrop-blur-lg/30 backdrop-blur-sm border border-blue-500/50 rounded-2xl p-3 text-center">
                     <div className="text-2xl font-bold text-blue-400">{stats.customerCount}</div>
-                    <div className="text-xs text-gray-800">Customers</div>
+                    <div className="text-xs text-white/80">Customers</div>
                   </div>
-                  <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-lg p-3 text-center">
+                  <div className="bg-black/30 backdrop-blur-lg/30 backdrop-blur-sm border border-blue-500/50 rounded-2xl p-3 text-center">
                     <div className="text-2xl font-bold text-green-400">{stats.appointmentCount}</div>
-                    <div className="text-xs text-gray-800">Appointments</div>
+                    <div className="text-xs text-white/80">Appointments</div>
                   </div>
-                  <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-lg p-3 text-center">
+                  <div className="bg-black/30 backdrop-blur-lg/30 backdrop-blur-sm border border-blue-500/50 rounded-2xl p-3 text-center">
                     <div className="text-2xl font-bold text-orange-400">{stats.invoiceCount}</div>
-                    <div className="text-xs text-gray-800">Invoices</div>
+                    <div className="text-xs text-white/80">Invoices</div>
                   </div>
                 </>
               )}
               
-              <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-lg p-3 text-center">
+              <div className="bg-black/30 backdrop-blur-lg/30 backdrop-blur-sm border border-blue-500/50 rounded-2xl p-3 text-center">
                 <div className="text-2xl font-bold text-purple-400">{stats.searchTime}ms</div>
-                <div className="text-xs text-gray-800">Search Time</div>
+                <div className="text-xs text-white/80">Search Time</div>
               </div>
             </div>
           )}
@@ -262,21 +262,21 @@ export default function AdminSearchPage() {
         {hasResults && (
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <span className="text-gray-800 text-sm">
+              <span className="text-white/80 text-sm">
                 Showing {results.length} of {stats.totalResults} results
               </span>
               
               {hasFilters && (
                 <div className="flex items-center gap-2">
-                  <Filter className="w-4 h-4 text-gray-800" />
-                  <span className="text-gray-800 text-sm">Filtered</span>
+                  <Filter className="w-4 h-4 text-white/80" />
+                  <span className="text-white/80 text-sm">Filtered</span>
                 </div>
               )}
             </div>
 
             <button
               onClick={exportResults}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-lg text-white transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-black/30 backdrop-blur-lg hover:bg-black/30 backdrop-blur-lg border border-blue-500/50 rounded-2xl text-white transition-colors"
             >
               <Download className="w-4 h-4" />
               Export Results
@@ -299,19 +299,19 @@ export default function AdminSearchPage() {
             <button
               onClick={pagination.prevPage}
               disabled={!pagination.hasPrevPage}
-              className="px-4 py-2 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-600 rounded-lg text-white transition-colors"
+              className="px-4 py-2 bg-black/30 backdrop-blur-lg hover:bg-black/30 backdrop-blur-lg disabled:opacity-50 disabled:cursor-not-allowed border border-blue-500/50 rounded-2xl text-white transition-colors"
             >
               Previous
             </button>
             
-            <span className="text-gray-800">
+            <span className="text-white/80">
               Page {pagination.currentPage} of {pagination.totalPages}
             </span>
             
             <button
               onClick={pagination.nextPage}
               disabled={!pagination.hasNextPage}
-              className="px-4 py-2 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed border border-gray-600 rounded-lg text-white transition-colors"
+              className="px-4 py-2 bg-black/30 backdrop-blur-lg hover:bg-black/30 backdrop-blur-lg disabled:opacity-50 disabled:cursor-not-allowed border border-blue-500/50 rounded-2xl text-white transition-colors"
             >
               Next
             </button>
@@ -320,9 +320,9 @@ export default function AdminSearchPage() {
 
         {/* Quick Search Tips */}
         {!hasFilters && !hasResults && (
-          <div className="bg-gray-900/30 backdrop-blur-sm border border-gray-700 rounded-xl p-6">
+          <div className="bg-black/30 backdrop-blur-lg/30 backdrop-blur-sm border border-blue-500/50 rounded-xl p-6">
             <h3 className="text-lg font-semibold text-white mb-4">Search Tips</h3>
-            <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-300">
+            <div className="grid md:grid-cols-2 gap-4 text-sm text-white/80">
               <div>
                 <h4 className="font-medium text-white mb-2">Quick Searches:</h4>
                 <ul className="space-y-1">

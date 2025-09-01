@@ -127,16 +127,16 @@ export default function EditInvoicePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="glass glow-blue-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
             <Link href={`/app/invoices/${invoiceId}`}>
@@ -145,19 +145,19 @@ export default function EditInvoicePage() {
                 Back
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Edit Invoice</h1>
+            <h1 className="text-2xl font-bold text-white/80">Edit Invoice</h1>
           </div>
         </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="glass rounded-2xl glow-blue-sm">
           <div className="p-8">
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Customer and Date Info */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-white/80 mb-2">
                     <User className="h-4 w-4 inline mr-2" />
                     Customer
                   </label>
@@ -165,7 +165,7 @@ export default function EditInvoicePage() {
                     name="customerId"
                     value={formData.customerId}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   >
                     <option value="">Select customer</option>
@@ -178,7 +178,7 @@ export default function EditInvoicePage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-white/80 mb-2">
                     <Calendar className="h-4 w-4 inline mr-2" />
                     Invoice Date
                   </label>
@@ -187,13 +187,13 @@ export default function EditInvoicePage() {
                     name="date"
                     value={formData.date}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-white/80 mb-2">
                     <DollarSign className="h-4 w-4 inline mr-2" />
                     Due Date
                   </label>
@@ -202,7 +202,7 @@ export default function EditInvoicePage() {
                     name="dueDate"
                     value={formData.dueDate}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
@@ -219,25 +219,25 @@ export default function EditInvoicePage() {
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full border border-gray-200 rounded-lg">
-                    <thead className="bg-white">
+                  <table className="w-full border border-blue-500/50 rounded-2xl">
+                    <thead className="glass">
                       <tr>
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Description</th>
-                        <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700">Qty</th>
-                        <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">Rate</th>
-                        <th className="px-4 py-3 text-right text-sm font-semibold text-gray-700">Amount</th>
-                        <th className="px-4 py-3 text-center text-sm font-semibold text-gray-700">Action</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-white/80">Description</th>
+                        <th className="px-4 py-3 text-center text-sm font-semibold text-white/80">Qty</th>
+                        <th className="px-4 py-3 text-right text-sm font-semibold text-white/80">Rate</th>
+                        <th className="px-4 py-3 text-right text-sm font-semibold text-white/80">Amount</th>
+                        <th className="px-4 py-3 text-center text-sm font-semibold text-white/80">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {formData.items.map((item, index) => (
-                        <tr key={index} className="border-t border-gray-200">
+                        <tr key={index} className="border-t border-blue-500/50">
                           <td className="px-4 py-3">
                             <input
                               type="text"
                               value={item.description}
                               onChange={(e) => handleItemChange(index, 'description', e.target.value)}
-                              className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                              className="w-full px-2 py-1 border border-blue-500/50 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-400"
                               placeholder="Service description"
                               required
                             />
@@ -247,7 +247,7 @@ export default function EditInvoicePage() {
                               type="number"
                               value={item.quantity}
                               onChange={(e) => handleItemChange(index, 'quantity', parseInt(e.target.value) || 0)}
-                              className="w-16 px-2 py-1 border border-gray-300 rounded text-sm text-center focus:outline-none focus:ring-1 focus:ring-blue-500"
+                              className="w-16 px-2 py-1 border border-blue-500/50 rounded text-sm text-center focus:outline-none focus:ring-1 focus:ring-blue-400"
                               min="1"
                               required
                             />
@@ -258,7 +258,7 @@ export default function EditInvoicePage() {
                               step="0.01"
                               value={item.rate}
                               onChange={(e) => handleItemChange(index, 'rate', parseFloat(e.target.value) || 0)}
-                              className="w-24 px-2 py-1 border border-gray-300 rounded text-sm text-right focus:outline-none focus:ring-1 focus:ring-blue-500"
+                              className="w-24 px-2 py-1 border border-blue-500/50 rounded text-sm text-right focus:outline-none focus:ring-1 focus:ring-blue-400"
                               min="0"
                               required
                             />
@@ -273,7 +273,7 @@ export default function EditInvoicePage() {
                                 onClick={() => removeItem(index)}
                                 variant="ghost"
                                 size="sm"
-                                className="text-red-800 hover:text-red-700"
+                                className="text-red-300 hover:text-red-700"
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
@@ -306,7 +306,7 @@ export default function EditInvoicePage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   <FileText className="h-4 w-4 inline mr-2" />
                   Notes (Optional)
                 </label>
@@ -315,14 +315,14 @@ export default function EditInvoicePage() {
                   value={formData.notes}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   placeholder="Additional notes or payment instructions..."
                 />
               </div>
 
               {/* Submit Button */}
               <div className="flex justify-end pt-6 border-t">
-                <Button type="submit" className="bg-blue-700 hover:bg-blue-700">
+                <Button type="submit" className="glass-btn-primary hover:glow-blue">
                   <Save className="h-4 w-4 mr-2" />
                   Update Invoice
                 </Button>

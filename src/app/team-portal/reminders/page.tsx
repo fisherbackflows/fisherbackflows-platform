@@ -314,22 +314,22 @@ Fisher Backflows`,
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-800">Loading reminder system...</p>
+          <p className="text-white/80">Loading reminder system...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="glass glow-blue-sm border-b">
         <div className="px-4 py-4">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+            <h1 className="text-2xl font-bold text-white/80 flex items-center">
               <Bell className="h-6 w-6 mr-2" />
               Automated Reminders
             </h1>
@@ -343,26 +343,26 @@ Fisher Backflows`,
 
           {/* Stats Overview */}
           <div className="grid grid-cols-4 gap-3 mb-4">
-            <div className="bg-blue-200 rounded-lg p-3 text-center">
+            <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl p-3 text-center">
               <div className="text-xl font-bold text-blue-700">{rules.filter(r => r.active).length}</div>
-              <div className="text-xs text-blue-800">Active Rules</div>
+              <div className="text-xs text-blue-300">Active Rules</div>
             </div>
-            <div className="bg-yellow-50 rounded-lg p-3 text-center">
+            <div className="bg-yellow-50 rounded-2xl p-3 text-center">
               <div className="text-xl font-bold text-yellow-700">{stats.scheduled}</div>
               <div className="text-xs text-yellow-600">Scheduled</div>
             </div>
-            <div className="bg-green-200 rounded-lg p-3 text-center">
+            <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl rounded-2xl p-3 text-center">
               <div className="text-xl font-bold text-green-700">{stats.sent}</div>
-              <div className="text-xs text-green-800">Sent Today</div>
+              <div className="text-xs text-green-300">Sent Today</div>
             </div>
-            <div className="bg-red-200 rounded-lg p-3 text-center">
+            <div className="bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl rounded-2xl p-3 text-center">
               <div className="text-xl font-bold text-red-700">{stats.failed}</div>
-              <div className="text-xs text-red-800">Failed</div>
+              <div className="text-xs text-red-300">Failed</div>
             </div>
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex space-x-1 bg-gray-300 p-1 rounded-lg">
+          <div className="flex space-x-1 bg-black/30 backdrop-blur-lg p-1 rounded-2xl">
             {[
               { key: 'rules', label: 'Automation Rules', icon: Settings },
               { key: 'scheduled', label: 'Scheduled', icon: Clock },
@@ -373,10 +373,10 @@ Fisher Backflows`,
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key as any)}
-                  className={`flex-1 flex items-center justify-center space-x-2 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+                  className={`flex-1 flex items-center justify-center space-x-2 py-2 px-3 rounded-xl text-sm font-medium transition-colors ${
                     activeTab === tab.key
-                      ? 'bg-white text-blue-800 shadow-sm'
-                      : 'text-gray-800 hover:text-gray-900'
+                      ? 'glass text-blue-300 glow-blue-sm'
+                      : 'text-white/80 hover:text-white/80'
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -393,23 +393,23 @@ Fisher Backflows`,
         {activeTab === 'rules' && (
           <div className="space-y-4">
             {rules.map((rule) => (
-              <div key={rule.id} className="bg-white rounded-lg shadow-sm p-4">
+              <div key={rule.id} className="glass rounded-2xl glow-blue-sm p-4">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
-                      <h3 className="font-semibold text-gray-900">{rule.name}</h3>
+                      <h3 className="font-semibold text-white/80">{rule.name}</h3>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        rule.active ? 'bg-green-300 text-green-800' : 'bg-slate-100 text-slate-800'
+                        rule.active ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300' : 'glass text-white/90'
                       }`}>
                         {rule.active ? 'ACTIVE' : 'INACTIVE'}
                       </span>
                       {rule.autoSchedule && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-300 text-blue-800">
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-300">
                           AUTO-SCHEDULE
                         </span>
                       )}
                     </div>
-                    <p className="text-gray-800 text-sm">{rule.description}</p>
+                    <p className="text-white/80 text-sm">{rule.description}</p>
                   </div>
                   <div className="flex space-x-2">
                     <Button
@@ -432,26 +432,26 @@ Fisher Backflows`,
 
                 <div className="grid grid-cols-2 gap-4 mb-3">
                   <div className="text-sm">
-                    <span className="text-gray-700">Trigger:</span>
+                    <span className="text-white/80">Trigger:</span>
                     <span className="ml-1 font-medium">
                       {rule.triggerValue} days {rule.triggerType.includes('before') ? 'before' : 'after'} due
                     </span>
                   </div>
                   <div className="text-sm">
-                    <span className="text-gray-700">Contact:</span>
+                    <span className="text-white/80">Contact:</span>
                     <span className="ml-1 font-medium capitalize">{rule.contactMethod.replace('_', ' ')}</span>
                   </div>
                   <div className="text-sm">
-                    <span className="text-gray-700">Customers:</span>
+                    <span className="text-white/80">Customers:</span>
                     <span className="ml-1 font-medium capitalize">{rule.customerType}</span>
                   </div>
                   <div className="text-sm">
-                    <span className="text-gray-700">Success Rate:</span>
-                    <span className="ml-1 font-medium text-green-800">{rule.successRate}%</span>
+                    <span className="text-white/80">Success Rate:</span>
+                    <span className="ml-1 font-medium text-green-300">{rule.successRate}%</span>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-gray-800">
+                <div className="flex items-center justify-between text-sm text-white/80">
                   <div>
                     <span>Last run: {formatDate(rule.lastRun)}</span>
                     <span className="mx-2">•</span>
@@ -463,25 +463,25 @@ Fisher Backflows`,
                 </div>
 
                 {/* Preview of message template */}
-                <div className="mt-3 bg-white rounded-lg p-3">
-                  <div className="text-sm font-medium text-gray-700 mb-1">Message Preview:</div>
-                  <div className="text-sm text-gray-800 line-clamp-3">
+                <div className="mt-3 glass rounded-2xl p-3">
+                  <div className="text-sm font-medium text-white/80 mb-1">Message Preview:</div>
+                  <div className="text-sm text-white/80 line-clamp-3">
                     {rule.template.split('\n')[0]}...
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between pt-3 border-t mt-3">
                   <div className="flex space-x-2">
-                    <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300">
+                    <Button size="sm" className="glass hover:glass text-white/80 border border-blue-400">
                       <Edit className="h-4 w-4 mr-1" />
                       Edit
                     </Button>
-                    <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300">
+                    <Button size="sm" className="glass hover:glass text-white/80 border border-blue-400">
                       <FileText className="h-4 w-4 mr-1" />
                       Template
                     </Button>
                   </div>
-                  <Button size="sm" className="bg-white hover:bg-red-200 text-red-800 border border-red-300 hover:text-red-700">
+                  <Button size="sm" className="glass hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl text-red-300 border border-red-300 hover:text-red-700">
                     <Trash2 className="h-4 w-4 mr-1" />
                     Delete
                   </Button>
@@ -490,10 +490,10 @@ Fisher Backflows`,
             ))}
 
             {rules.length === 0 && (
-              <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-                <Bell className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No automation rules</h3>
-                <p className="text-gray-700 mb-4">Create your first rule to start sending automated reminders</p>
+              <div className="glass rounded-2xl glow-blue-sm p-8 text-center">
+                <Bell className="h-12 w-12 text-white/80 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-white/80 mb-2">No automation rules</h3>
+                <p className="text-white/80 mb-4">Create your first rule to start sending automated reminders</p>
                 <Button asChild>
                   <Link href="/app/reminders/new">
                     <Plus className="h-4 w-4 mr-2" />
@@ -509,49 +509,49 @@ Fisher Backflows`,
         {activeTab === 'scheduled' && (
           <div className="space-y-3">
             {scheduledReminders.filter(r => r.status === 'scheduled').map((reminder) => (
-              <div key={reminder.id} className="bg-white rounded-lg shadow-sm p-4">
+              <div key={reminder.id} className="glass rounded-2xl glow-blue-sm p-4">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
-                      <h3 className="font-semibold text-gray-900">{reminder.customerName}</h3>
+                      <h3 className="font-semibold text-white/80">{reminder.customerName}</h3>
                       <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                         {reminder.contactMethod.toUpperCase()}
                       </span>
                     </div>
-                    <p className="text-gray-800 text-sm">Rule: {reminder.ruleName}</p>
+                    <p className="text-white/80 text-sm">Rule: {reminder.ruleName}</p>
                   </div>
                   <div className="text-right text-sm">
-                    <div className="text-gray-900 font-medium">
+                    <div className="text-white/80 font-medium">
                       {formatDate(reminder.scheduledDate)} at {reminder.scheduledTime}
                     </div>
                     {reminder.retryCount > 0 && (
-                      <div className="text-red-800">Retry #{reminder.retryCount}</div>
+                      <div className="text-red-300">Retry #{reminder.retryCount}</div>
                     )}
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="text-sm">
-                    <span className="text-gray-700">Contact:</span>
+                    <span className="text-white/80">Contact:</span>
                     <span className="ml-1">
                       {reminder.contactMethod === 'email' ? reminder.customerEmail : reminder.customerPhone}
                     </span>
                   </div>
 
                   <div className="text-sm">
-                    <span className="text-gray-700">Devices Due:</span>
+                    <span className="text-white/80">Devices Due:</span>
                     <div className="ml-1">
                       {reminder.devicesDue.map((device, idx) => (
-                        <div key={idx} className="text-gray-800">
+                        <div key={idx} className="text-white/80">
                           {device.type} ({device.serialNumber}) - Due {formatDate(device.dueDate)}
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-lg p-3 mt-3">
-                    <div className="text-sm font-medium text-gray-700 mb-1">Message:</div>
-                    <div className="text-sm text-gray-800 line-clamp-4">
+                  <div className="glass rounded-2xl p-3 mt-3">
+                    <div className="text-sm font-medium text-white/80 mb-1">Message:</div>
+                    <div className="text-sm text-white/80 line-clamp-4">
                       {reminder.message}
                     </div>
                   </div>
@@ -566,12 +566,12 @@ Fisher Backflows`,
                       <Send className="h-4 w-4 mr-1" />
                       Send Now
                     </Button>
-                    <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300">
+                    <Button size="sm" className="glass hover:glass text-white/80 border border-blue-400">
                       <Edit className="h-4 w-4 mr-1" />
                       Edit
                     </Button>
                   </div>
-                  <Button size="sm" className="bg-white hover:bg-red-200 text-red-800 border border-red-300">
+                  <Button size="sm" className="glass hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl text-red-300 border border-red-300">
                     <Trash2 className="h-4 w-4 mr-1" />
                     Cancel
                   </Button>
@@ -585,37 +585,37 @@ Fisher Backflows`,
         {activeTab === 'sent' && (
           <div className="space-y-3">
             {scheduledReminders.filter(r => ['sent', 'delivered', 'failed'].includes(r.status)).map((reminder) => (
-              <div key={reminder.id} className="bg-white rounded-lg shadow-sm p-4">
+              <div key={reminder.id} className="glass rounded-2xl glow-blue-sm p-4">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
-                      <h3 className="font-semibold text-gray-900">{reminder.customerName}</h3>
+                      <h3 className="font-semibold text-white/80">{reminder.customerName}</h3>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        reminder.status === 'sent' ? 'bg-blue-300 text-blue-800' :
-                        reminder.status === 'delivered' ? 'bg-green-300 text-green-800' :
-                        'bg-red-300 text-red-800'
+                        reminder.status === 'sent' ? 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-300' :
+                        reminder.status === 'delivered' ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300' :
+                        'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300'
                       }`}>
                         {reminder.status.toUpperCase()}
                       </span>
                       {reminder.appointmentScheduled && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-300 text-green-800">
+                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300">
                           APPOINTMENT BOOKED
                         </span>
                       )}
                     </div>
-                    <p className="text-gray-800 text-sm">
+                    <p className="text-white/80 text-sm">
                       Sent {formatDate(reminder.sentDate)} via {reminder.contactMethod}
                     </p>
                   </div>
                 </div>
 
-                <div className="text-sm text-gray-800">
+                <div className="text-sm text-white/80">
                   <div>Rule: {reminder.ruleName}</div>
                   <div>Contact: {reminder.contactMethod === 'email' ? reminder.customerEmail : reminder.customerPhone}</div>
                 </div>
 
                 {reminder.lastError && (
-                  <div className="mt-2 text-sm text-red-800 bg-red-200 rounded p-2">
+                  <div className="mt-2 text-sm text-red-300 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl rounded p-2">
                     <AlertTriangle className="h-4 w-4 inline mr-1" />
                     {reminder.lastError}
                   </div>
@@ -627,29 +627,29 @@ Fisher Backflows`,
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+      <nav className="fixed bottom-0 left-0 right-0 glass border-t border-blue-500/50">
         <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
-            <div className="h-6 w-6 bg-gray-400 rounded"></div>
+          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
+            <div className="h-6 w-6 bg-black/30 backdrop-blur-lg rounded"></div>
             <span className="text-xs">Home</span>
           </Link>
-          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
+          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Users className="h-6 w-6" />
             <span className="text-xs">Customers</span>
           </Link>
-          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
+          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Plus className="h-6 w-4" />
             <span className="text-xs">Test</span>
           </Link>
-          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
+          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Calendar className="h-6 w-6" />
             <span className="text-xs">Schedule</span>
           </Link>
-          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-blue-800 bg-blue-200">
+          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-blue-300 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl">
             <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
-              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
-              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
+              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
+              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
+              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
             </div>
             <span className="text-xs font-medium">More</span>
           </Link>

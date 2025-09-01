@@ -151,9 +151,9 @@ export default function NewCustomerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b sticky top-0 z-10">
+      <header className="glass glow-blue-sm border-b sticky top-0 z-10">
         <div className="px-4 py-4">
           <div className="flex items-center space-x-4">
             <Button variant="outline" size="sm" asChild>
@@ -161,22 +161,22 @@ export default function NewCustomerPage() {
                 <ArrowLeft className="h-4 w-4" />
               </Link>
             </Button>
-            <h1 className="text-xl font-bold text-slate-900">Add New Customer</h1>
+            <h1 className="text-xl font-bold text-white">Add New Customer</h1>
           </div>
         </div>
       </header>
 
       <form onSubmit={handleSubmit} className="p-4 pb-20">
         {/* Basic Information */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
             <User className="h-5 w-5 mr-2" />
             Basic Information
           </h2>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-white/80 mb-1">
                 Customer Name *
               </label>
               <input
@@ -191,7 +191,7 @@ export default function NewCustomerPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   Email
                 </label>
                 <input
@@ -203,7 +203,7 @@ export default function NewCustomerPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   Phone *
                 </label>
                 <input
@@ -218,7 +218,7 @@ export default function NewCustomerPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-white/80 mb-1">
                 Customer Type
               </label>
               <select
@@ -235,15 +235,15 @@ export default function NewCustomerPage() {
         </div>
 
         {/* Address Information */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
             <MapPin className="h-5 w-5 mr-2" />
             Address
           </h2>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-white/80 mb-1">
                 Street Address *
               </label>
               <input
@@ -258,7 +258,7 @@ export default function NewCustomerPage() {
 
             <div className="grid grid-cols-3 gap-3">
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   City *
                 </label>
                 <input
@@ -271,7 +271,7 @@ export default function NewCustomerPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   ZIP *
                 </label>
                 <input
@@ -287,7 +287,7 @@ export default function NewCustomerPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-white/80 mb-1">
                 Water District
               </label>
               <select
@@ -304,9 +304,9 @@ export default function NewCustomerPage() {
         </div>
 
         {/* Devices */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-slate-900 flex items-center">
+            <h2 className="text-lg font-semibold text-white flex items-center">
               <Building className="h-5 w-5 mr-2" />
               Backflow Devices
             </h2>
@@ -317,23 +317,23 @@ export default function NewCustomerPage() {
           </div>
 
           {formData.devices.length === 0 ? (
-            <div className="text-center py-6 text-gray-700">
-              <Building className="h-8 w-8 mx-auto mb-2 text-gray-300" />
+            <div className="text-center py-6 text-white/80">
+              <Building className="h-8 w-8 mx-auto mb-2 text-white/80" />
               <p>No devices added yet</p>
               <p className="text-sm">Add backflow prevention devices for this customer</p>
             </div>
           ) : (
             <div className="space-y-4">
               {formData.devices.map((device, index) => (
-                <div key={device.id} className="border border-gray-200 rounded-lg p-4">
+                <div key={device.id} className="border border-blue-500/50 rounded-2xl p-4">
                   <div className="flex justify-between items-center mb-3">
-                    <h3 className="font-medium text-slate-900">Device #{index + 1}</h3>
+                    <h3 className="font-medium text-white">Device #{index + 1}</h3>
                     <Button 
                       type="button" 
                       variant="outline" 
                       size="sm"
                       onClick={() => removeDevice(device.id)}
-                      className="text-red-800 hover:text-red-700 hover:bg-red-200"
+                      className="text-red-300 hover:text-red-700 hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -341,7 +341,7 @@ export default function NewCustomerPage() {
 
                   <div className="grid grid-cols-2 gap-3 mb-3">
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-white/80 mb-1">
                         Device Type
                       </label>
                       <select
@@ -355,7 +355,7 @@ export default function NewCustomerPage() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-white/80 mb-1">
                         Size
                       </label>
                       <select
@@ -377,7 +377,7 @@ export default function NewCustomerPage() {
 
                   <div className="grid grid-cols-2 gap-3 mb-3">
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-white/80 mb-1">
                         Manufacturer
                       </label>
                       <input
@@ -389,7 +389,7 @@ export default function NewCustomerPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-white/80 mb-1">
                         Model
                       </label>
                       <input
@@ -404,7 +404,7 @@ export default function NewCustomerPage() {
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-white/80 mb-1">
                         Serial Number
                       </label>
                       <input
@@ -416,7 +416,7 @@ export default function NewCustomerPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-1">
+                      <label className="block text-sm font-medium text-white/80 mb-1">
                         Location
                       </label>
                       <input
@@ -435,8 +435,8 @@ export default function NewCustomerPage() {
         </div>
 
         {/* Notes */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4">
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
+          <h2 className="text-lg font-semibold text-white mb-4">
             Additional Notes
           </h2>
           <textarea

@@ -98,9 +98,9 @@ export default function BackupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="glass glow-blue-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
             <Link href="/app/more">
@@ -109,7 +109,7 @@ export default function BackupPage() {
                 Back
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Backup & Restore</h1>
+            <h1 className="text-2xl font-bold text-white/80">Backup & Restore</h1>
           </div>
         </div>
       </div>
@@ -119,14 +119,14 @@ export default function BackupPage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Create Backup */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="glass rounded-2xl glow-blue-sm p-6">
               <div className="flex items-start justify-between mb-6">
                 <div>
                   <h2 className="text-lg font-semibold mb-2">
                     <Database className="h-5 w-5 inline mr-2" />
                     Create Manual Backup
                   </h2>
-                  <p className="text-gray-800">
+                  <p className="text-white/80">
                     Create a backup of all your business data including customers, test reports, and invoices.
                   </p>
                 </div>
@@ -136,7 +136,7 @@ export default function BackupPage() {
                 <Button
                   onClick={handleCreateBackup}
                   disabled={isCreatingBackup}
-                  className="bg-blue-700 hover:bg-blue-700"
+                  className="glass-btn-primary hover:glow-blue"
                 >
                   {isCreatingBackup ? (
                     <>
@@ -151,23 +151,23 @@ export default function BackupPage() {
                   )}
                 </Button>
 
-                <div className="text-sm text-gray-700">
+                <div className="text-sm text-white/80">
                   Last backup: Today at 2:00 AM (Automatic)
                 </div>
               </div>
 
               {backupResult && (
-                <div className={`mt-4 p-4 rounded-lg ${
-                  backupResult.success ? 'bg-green-200 border border-green-200' : 'bg-red-200 border border-red-200'
+                <div className={`mt-4 p-4 rounded-2xl ${
+                  backupResult.success ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl border border-green-200' : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl border border-red-200'
                 }`}>
                   <div className="flex items-start">
                     {backupResult.success ? (
-                      <CheckCircle className="h-5 w-5 text-green-800 mr-3 mt-0.5" />
+                      <CheckCircle className="h-5 w-5 text-green-300 mr-3 mt-0.5" />
                     ) : (
-                      <AlertCircle className="h-5 w-5 text-red-800 mr-3 mt-0.5" />
+                      <AlertCircle className="h-5 w-5 text-red-300 mr-3 mt-0.5" />
                     )}
                     <p className={`text-sm ${
-                      backupResult.success ? 'text-green-800' : 'text-red-800'
+                      backupResult.success ? 'text-green-300' : 'text-red-300'
                     }`}>
                       {backupResult.message}
                     </p>
@@ -177,7 +177,7 @@ export default function BackupPage() {
             </div>
 
             {/* Backup History */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="glass rounded-2xl glow-blue-sm p-6">
               <h2 className="text-lg font-semibold mb-4">
                 <Clock className="h-5 w-5 inline mr-2" />
                 Backup History
@@ -185,21 +185,21 @@ export default function BackupPage() {
 
               <div className="space-y-4">
                 {recentBackups.map((backup) => (
-                  <div key={backup.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div key={backup.id} className="flex items-center justify-between p-4 border border-blue-500/50 rounded-2xl">
                     <div className="flex items-center space-x-4">
-                      <div className={`p-2 rounded-lg ${
-                        backup.status === 'complete' ? 'bg-green-300' : 'bg-red-300'
+                      <div className={`p-2 rounded-2xl ${
+                        backup.status === 'complete' ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm' : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm'
                       }`}>
                         {backup.status === 'complete' ? (
-                          <CheckCircle className="h-5 w-5 text-green-800" />
+                          <CheckCircle className="h-5 w-5 text-green-300" />
                         ) : (
-                          <AlertCircle className="h-5 w-5 text-red-800" />
+                          <AlertCircle className="h-5 w-5 text-red-300" />
                         )}
                       </div>
                       
                       <div>
-                        <h3 className="font-medium text-gray-900">{backup.name}</h3>
-                        <div className="flex items-center space-x-4 text-sm text-gray-700 mt-1">
+                        <h3 className="font-medium text-white/80">{backup.name}</h3>
+                        <div className="flex items-center space-x-4 text-sm text-white/80 mt-1">
                           <span className="flex items-center">
                             <Calendar className="h-4 w-4 mr-1" />
                             {backup.date}
@@ -209,7 +209,7 @@ export default function BackupPage() {
                             {backup.size}
                           </span>
                           <span className={`px-2 py-1 rounded-full text-xs ${
-                            backup.type === 'auto' ? 'bg-blue-300 text-blue-700' : 'bg-slate-100 text-slate-800'
+                            backup.type === 'auto' ? 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-700' : 'glass text-white/90'
                           }`}>
                             {backup.type === 'auto' ? 'Automatic' : 'Manual'}
                           </span>
@@ -244,13 +244,13 @@ export default function BackupPage() {
 
           {/* Sidebar Info */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-8 space-y-6">
+            <div className="glass rounded-2xl glow-blue-sm p-6 sticky top-8 space-y-6">
               <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Backup Schedule</h3>
-                <div className="space-y-2 text-sm text-gray-800">
+                <h3 className="font-semibold text-white/80 mb-3">Backup Schedule</h3>
+                <div className="space-y-2 text-sm text-white/80">
                   <div className="flex justify-between">
                     <span>Daily backups:</span>
-                    <span className="text-green-800 font-medium">Enabled</span>
+                    <span className="text-green-300 font-medium">Enabled</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Time:</span>
@@ -264,8 +264,8 @@ export default function BackupPage() {
               </div>
 
               <div className="border-t pt-6">
-                <h3 className="font-semibold text-gray-900 mb-3">What's Included</h3>
-                <ul className="space-y-2 text-sm text-gray-800">
+                <h3 className="font-semibold text-white/80 mb-3">What's Included</h3>
+                <ul className="space-y-2 text-sm text-white/80">
                   <li className="flex items-center">
                     <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
                     Customer database
@@ -290,10 +290,10 @@ export default function BackupPage() {
               </div>
 
               <div className="border-t pt-6">
-                <div className="p-4 bg-blue-200 rounded-lg">
+                <div className="p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl">
                   <div className="flex items-start">
-                    <Shield className="h-5 w-5 text-blue-800 mr-3 mt-0.5" />
-                    <div className="text-sm text-blue-800">
+                    <Shield className="h-5 w-5 text-blue-300 mr-3 mt-0.5" />
+                    <div className="text-sm text-blue-300">
                       <p className="font-medium mb-1">Secure Backups</p>
                       <p className="text-blue-700">
                         All backups are encrypted and stored securely. Your business data is protected.

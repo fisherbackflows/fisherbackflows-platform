@@ -65,21 +65,21 @@ export default function MorePage() {
       description: 'Complete customer records',
       icon: <Users className="h-6 w-6" />,
       href: '/team-portal/customers/database',
-      color: 'bg-blue-700'
+      color: 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl'
     },
     {
       title: 'Invoices',
       description: 'Manage billing and payments',
       icon: <DollarSign className="h-6 w-6" />,
       href: '/team-portal/invoices',
-      color: 'bg-green-700'
+      color: 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl'
     },
     {
       title: 'Water Districts',
       description: 'Submit test reports',
       icon: <FileText className="h-6 w-6" />,
       href: '/team-portal/district-reports',
-      color: 'bg-indigo-500'
+      color: 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl'
     },
     {
       title: 'Auto Reminders',
@@ -110,7 +110,7 @@ export default function MorePage() {
       description: 'Device and customer labels',
       icon: <Printer className="h-6 w-6" />,
       href: '/team-portal/labels',
-      color: 'bg-white0'
+      color: 'bg-black/40 backdrop-blur-xl0'
     },
     {
       title: 'Backup & Sync',
@@ -127,7 +127,7 @@ export default function MorePage() {
       description: 'App preferences',
       icon: <Settings className="h-6 w-6" />,
       href: '/team-portal/settings',
-      color: 'bg-gray-600'
+      color: 'bg-black/30 backdrop-blur-lg'
     },
     {
       title: 'Help & Support',
@@ -140,22 +140,22 @@ export default function MorePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-800">Loading...</p>
+          <p className="text-white/80">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-slate-900 text-white">
+      <header className="bg-black/40 backdrop-blur-xl text-white">
         <div className="px-4 py-6">
           <div className="flex items-center space-x-3 mb-4">
-            <div className="bg-blue-700 rounded-full p-2">
+            <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full p-2">
               <Smartphone className="h-6 w-6" />
             </div>
             <div>
@@ -167,14 +167,14 @@ export default function MorePage() {
           {/* Quick Stats */}
           <div className="grid grid-cols-2 gap-3">
             {stats.map((stat, index) => (
-              <div key={index} className="bg-white/10 rounded-lg p-3">
-                <div className="text-sm text-gray-300">{stat.label}</div>
+              <div key={index} className="glass/10 rounded-2xl p-3">
+                <div className="text-sm text-white/80">{stat.label}</div>
                 <div className="flex items-center space-x-2">
                   <div className="text-lg font-bold">{stat.value}</div>
                   <div className={`text-xs px-1.5 py-0.5 rounded ${
-                    stat.changeType === 'positive' ? 'bg-green-300 text-green-800' :
-                    stat.changeType === 'negative' ? 'bg-red-300 text-red-800' :
-                    'bg-slate-100 text-slate-800'
+                    stat.changeType === 'positive' ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300' :
+                    stat.changeType === 'negative' ? 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300' :
+                    'glass text-white/90'
                   }`}>
                     {stat.change}
                   </div>
@@ -188,21 +188,21 @@ export default function MorePage() {
       <div className="p-4 pb-20">
         {/* Business Features */}
         <section className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Business</h2>
+          <h2 className="text-lg font-semibold text-white/80 mb-4">Business</h2>
           <div className="grid grid-cols-2 gap-3">
             {businessFeatures.map((feature, index) => (
               <Link
                 key={index}
                 href={feature.href}
-                className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow"
+                className="glass rounded-xl p-4 glow-blue-sm hover:glow-blue transition-shadow"
               >
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className={`${feature.color} text-white rounded-lg p-2`}>
+                  <div className={`${feature.color} text-white rounded-2xl p-2`}>
                     {feature.icon}
                   </div>
                   <div className="flex-1">
-                    <div className="font-semibold text-gray-900">{feature.title}</div>
-                    <div className="text-sm text-gray-800">{feature.description}</div>
+                    <div className="font-semibold text-white/80">{feature.title}</div>
+                    <div className="text-sm text-white/80">{feature.description}</div>
                   </div>
                 </div>
               </Link>
@@ -212,21 +212,21 @@ export default function MorePage() {
 
         {/* Tools & Utilities */}
         <section className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Tools & Utilities</h2>
+          <h2 className="text-lg font-semibold text-white/80 mb-4">Tools & Utilities</h2>
           <div className="grid grid-cols-2 gap-3">
             {toolsFeatures.map((feature, index) => (
               <Link
                 key={index}
                 href={feature.href}
-                className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow"
+                className="glass rounded-xl p-4 glow-blue-sm hover:glow-blue transition-shadow"
               >
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className={`${feature.color} text-white rounded-lg p-2`}>
+                  <div className={`${feature.color} text-white rounded-2xl p-2`}>
                     {feature.icon}
                   </div>
                   <div className="flex-1">
-                    <div className="font-semibold text-gray-900">{feature.title}</div>
-                    <div className="text-sm text-gray-800">{feature.description}</div>
+                    <div className="font-semibold text-white/80">{feature.title}</div>
+                    <div className="text-sm text-white/80">{feature.description}</div>
                   </div>
                 </div>
               </Link>
@@ -236,11 +236,11 @@ export default function MorePage() {
 
         {/* Quick Actions */}
         <section className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+          <h2 className="text-lg font-semibold text-white/80 mb-4">Quick Actions</h2>
           <div className="space-y-3">
             <Link
               href="/team-portal/test-report"
-              className="flex items-center justify-between bg-blue-700 text-white rounded-lg p-4 hover:bg-blue-700 transition-colors"
+              className="flex items-center justify-between bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl text-white rounded-2xl p-4 hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-colors"
             >
               <div className="flex items-center space-x-3">
                 <FileText className="h-6 w-6" />
@@ -254,7 +254,7 @@ export default function MorePage() {
 
             <Link
               href="/team-portal/customers/new"
-              className="flex items-center justify-between bg-green-700 text-white rounded-lg p-4 hover:bg-green-700 transition-colors"
+              className="flex items-center justify-between bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl text-white rounded-2xl p-4 hover:bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl transition-colors"
             >
               <div className="flex items-center space-x-3">
                 <Users className="h-6 w-6" />
@@ -268,7 +268,7 @@ export default function MorePage() {
 
             <Link
               href="/team-portal/invoices/new"
-              className="flex items-center justify-between bg-purple-600 text-white rounded-lg p-4 hover:bg-purple-700 transition-colors"
+              className="flex items-center justify-between bg-purple-600 text-white rounded-2xl p-4 hover:bg-purple-700 transition-colors"
             >
               <div className="flex items-center space-x-3">
                 <DollarSign className="h-6 w-6" />
@@ -284,40 +284,40 @@ export default function MorePage() {
 
         {/* Business Info */}
         <section className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Business Information</h2>
-          <div className="bg-white rounded-lg shadow-sm p-4">
+          <h2 className="text-lg font-semibold text-white/80 mb-4">Business Information</h2>
+          <div className="glass rounded-2xl glow-blue-sm p-4">
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-gray-800" />
+                <Phone className="h-5 w-5 text-white/80" />
                 <div>
-                  <div className="font-medium text-gray-900">Phone</div>
-                  <a href="tel:2532788692" className="text-blue-800">(253) 278-8692</a>
+                  <div className="font-medium text-white/80">Phone</div>
+                  <a href="tel:2532788692" className="text-blue-300">(253) 278-8692</a>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-gray-800" />
+                <Mail className="h-5 w-5 text-white/80" />
                 <div>
-                  <div className="font-medium text-gray-900">Email</div>
-                  <a href="mailto:service@fisherbackflows.com" className="text-blue-800">
+                  <div className="font-medium text-white/80">Email</div>
+                  <a href="mailto:service@fisherbackflows.com" className="text-blue-300">
                     service@fisherbackflows.com
                   </a>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
-                <Shield className="h-5 w-5 text-gray-800" />
+                <Shield className="h-5 w-5 text-white/80" />
                 <div>
-                  <div className="font-medium text-gray-900">License</div>
-                  <div className="text-gray-800">BAT Certified | Pierce County Contractor</div>
+                  <div className="font-medium text-white/80">License</div>
+                  <div className="text-white/80">BAT Certified | Pierce County Contractor</div>
                 </div>
               </div>
               
               <div className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5 text-gray-800" />
+                <MapPin className="h-5 w-5 text-white/80" />
                 <div>
-                  <div className="font-medium text-gray-900">Service Area</div>
-                  <div className="text-gray-800">Tacoma, Puyallup, Gig Harbor, All Pierce County</div>
+                  <div className="font-medium text-white/80">Service Area</div>
+                  <div className="text-white/80">Tacoma, Puyallup, Gig Harbor, All Pierce County</div>
                 </div>
               </div>
             </div>
@@ -326,24 +326,24 @@ export default function MorePage() {
 
         {/* Settings & Support */}
         <section className="mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Settings & Support</h2>
+          <h2 className="text-lg font-semibold text-white/80 mb-4">Settings & Support</h2>
           <div className="space-y-2">
             {supportFeatures.map((feature, index) => (
               <Link
                 key={index}
                 href={feature.href}
-                className="flex items-center justify-between bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                className="flex items-center justify-between glass rounded-2xl p-4 glow-blue-sm hover:glow-blue transition-shadow"
               >
                 <div className="flex items-center space-x-3">
-                  <div className={`${feature.color} text-white rounded-lg p-2`}>
+                  <div className={`${feature.color} text-white rounded-2xl p-2`}>
                     {feature.icon}
                   </div>
                   <div>
-                    <div className="font-semibold text-gray-900">{feature.title}</div>
-                    <div className="text-sm text-gray-800">{feature.description}</div>
+                    <div className="font-semibold text-white/80">{feature.title}</div>
+                    <div className="text-sm text-white/80">{feature.description}</div>
                   </div>
                 </div>
-                <div className="text-gray-800">→</div>
+                <div className="text-white/80">→</div>
               </Link>
             ))}
           </div>
@@ -351,14 +351,14 @@ export default function MorePage() {
 
         {/* App Information */}
         <section className="mb-6">
-          <div className="bg-gray-300 rounded-lg p-4 text-center">
-            <div className="text-sm text-gray-800 mb-2">
+          <div className="bg-black/30 backdrop-blur-lg rounded-2xl p-4 text-center">
+            <div className="text-sm text-white/80 mb-2">
               Fisher Backflows Team App
             </div>
-            <div className="text-xs text-gray-700">
+            <div className="text-xs text-white/80">
               Version 1.0.0 • Next.js with Turbopack
             </div>
-            <div className="text-xs text-gray-700">
+            <div className="text-xs text-white/80">
               © 2024 Fisher Backflows • Licensed & Insured
             </div>
           </div>
@@ -366,29 +366,29 @@ export default function MorePage() {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+      <nav className="fixed bottom-0 left-0 right-0 glass border-t border-blue-500/50">
         <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
-            <div className="h-6 w-6 bg-gray-400 rounded"></div>
+          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
+            <div className="h-6 w-6 bg-black/30 backdrop-blur-lg rounded"></div>
             <span className="text-xs">Home</span>
           </Link>
-          <Link href="/team-portal/customers" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
+          <Link href="/team-portal/customers" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Users className="h-6 w-6" />
             <span className="text-xs">Customers</span>
           </Link>
-          <Link href="/team-portal/test-report" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
+          <Link href="/team-portal/test-report" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Plus className="h-6 w-6" />
             <span className="text-xs">Test</span>
           </Link>
-          <Link href="/team-portal/schedule" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
+          <Link href="/team-portal/schedule" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Calendar className="h-6 w-6" />
             <span className="text-xs">Schedule</span>
           </Link>
-          <Link href="/team-portal/more" className="flex flex-col items-center py-2 px-1 text-blue-800 bg-blue-200">
+          <Link href="/team-portal/more" className="flex flex-col items-center py-2 px-1 text-blue-300 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl">
             <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
-              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
-              <div className="w-1 h-1 bg-blue-700 rounded-full"></div>
+              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
+              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
+              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
             </div>
             <span className="text-xs font-medium">More</span>
           </Link>

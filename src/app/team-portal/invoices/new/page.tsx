@@ -227,9 +227,9 @@ export default function NewInvoicePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b sticky top-0 z-10">
+      <header className="glass glow-blue-sm border-b sticky top-0 z-10">
         <div className="px-4 py-4">
           <div className="flex items-center space-x-4">
             <Button variant="outline" size="sm" asChild>
@@ -238,8 +238,8 @@ export default function NewInvoicePage() {
               </Link>
             </Button>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">New Invoice</h1>
-              <p className="text-sm text-gray-800">Create a new invoice for services</p>
+              <h1 className="text-xl font-bold text-white/80">New Invoice</h1>
+              <p className="text-sm text-white/80">Create a new invoice for services</p>
             </div>
           </div>
         </div>
@@ -247,15 +247,15 @@ export default function NewInvoicePage() {
 
       <form className="p-4 pb-32">
         {/* Customer Information */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
+          <h2 className="text-lg font-semibold text-white/80 mb-4 flex items-center">
             <User className="h-5 w-5 mr-2" />
             Customer Information
           </h2>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-white/80 mb-1">
                 Customer *
               </label>
               <select
@@ -274,18 +274,18 @@ export default function NewInvoicePage() {
             </div>
 
             {formData.customerName && (
-              <div className="bg-white rounded-lg p-3">
-                <div className="font-medium text-gray-900">{formData.customerName}</div>
-                <div className="text-sm text-gray-800">{formData.customerEmail}</div>
-                <div className="text-sm text-gray-800">{formData.customerAddress}</div>
+              <div className="glass rounded-2xl p-3">
+                <div className="font-medium text-white/80">{formData.customerName}</div>
+                <div className="text-sm text-white/80">{formData.customerEmail}</div>
+                <div className="text-sm text-white/80">{formData.customerAddress}</div>
               </div>
             )}
           </div>
         </div>
 
         {/* Invoice Details */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
+          <h2 className="text-lg font-semibold text-white/80 mb-4 flex items-center">
             <FileText className="h-5 w-5 mr-2" />
             Invoice Details
           </h2>
@@ -293,7 +293,7 @@ export default function NewInvoicePage() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   Issue Date *
                 </label>
                 <input
@@ -305,7 +305,7 @@ export default function NewInvoicePage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   Due Date *
                 </label>
                 <input
@@ -321,9 +321,9 @@ export default function NewInvoicePage() {
         </div>
 
         {/* Services */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+            <h2 className="text-lg font-semibold text-white/80 flex items-center">
               <DollarSign className="h-5 w-5 mr-2" />
               Services
             </h2>
@@ -336,14 +336,14 @@ export default function NewInvoicePage() {
           {/* Service Templates */}
           {formData.services.length === 0 && (
             <div className="mb-4">
-              <p className="text-sm text-gray-800 mb-2">Quick Add Common Services:</p>
+              <p className="text-sm text-white/80 mb-2">Quick Add Common Services:</p>
               <div className="flex flex-wrap gap-2">
                 {serviceTemplates.slice(0, 3).map((template, index) => (
                   <button
                     key={index}
                     type="button"
                     onClick={() => addServiceFromTemplate(template)}
-                    className="text-xs bg-blue-200 text-blue-700 px-2 py-1 rounded hover:bg-blue-300"
+                    className="text-xs bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl text-blue-700 px-2 py-1 rounded hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm"
                   >
                     {template.description} - {formatCurrency(template.rate)}
                   </button>
@@ -353,23 +353,23 @@ export default function NewInvoicePage() {
           )}
 
           {formData.services.length === 0 ? (
-            <div className="text-center py-6 text-gray-700">
-              <DollarSign className="h-8 w-8 mx-auto mb-2 text-gray-300" />
+            <div className="text-center py-6 text-white/80">
+              <DollarSign className="h-8 w-8 mx-auto mb-2 text-white/80" />
               <p>No services added yet</p>
               <p className="text-sm">Add the services provided to this customer</p>
             </div>
           ) : (
             <div className="space-y-4">
               {formData.services.map((service, index) => (
-                <div key={service.id} className="border border-gray-200 rounded-lg p-4">
+                <div key={service.id} className="border border-blue-500/50 rounded-2xl p-4">
                   <div className="flex justify-between items-center mb-3">
-                    <h3 className="font-medium text-gray-900">Service #{index + 1}</h3>
+                    <h3 className="font-medium text-white/80">Service #{index + 1}</h3>
                     <Button 
                       type="button" 
                       variant="outline" 
                       size="sm"
                       onClick={() => removeService(service.id)}
-                      className="text-red-800 hover:text-red-700 hover:bg-red-200"
+                      className="text-red-300 hover:text-red-700 hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -377,7 +377,7 @@ export default function NewInvoicePage() {
 
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-white/80 mb-1">
                         Description *
                       </label>
                       <input
@@ -391,7 +391,7 @@ export default function NewInvoicePage() {
                       {serviceTemplates.length > 0 && (
                         <div className="mt-1">
                           <select
-                            className="text-xs text-gray-800 bg-transparent border-none"
+                            className="text-xs text-white/80 bg-transparent border-none"
                             onChange={(e) => {
                               const template = serviceTemplates.find(t => t.description === e.target.value);
                               if (template) {
@@ -414,7 +414,7 @@ export default function NewInvoicePage() {
 
                     <div className="grid grid-cols-3 gap-3">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-white/80 mb-1">
                           Quantity *
                         </label>
                         <input
@@ -427,7 +427,7 @@ export default function NewInvoicePage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-white/80 mb-1">
                           Rate *
                         </label>
                         <input
@@ -442,10 +442,10 @@ export default function NewInvoicePage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-white/80 mb-1">
                           Amount
                         </label>
-                        <div className="form-input bg-white text-gray-900 font-medium">
+                        <div className="form-input glass text-white/80 font-medium">
                           {formatCurrency(service.amount)}
                         </div>
                       </div>
@@ -458,33 +458,33 @@ export default function NewInvoicePage() {
 
           {/* Invoice Totals */}
           {formData.services.length > 0 && (
-            <div className="mt-6 bg-white rounded-lg p-4">
+            <div className="mt-6 glass rounded-2xl p-4">
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-800">Subtotal:</span>
+                  <span className="text-white/80">Subtotal:</span>
                   <span className="font-medium">{formatCurrency(formData.subtotal)}</span>
                 </div>
                 
                 <div className="flex justify-between items-center">
                   <div className="flex items-center space-x-2">
-                    <span className="text-gray-800">Tax:</span>
+                    <span className="text-white/80">Tax:</span>
                     <input
                       type="number"
                       step="0.1"
                       min="0"
                       max="20"
-                      className="w-16 text-xs border border-gray-300 rounded px-1 py-0.5"
+                      className="w-16 text-xs border border-blue-500/50 rounded px-1 py-0.5"
                       value={formData.taxRate}
                       onChange={(e) => handleInputChange('taxRate', parseFloat(e.target.value) || 0)}
                     />
-                    <span className="text-xs text-gray-700">%</span>
+                    <span className="text-xs text-white/80">%</span>
                   </div>
                   <span className="font-medium">{formatCurrency(formData.taxAmount)}</span>
                 </div>
                 
-                <div className="flex justify-between items-center pt-2 border-t border-gray-300">
-                  <span className="text-lg font-semibold text-gray-900">Total:</span>
-                  <span className="text-lg font-bold text-gray-900">{formatCurrency(formData.total)}</span>
+                <div className="flex justify-between items-center pt-2 border-t border-blue-500/50">
+                  <span className="text-lg font-semibold text-white/80">Total:</span>
+                  <span className="text-lg font-bold text-white/80">{formatCurrency(formData.total)}</span>
                 </div>
               </div>
             </div>
@@ -492,14 +492,14 @@ export default function NewInvoicePage() {
         </div>
 
         {/* Notes & Terms */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
+          <h2 className="text-lg font-semibold text-white/80 mb-4">
             Notes & Terms
           </h2>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-white/80 mb-1">
                 Notes
               </label>
               <textarea
@@ -512,7 +512,7 @@ export default function NewInvoicePage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-white/80 mb-1">
                 Payment Terms
               </label>
               <textarea
@@ -528,7 +528,7 @@ export default function NewInvoicePage() {
       </form>
 
       {/* Fixed Action Buttons */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
+      <div className="fixed bottom-0 left-0 right-0 glass border-t border-blue-500/50 p-4">
         <div className="flex space-x-3">
           <Button 
             type="button"

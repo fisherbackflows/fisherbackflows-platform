@@ -100,7 +100,7 @@ function PaymentSuccessContent() {
       >
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto mb-4" />
-          <p className="text-slate-700">Loading payment details...</p>
+          <p className="text-white/80">Loading payment details...</p>
         </div>
       </UnifiedLayout>
     );
@@ -115,9 +115,9 @@ function PaymentSuccessContent() {
       showUserActions={true}
     >
       <div className="max-w-4xl mx-auto px-4 py-16">
-        <UnifiedCard className="text-center bg-green-700/10 border-green-500/30">
+        <UnifiedCard className="text-center bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/10 border-green-500/30">
           {/* Success Icon */}
-          <div className="bg-green-700/20 border border-green-500/30 rounded-full p-4 w-16 h-16 mx-auto mb-6">
+          <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-500/30 rounded-full p-4 w-16 h-16 mx-auto mb-6">
             <CheckCircle className="h-8 w-8 text-green-400" />
           </div>
 
@@ -131,37 +131,37 @@ function PaymentSuccessContent() {
 
           {/* Payment Details */}
           {payment && (
-            <div className="bg-gray-800/50 rounded-lg p-6 mb-8 text-left">
+            <div className="bg-black/30 backdrop-blur-lg/50 rounded-2xl p-6 mb-8 text-left">
               <h2 className="font-semibold text-white mb-4 flex items-center">
                 <Receipt className="h-5 w-5 mr-2" />
                 Payment Details
               </h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-slate-700">Amount Paid:</span>
+                  <span className="text-white/80">Amount Paid:</span>
                   <span className="font-semibold text-green-400 text-lg">
                     ${payment.amount.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-700">Transaction ID:</span>
-                  <span className="font-mono text-sm text-slate-800">
+                  <span className="text-white/80">Transaction ID:</span>
+                  <span className="font-mono text-sm text-white/90">
                     {payment.transaction_id || payment.id}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-700">Date:</span>
-                  <span className="text-slate-800">{new Date(payment.processed_at || payment.created_at).toLocaleDateString()}</span>
+                  <span className="text-white/80">Date:</span>
+                  <span className="text-white/90">{new Date(payment.processed_at || payment.created_at).toLocaleDateString()}</span>
                 </div>
                 {payment.invoice && (
                   <div className="flex justify-between">
-                    <span className="text-slate-700">Invoice:</span>
-                    <span className="text-slate-800">#{payment.invoice.invoice_number}</span>
+                    <span className="text-white/80">Invoice:</span>
+                    <span className="text-white/90">#{payment.invoice.invoice_number}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span className="text-slate-700">Payment Method:</span>
-                  <span className="capitalize text-slate-800">
+                  <span className="text-white/80">Payment Method:</span>
+                  <span className="capitalize text-white/90">
                     {payment.payment_method || 'Card'}
                   </span>
                 </div>
@@ -201,10 +201,10 @@ function PaymentSuccessContent() {
           </div>
 
           {/* Important Notes */}
-          <div className="mt-8 p-4 bg-blue-700/10 border border-blue-500/30 rounded-lg">
+          <div className="mt-8 p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 border border-blue-500/30 rounded-2xl">
             <div className="flex items-start space-x-2">
               <Calendar className="h-5 w-5 text-blue-400 mt-0.5" />
-              <div className="text-sm text-slate-800 text-left">
+              <div className="text-sm text-white/90 text-left">
                 <h3 className="font-medium mb-1 text-white">What happens next?</h3>
                 <ul className="space-y-1 text-xs">
                   <li>• You'll receive an email confirmation shortly</li>
@@ -219,7 +219,7 @@ function PaymentSuccessContent() {
           </div>
 
           {/* Contact Support */}
-          <p className="text-sm text-slate-700 mt-6">
+          <p className="text-sm text-white/80 mt-6">
             Questions about your payment?{' '}
             <Link href="/portal/help" className="text-blue-400 hover:text-blue-300 underline">
               Contact Support
@@ -249,7 +249,7 @@ export default function PaymentSuccessPage() {
       >
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto mb-4" />
-          <p className="text-slate-700">Loading...</p>
+          <p className="text-white/80">Loading...</p>
         </div>
       </UnifiedLayout>
     }>

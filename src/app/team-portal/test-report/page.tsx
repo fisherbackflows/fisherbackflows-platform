@@ -257,19 +257,19 @@ function TestReportContent() {
   const currentDeviceType = deviceTypes.find(d => d.value === formData.deviceType);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b sticky top-0 z-10">
+      <header className="glass glow-blue-sm border-b sticky top-0 z-10">
         <div className="px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Button className="bg-white hover:bg-white text-slate-700 border border-slate-300" size="sm" asChild>
+            <Button className="glass hover:glass text-white/80 border border-blue-400" size="sm" asChild>
               <Link href="/app">
                 <ArrowLeft className="h-4 w-4" />
               </Link>
             </Button>
             <div>
-              <h1 className="text-xl font-bold text-slate-900">Test Report</h1>
-              <p className="text-sm text-slate-800">
+              <h1 className="text-xl font-bold text-white">Test Report</h1>
+              <p className="text-sm text-white/90">
                 {formData.customerName || 'New Test Report'}
               </p>
             </div>
@@ -279,19 +279,19 @@ function TestReportContent() {
 
       <form onSubmit={handleSubmit} className="p-4 pb-20 max-w-4xl mx-auto">
         {/* Customer & Device Info - KEEP EXPANDED */}
-        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-4">
-          <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center">
+        <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6 mb-4">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
             <User className="h-5 w-5 mr-2" />
             Customer & Device
           </h2>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
+              <label className="block text-sm font-medium text-white/80 mb-1">
                 Customer *
               </label>
               <select
-                className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                className="w-full px-3 py-2 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                 value={formData.customerId}
                 onChange={(e) => {
                   const customerId = e.target.value;
@@ -312,11 +312,11 @@ function TestReportContent() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   Device Type *
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                  className="w-full px-3 py-2 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                   value={formData.deviceType}
                   onChange={(e) => handleDeviceTypeChange(e.target.value)}
                   required
@@ -329,11 +329,11 @@ function TestReportContent() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   Size *
                 </label>
                 <select
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                  className="w-full px-3 py-2 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                   value={formData.deviceSize}
                   onChange={(e) => handleInputChange('deviceSize', e.target.value)}
                   required
@@ -352,24 +352,24 @@ function TestReportContent() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   Manufacturer
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-500"
+                  className="w-full px-3 py-2 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                   value={formData.manufacturer}
                   onChange={(e) => handleInputChange('manufacturer', e.target.value)}
                   placeholder="e.g. Watts, Zurn, Febco"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   Model
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-500"
+                  className="w-full px-3 py-2 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                   value={formData.model}
                   onChange={(e) => handleInputChange('model', e.target.value)}
                   placeholder="Model number"
@@ -379,24 +379,24 @@ function TestReportContent() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   Serial Number
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-500"
+                  className="w-full px-3 py-2 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                   value={formData.serialNumber}
                   onChange={(e) => handleInputChange('serialNumber', e.target.value)}
                   placeholder="Serial number"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">
+                <label className="block text-sm font-medium text-white/80 mb-1">
                   Location
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-500"
+                  className="w-full px-3 py-2 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                   value={formData.location}
                   onChange={(e) => handleInputChange('location', e.target.value)}
                   placeholder="e.g. Front yard, Basement"
@@ -407,43 +407,43 @@ function TestReportContent() {
         </div>
 
         {/* Test Details - COMPACT */}
-        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4 mb-4">
-          <h2 className="text-sm font-semibold text-slate-900 mb-3 flex items-center">
+        <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-4 mb-4">
+          <h2 className="text-sm font-semibold text-white mb-3 flex items-center">
             <Calendar className="h-4 w-4 mr-2" />
             Test Details
           </h2>
           
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">
+              <label className="block text-xs font-medium text-white/80 mb-1">
                 Date *
               </label>
               <input
                 type="date"
-                className="w-full px-2 py-1.5 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                className="w-full px-2 py-1.5 text-sm border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                 value={formData.testDate}
                 onChange={(e) => handleInputChange('testDate', e.target.value)}
                 required
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">
+              <label className="block text-xs font-medium text-white/80 mb-1">
                 Time *
               </label>
               <input
                 type="time"
-                className="w-full px-2 py-1.5 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                className="w-full px-2 py-1.5 text-sm border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                 value={formData.testTime}
                 onChange={(e) => handleInputChange('testTime', e.target.value)}
                 required
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-slate-700 mb-1">
+              <label className="block text-xs font-medium text-white/80 mb-1">
                 District
               </label>
               <select
-                className="w-full px-2 py-1.5 text-sm border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                className="w-full px-2 py-1.5 text-sm border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                 value={formData.waterDistrict}
                 onChange={(e) => handleInputChange('waterDistrict', e.target.value)}
               >
@@ -456,17 +456,17 @@ function TestReportContent() {
         </div>
 
         {/* Test Results - COMPACT */}
-        <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4 mb-4">
-          <h2 className="text-sm font-semibold text-slate-900 mb-3 flex items-center">
+        <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-4 mb-4">
+          <h2 className="text-sm font-semibold text-white mb-3 flex items-center">
             <Settings className="h-4 w-4 mr-2" />
             Test Results - {currentDeviceType?.label}
           </h2>
           
           <div className="space-y-2">
             {formData.testResults.map((test, index) => (
-              <div key={test.id} className="border border-slate-200 rounded-md p-3">
+              <div key={test.id} className="border border-blue-400 rounded-xl p-3">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-sm font-medium text-slate-900">
+                  <h3 className="text-sm font-medium text-white">
                     {index + 1}. {test.testName}
                   </h3>
                   <div className="flex items-center space-x-1">
@@ -475,8 +475,8 @@ function TestReportContent() {
                       onClick={() => updateTestResult(test.id, 'passedTest', true)}
                       className={`flex items-center px-2 py-0.5 rounded-full text-xs font-medium transition-colors ${
                         test.passedTest 
-                          ? 'bg-green-300 text-green-800' 
-                          : 'bg-gray-300 text-gray-700 hover:bg-green-200'
+                          ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300' 
+                          : 'bg-black/30 backdrop-blur-lg text-white/80 hover:bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl'
                       }`}
                     >
                       <CheckCircle className="h-3 w-3 mr-0.5" />
@@ -487,8 +487,8 @@ function TestReportContent() {
                       onClick={() => updateTestResult(test.id, 'passedTest', false)}
                       className={`flex items-center px-2 py-0.5 rounded-full text-xs font-medium transition-colors ${
                         !test.passedTest 
-                          ? 'bg-red-300 text-red-800' 
-                          : 'bg-gray-300 text-gray-700 hover:bg-red-200'
+                          ? 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300' 
+                          : 'bg-black/30 backdrop-blur-lg text-white/80 hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl'
                       }`}
                     >
                       <XCircle className="h-3 w-3 mr-0.5" />
@@ -499,38 +499,38 @@ function TestReportContent() {
 
                 <div className="grid grid-cols-3 gap-2">
                   <div>
-                    <label className="block text-xs font-medium text-slate-800 mb-0.5">
+                    <label className="block text-xs font-medium text-white/90 mb-0.5">
                       Initial PSI
                     </label>
                     <input
                       type="number"
                       step="0.1"
-                      className="w-full px-2 py-1 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                      className="w-full px-2 py-1 text-sm border border-blue-400 rounded focus:ring-1 focus:ring-blue-400 focus:border-blue-400 text-white"
                       value={test.initialPressure}
                       onChange={(e) => updateTestResult(test.id, 'initialPressure', e.target.value)}
                       placeholder="0.0"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-800 mb-0.5">
+                    <label className="block text-xs font-medium text-white/90 mb-0.5">
                       Final PSI
                     </label>
                     <input
                       type="number"
                       step="0.1"
-                      className="w-full px-2 py-1 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                      className="w-full px-2 py-1 text-sm border border-blue-400 rounded focus:ring-1 focus:ring-blue-400 focus:border-blue-400 text-white"
                       value={test.finalPressure}
                       onChange={(e) => updateTestResult(test.id, 'finalPressure', e.target.value)}
                       placeholder="0.0"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-slate-800 mb-0.5">
+                    <label className="block text-xs font-medium text-white/90 mb-0.5">
                       Notes
                     </label>
                     <input
                       type="text"
-                      className="w-full px-2 py-1 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                      className="w-full px-2 py-1 text-sm border border-blue-400 rounded focus:ring-1 focus:ring-blue-400 focus:border-blue-400 text-white"
                       value={test.notes}
                       onChange={(e) => updateTestResult(test.id, 'notes', e.target.value)}
                       placeholder="Optional"
@@ -542,13 +542,13 @@ function TestReportContent() {
           </div>
 
           {/* Overall Status - COMPACT */}
-          <div className="mt-3 p-3 rounded-md bg-white border border-slate-200">
+          <div className="mt-3 p-3 rounded-xl glass border border-blue-400">
             <div className="flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-slate-900">Overall Result</h3>
+              <h3 className="text-sm font-semibold text-white">Overall Result</h3>
               <div className={`flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
                 formData.overallPass 
-                  ? 'bg-green-300 text-green-800' 
-                  : 'bg-red-300 text-red-800'
+                  ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300' 
+                  : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300'
               }`}>
                 {formData.overallPass ? (
                   <>
@@ -572,9 +572,9 @@ function TestReportContent() {
                     id="repairsNeeded"
                     checked={formData.repairsNeeded}
                     onChange={(e) => handleInputChange('repairsNeeded', e.target.checked)}
-                    className="rounded border-gray-300 text-blue-800 focus:ring-blue-500 h-3 w-3"
+                    className="rounded border-blue-500/50 text-blue-300 focus:ring-blue-400 h-3 w-3"
                   />
-                  <label htmlFor="repairsNeeded" className="text-xs font-medium text-slate-700">
+                  <label htmlFor="repairsNeeded" className="text-xs font-medium text-white/80">
                     Repairs needed
                   </label>
                 </div>
@@ -582,7 +582,7 @@ function TestReportContent() {
                 {formData.repairsNeeded && (
                   <input
                     type="text"
-                    className="w-full px-2 py-1 text-sm border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-slate-900 mt-1"
+                    className="w-full px-2 py-1 text-sm border border-blue-400 rounded focus:ring-1 focus:ring-blue-400 focus:border-blue-400 text-white mt-1"
                     value={formData.repairDescription}
                     onChange={(e) => handleInputChange('repairDescription', e.target.value)}
                     placeholder="Describe repairs..."
@@ -595,12 +595,12 @@ function TestReportContent() {
 
         {/* Additional Notes & Photos - COMPACT */}
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
-            <h2 className="text-sm font-semibold text-slate-900 mb-2">
+          <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-4">
+            <h2 className="text-sm font-semibold text-white mb-2">
               Additional Notes
             </h2>
             <textarea
-              className="w-full px-2 py-1.5 text-sm border border-slate-300 rounded-md focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-slate-900 resize-none"
+              className="w-full px-2 py-1.5 text-sm border border-blue-400 rounded-xl focus:ring-1 focus:ring-blue-400 focus:border-blue-400 text-white resize-none"
               rows={3}
               value={formData.notes}
               onChange={(e) => handleInputChange('notes', e.target.value)}
@@ -608,14 +608,14 @@ function TestReportContent() {
             />
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
-            <h2 className="text-sm font-semibold text-slate-900 mb-2 flex items-center">
+          <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-4">
+            <h2 className="text-sm font-semibold text-white mb-2 flex items-center">
               <Camera className="h-4 w-4 mr-1" />
               Photos
             </h2>
-            <div className="text-center py-4 border border-dashed border-gray-300 rounded">
-              <Camera className="h-6 w-6 text-gray-700 mx-auto mb-1" />
-              <Button type="button" className="bg-white hover:bg-white text-slate-700 border border-slate-300 text-xs px-2 py-1" size="sm">
+            <div className="text-center py-4 border border-dashed border-blue-500/50 rounded">
+              <Camera className="h-6 w-6 text-white/80 mx-auto mb-1" />
+              <Button type="button" className="glass hover:glass text-white/80 border border-blue-400 text-xs px-2 py-1" size="sm">
                 <Upload className="h-3 w-3 mr-1" />
                 Add Photos
               </Button>
@@ -629,7 +629,7 @@ function TestReportContent() {
             type="button"
             onClick={(e) => handleSubmit(e, 'draft')}
             disabled={saving || !formData.customerId} 
-            className="flex-1 bg-white hover:bg-white text-slate-700 border border-slate-300 text-sm py-2"
+            className="flex-1 glass hover:glass text-white/80 border border-blue-400 text-sm py-2"
           >
             <Save className="h-3 w-3 mr-1" />
             {saving ? 'Saving...' : 'Draft'}
@@ -638,7 +638,7 @@ function TestReportContent() {
             type="button"
             onClick={(e) => handleSubmit(e, 'submit')}
             disabled={saving || !formData.customerId} 
-            className="flex-1 bg-blue-700 hover:bg-blue-700 text-white text-sm py-2"
+            className="flex-1 glass-btn-primary hover:glow-blue text-white text-sm py-2"
           >
             <Save className="h-3 w-3 mr-1" />
             {saving ? 'Saving...' : 'Save'}
@@ -647,7 +647,7 @@ function TestReportContent() {
             type="button"
             onClick={(e) => handleSubmit(e, 'district')}
             disabled={saving || !formData.customerId} 
-            className="flex-1 bg-green-700 hover:bg-green-700 text-white text-sm py-2"
+            className="flex-1 glass-btn-primary hover:glow-blue bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/30 border-green-400 text-white text-sm py-2"
           >
             <Send className="h-3 w-3 mr-1" />
             {saving ? 'Sending...' : 'Send to District'}
@@ -661,10 +661,10 @@ function TestReportContent() {
 export default function TestReportPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="text-slate-800 mt-4">Loading...</p>
+          <p className="text-white/90 mt-4">Loading...</p>
         </div>
       </div>
     }>

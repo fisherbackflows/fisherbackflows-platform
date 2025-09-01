@@ -97,10 +97,64 @@ const config: Config = {
       screens: {
         'xs': '475px',
       },
+      backdropBlur: {
+        'glass': '12px',
+        'glass-lg': '16px',
+      },
+      boxShadow: {
+        'glow-blue-sm': '0 0 10px rgba(59, 130, 246, 0.3)',
+        'glow-blue': '0 0 20px rgba(59, 130, 246, 0.4)',
+        'glow-blue-lg': '0 0 30px rgba(59, 130, 246, 0.5)',
+        'glass': '0 8px 32px rgba(31, 38, 135, 0.37)',
+      },
     },
   },
   plugins: [
     require('@tailwindcss/typography'),
+    function({ addUtilities }: { addUtilities: any }) {
+      const glassmorphismUtilities = {
+        '.glass': {
+          'background': 'rgba(15, 23, 42, 0.9)',
+          'backdrop-filter': 'blur(12px)',
+          'border': '1px solid rgba(59, 130, 246, 0.4)',
+          'box-shadow': '0 0 15px rgba(59, 130, 246, 0.2)',
+        },
+        '.glass-header': {
+          'background': 'rgba(0, 0, 0, 0.8)',
+          'backdrop-filter': 'blur(16px)',
+          'border-bottom': '1px solid rgba(59, 130, 246, 0.4)',
+          'box-shadow': '0 0 20px rgba(59, 130, 246, 0.1)',
+        },
+        '.glass-card': {
+          'background': 'rgba(15, 23, 42, 0.9)',
+          'backdrop-filter': 'blur(12px)',
+          'border': '1px solid rgba(59, 130, 246, 0.4)',
+          'box-shadow': '0 0 15px rgba(59, 130, 246, 0.2)',
+        },
+        '.glass-btn-primary': {
+          'background': 'rgba(59, 130, 246, 0.3)',
+          'backdrop-filter': 'blur(8px)',
+          'border': '1px solid rgba(59, 130, 246, 0.6)',
+          'box-shadow': '0 0 12px rgba(59, 130, 246, 0.3)',
+        },
+        '.glass-btn-secondary': {
+          'background': 'rgba(30, 41, 59, 0.7)',
+          'backdrop-filter': 'blur(8px)',
+          'border': '1px solid rgba(59, 130, 246, 0.4)',
+          'box-shadow': '0 0 8px rgba(59, 130, 246, 0.2)',
+        },
+        '.glow-blue-sm': {
+          'box-shadow': '0 0 10px rgba(59, 130, 246, 0.3)',
+        },
+        '.glow-blue': {
+          'box-shadow': '0 0 20px rgba(59, 130, 246, 0.4)',
+        },
+        '.glow-blue-lg': {
+          'box-shadow': '0 0 30px rgba(59, 130, 246, 0.5)',
+        },
+      };
+      addUtilities(glassmorphismUtilities);
+    },
   ],
 };
 

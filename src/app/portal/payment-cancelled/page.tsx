@@ -64,7 +64,7 @@ function PaymentCancelledContent() {
       >
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto mb-4" />
-          <p className="text-slate-700">Loading...</p>
+          <p className="text-white/80">Loading...</p>
         </div>
       </UnifiedLayout>
     );
@@ -95,28 +95,28 @@ function PaymentCancelledContent() {
 
             {/* Payment Details (if available) */}
             {payment && (
-              <div className="bg-gray-400 rounded-lg p-6 mb-8 text-left">
-                <h2 className="font-semibold text-gray-900 mb-4 flex items-center">
+              <div className="bg-black/30 backdrop-blur-lg rounded-2xl p-6 mb-8 text-left">
+                <h2 className="font-semibold text-white/80 mb-4 flex items-center">
                   <CreditCard className="h-5 w-5 mr-2" />
                   Payment Information
                 </h2>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-800">Amount:</span>
+                    <span className="text-white/80">Amount:</span>
                     <span className="font-semibold">${payment.amount.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-800">Status:</span>
-                    <span className="text-red-800 font-medium">Cancelled</span>
+                    <span className="text-white/80">Status:</span>
+                    <span className="text-red-300 font-medium">Cancelled</span>
                   </div>
                   {payment.invoice && (
                     <div className="flex justify-between">
-                      <span className="text-gray-800">Invoice:</span>
+                      <span className="text-white/80">Invoice:</span>
                       <span>#{payment.invoice.invoice_number}</span>
                     </div>
                   )}
                   <div className="flex justify-between">
-                    <span className="text-gray-800">Date:</span>
+                    <span className="text-white/80">Date:</span>
                     <span>{new Date().toLocaleDateString()}</span>
                   </div>
                 </div>
@@ -124,7 +124,7 @@ function PaymentCancelledContent() {
             )}
 
             {/* Why was it cancelled? */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 mb-8">
               <h3 className="font-medium text-yellow-800 mb-2 flex items-center">
                 <HelpCircle className="h-5 w-5 mr-2" />
                 Why was my payment cancelled?
@@ -182,7 +182,7 @@ export default function PaymentCancelledPage() {
       >
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto mb-4" />
-          <p className="text-slate-700">Loading...</p>
+          <p className="text-white/80">Loading...</p>
         </div>
       </UnifiedLayout>
     }>

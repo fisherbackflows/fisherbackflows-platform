@@ -80,10 +80,10 @@ export default function InvoiceDetailPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'paid': return 'bg-green-300 text-green-800';
-      case 'sent': return 'bg-blue-300 text-blue-800';
-      case 'overdue': return 'bg-red-300 text-red-800';
-      default: return 'bg-slate-100 text-slate-800';
+      case 'paid': return 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300';
+      case 'sent': return 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-300';
+      case 'overdue': return 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300';
+      default: return 'glass text-white/90';
     }
   };
 
@@ -98,7 +98,7 @@ export default function InvoiceDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
@@ -106,9 +106,9 @@ export default function InvoiceDetailPage() {
 
   if (!invoice) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Invoice Not Found</h1>
+          <h1 className="text-2xl font-bold text-white/80 mb-4">Invoice Not Found</h1>
           <Link href="/app/invoices">
             <Button>Back to Invoices</Button>
           </Link>
@@ -118,9 +118,9 @@ export default function InvoiceDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="glass glow-blue-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -131,7 +131,7 @@ export default function InvoiceDetailPage() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">{invoice.number}</h1>
+                <h1 className="text-2xl font-bold text-white/80">{invoice.number}</h1>
                 <div className="flex items-center mt-1">
                   {getStatusIcon(invoice.status)}
                   <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}>
@@ -161,13 +161,13 @@ export default function InvoiceDetailPage() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="glass rounded-2xl glow-blue-sm">
           {/* Invoice Header */}
           <div className="p-8 border-b">
             <div className="flex justify-between items-start">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Fisher Backflows</h2>
-                <p className="text-gray-800">
+                <h2 className="text-3xl font-bold text-white/80 mb-2">Fisher Backflows</h2>
+                <p className="text-white/80">
                   Professional Backflow Testing<br />
                   Pierce County, WA<br />
                   (253) 278-8692<br />
@@ -175,8 +175,8 @@ export default function InvoiceDetailPage() {
                 </p>
               </div>
               <div className="text-right">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">INVOICE</h3>
-                <p className="text-gray-800">
+                <h3 className="text-2xl font-bold text-white/80 mb-2">INVOICE</h3>
+                <p className="text-white/80">
                   <strong>Invoice #:</strong> {invoice.number}<br />
                   <strong>Date:</strong> {invoice.date}<br />
                   <strong>Due Date:</strong> {invoice.dueDate}
@@ -189,16 +189,16 @@ export default function InvoiceDetailPage() {
           <div className="p-8 border-b">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Bill To:</h4>
-                <div className="text-gray-800">
+                <h4 className="font-semibold text-white/80 mb-2">Bill To:</h4>
+                <div className="text-white/80">
                   <p className="font-medium">{invoice.customerName}</p>
                   <p className="whitespace-pre-line">{invoice.customerAddress}</p>
                   <p>{invoice.customerEmail}</p>
                 </div>
               </div>
               <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Service Details:</h4>
-                <div className="text-gray-800">
+                <h4 className="font-semibold text-white/80 mb-2">Service Details:</h4>
+                <div className="text-white/80">
                   <div className="flex items-center mb-1">
                     <Calendar className="h-4 w-4 mr-2" />
                     Service Date: {invoice.date}
@@ -260,12 +260,12 @@ export default function InvoiceDetailPage() {
             </div>
 
             {invoice.notes && (
-              <div className="mt-8 p-4 bg-white rounded-lg">
+              <div className="mt-8 p-4 glass rounded-2xl">
                 <h4 className="font-semibold mb-2">
                   <FileText className="h-4 w-4 inline mr-2" />
                   Notes:
                 </h4>
-                <p className="text-gray-800">{invoice.notes}</p>
+                <p className="text-white/80">{invoice.notes}</p>
               </div>
             )}
           </div>

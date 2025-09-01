@@ -88,22 +88,22 @@ export default function UnlockAccountsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white py-12">
+    <div className="min-h-screen bg-black py-12">
       <div className="max-w-2xl mx-auto px-4">
-        <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-8">
+        <div className="glass rounded-xl glow-blue border border-blue-400 p-8">
           <div className="flex items-center mb-6">
-            <div className="p-3 bg-red-300 rounded-lg mr-4">
-              <Shield className="h-8 w-8 text-red-800" />
+            <div className="p-3 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm rounded-2xl mr-4">
+              <Shield className="h-8 w-8 text-red-300" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Account Unlock Tool</h1>
-              <p className="text-slate-800">Administrative tool to unlock locked accounts</p>
+              <h1 className="text-2xl font-bold text-white">Account Unlock Tool</h1>
+              <p className="text-white/90">Administrative tool to unlock locked accounts</p>
             </div>
           </div>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6">
             <div className="flex items-start">
-              <AlertTriangle className="h-5 w-5 text-amber-600 mr-2 mt-0.5" />
+              <AlertTriangle className="h-5 w-5 text-amber-300 mr-2 mt-0.5" />
               <div className="text-sm">
                 <p className="font-semibold text-amber-900 mb-1">Security Notice</p>
                 <p className="text-amber-700">Accounts are automatically locked after 3 failed login attempts for 15 minutes. Use this tool to manually unlock accounts when needed.</p>
@@ -113,7 +113,7 @@ export default function UnlockAccountsPage() {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-white/80 mb-2">
                 Email Address
               </label>
               <input
@@ -121,12 +121,12 @@ export default function UnlockAccountsPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@fisherbackflows.com"
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-white/80 mb-2">
                 Admin Key
               </label>
               <input
@@ -134,21 +134,21 @@ export default function UnlockAccountsPage() {
                 value={adminKey}
                 onChange={(e) => setAdminKey(e.target.value)}
                 placeholder="Enter admin key"
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-2 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
               />
             </div>
 
             {accountStatus && (
-              <div className={`rounded-lg p-4 ${accountStatus.isLocked ? 'bg-red-200 border border-red-200' : 'bg-green-200 border border-green-200'}`}>
+              <div className={`rounded-2xl p-4 ${accountStatus.isLocked ? 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl border border-red-200' : 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl border border-green-200'}`}>
                 <h3 className="font-semibold mb-2 flex items-center">
                   {accountStatus.isLocked ? (
                     <>
-                      <Lock className="h-5 w-5 text-red-800 mr-2" />
+                      <Lock className="h-5 w-5 text-red-300 mr-2" />
                       <span className="text-red-900">Account Locked</span>
                     </>
                   ) : (
                     <>
-                      <Unlock className="h-5 w-5 text-green-800 mr-2" />
+                      <Unlock className="h-5 w-5 text-green-300 mr-2" />
                       <span className="text-green-900">Account Active</span>
                     </>
                   )}
@@ -172,13 +172,13 @@ export default function UnlockAccountsPage() {
             )}
 
             {error && (
-              <div className="bg-red-200 border border-red-200 rounded-lg p-4">
+              <div className="bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl border border-red-200 rounded-2xl p-4">
                 <p className="text-red-700 text-sm">{error}</p>
               </div>
             )}
 
             {message && (
-              <div className="bg-green-200 border border-green-200 rounded-lg p-4">
+              <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl border border-green-200 rounded-2xl p-4">
                 <p className="text-green-700 text-sm flex items-center">
                   <CheckCircle className="h-4 w-4 mr-2" />
                   {message}
@@ -199,7 +199,7 @@ export default function UnlockAccountsPage() {
               <Button
                 onClick={unlockAccount}
                 disabled={loading}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                className="flex-1 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl text-white"
               >
                 <Unlock className="h-4 w-4 mr-2" />
                 Unlock Account
@@ -207,9 +207,9 @@ export default function UnlockAccountsPage() {
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-slate-200">
-            <h3 className="font-semibold text-slate-900 mb-2">Common Issues:</h3>
-            <ul className="text-sm text-slate-800 space-y-1">
+          <div className="mt-8 pt-6 border-t border-blue-400">
+            <h3 className="font-semibold text-white mb-2">Common Issues:</h3>
+            <ul className="text-sm text-white/90 space-y-1">
               <li>• Account locks automatically after 3 failed attempts</li>
               <li>• Lock duration is 15 minutes by default</li>
               <li>• Rate limiting may also apply (5 attempts per 5 minutes)</li>

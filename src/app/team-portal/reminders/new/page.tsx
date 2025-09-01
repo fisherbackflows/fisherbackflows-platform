@@ -133,9 +133,9 @@ Fisher Backflows Team`
   const selectedCustomer = customers.find(c => c.id === formData.customerId);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="glass glow-blue-sm border-b">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
             <Link href="/team-portal/reminders">
@@ -144,18 +144,18 @@ Fisher Backflows Team`
                 Back
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">New Reminder</h1>
+            <h1 className="text-2xl font-bold text-white/80">New Reminder</h1>
           </div>
         </div>
       </div>
 
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="glass rounded-2xl glow-blue-sm">
           <div className="p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Customer Selection */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   <User className="h-4 w-4 inline mr-2" />
                   Customer
                 </label>
@@ -163,7 +163,7 @@ Fisher Backflows Team`
                   name="customerId"
                   value={formData.customerId}
                   onChange={handleCustomerChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 >
                   <option value="">Select a customer</option>
@@ -174,7 +174,7 @@ Fisher Backflows Team`
                   ))}
                 </select>
                 {selectedCustomer && (
-                  <div className="mt-2 text-sm text-gray-800">
+                  <div className="mt-2 text-sm text-white/80">
                     <p>Email: {selectedCustomer.email}</p>
                     <p>Phone: {selectedCustomer.phone}</p>
                     <p>Next Testing Due: {selectedCustomer.nextDue}</p>
@@ -190,9 +190,9 @@ Fisher Backflows Team`
                     name="isAutomated"
                     checked={formData.isAutomated}
                     onChange={handleInputChange}
-                    className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
+                    className="mr-3 h-4 w-4 text-blue-300 focus:ring-blue-400 border-blue-500/50 rounded"
                   />
-                  <span className="text-sm font-medium text-gray-700">
+                  <span className="text-sm font-medium text-white/80">
                     Automated reminder based on due date
                   </span>
                 </label>
@@ -201,14 +201,14 @@ Fisher Backflows Team`
               {/* Days Before Due (for automated reminders) */}
               {formData.isAutomated && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-white/80 mb-2">
                     Send reminder how many days before due date?
                   </label>
                   <select
                     name="daysBeforeDue"
                     value={formData.daysBeforeDue}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   >
                     <option value={7}>7 days before</option>
                     <option value={14}>14 days before</option>
@@ -221,7 +221,7 @@ Fisher Backflows Team`
               {/* Reminder Date (for manual reminders) */}
               {!formData.isAutomated && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-white/80 mb-2">
                     <Calendar className="h-4 w-4 inline mr-2" />
                     Reminder Date
                   </label>
@@ -231,7 +231,7 @@ Fisher Backflows Team`
                     value={formData.reminderDate}
                     onChange={handleInputChange}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     required
                   />
                 </div>
@@ -239,12 +239,12 @@ Fisher Backflows Team`
 
               {/* Reminder Type */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   <Bell className="h-4 w-4 inline mr-2" />
                   Reminder Type
                 </label>
                 <div className="grid grid-cols-2 gap-4">
-                  <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-white">
+                  <label className="flex items-center p-3 border border-blue-500/50 rounded-2xl cursor-pointer hover:glass">
                     <input
                       type="radio"
                       name="reminderType"
@@ -253,10 +253,10 @@ Fisher Backflows Team`
                       onChange={handleInputChange}
                       className="mr-3"
                     />
-                    <Mail className="h-4 w-4 mr-2 text-blue-800" />
+                    <Mail className="h-4 w-4 mr-2 text-blue-300" />
                     <span>Email</span>
                   </label>
-                  <label className="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-white">
+                  <label className="flex items-center p-3 border border-blue-500/50 rounded-2xl cursor-pointer hover:glass">
                     <input
                       type="radio"
                       name="reminderType"
@@ -265,7 +265,7 @@ Fisher Backflows Team`
                       onChange={handleInputChange}
                       className="mr-3"
                     />
-                    <Phone className="h-4 w-4 mr-2 text-green-800" />
+                    <Phone className="h-4 w-4 mr-2 text-green-300" />
                     <span>SMS</span>
                   </label>
                 </div>
@@ -273,7 +273,7 @@ Fisher Backflows Team`
 
               {/* Message */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   <FileText className="h-4 w-4 inline mr-2" />
                   Message
                 </label>
@@ -282,18 +282,18 @@ Fisher Backflows Team`
                   value={formData.message}
                   onChange={handleInputChange}
                   rows={8}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   placeholder="Enter your reminder message..."
                   required
                 />
-                <p className="mt-2 text-xs text-gray-700">
+                <p className="mt-2 text-xs text-white/80">
                   You can use [Customer Name] and [Due Date] as placeholders that will be automatically replaced.
                 </p>
               </div>
 
               {/* Submit Button */}
               <div className="flex justify-end pt-4">
-                <Button type="submit" className="bg-blue-700 hover:bg-blue-700">
+                <Button type="submit" className="glass-btn-primary hover:glow-blue">
                   <Save className="h-4 w-4 mr-2" />
                   Create Reminder
                 </Button>

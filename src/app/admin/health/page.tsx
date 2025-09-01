@@ -140,13 +140,13 @@ export default function HealthMonitoringPage() {
   const getStatusColor = (status: HealthCheck['status']) => {
     switch (status) {
       case 'healthy':
-        return 'bg-green-700/10 border-green-500/20';
+        return 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/10 border-green-500/20';
       case 'degraded':
         return 'bg-yellow-500/10 border-yellow-500/20';
       case 'down':
-        return 'bg-red-500/10 border-red-500/20';
+        return 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/10 border-red-500/20';
       default:
-        return 'bg-white/5 border-white/10';
+        return 'glass/5 border-white/10';
     }
   };
 
@@ -259,7 +259,7 @@ export default function HealthMonitoringPage() {
           {apiHealth.map((check) => (
             <div
               key={check.endpoint}
-              className={`p-4 rounded-lg backdrop-blur-sm ${getStatusColor(check.status)} border transition-all duration-300`}
+              className={`p-4 rounded-2xl backdrop-blur-sm ${getStatusColor(check.status)} border transition-all duration-300`}
             >
               <UnifiedFlex variant="between">
                 <UnifiedFlex gap="sm">
@@ -324,7 +324,7 @@ export default function HealthMonitoringPage() {
           System Status Summary
         </UnifiedText>
         <UnifiedGrid cols={3} gap="sm">
-          <div className="p-4 bg-green-700/10 border border-green-500/20 rounded-lg">
+          <div className="p-4 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/10 border border-green-500/20 rounded-2xl">
             <UnifiedFlex gap="sm">
               <CheckCircleIcon className="h-5 w-5 text-green-400" />
               <div>
@@ -338,7 +338,7 @@ export default function HealthMonitoringPage() {
             </UnifiedFlex>
           </div>
 
-          <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+          <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-2xl">
             <UnifiedFlex gap="sm">
               <ExclamationTriangleIcon className="h-5 w-5 text-yellow-400" />
               <div>
@@ -352,7 +352,7 @@ export default function HealthMonitoringPage() {
             </UnifiedFlex>
           </div>
 
-          <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <div className="p-4 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/10 border border-red-500/20 rounded-2xl">
             <UnifiedFlex gap="sm">
               <XCircleIcon className="h-5 w-5 text-red-400" />
               <div>

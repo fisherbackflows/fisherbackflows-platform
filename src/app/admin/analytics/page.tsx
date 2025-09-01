@@ -119,21 +119,21 @@ export default function AnalyticsPage() {
     color?: 'blue' | 'green' | 'orange' | 'red'
   }) => {
     const colorClasses = {
-      blue: 'text-blue-800 bg-blue-200',
-      green: 'text-emerald-600 bg-emerald-50',
-      orange: 'text-amber-600 bg-amber-50',
-      red: 'text-red-800 bg-red-200'
+      blue: 'text-blue-300 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl',
+      green: 'text-emerald-300 bg-emerald-500/20 border border-emerald-400 glow-blue-sm',
+      orange: 'text-amber-300 bg-amber-50',
+      red: 'text-red-300 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl'
     }
 
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+      <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-6 hover:glow-blue transition-shadow duration-200">
         <div className="flex items-center justify-between mb-4">
-          <div className={`p-3 rounded-lg ${colorClasses[color]}`}>
+          <div className={`p-3 rounded-2xl ${colorClasses[color]}`}>
             <Icon className="h-6 w-6" />
           </div>
           {change !== undefined && (
             <div className={`flex items-center space-x-1 text-sm ${
-              change > 0 ? 'text-emerald-600' : change < 0 ? 'text-red-800' : 'text-slate-700'
+              change > 0 ? 'text-emerald-300' : change < 0 ? 'text-red-300' : 'text-white/80'
             }`}>
               {change > 0 ? (
                 <TrendingUp className="h-4 w-4" />
@@ -144,8 +144,8 @@ export default function AnalyticsPage() {
             </div>
           )}
         </div>
-        <h3 className="text-slate-800 text-sm font-medium">{title}</h3>
-        <p className="text-2xl font-bold text-slate-900 mt-1">{value}</p>
+        <h3 className="text-white/90 text-sm font-medium">{title}</h3>
+        <p className="text-2xl font-bold text-white mt-1">{value}</p>
       </div>
     )
   }
@@ -154,12 +154,12 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-black">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
               <LoadingSpinner size="lg" />
-              <p className="text-slate-800 mt-4">Loading analytics...</p>
+              <p className="text-white/90 mt-4">Loading analytics...</p>
             </div>
           </div>
         </div>
@@ -169,20 +169,20 @@ export default function AnalyticsPage() {
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-black">
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Professional Header */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
+          <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-8 mb-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <Link href="/admin/dashboard">
-                  <Button className="bg-slate-50 hover:bg-white text-slate-700 p-2 rounded-lg">
+                  <Button className="glass hover:glass text-white/80 p-2 rounded-2xl">
                     <ArrowLeft className="h-5 w-5" />
                   </Button>
                 </Link>
                 <div>
-                  <h1 className="text-3xl font-bold text-slate-900">Business Analytics</h1>
-                  <p className="text-slate-800 mt-2">
+                  <h1 className="text-3xl font-bold text-white">Business Analytics</h1>
+                  <p className="text-white/90 mt-2">
                     Advanced insights and performance metrics
                   </p>
                 </div>
@@ -192,20 +192,20 @@ export default function AnalyticsPage() {
           
           {/* Empty State */}
           <div className="text-center py-20">
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12">
-              <BarChart3 className="h-16 w-16 text-slate-300 mx-auto mb-6" />
-              <h2 className="text-2xl font-bold text-slate-900 mb-4">Analytics Not Available</h2>
-              <p className="text-slate-800 mb-8 max-w-md mx-auto">
+            <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-12">
+              <BarChart3 className="h-16 w-16 text-white/90 mx-auto mb-6" />
+              <h2 className="text-2xl font-bold text-white mb-4">Analytics Not Available</h2>
+              <p className="text-white/90 mb-8 max-w-md mx-auto">
                 Analytics data will be available once you have customers, tests, and transactions in your system.
               </p>
               <div className="flex flex-wrap gap-3 justify-center">
                 <Link href="/admin/dashboard">
-                  <Button className="bg-blue-700 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+                  <Button className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl">
                     Back to Dashboard
                   </Button>
                 </Link>
                 <Link href="/team-portal/customers/new">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg">
+                  <Button className="glass-btn-primary hover:glow-blue bg-emerald-500/20 border border-emerald-400 glow-blue-sm0/30 border-emerald-400 text-white px-6 py-3 rounded-2xl">
                     Add First Customer
                   </Button>
                 </Link>
@@ -218,20 +218,20 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Professional Header */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
+        <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-8 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="flex items-center space-x-4">
               <Link href="/admin/dashboard">
-                <Button className="bg-slate-50 hover:bg-white text-slate-700 p-2 rounded-lg">
+                <Button className="glass hover:glass text-white/80 p-2 rounded-2xl">
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>
               <div>
-                <h1 className="text-3xl font-bold text-slate-900">Business Analytics</h1>
-                <p className="text-slate-800 mt-2">
+                <h1 className="text-3xl font-bold text-white">Business Analytics</h1>
+                <p className="text-white/90 mt-2">
                   Advanced insights and performance metrics
                 </p>
               </div>
@@ -241,7 +241,7 @@ export default function AnalyticsPage() {
               <select
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
-                className="bg-white border border-slate-300 rounded-lg px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="glass border border-blue-400 rounded-2xl px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
               >
                 <option value="3months">Last 3 Months</option>
                 <option value="6months">Last 6 Months</option>
@@ -251,7 +251,7 @@ export default function AnalyticsPage() {
 
               <Button
                 onClick={downloadReport}
-                className="bg-blue-700 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
+                className="glass-btn-primary hover:glow-blue text-white px-4 py-2 rounded-2xl font-medium transition-colors duration-200 flex items-center"
               >
                 <Download className="h-4 w-4 mr-2" />
                 Export Report
@@ -260,7 +260,7 @@ export default function AnalyticsPage() {
               <Button
                 onClick={fetchAnalytics}
                 disabled={refreshing}
-                className="bg-slate-50 hover:bg-white text-slate-700 px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center disabled:opacity-50"
+                className="glass hover:glass text-white/80 px-4 py-2 rounded-2xl font-medium transition-colors duration-200 flex items-center disabled:opacity-50"
               >
                 <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
                 Refresh
@@ -306,8 +306,8 @@ export default function AnalyticsPage() {
             {/* Charts Section */}
             <div className="grid lg:grid-cols-2 gap-8 mb-8">
               {/* Revenue Trend */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <h2 className="text-xl font-bold text-slate-900 mb-6">Revenue & Test Volume Trend</h2>
+              <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-6">
+                <h2 className="text-xl font-bold text-white mb-6">Revenue & Test Volume Trend</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <AreaChart data={data.monthlyRevenue}>
                     <defs>
@@ -356,8 +356,8 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Test Results Distribution */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <h2 className="text-xl font-bold text-slate-900 mb-6">Test Results Distribution</h2>
+              <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-6">
+                <h2 className="text-xl font-bold text-white mb-6">Test Results Distribution</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
@@ -396,8 +396,8 @@ export default function AnalyticsPage() {
 
             <div className="grid lg:grid-cols-2 gap-8 mb-8">
               {/* Customer Growth */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <h2 className="text-xl font-bold text-slate-900 mb-6">Customer Growth</h2>
+              <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-6">
+                <h2 className="text-xl font-bold text-white mb-6">Customer Growth</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={data.customerGrowth}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
@@ -432,8 +432,8 @@ export default function AnalyticsPage() {
               </div>
 
               {/* Device Types */}
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-                <h2 className="text-xl font-bold text-slate-900 mb-6">Device Types</h2>
+              <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-6">
+                <h2 className="text-xl font-bold text-white mb-6">Device Types</h2>
                 <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={data.deviceTypes}>
                     <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" />
@@ -454,40 +454,40 @@ export default function AnalyticsPage() {
             </div>
 
             {/* Business Insights */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h2 className="text-xl font-bold text-slate-900 mb-6">Business Insights</h2>
+            <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-6">
+              <h2 className="text-xl font-bold text-white mb-6">Business Insights</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-800 mb-2">
+                  <div className="text-2xl font-bold text-blue-300 mb-2">
                     {data.businessInsights.peakMonths.join(', ')}
                   </div>
-                  <div className="text-slate-800 text-sm">Peak Season</div>
+                  <div className="text-white/90 text-sm">Peak Season</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-emerald-600 mb-2">
+                  <div className="text-2xl font-bold text-emerald-300 mb-2">
                     ${data.businessInsights.topDistricts[0]?.revenue.toLocaleString()}
                   </div>
-                  <div className="text-slate-800 text-sm">Top District Revenue</div>
-                  <div className="text-xs text-slate-700 mt-1">
+                  <div className="text-white/90 text-sm">Top District Revenue</div>
+                  <div className="text-xs text-white/80 mt-1">
                     {data.businessInsights.topDistricts[0]?.district}
                   </div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-amber-600 mb-2">
+                  <div className="text-2xl font-bold text-amber-300 mb-2">
                     {data.businessInsights.riskCustomers}
                   </div>
-                  <div className="text-slate-800 text-sm">At-Risk Customers</div>
-                  <div className="text-xs text-slate-700 mt-1">Need attention</div>
+                  <div className="text-white/90 text-sm">At-Risk Customers</div>
+                  <div className="text-xs text-white/80 mt-1">Need attention</div>
                 </div>
                 
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600 mb-2">
+                  <div className="text-2xl font-bold text-purple-300 mb-2">
                     {data.businessInsights.upcomingTests}
                   </div>
-                  <div className="text-slate-800 text-sm">Upcoming Tests</div>
-                  <div className="text-xs text-slate-700 mt-1">Next 30 days</div>
+                  <div className="text-white/90 text-sm">Upcoming Tests</div>
+                  <div className="text-xs text-white/80 mt-1">Next 30 days</div>
                 </div>
               </div>
             </div>

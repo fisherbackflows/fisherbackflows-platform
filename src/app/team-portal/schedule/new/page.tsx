@@ -60,9 +60,9 @@ export default function NewSchedulePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="glass glow-blue-sm border-b">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
             <Link href="/team-portal/schedule">
@@ -71,18 +71,18 @@ export default function NewSchedulePage() {
                 Back
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">New Appointment</h1>
+            <h1 className="text-2xl font-bold text-white/80">New Appointment</h1>
           </div>
         </div>
       </div>
 
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="glass rounded-2xl glow-blue-sm">
           <div className="p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Customer Selection */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   <User className="h-4 w-4 inline mr-2" />
                   Customer
                 </label>
@@ -90,7 +90,7 @@ export default function NewSchedulePage() {
                   name="customerId"
                   value={formData.customerId}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 >
                   <option value="">Select a customer</option>
@@ -104,7 +104,7 @@ export default function NewSchedulePage() {
 
               {/* Date */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   <Calendar className="h-4 w-4 inline mr-2" />
                   Date
                 </label>
@@ -114,14 +114,14 @@ export default function NewSchedulePage() {
                   value={formData.date}
                   onChange={handleInputChange}
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 />
               </div>
 
               {/* Time */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   <Clock className="h-4 w-4 inline mr-2" />
                   Time
                 </label>
@@ -130,21 +130,21 @@ export default function NewSchedulePage() {
                   name="time"
                   value={formData.time}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 />
               </div>
 
               {/* Service Type */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Service Type
                 </label>
                 <select
                   name="type"
                   value={formData.type}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 >
                   <option value="annual-testing">Annual Testing</option>
@@ -155,14 +155,14 @@ export default function NewSchedulePage() {
 
               {/* Duration */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Duration (minutes)
                 </label>
                 <select
                   name="duration"
                   value={formData.duration}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 >
                   <option value="30">30 minutes</option>
@@ -174,7 +174,7 @@ export default function NewSchedulePage() {
 
               {/* Notes */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   <FileText className="h-4 w-4 inline mr-2" />
                   Notes (Optional)
                 </label>
@@ -183,14 +183,14 @@ export default function NewSchedulePage() {
                   value={formData.notes}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   placeholder="Any special instructions or notes..."
                 />
               </div>
 
               {/* Submit Button */}
               <div className="flex justify-end pt-4">
-                <Button type="submit" className="bg-blue-700 hover:bg-blue-700">
+                <Button type="submit" className="glass-btn-primary hover:glow-blue">
                   <Save className="h-4 w-4 mr-2" />
                   Schedule Appointment
                 </Button>

@@ -167,36 +167,36 @@ function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <LoadingSpinner size="lg" color="blue" text="Loading admin dashboard..." />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+      <header className="glass border-b border-blue-400 sticky top-0 z-50 glow-blue-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center space-x-8">
               <Link href="/" className="flex items-center space-x-3">
                 <Logo width={160} height={128} />
                 <div>
-                  <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
-                  <p className="text-xs text-slate-800">Admin Portal</p>
+                  <h1 className="text-lg font-bold text-white">Fisher Backflows</h1>
+                  <p className="text-xs text-white/90">Admin Portal</p>
                 </div>
               </Link>
               <nav className="hidden md:flex space-x-1">
-                <Link href="/admin/dashboard" className="px-4 py-2 rounded-lg bg-blue-200 text-blue-700 border border-blue-200 font-medium">
+                <Link href="/admin/dashboard" className="px-4 py-2 rounded-2xl glass-btn-primary text-white glow-blue-sm font-medium">
                   <Home className="h-4 w-4 mr-2 inline" />
                   Dashboard
                 </Link>
-                <Link href="/admin/analytics" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 font-medium transition-colors">
+                <Link href="/admin/analytics" className="px-4 py-2 rounded-2xl text-white/80 hover:text-white hover:glass font-medium transition-colors">
                   <TrendingUp className="h-4 w-4 mr-2 inline" />
                   Analytics
                 </Link>
-                <Link href="/admin/data-management" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 font-medium transition-colors">
+                <Link href="/admin/data-management" className="px-4 py-2 rounded-2xl text-white/80 hover:text-white hover:glass font-medium transition-colors">
                   <Database className="h-4 w-4 mr-2 inline" />
                   Data Export
                 </Link>
@@ -204,14 +204,14 @@ function AdminDashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <NotificationManagerComponent />
-              <div className="text-sm text-slate-800 bg-white px-3 py-2 rounded-lg border">
+              <div className="text-sm text-white/90 glass px-3 py-2 rounded-2xl border">
                 Last updated: {lastRefresh.toLocaleTimeString()}
               </div>
               <Button
                 onClick={fetchMetrics}
                 variant="outline"
                 size="sm"
-                className="border-slate-300 text-slate-700 hover:bg-white"
+                className="border-blue-400 text-white/80 hover:glass"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Refresh
@@ -225,8 +225,8 @@ function AdminDashboard() {
           </div>
 
           <div>
-            <h2 className="text-4xl font-bold text-slate-900 mb-2">System Control Center</h2>
-            <p className="text-slate-800 text-xl">
+            <h2 className="text-4xl font-bold text-white mb-2">System Control Center</h2>
+            <p className="text-white/90 text-xl">
               Real business data and operational insights for Fisher Backflows
             </p>
           </div>
@@ -240,24 +240,24 @@ function AdminDashboard() {
             <Button
               onClick={() => window.location.href = '/admin/analytics'}
               variant="outline"
-              className="h-auto p-6 flex-col space-y-3 border-blue-200 hover:bg-blue-200 hover:border-blue-300 transition-all duration-200"
+              className="h-auto p-6 flex-col space-y-3 border-blue-200 hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl hover:border-blue-300 transition-all duration-200"
             >
-              <TrendingUp className="h-8 w-8 text-blue-800" />
+              <TrendingUp className="h-8 w-8 text-blue-300" />
               <div className="text-center">
-                <div className="font-semibold text-slate-900">Analytics</div>
-                <div className="text-sm text-slate-800">View detailed reports</div>
+                <div className="font-semibold text-white">Analytics</div>
+                <div className="text-sm text-white/90">View detailed reports</div>
               </div>
             </Button>
 
             <Button
               onClick={() => window.location.href = '/admin/data-management'}
               variant="outline"
-              className="h-auto p-6 flex-col space-y-3 border-green-200 hover:bg-green-200 hover:border-green-300 transition-all duration-200"
+              className="h-auto p-6 flex-col space-y-3 border-green-200 hover:bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl hover:border-green-300 transition-all duration-200"
             >
-              <Database className="h-8 w-8 text-green-800" />
+              <Database className="h-8 w-8 text-green-300" />
               <div className="text-center">
-                <div className="font-semibold text-slate-900">Data Export</div>
-                <div className="text-sm text-slate-800">Manage data exports</div>
+                <div className="font-semibold text-white">Data Export</div>
+                <div className="text-sm text-white/90">Manage data exports</div>
               </div>
             </Button>
 
@@ -266,40 +266,40 @@ function AdminDashboard() {
               variant="outline"
               className="h-auto p-6 flex-col space-y-3 border-purple-200 hover:bg-purple-50 hover:border-purple-300 transition-all duration-200"
             >
-              <Search className="h-8 w-8 text-purple-600" />
+              <Search className="h-8 w-8 text-purple-300" />
               <div className="text-center">
-                <div className="font-semibold text-slate-900">Search</div>
-                <div className="text-sm text-slate-800">Find records</div>
+                <div className="font-semibold text-white">Search</div>
+                <div className="text-sm text-white/90">Find records</div>
               </div>
             </Button>
 
             <Button
               onClick={() => window.location.href = '/admin/audit-logs'}
               variant="outline"
-              className="h-auto p-6 flex-col space-y-3 border-red-200 hover:bg-red-200 hover:border-red-300 transition-all duration-200"
+              className="h-auto p-6 flex-col space-y-3 border-red-200 hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl hover:border-red-300 transition-all duration-200"
             >
-              <Shield className="h-8 w-8 text-red-800" />
+              <Shield className="h-8 w-8 text-red-300" />
               <div className="text-center">
-                <div className="font-semibold text-slate-900">Security</div>
-                <div className="text-sm text-slate-800">View audit logs</div>
+                <div className="font-semibold text-white">Security</div>
+                <div className="text-sm text-white/90">View audit logs</div>
               </div>
             </Button>
           </div>
         </div>
 
         {/* System Status */}
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8 mb-10">
+        <div className="glass border border-blue-400 rounded-2xl glow-blue p-8 mb-10">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h3 className="text-3xl font-bold text-slate-900 mb-2">Platform Status</h3>
-              <p className="text-slate-800 text-lg">Real business operations data</p>
+              <h3 className="text-3xl font-bold text-white mb-2">Platform Status</h3>
+              <p className="text-white/90 text-lg">Real business operations data</p>
             </div>
             <div className={`flex items-center space-x-3 px-6 py-3 rounded-xl text-lg font-semibold border ${
               systemMetrics?.automationHealth.status === 'healthy' 
-                ? 'bg-green-200 text-green-700 border-green-200' 
+                ? 'glass border-green-400 text-green-300 glow-blue-sm' 
                 : systemMetrics?.automationHealth.status === 'initializing'
-                ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
-                : 'bg-red-200 text-red-700 border-red-200'
+                ? 'glass border-yellow-400 text-yellow-300 glow-blue-sm'
+                : 'glass border-red-400 text-red-300 glow-blue-sm'
             }`}>
               <Activity className="h-6 w-6" />
               <span className="capitalize">{systemMetrics?.automationHealth.status || 'Loading'}</span>
@@ -307,31 +307,31 @@ function AdminDashboard() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-blue-200 border border-blue-200 rounded-xl p-6 text-center">
-              <div className="text-4xl font-bold text-blue-800 mb-3">{systemMetrics?.automationHealth.uptime || '100%'}</div>
-              <div className="text-slate-700 font-semibold">System Uptime</div>
-              <div className="text-slate-700 text-sm mt-1">Platform availability</div>
+            <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold text-blue-300 mb-3">{systemMetrics?.automationHealth.uptime || '100%'}</div>
+              <div className="text-white/80 font-semibold">System Uptime</div>
+              <div className="text-white/80 text-sm mt-1">Platform availability</div>
             </div>
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center">
-              <div className="text-4xl font-bold text-emerald-600 mb-3">
+            <div className="bg-emerald-500/20 border border-emerald-400 glow-blue-sm border border-emerald-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold text-emerald-300 mb-3">
                 {systemMetrics?.automation.testsCompleted || 0}
               </div>
-              <div className="text-slate-700 font-semibold">Tests Completed</div>
-              <div className="text-slate-700 text-sm mt-1">Last 7 days</div>
+              <div className="text-white/80 font-semibold">Tests Completed</div>
+              <div className="text-white/80 text-sm mt-1">Last 7 days</div>
             </div>
-            <div className="bg-green-200 border border-green-200 rounded-xl p-6 text-center">
-              <div className="text-4xl font-bold text-green-800 mb-3">
+            <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl border border-green-200 rounded-xl p-6 text-center">
+              <div className="text-4xl font-bold text-green-300 mb-3">
                 {systemMetrics?.automation.invoicesGenerated || 0}
               </div>
-              <div className="text-slate-700 font-semibold">Invoices Generated</div>
-              <div className="text-slate-700 text-sm mt-1">Last 7 days</div>
+              <div className="text-white/80 font-semibold">Invoices Generated</div>
+              <div className="text-white/80 text-sm mt-1">Last 7 days</div>
             </div>
             <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 text-center">
-              <div className="text-4xl font-bold text-purple-600 mb-3">
+              <div className="text-4xl font-bold text-purple-300 mb-3">
                 {systemMetrics?.automation.paymentsProcessed || 0}
               </div>
-              <div className="text-slate-700 font-semibold">Payments Processed</div>
-              <div className="text-slate-700 text-sm mt-1">Last 7 days</div>
+              <div className="text-white/80 font-semibold">Payments Processed</div>
+              <div className="text-white/80 text-sm mt-1">Last 7 days</div>
             </div>
           </div>
         </div>
@@ -339,64 +339,64 @@ function AdminDashboard() {
         {/* Business Overview */}
         <div className="mb-10">
           <div className="mb-8">
-            <h3 className="text-3xl font-bold text-slate-900 mb-2">Business Overview</h3>
-            <p className="text-slate-800 text-lg">Key business metrics and operational insights</p>
+            <h3 className="text-3xl font-bold text-white mb-2">Business Overview</h3>
+            <p className="text-white/90 text-lg">Key business metrics and operational insights</p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-blue-200 border border-blue-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
-              <div className="inline-flex p-3 bg-blue-300 rounded-lg mb-4">
-                <Users className="h-8 w-8 text-blue-800" />
+            <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-200 rounded-xl p-6 text-center hover:glow-blue transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-2xl mb-4">
+                <Users className="h-8 w-8 text-blue-300" />
               </div>
               <div className="text-3xl font-bold text-blue-700 mb-2">{businessMetrics?.customers.total || 0}</div>
-              <div className="text-slate-700 font-semibold mb-1">Total Customers</div>
-              <div className="text-slate-700 text-sm">{businessMetrics?.customers.active || 0} active</div>
+              <div className="text-white/80 font-semibold mb-1">Total Customers</div>
+              <div className="text-white/80 text-sm">{businessMetrics?.customers.active || 0} active</div>
             </div>
             
-            <div className="bg-green-200 border border-green-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
-              <div className="inline-flex p-3 bg-green-300 rounded-lg mb-4">
-                <Calendar className="h-8 w-8 text-green-800" />
+            <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl border border-green-200 rounded-xl p-6 text-center hover:glow-blue transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm rounded-2xl mb-4">
+                <Calendar className="h-8 w-8 text-green-300" />
               </div>
               <div className="text-3xl font-bold text-green-700 mb-2">{businessMetrics?.appointments.scheduled || 0}</div>
-              <div className="text-slate-700 font-semibold mb-1">Scheduled Appointments</div>
-              <div className="text-slate-700 text-sm">This month</div>
+              <div className="text-white/80 font-semibold mb-1">Scheduled Appointments</div>
+              <div className="text-white/80 text-sm">This month</div>
             </div>
             
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
-              <div className="inline-flex p-3 bg-emerald-100 rounded-lg mb-4">
-                <DollarSign className="h-8 w-8 text-emerald-600" />
+            <div className="bg-emerald-500/20 border border-emerald-400 glow-blue-sm border border-emerald-200 rounded-xl p-6 text-center hover:glow-blue transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-2xl mb-4">
+                <DollarSign className="h-8 w-8 text-emerald-300" />
               </div>
               <div className="text-3xl font-bold text-emerald-700 mb-2">${businessMetrics?.financials.monthlyRevenue?.toLocaleString() || '0'}</div>
-              <div className="text-slate-700 font-semibold mb-1">Monthly Revenue</div>
-              <div className="text-slate-700 text-sm">Current month</div>
+              <div className="text-white/80 font-semibold mb-1">Monthly Revenue</div>
+              <div className="text-white/80 text-sm">Current month</div>
             </div>
             
-            <div className="bg-red-200 border border-red-200 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-200">
-              <div className="inline-flex p-3 bg-red-300 rounded-lg mb-4">
-                <AlertTriangle className="h-8 w-8 text-red-800" />
+            <div className="bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl border border-red-200 rounded-xl p-6 text-center hover:glow-blue transition-shadow duration-200">
+              <div className="inline-flex p-3 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm rounded-2xl mb-4">
+                <AlertTriangle className="h-8 w-8 text-red-300" />
               </div>
               <div className="text-3xl font-bold text-red-700 mb-2">{businessMetrics?.customers.needsService || 0}</div>
-              <div className="text-slate-700 font-semibold mb-1">Need Service</div>
-              <div className="text-slate-700 text-sm">Require attention</div>
+              <div className="text-white/80 font-semibold mb-1">Need Service</div>
+              <div className="text-white/80 text-sm">Require attention</div>
             </div>
           </div>
         </div>
 
         {/* Activity Summary */}
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8 mb-10">
+        <div className="glass border border-blue-400 rounded-2xl glow-blue p-8 mb-10">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2">Platform Activity Summary</h3>
-              <p className="text-slate-800">Overview of your business operations</p>
+              <h3 className="text-2xl font-bold text-white mb-2">Platform Activity Summary</h3>
+              <p className="text-white/90">Overview of your business operations</p>
             </div>
             <div className={`flex items-center space-x-3 px-4 py-2 rounded-xl border ${
               (systemMetrics?.automation.testsCompleted || 0) > 0
-                ? 'bg-green-200 text-green-700 border-green-200'
-                : 'bg-white text-slate-800 border-slate-200'
+                ? 'glass border-green-400 text-green-300 glow-blue-sm'
+                : 'glass text-white/90 border-blue-400'
             }`}>
               <div className={`w-3 h-3 rounded-full ${
                 (systemMetrics?.automation.testsCompleted || 0) > 0
-                  ? 'bg-green-700 animate-pulse'
-                  : 'bg-white'
+                  ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl animate-pulse'
+                  : 'glass'
               }`}></div>
               <span className="font-semibold">
                 {(systemMetrics?.automation.testsCompleted || 0) > 0 ? 'Active' : 'Ready'}
@@ -405,34 +405,34 @@ function AdminDashboard() {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-            <div className="bg-blue-200 border border-blue-200 rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-blue-800 mb-2">{systemMetrics?.automation.testsCompleted || 0}</div>
-              <div className="text-slate-700 font-semibold">Tests Completed</div>
-              <div className="text-slate-700 text-sm">Last 7 days</div>
+            <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-200 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-blue-300 mb-2">{systemMetrics?.automation.testsCompleted || 0}</div>
+              <div className="text-white/80 font-semibold">Tests Completed</div>
+              <div className="text-white/80 text-sm">Last 7 days</div>
             </div>
-            <div className="bg-green-200 border border-green-200 rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-green-800 mb-2">{systemMetrics?.automation.invoicesGenerated || 0}</div>
-              <div className="text-slate-700 font-semibold">Invoices Created</div>
-              <div className="text-slate-700 text-sm">Last 7 days</div>
+            <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl border border-green-200 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-green-300 mb-2">{systemMetrics?.automation.invoicesGenerated || 0}</div>
+              <div className="text-white/80 font-semibold">Invoices Created</div>
+              <div className="text-white/80 text-sm">Last 7 days</div>
             </div>
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-emerald-600 mb-2">{systemMetrics?.automation.paymentsProcessed || 0}</div>
-              <div className="text-slate-700 font-semibold">Payments Received</div>
-              <div className="text-slate-700 text-sm">Last 7 days</div>
+            <div className="bg-emerald-500/20 border border-emerald-400 glow-blue-sm border border-emerald-200 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-emerald-300 mb-2">{systemMetrics?.automation.paymentsProcessed || 0}</div>
+              <div className="text-white/80 font-semibold">Payments Received</div>
+              <div className="text-white/80 text-sm">Last 7 days</div>
             </div>
             <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-purple-600 mb-2">{systemMetrics?.automation.reportsSubmitted || 0}</div>
-              <div className="text-slate-700 font-semibold">Reports Submitted</div>
-              <div className="text-slate-700 text-sm">To water departments</div>
+              <div className="text-3xl font-bold text-purple-300 mb-2">{systemMetrics?.automation.reportsSubmitted || 0}</div>
+              <div className="text-white/80 font-semibold">Reports Submitted</div>
+              <div className="text-white/80 text-sm">To water departments</div>
             </div>
           </div>
 
           {((systemMetrics?.automation.testsCompleted || 0) === 0 && 
             (systemMetrics?.automation.invoicesGenerated || 0) === 0 && 
             (systemMetrics?.automation.paymentsProcessed || 0) === 0) && (
-            <div className="bg-white rounded-xl p-6 border border-slate-200 text-center">
-              <div className="text-slate-800 mb-4">
-                <Database className="h-12 w-12 text-slate-800 mx-auto mb-3" />
+            <div className="glass rounded-xl p-6 border border-blue-400 text-center">
+              <div className="text-white/90 mb-4">
+                <Database className="h-12 w-12 text-white/90 mx-auto mb-3" />
                 <p className="text-lg font-semibold">No Data Available Yet</p>
                 <p className="text-sm">Once you start using the platform, your real business metrics will appear here.</p>
               </div>
@@ -455,10 +455,10 @@ function AdminDashboard() {
         </div>
 
         {/* Recent Activity */}
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-8">
+        <div className="glass border border-blue-400 rounded-2xl glow-blue p-8">
           <div className="mb-8">
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">Recent Business Activity</h3>
-            <p className="text-slate-800">Latest real business operations and transactions</p>
+            <h3 className="text-2xl font-bold text-white mb-2">Recent Business Activity</h3>
+            <p className="text-white/90">Latest real business operations and transactions</p>
           </div>
           
           <div className="space-y-4">
@@ -480,32 +480,32 @@ function AdminDashboard() {
                 
                 const IconComponent = getIcon(activity.icon)
                 const iconColorClass = activity.type === 'test_completed' 
-                  ? 'bg-green-300 text-green-800'
+                  ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300'
                   : activity.type === 'payment_received'
-                  ? 'bg-emerald-100 text-emerald-600'
+                  ? 'bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-300'
                   : activity.type === 'invoice_sent'
-                  ? 'bg-blue-300 text-blue-800'
-                  : 'bg-slate-50 text-slate-800'
+                  ? 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-300'
+                  : 'glass text-white/90'
                 
                 return (
-                  <div key={activity.id} className="flex items-center space-x-4 p-4 bg-white rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors duration-200">
-                    <div className={`p-2 rounded-lg ${iconColorClass}`}>
+                  <div key={activity.id} className="flex items-center space-x-4 p-4 glass rounded-xl border border-blue-400 hover:glass transition-colors duration-200">
+                    <div className={`p-2 rounded-2xl ${iconColorClass}`}>
                       <IconComponent className="h-5 w-5" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-slate-900 font-medium">{activity.text}</p>
-                      <p className="text-slate-700 text-sm">{activity.time}</p>
+                      <p className="text-white font-medium">{activity.text}</p>
+                      <p className="text-white/80 text-sm">{activity.time}</p>
                     </div>
                   </div>
                 )
               })
             ) : (
               <div className="text-center py-12">
-                <div className="inline-flex p-4 bg-slate-50 rounded-full mb-4">
-                  <Activity className="h-8 w-8 text-slate-700" />
+                <div className="inline-flex p-4 glass rounded-full mb-4">
+                  <Activity className="h-8 w-8 text-white/80" />
                 </div>
-                <h4 className="text-lg font-semibold text-slate-900 mb-2">No Business Activity Yet</h4>
-                <p className="text-slate-800 mb-6">Once you start conducting tests, sending invoices, and processing payments, your activity will appear here</p>
+                <h4 className="text-lg font-semibold text-white mb-2">No Business Activity Yet</h4>
+                <p className="text-white/90 mb-6">Once you start conducting tests, sending invoices, and processing payments, your activity will appear here</p>
                 <div className="flex justify-center space-x-4">
                   <Button variant="outline" asChild>
                     <Link href="/field/dashboard">

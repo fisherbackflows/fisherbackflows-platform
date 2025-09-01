@@ -111,9 +111,9 @@ export default function ImportPage() {
   const selectedTypeInfo = importTypes.find(t => t.id === importType);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="glass glow-blue-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
             <Link href="/app/more">
@@ -122,7 +122,7 @@ export default function ImportPage() {
                 Back
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Import Data</h1>
+            <h1 className="text-2xl font-bold text-white/80">Import Data</h1>
           </div>
         </div>
       </div>
@@ -132,17 +132,17 @@ export default function ImportPage() {
           {/* Import Form */}
           <div className="lg:col-span-2">
             {/* Import Type Selection */}
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div className="glass rounded-2xl glow-blue-sm p-6 mb-6">
               <h2 className="text-lg font-semibold mb-4">Select Import Type</h2>
               
               <div className="space-y-3">
                 {importTypes.map((type) => (
                   <label
                     key={type.id}
-                    className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+                    className={`flex items-start p-4 border-2 rounded-2xl cursor-pointer transition-colors ${
                       importType === type.id
-                        ? 'border-blue-500 bg-blue-200'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-blue-500 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl'
+                        : 'border-blue-500/50 hover:border-blue-500/50'
                     }`}
                   >
                     <input
@@ -154,8 +154,8 @@ export default function ImportPage() {
                       className="mt-1 mr-3"
                     />
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{type.title}</h3>
-                      <p className="text-sm text-gray-800 mt-1">{type.description}</p>
+                      <h3 className="font-medium text-white/80">{type.title}</h3>
+                      <p className="text-sm text-white/80 mt-1">{type.description}</p>
                     </div>
                   </label>
                 ))}
@@ -163,16 +163,16 @@ export default function ImportPage() {
             </div>
 
             {/* File Upload */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="glass rounded-2xl glow-blue-sm p-6">
               <h2 className="text-lg font-semibold mb-4">Upload File</h2>
               
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                <FileSpreadsheet className="h-12 w-12 text-gray-800 mx-auto mb-4" />
+              <div className="border-2 border-dashed border-blue-500/50 rounded-2xl p-8 text-center">
+                <FileSpreadsheet className="h-12 w-12 text-white/80 mx-auto mb-4" />
                 
                 {selectedFile ? (
                   <div className="space-y-2">
-                    <p className="text-sm font-medium text-gray-900">{selectedFile.name}</p>
-                    <p className="text-xs text-gray-700">
+                    <p className="text-sm font-medium text-white/80">{selectedFile.name}</p>
+                    <p className="text-xs text-white/80">
                       {(selectedFile.size / 1024).toFixed(1)} KB
                     </p>
                     <Button
@@ -185,10 +185,10 @@ export default function ImportPage() {
                   </div>
                 ) : (
                   <div className="space-y-2">
-                    <p className="text-sm text-gray-800">
+                    <p className="text-sm text-white/80">
                       Click to select a file or drag and drop
                     </p>
-                    <p className="text-xs text-gray-700">
+                    <p className="text-xs text-white/80">
                       Supports CSV, XLS, and XLSX files
                     </p>
                   </div>
@@ -207,7 +207,7 @@ export default function ImportPage() {
                 <Button
                   onClick={handleImport}
                   disabled={!selectedFile || isUploading}
-                  className="bg-blue-700 hover:bg-blue-700 disabled:opacity-50"
+                  className="glass-btn-primary hover:glow-blue disabled:opacity-50"
                 >
                   {isUploading ? (
                     <>
@@ -225,18 +225,18 @@ export default function ImportPage() {
 
               {/* Upload Result */}
               {uploadResult && (
-                <div className={`mt-6 p-4 rounded-lg ${
-                  uploadResult.success ? 'bg-green-200 border border-green-200' : 'bg-red-200 border border-red-200'
+                <div className={`mt-6 p-4 rounded-2xl ${
+                  uploadResult.success ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl border border-green-200' : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl border border-red-200'
                 }`}>
                   <div className="flex items-start">
                     {uploadResult.success ? (
-                      <CheckCircle className="h-5 w-5 text-green-800 mr-3 mt-0.5" />
+                      <CheckCircle className="h-5 w-5 text-green-300 mr-3 mt-0.5" />
                     ) : (
-                      <AlertCircle className="h-5 w-5 text-red-800 mr-3 mt-0.5" />
+                      <AlertCircle className="h-5 w-5 text-red-300 mr-3 mt-0.5" />
                     )}
                     <div className="flex-1">
                       <h3 className={`font-medium ${
-                        uploadResult.success ? 'text-green-800' : 'text-red-800'
+                        uploadResult.success ? 'text-green-300' : 'text-red-300'
                       }`}>
                         {uploadResult.message}
                       </h3>
@@ -256,17 +256,17 @@ export default function ImportPage() {
 
           {/* Import Info */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-8">
+            <div className="glass rounded-2xl glow-blue-sm p-6 sticky top-8">
               <h2 className="text-lg font-semibold mb-4">Import Information</h2>
               
               {selectedTypeInfo && (
                 <div className="space-y-4">
                   <div>
-                    <h3 className="font-medium text-gray-900 mb-2">Required Fields</h3>
-                    <ul className="text-sm text-gray-800 space-y-1">
+                    <h3 className="font-medium text-white/80 mb-2">Required Fields</h3>
+                    <ul className="text-sm text-white/80 space-y-1">
                       {selectedTypeInfo.requiredFields.map((field, index) => (
                         <li key={index} className="flex items-center">
-                          <div className="w-1.5 h-1.5 bg-red-500 rounded-full mr-2"></div>
+                          <div className="w-1.5 h-1.5 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl rounded-full mr-2"></div>
                           {field}
                         </li>
                       ))}
@@ -274,11 +274,11 @@ export default function ImportPage() {
                   </div>
 
                   <div>
-                    <h3 className="font-medium text-gray-900 mb-2">Optional Fields</h3>
-                    <ul className="text-sm text-gray-800 space-y-1">
+                    <h3 className="font-medium text-white/80 mb-2">Optional Fields</h3>
+                    <ul className="text-sm text-white/80 space-y-1">
                       {selectedTypeInfo.optionalFields.map((field, index) => (
                         <li key={index} className="flex items-center">
-                          <div className="w-1.5 h-1.5 bg-gray-400 rounded-full mr-2"></div>
+                          <div className="w-1.5 h-1.5 bg-black/30 backdrop-blur-lg rounded-full mr-2"></div>
                           {field}
                         </li>
                       ))}
@@ -298,10 +298,10 @@ export default function ImportPage() {
                 </div>
               )}
 
-              <div className="mt-6 p-4 bg-blue-200 rounded-lg">
+              <div className="mt-6 p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl">
                 <div className="flex items-start">
-                  <Info className="h-5 w-5 text-blue-800 mr-3 mt-0.5" />
-                  <div className="text-sm text-blue-800">
+                  <Info className="h-5 w-5 text-blue-300 mr-3 mt-0.5" />
+                  <div className="text-sm text-blue-300">
                     <p className="font-medium mb-1">Import Tips:</p>
                     <ul className="space-y-1 text-blue-700">
                       <li>• Use the template for best results</li>

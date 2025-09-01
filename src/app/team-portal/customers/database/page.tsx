@@ -386,22 +386,22 @@ export default function CustomerDatabasePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-800">Loading customer database...</p>
+          <p className="text-white/80">Loading customer database...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="glass glow-blue-sm border-b">
         <div className="px-4 py-4">
           <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-gray-900 flex items-center">
+            <h1 className="text-2xl font-bold text-white/80 flex items-center">
               <Database className="h-6 w-6 mr-2" />
               Customer Database
             </h1>
@@ -425,39 +425,39 @@ export default function CustomerDatabasePage() {
 
           {/* Database Stats */}
           <div className="grid grid-cols-4 gap-3 mb-4">
-            <div className="bg-blue-200 rounded-lg p-3 text-center">
+            <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl p-3 text-center">
               <div className="text-xl font-bold text-blue-700">{customers.length}</div>
-              <div className="text-xs text-blue-800">Total Customers</div>
+              <div className="text-xs text-blue-300">Total Customers</div>
             </div>
-            <div className="bg-green-200 rounded-lg p-3 text-center">
+            <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl rounded-2xl p-3 text-center">
               <div className="text-xl font-bold text-green-700">{statusCounts.active}</div>
-              <div className="text-xs text-green-800">Active</div>
+              <div className="text-xs text-green-300">Active</div>
             </div>
-            <div className="bg-red-200 rounded-lg p-3 text-center">
+            <div className="bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl rounded-2xl p-3 text-center">
               <div className="text-xl font-bold text-red-700">{statusCounts.overdue}</div>
-              <div className="text-xs text-red-800">Overdue</div>
+              <div className="text-xs text-red-300">Overdue</div>
             </div>
-            <div className="bg-purple-50 rounded-lg p-3 text-center">
+            <div className="bg-purple-50 rounded-2xl p-3 text-center">
               <div className="text-xl font-bold text-purple-700">
                 {customers.reduce((sum, c) => sum + c.devices.length, 0)}
               </div>
-              <div className="text-xs text-purple-600">Total Devices</div>
+              <div className="text-xs text-purple-300">Total Devices</div>
             </div>
           </div>
 
           {/* Customer Type Breakdown */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-white rounded-lg p-2 text-center">
-              <div className="text-lg font-semibold text-gray-700">{typeStats.residential}</div>
-              <div className="text-xs text-gray-800">Residential</div>
+            <div className="glass rounded-2xl p-2 text-center">
+              <div className="text-lg font-semibold text-white/80">{typeStats.residential}</div>
+              <div className="text-xs text-white/80">Residential</div>
             </div>
-            <div className="bg-white rounded-lg p-2 text-center">
-              <div className="text-lg font-semibold text-gray-700">{typeStats.commercial}</div>
-              <div className="text-xs text-gray-800">Commercial</div>
+            <div className="glass rounded-2xl p-2 text-center">
+              <div className="text-lg font-semibold text-white/80">{typeStats.commercial}</div>
+              <div className="text-xs text-white/80">Commercial</div>
             </div>
-            <div className="bg-white rounded-lg p-2 text-center">
-              <div className="text-lg font-semibold text-gray-700">{typeStats.industrial}</div>
-              <div className="text-xs text-gray-800">Industrial</div>
+            <div className="glass rounded-2xl p-2 text-center">
+              <div className="text-lg font-semibold text-white/80">{typeStats.industrial}</div>
+              <div className="text-xs text-white/80">Industrial</div>
             </div>
           </div>
         </div>
@@ -465,14 +465,14 @@ export default function CustomerDatabasePage() {
 
       <div className="p-4">
         {/* Search and Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
           <div className="flex flex-col space-y-3">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/80 h-4 w-4" />
               <input
                 type="text"
                 placeholder="Search customers, phone, email, address..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-blue-500/50 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -489,8 +489,8 @@ export default function CustomerDatabasePage() {
                   onClick={() => setStatusFilter(filter.key)}
                   className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                     statusFilter === filter.key
-                      ? 'bg-blue-700 text-white'
-                      : 'bg-slate-100 text-slate-800 hover:bg-gray-400'
+                      ? 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl text-white'
+                      : 'glass text-white/90 hover:bg-black/30 backdrop-blur-lg'
                   }`}
                 >
                   {filter.label} ({filter.count})
@@ -510,8 +510,8 @@ export default function CustomerDatabasePage() {
                   onClick={() => setTypeFilter(filter.key)}
                   className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                     typeFilter === filter.key
-                      ? 'bg-green-700 text-white'
-                      : 'bg-slate-100 text-slate-800 hover:bg-gray-400'
+                      ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl text-white'
+                      : 'glass text-white/90 hover:bg-black/30 backdrop-blur-lg'
                   }`}
                 >
                   {filter.label}
@@ -525,28 +525,28 @@ export default function CustomerDatabasePage() {
         <div className="space-y-3">
           {filteredCustomers.length > 0 ? (
             filteredCustomers.map((customer) => (
-              <div key={customer.id} className="bg-white rounded-lg shadow-sm">
+              <div key={customer.id} className="glass rounded-2xl glow-blue-sm">
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-1">
-                        <h3 className="font-semibold text-gray-900 text-lg">{customer.name}</h3>
+                        <h3 className="font-semibold text-white/80 text-lg">{customer.name}</h3>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          customer.status === 'active' ? 'bg-green-300 text-green-800' :
-                          customer.status === 'overdue' ? 'bg-red-300 text-red-800' :
-                          'bg-slate-100 text-slate-800'
+                          customer.status === 'active' ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300' :
+                          customer.status === 'overdue' ? 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300' :
+                          'glass text-white/90'
                         }`}>
                           {customer.status.toUpperCase()}
                         </span>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          customer.customerType === 'residential' ? 'bg-blue-300 text-blue-800' :
-                          customer.customerType === 'commercial' ? 'bg-purple-100 text-purple-800' :
+                          customer.customerType === 'residential' ? 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-300' :
+                          customer.customerType === 'commercial' ? 'bg-purple-500/20 border border-purple-400 glow-blue-sm text-purple-800' :
                           'bg-orange-100 text-orange-800'
                         }`}>
                           {customer.customerType.toUpperCase()}
                         </span>
                       </div>
-                      <div className="text-sm text-gray-800">
+                      <div className="text-sm text-white/80">
                         {customer.devices.length} device{customer.devices.length !== 1 ? 's' : ''} • 
                         Customer since {formatDate(customer.createdDate)}
                       </div>
@@ -562,11 +562,11 @@ export default function CustomerDatabasePage() {
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center space-x-4">
                         <div className="flex items-center">
-                          <MapPin className="h-4 w-4 mr-1 text-gray-800" />
+                          <MapPin className="h-4 w-4 mr-1 text-white/80" />
                           <span>{customer.city}, {customer.state}</span>
                         </div>
                         <div className="flex items-center">
-                          <Building2 className="h-4 w-4 mr-1 text-gray-800" />
+                          <Building2 className="h-4 w-4 mr-1 text-white/80" />
                           <span>{customer.waterDistrict}</span>
                         </div>
                       </div>
@@ -575,14 +575,14 @@ export default function CustomerDatabasePage() {
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center space-x-4">
                         <div className="flex items-center">
-                          <Phone className="h-4 w-4 mr-1 text-gray-800" />
-                          <a href={`tel:${customer.phone}`} className="text-blue-800 hover:underline">
+                          <Phone className="h-4 w-4 mr-1 text-white/80" />
+                          <a href={`tel:${customer.phone}`} className="text-blue-300 hover:underline">
                             {customer.phone}
                           </a>
                         </div>
                         <div className="flex items-center">
-                          <Mail className="h-4 w-4 mr-1 text-gray-800" />
-                          <a href={`mailto:${customer.email}`} className="text-blue-800 hover:underline">
+                          <Mail className="h-4 w-4 mr-1 text-white/80" />
+                          <a href={`mailto:${customer.email}`} className="text-blue-300 hover:underline">
                             {customer.email}
                           </a>
                         </div>
@@ -590,15 +590,15 @@ export default function CustomerDatabasePage() {
                     </div>
 
                     {/* Device Summary */}
-                    <div className="bg-white rounded-lg p-3 mt-3">
-                      <div className="text-sm font-medium text-gray-900 mb-2">Devices & Test Status</div>
+                    <div className="glass rounded-2xl p-3 mt-3">
+                      <div className="text-sm font-medium text-white/80 mb-2">Devices & Test Status</div>
                       {customer.devices.map((device, idx) => (
                         <div key={device.id} className="flex items-center justify-between text-sm mb-1 last:mb-0">
                           <span>{device.type} - {device.serialNumber} ({device.location})</span>
                           <span className={`px-2 py-1 rounded-full text-xs ${
-                            device.status === 'current' ? 'bg-green-300 text-green-700' :
+                            device.status === 'current' ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-700' :
                             device.status === 'due' ? 'bg-yellow-100 text-yellow-700' :
-                            'bg-red-300 text-red-700'
+                            'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-700'
                           }`}>
                             Next: {formatDate(device.nextTestDue)}
                           </span>
@@ -610,19 +610,19 @@ export default function CustomerDatabasePage() {
                     <div className="flex items-center justify-between pt-2 border-t">
                       <div className="flex items-center space-x-4 text-sm">
                         <div>
-                          <span className="text-gray-700">Total Paid:</span>
-                          <span className="ml-1 font-medium text-green-800">{formatCurrency(customer.totalPaid)}</span>
+                          <span className="text-white/80">Total Paid:</span>
+                          <span className="ml-1 font-medium text-green-300">{formatCurrency(customer.totalPaid)}</span>
                         </div>
                         {customer.outstandingBalance > 0 && (
                           <div>
-                            <span className="text-gray-700">Outstanding:</span>
-                            <span className="ml-1 font-medium text-red-800">{formatCurrency(customer.outstandingBalance)}</span>
+                            <span className="text-white/80">Outstanding:</span>
+                            <span className="ml-1 font-medium text-red-300">{formatCurrency(customer.outstandingBalance)}</span>
                           </div>
                         )}
                       </div>
                       <div className="flex items-center space-x-2">
                         <span className={`text-xs px-2 py-1 rounded-full ${
-                          customer.preferences.autoSchedule ? 'bg-green-300 text-green-700' : 'bg-slate-100 text-slate-800'
+                          customer.preferences.autoSchedule ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-700' : 'glass text-white/90'
                         }`}>
                           Auto-Schedule: {customer.preferences.autoSchedule ? 'ON' : 'OFF'}
                         </span>
@@ -632,13 +632,13 @@ export default function CustomerDatabasePage() {
                     {/* Quick Actions */}
                     <div className="flex items-center justify-between pt-3 border-t">
                       <div className="flex space-x-2">
-                        <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300" asChild>
+                        <Button size="sm" className="glass hover:glass text-white/80 border border-blue-400" asChild>
                           <Link href={`/app/test-report?customer=${customer.id}`}>
                             <FileText className="h-4 w-4 mr-1" />
                             Test
                           </Link>
                         </Button>
-                        <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300" asChild>
+                        <Button size="sm" className="glass hover:glass text-white/80 border border-blue-400" asChild>
                           <Link href={`/app/schedule?customer=${customer.id}`}>
                             <Calendar className="h-4 w-4 mr-1" />
                             Schedule
@@ -647,11 +647,11 @@ export default function CustomerDatabasePage() {
                       </div>
                       
                       <div className="flex space-x-2">
-                        <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300">
+                        <Button size="sm" className="glass hover:glass text-white/80 border border-blue-400">
                           <Bell className="h-4 w-4 mr-1" />
                           Notify
                         </Button>
-                        <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300">
+                        <Button size="sm" className="glass hover:glass text-white/80 border border-blue-400">
                           <Settings className="h-4 w-4 mr-1" />
                           Manage
                         </Button>
@@ -662,10 +662,10 @@ export default function CustomerDatabasePage() {
               </div>
             ))
           ) : (
-            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <Database className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No customers found</h3>
-              <p className="text-gray-700 mb-4">
+            <div className="glass rounded-2xl glow-blue-sm p-8 text-center">
+              <Database className="h-12 w-12 text-white/80 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-white/80 mb-2">No customers found</h3>
+              <p className="text-white/80 mb-4">
                 {searchTerm || statusFilter !== 'all' || typeFilter !== 'all'
                   ? "Try adjusting your search or filters" 
                   : "Get started by adding your first customer"
@@ -685,29 +685,29 @@ export default function CustomerDatabasePage() {
       </div>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+      <nav className="fixed bottom-0 left-0 right-0 glass border-t border-blue-500/50">
         <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
-            <div className="h-6 w-6 bg-gray-400 rounded"></div>
+          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
+            <div className="h-6 w-6 bg-black/30 backdrop-blur-lg rounded"></div>
             <span className="text-xs">Home</span>
           </Link>
-          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-blue-800 bg-blue-200">
+          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-blue-300 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl">
             <Users className="h-6 w-6" />
             <span className="text-xs font-medium">Customers</span>
           </Link>
-          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
+          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Plus className="h-6 w-6" />
             <span className="text-xs">Test</span>
           </Link>
-          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
+          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Calendar className="h-6 w-6" />
             <span className="text-xs">Schedule</span>
           </Link>
-          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-gray-800 hover:text-gray-900">
+          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
-              <div className="w-1 h-1 bg-gray-600 rounded-full"></div>
+              <div className="w-1 h-1 bg-black/30 backdrop-blur-lg rounded-full"></div>
+              <div className="w-1 h-1 bg-black/30 backdrop-blur-lg rounded-full"></div>
+              <div className="w-1 h-1 bg-black/30 backdrop-blur-lg rounded-full"></div>
             </div>
             <span className="text-xs">More</span>
           </Link>

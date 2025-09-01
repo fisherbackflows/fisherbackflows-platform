@@ -68,9 +68,9 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="glass glow-blue-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -80,9 +80,9 @@ export default function SettingsPage() {
                   Back
                 </Button>
               </Link>
-              <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
+              <h1 className="text-2xl font-bold text-white">Settings</h1>
             </div>
-            <Button onClick={handleSave} className="bg-blue-700 hover:bg-blue-700">
+            <Button onClick={handleSave} className="glass-btn-primary hover:glow-blue">
               <Save className="h-4 w-4 mr-2" />
               Save Changes
             </Button>
@@ -93,7 +93,7 @@ export default function SettingsPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="space-y-6">
           {/* Business Information */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+          <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <User className="h-5 w-5 inline mr-2" />
               Business Information
@@ -101,7 +101,7 @@ export default function SettingsPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Business Name
                 </label>
                 <input
@@ -109,12 +109,12 @@ export default function SettingsPage() {
                   name="businessName"
                   value={settings.businessName}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Contact Email
                 </label>
                 <input
@@ -122,12 +122,12 @@ export default function SettingsPage() {
                   name="contactEmail"
                   value={settings.contactEmail}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Contact Phone
                 </label>
                 <input
@@ -135,12 +135,12 @@ export default function SettingsPage() {
                   name="contactPhone"
                   value={settings.contactPhone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Business Address
                 </label>
                 <input
@@ -148,14 +148,14 @@ export default function SettingsPage() {
                   name="address"
                   value={settings.address}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
             </div>
           </div>
 
           {/* Notification Settings */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+          <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <Bell className="h-5 w-5 inline mr-2" />
               Notification Settings
@@ -164,8 +164,8 @@ export default function SettingsPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-medium text-slate-900">Email Notifications</h3>
-                  <p className="text-sm text-slate-800">Receive notifications via email</p>
+                  <h3 className="font-medium text-white">Email Notifications</h3>
+                  <p className="text-sm text-white/90">Receive notifications via email</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
@@ -175,14 +175,14 @@ export default function SettingsPage() {
                     onChange={handleInputChange}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-700"></div>
+                  <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
                 </label>
               </div>
               
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-medium text-slate-900">SMS Notifications</h3>
-                  <p className="text-sm text-slate-800">Receive notifications via text message</p>
+                  <h3 className="font-medium text-white">SMS Notifications</h3>
+                  <p className="text-sm text-white/90">Receive notifications via text message</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
@@ -192,20 +192,20 @@ export default function SettingsPage() {
                     onChange={handleInputChange}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-700"></div>
+                  <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
                 </label>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-white/80 mb-2">
                     Default Reminder Days Before Due
                   </label>
                   <select
                     name="reminderDays"
                     value={settings.reminderDays}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   >
                     <option value={7}>7 days</option>
                     <option value={14}>14 days</option>
@@ -218,7 +218,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Invoicing Settings */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+          <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <Mail className="h-5 w-5 inline mr-2" />
               Invoicing Settings
@@ -226,7 +226,7 @@ export default function SettingsPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Invoice Number Prefix
                 </label>
                 <input
@@ -234,12 +234,12 @@ export default function SettingsPage() {
                   name="invoicePrefix"
                   value={settings.invoicePrefix}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Tax Rate (%)
                 </label>
                 <input
@@ -248,19 +248,19 @@ export default function SettingsPage() {
                   name="taxRate"
                   value={settings.taxRate}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Payment Terms (Days)
                 </label>
                 <select
                   name="paymentTerms"
                   value={settings.paymentTerms}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                 >
                   <option value={15}>Net 15</option>
                   <option value={30}>Net 30</option>
@@ -271,7 +271,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Security Settings */}
-          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+          <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <Shield className="h-5 w-5 inline mr-2" />
               Security Settings
@@ -280,14 +280,14 @@ export default function SettingsPage() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-white/80 mb-2">
                     Auto Logout (minutes)
                   </label>
                   <select
                     name="autoLogout"
                     value={settings.autoLogout}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                   >
                     <option value={30}>30 minutes</option>
                     <option value={60}>1 hour</option>
@@ -300,8 +300,8 @@ export default function SettingsPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-slate-900">Require Strong Passwords</h3>
-                    <p className="text-sm text-slate-800">Enforce strong password requirements</p>
+                    <h3 className="font-medium text-white">Require Strong Passwords</h3>
+                    <p className="text-sm text-white/90">Enforce strong password requirements</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -311,14 +311,14 @@ export default function SettingsPage() {
                       onChange={handleInputChange}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-700"></div>
+                    <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
                   </label>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-slate-900">Two-Factor Authentication</h3>
-                    <p className="text-sm text-slate-800">Add extra security to your account</p>
+                    <h3 className="font-medium text-white">Two-Factor Authentication</h3>
+                    <p className="text-sm text-white/90">Add extra security to your account</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -328,7 +328,7 @@ export default function SettingsPage() {
                       onChange={handleInputChange}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-400 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-700"></div>
+                    <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
                   </label>
                 </div>
               </div>

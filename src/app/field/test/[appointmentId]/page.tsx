@@ -242,14 +242,14 @@ export default function FieldTestPage() {
   return (
     <div className="min-h-screen bg-black">
       <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
 
       <div className="max-w-md mx-auto px-4 py-6 relative z-10">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <Button
             onClick={() => router.push('/field/dashboard')}
-            className="btn-glass p-2 rounded-lg"
+            className="btn-glass p-2 rounded-2xl"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
@@ -291,7 +291,7 @@ export default function FieldTestPage() {
               {appointment.address}
             </div>
             {appointment.notes && (
-              <div className="mt-3 p-2 bg-blue-700/20 rounded text-blue-300 text-xs">
+              <div className="mt-3 p-2 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 rounded text-blue-300 text-xs">
                 📝 {appointment.notes}
               </div>
             )}
@@ -339,7 +339,7 @@ export default function FieldTestPage() {
             <div className="space-y-4">
               {/* Timer Display */}
               {testStartTime && (
-                <div className="text-center p-3 bg-green-700/20 rounded-xl">
+                <div className="text-center p-3 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 rounded-xl">
                   <p className="text-green-400 text-lg font-bold">
                     ⏱️ Test Started: {testStartTime.toLocaleTimeString()}
                   </p>
@@ -359,7 +359,7 @@ export default function FieldTestPage() {
                     placeholder="15.0"
                     value={testData.initialPressure}
                     onChange={(e) => handleInputChange('initialPressure', e.target.value)}
-                    className="input-glass w-full px-3 py-2 rounded-lg text-white text-center text-lg font-bold"
+                    className="input-glass w-full px-3 py-2 rounded-2xl text-white text-center text-lg font-bold"
                   />
                 </div>
                 <div>
@@ -373,7 +373,7 @@ export default function FieldTestPage() {
                     placeholder="14.5"
                     value={testData.finalPressure}
                     onChange={(e) => handleInputChange('finalPressure', e.target.value)}
-                    className="input-glass w-full px-3 py-2 rounded-lg text-white text-center text-lg font-bold"
+                    className="input-glass w-full px-3 py-2 rounded-2xl text-white text-center text-lg font-bold"
                   />
                 </div>
               </div>
@@ -382,9 +382,9 @@ export default function FieldTestPage() {
               {testResult && (
                 <div className={`text-center p-3 rounded-xl ${
                   testResult === 'Passed' 
-                    ? 'bg-green-700/20 text-green-400' 
+                    ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 text-green-400' 
                     : testResult === 'Failed'
-                      ? 'bg-red-500/20 text-red-400'
+                      ? 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 text-red-400'
                       : 'bg-yellow-500/20 text-yellow-400'
                 }`}>
                   <p className="font-bold text-lg">
@@ -411,7 +411,7 @@ export default function FieldTestPage() {
                   value={testData.notes}
                   onChange={(e) => handleInputChange('notes', e.target.value)}
                   rows={3}
-                  className="input-glass w-full px-3 py-2 rounded-lg text-white resize-none"
+                  className="input-glass w-full px-3 py-2 rounded-2xl text-white resize-none"
                 />
               </div>
 
@@ -423,7 +423,7 @@ export default function FieldTestPage() {
                 <select
                   value={testData.waterDistrict}
                   onChange={(e) => handleInputChange('waterDistrict', e.target.value)}
-                  className="input-glass w-full px-3 py-2 rounded-lg text-white"
+                  className="input-glass w-full px-3 py-2 rounded-2xl text-white"
                 >
                   <option value="City of Tacoma">City of Tacoma</option>
                   <option value="Lakewood Water District">Lakewood Water District</option>
@@ -436,7 +436,7 @@ export default function FieldTestPage() {
               {/* Photo Capture */}
               <Button
                 onClick={capturePhoto}
-                className="btn-glass w-full py-3 rounded-lg"
+                className="btn-glass w-full py-3 rounded-2xl"
               >
                 <Camera className="h-5 w-5 mr-2" />
                 Take Photos (Optional)

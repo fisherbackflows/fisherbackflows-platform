@@ -55,7 +55,7 @@ export default function MaintenancePage() {
     <div className="min-h-screen bg-black">
       {/* Background Effects */}
       <div className="fixed inset-0 bg-grid opacity-20" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
       
       <div className="relative min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md w-full">
@@ -120,7 +120,7 @@ export default function MaintenancePage() {
                     placeholder="Enter admin access code"
                     value={adminCode}
                     onChange={(e) => setAdminCode(e.target.value)}
-                    className="bg-gray-800/50 border-gray-600"
+                    className="bg-black/30 backdrop-blur-lg/50 border-blue-500/50"
                     required
                   />
                 </div>
@@ -132,7 +132,7 @@ export default function MaintenancePage() {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full bg-blue-700 hover:bg-blue-700"
+                  className="w-full glass-btn-primary hover:glow-blue"
                 >
                   {isLoading ? (
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />

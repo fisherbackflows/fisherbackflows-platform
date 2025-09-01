@@ -198,13 +198,13 @@ export default function TesterDashboard() {
     <div className="min-h-screen bg-black">
       {/* Background Effects */}
       <div className="fixed inset-0 bg-grid opacity-20" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
       
       <StandardHeader variant="portal">
         <div className="flex justify-between items-center">
           <Logo width={200} height={160} priority />
           <div className="flex items-center gap-4">
-            <div className="glass rounded-lg px-3 py-2">
+            <div className="glass rounded-2xl px-3 py-2">
               <div className="flex items-center space-x-2 text-sm">
                 <Clock className="h-4 w-4 text-blue-400" />
                 <span className="text-white/80">
@@ -215,14 +215,14 @@ export default function TesterDashboard() {
                 </span>
               </div>
             </div>
-            <div className="glass rounded-lg px-3 py-2">
+            <div className="glass rounded-2xl px-3 py-2">
               <span className="text-white/80 text-sm">
                 {user.first_name} - Tester #{user.license_number}
               </span>
             </div>
             <Button
               onClick={handleLogout}
-              className="btn-glass px-4 py-2 rounded-lg hover-glow flex items-center"
+              className="btn-glass px-4 py-2 rounded-2xl hover-glow flex items-center"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
@@ -238,7 +238,7 @@ export default function TesterDashboard() {
             <div className="glass-yellow rounded-xl p-6 mb-8 glow-yellow-sm">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="glass-yellow rounded-lg p-3">
+                  <div className="glass-yellow rounded-2xl p-3">
                     <AlertCircle className="h-6 w-6 text-yellow-400" />
                   </div>
                   <div>
@@ -274,7 +274,7 @@ export default function TesterDashboard() {
               <div className="mt-4 pt-4 border-t border-yellow-400/20">
                 <Link
                   href={`/app/test-report/${currentAppointment.id}`}
-                  className="btn-glow px-6 py-3 rounded-lg inline-flex items-center"
+                  className="btn-glow px-6 py-3 rounded-2xl inline-flex items-center"
                 >
                   <FileText className="h-5 w-5 mr-2" />
                   Complete Test Report
@@ -299,7 +299,7 @@ export default function TesterDashboard() {
                     <h3 className="text-lg font-semibold text-white mb-2">{action.title}</h3>
                     <p className="text-white/60 text-sm mb-4">{action.description}</p>
                     {!action.disabled ? (
-                      <Link href={action.href} className="btn-glass px-4 py-2 rounded-lg inline-flex items-center">
+                      <Link href={action.href} className="btn-glass px-4 py-2 rounded-2xl inline-flex items-center">
                         Access
                       </Link>
                     ) : (
@@ -315,7 +315,7 @@ export default function TesterDashboard() {
           <section>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">Today's Schedule</h2>
-              <div className="glass rounded-lg px-3 py-1">
+              <div className="glass rounded-2xl px-3 py-1">
                 <span className="text-white/80 text-sm">{todaySchedule.length} appointments</span>
               </div>
             </div>
@@ -352,7 +352,7 @@ export default function TesterDashboard() {
                     </div>
                     
                     <div className="text-right">
-                      <div className={`inline-flex items-center space-x-2 ${getStatusBg(appointment.status)} rounded-lg px-3 py-2`}>
+                      <div className={`inline-flex items-center space-x-2 ${getStatusBg(appointment.status)} rounded-2xl px-3 py-2`}>
                         <CheckCircle className={`h-4 w-4 ${getStatusColor(appointment.status)}`} />
                         <span className={`text-sm font-medium ${getStatusColor(appointment.status)}`}>
                           {appointment.status === 'in_progress' ? 'IN PROGRESS' :
@@ -373,7 +373,7 @@ export default function TesterDashboard() {
                         </div>
                         <Button
                           size="sm"
-                          className="btn-glass px-3 py-1 rounded-lg"
+                          className="btn-glass px-3 py-1 rounded-2xl"
                         >
                           <Navigation className="h-4 w-4 mr-2" />
                           Get Directions

@@ -155,25 +155,25 @@ export default function InstagramDashboard() {
         <div className="flex items-center mb-4">
           <Instagram className="h-6 w-6 text-pink-500 mr-3" />
           <h3 className="text-xl font-bold">@fisherbackflows</h3>
-          <span className="ml-2 px-2 py-1 bg-green-700/20 border border-green-500/30 rounded-full text-xs text-green-400">
+          <span className="ml-2 px-2 py-1 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-500/30 rounded-full text-xs text-green-400">
             Verified Business
           </span>
         </div>
         
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="text-center p-3 bg-blue-700/10 rounded-lg">
+          <div className="text-center p-3 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 rounded-2xl">
             <div className="text-xl sm:text-2xl font-bold text-blue-400">{metrics.followers.toLocaleString()}</div>
             <div className="text-xs sm:text-sm text-white/60">Followers</div>
           </div>
-          <div className="text-center p-3 bg-green-700/10 rounded-lg">
+          <div className="text-center p-3 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/10 rounded-2xl">
             <div className="text-xl sm:text-2xl font-bold text-green-400">{metrics.engagement_rate}%</div>
             <div className="text-xs sm:text-sm text-white/60">Engagement</div>
           </div>
-          <div className="text-center p-3 bg-purple-600/10 rounded-lg">
+          <div className="text-center p-3 bg-purple-600/10 rounded-2xl">
             <div className="text-xl sm:text-2xl font-bold text-purple-400">{metrics.reach.toLocaleString()}</div>
             <div className="text-xs sm:text-sm text-white/60">Weekly Reach</div>
           </div>
-          <div className="text-center p-3 bg-orange-600/10 rounded-lg">
+          <div className="text-center p-3 bg-orange-600/10 rounded-2xl">
             <div className="text-xl sm:text-2xl font-bold text-orange-400">{metrics.website_clicks}</div>
             <div className="text-xs sm:text-sm text-white/60">Website Clicks</div>
           </div>
@@ -263,19 +263,19 @@ export default function InstagramDashboard() {
           <div>
             <h4 className="font-medium mb-3">Visual Identity</h4>
             <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-lg/50 rounded-2xl">
                 <span>Primary Logo</span>
                 <Button size="sm" variant="outline">Update</Button>
               </div>
-              <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-lg/50 rounded-2xl">
                 <span>Color Palette</span>
                 <div className="flex gap-2">
-                  <div className="w-6 h-6 rounded-full bg-blue-700"></div>
-                  <div className="w-6 h-6 rounded-full bg-green-700"></div>
-                  <div className="w-6 h-6 rounded-full bg-gray-700"></div>
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
+                  <div className="w-6 h-6 rounded-full bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl"></div>
+                  <div className="w-6 h-6 rounded-full bg-black/30 backdrop-blur-lg"></div>
                 </div>
               </div>
-              <div className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-black/30 backdrop-blur-lg/50 rounded-2xl">
                 <span>Typography</span>
                 <span className="text-sm text-white/60">Geist Sans</span>
               </div>
@@ -284,21 +284,21 @@ export default function InstagramDashboard() {
           <div>
             <h4 className="font-medium mb-3">Content Templates</h4>
             <div className="space-y-3">
-              <div className="p-3 bg-gray-800/50 rounded-lg">
+              <div className="p-3 bg-black/30 backdrop-blur-lg/50 rounded-2xl">
                 <div className="flex justify-between items-center mb-2">
                   <span>Service Showcase</span>
                   <Button size="sm" variant="ghost">Edit</Button>
                 </div>
                 <p className="text-sm text-white/60">Template for highlighting backflow testing services</p>
               </div>
-              <div className="p-3 bg-gray-800/50 rounded-lg">
+              <div className="p-3 bg-black/30 backdrop-blur-lg/50 rounded-2xl">
                 <div className="flex justify-between items-center mb-2">
                   <span>Educational Posts</span>
                   <Button size="sm" variant="ghost">Edit</Button>
                 </div>
                 <p className="text-sm text-white/60">Educational content about water safety</p>
               </div>
-              <div className="p-3 bg-gray-800/50 rounded-lg">
+              <div className="p-3 bg-black/30 backdrop-blur-lg/50 rounded-2xl">
                 <div className="flex justify-between items-center mb-2">
                   <span>Customer Testimonials</span>
                   <Button size="sm" variant="ghost">Edit</Button>
@@ -314,28 +314,28 @@ export default function InstagramDashboard() {
       <div className="glass rounded-2xl p-6 glow-blue-sm">
         <h3 className="text-lg font-semibold mb-4">Content Pillars</h3>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="p-3 sm:p-4 bg-blue-700/20 border border-blue-500/30 rounded-lg">
+          <div className="p-3 sm:p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-500/30 rounded-2xl">
             <div className="text-center">
               <div className="text-xl sm:text-2xl font-bold text-blue-400 mb-1 sm:mb-2">35%</div>
               <div className="text-xs sm:text-sm font-medium">Educational</div>
               <div className="text-xs text-white/60 mt-1">Water safety tips</div>
             </div>
           </div>
-          <div className="p-3 sm:p-4 bg-green-700/20 border border-green-500/30 rounded-lg">
+          <div className="p-3 sm:p-4 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-500/30 rounded-2xl">
             <div className="text-center">
               <div className="text-xl sm:text-2xl font-bold text-green-400 mb-1 sm:mb-2">25%</div>
               <div className="text-xs sm:text-sm font-medium">Services</div>
               <div className="text-xs text-white/60 mt-1">Testing process</div>
             </div>
           </div>
-          <div className="p-3 sm:p-4 bg-purple-600/20 border border-purple-500/30 rounded-lg">
+          <div className="p-3 sm:p-4 bg-purple-600/20 border border-purple-500/30 rounded-2xl">
             <div className="text-center">
               <div className="text-xl sm:text-2xl font-bold text-purple-400 mb-1 sm:mb-2">25%</div>
               <div className="text-xs sm:text-sm font-medium">Social Proof</div>
               <div className="text-xs text-white/60 mt-1">Reviews & testimonials</div>
             </div>
           </div>
-          <div className="p-3 sm:p-4 bg-orange-600/20 border border-orange-500/30 rounded-lg">
+          <div className="p-3 sm:p-4 bg-orange-600/20 border border-orange-500/30 rounded-2xl">
             <div className="text-center">
               <div className="text-xl sm:text-2xl font-bold text-orange-400 mb-1 sm:mb-2">15%</div>
               <div className="text-xs sm:text-sm font-medium">Behind Scenes</div>
@@ -364,16 +364,16 @@ export default function InstagramDashboard() {
         
         <div className="space-y-4">
           {activeCampaigns.map((campaign) => (
-            <div key={campaign.id} className="p-4 bg-gray-800/50 rounded-lg">
+            <div key={campaign.id} className="p-4 bg-black/30 backdrop-blur-lg/50 rounded-2xl">
               <div className="flex justify-between items-start mb-3">
                 <div>
                   <h4 className="font-medium">{campaign.name}</h4>
                   <p className="text-sm text-white/60">{campaign.objective}</p>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs ${
-                  campaign.status === 'active' ? 'bg-green-700/20 border border-green-500/30 text-green-400' :
+                  campaign.status === 'active' ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-500/30 text-green-400' :
                   campaign.status === 'paused' ? 'bg-yellow-600/20 border border-yellow-500/30 text-yellow-400' :
-                  'bg-gray-600/20 border border-gray-500/30 text-gray-800'
+                  'bg-black/30 backdrop-blur-lg/20 border border-blue-500/50/30 text-white/80'
                 }`}>
                   {campaign.status}
                 </span>
@@ -416,22 +416,22 @@ export default function InstagramDashboard() {
       <div className="glass rounded-2xl p-6 glow-blue-sm">
         <h3 className="text-lg font-semibold mb-4">Campaign Performance Overview</h3>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <div className="text-center p-3 bg-blue-700/10 rounded-lg">
+          <div className="text-center p-3 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 rounded-2xl">
             <div className="text-xl sm:text-2xl font-bold text-blue-400">$426</div>
             <div className="text-xs sm:text-sm text-white/60">Total Spend</div>
             <div className="text-xs text-green-400 mt-1">↑ 12% vs last month</div>
           </div>
-          <div className="text-center p-3 bg-green-700/10 rounded-lg">
+          <div className="text-center p-3 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/10 rounded-2xl">
             <div className="text-xl sm:text-2xl font-bold text-green-400">24,612</div>
             <div className="text-xs sm:text-sm text-white/60">Total Reach</div>
             <div className="text-xs text-green-400 mt-1">↑ 28% vs last month</div>
           </div>
-          <div className="text-center p-3 bg-purple-600/10 rounded-lg">
+          <div className="text-center p-3 bg-purple-600/10 rounded-2xl">
             <div className="text-xl sm:text-2xl font-bold text-purple-400">690</div>
             <div className="text-xs sm:text-sm text-white/60">Total Clicks</div>
             <div className="text-xs text-green-400 mt-1">↑ 19% vs last month</div>
           </div>
-          <div className="text-center p-3 bg-orange-600/10 rounded-lg">
+          <div className="text-center p-3 bg-orange-600/10 rounded-2xl">
             <div className="text-xl sm:text-2xl font-bold text-orange-400">35</div>
             <div className="text-xs sm:text-sm text-white/60">Conversions</div>
             <div className="text-xs text-green-400 mt-1">↑ 42% vs last month</div>
@@ -507,7 +507,7 @@ export default function InstagramDashboard() {
         
         <div className="space-y-4">
           {upcomingPosts.map((post) => (
-            <div key={post.id} className="p-4 bg-gray-800/50 rounded-lg">
+            <div key={post.id} className="p-4 bg-black/30 backdrop-blur-lg/50 rounded-2xl">
               <div className="flex justify-between items-start mb-3">
                 <div className="flex items-center gap-3">
                   {post.type === 'image' && <ImageIcon className="h-5 w-5 text-blue-400" />}
@@ -521,9 +521,9 @@ export default function InstagramDashboard() {
                   </div>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs ${
-                  post.status === 'scheduled' ? 'bg-blue-700/20 border border-blue-500/30 text-blue-400' :
+                  post.status === 'scheduled' ? 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-500/30 text-blue-400' :
                   post.status === 'draft' ? 'bg-yellow-600/20 border border-yellow-500/30 text-yellow-400' :
-                  'bg-green-700/20 border border-green-500/30 text-green-400'
+                  'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-500/30 text-green-400'
                 }`}>
                   {post.status}
                 </span>
@@ -545,17 +545,17 @@ export default function InstagramDashboard() {
       <div className="glass rounded-2xl p-6 glow-blue-sm">
         <h3 className="text-lg font-semibold mb-4">Content Ideas & Templates</h3>
         <div className="grid md:grid-cols-3 gap-4">
-          <div className="p-4 bg-blue-700/10 border border-blue-500/20 rounded-lg">
+          <div className="p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 border border-blue-500/20 rounded-2xl">
             <h4 className="font-medium mb-2">Educational Series</h4>
             <p className="text-sm text-white/60 mb-3">Weekly water safety tips and backflow prevention education</p>
             <Button size="sm" variant="outline">Use Template</Button>
           </div>
-          <div className="p-4 bg-green-700/10 border border-green-500/20 rounded-lg">
+          <div className="p-4 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/10 border border-green-500/20 rounded-2xl">
             <h4 className="font-medium mb-2">Before/After</h4>
             <p className="text-sm text-white/60 mb-3">Show device installations and repairs</p>
             <Button size="sm" variant="outline">Use Template</Button>
           </div>
-          <div className="p-4 bg-purple-600/10 border border-purple-500/20 rounded-lg">
+          <div className="p-4 bg-purple-600/10 border border-purple-500/20 rounded-2xl">
             <h4 className="font-medium mb-2">Team Spotlight</h4>
             <p className="text-sm text-white/60 mb-3">Highlight certified technicians and expertise</p>
             <Button size="sm" variant="outline">Use Template</Button>
@@ -596,7 +596,7 @@ export default function InstagramDashboard() {
           </div>
         </div>
         
-        <div className="h-64 bg-gray-800/50 rounded-lg flex items-center justify-center">
+        <div className="h-64 bg-black/30 backdrop-blur-lg/50 rounded-2xl flex items-center justify-center">
           <p className="text-white/60">Interactive Analytics Chart</p>
         </div>
       </div>
@@ -605,7 +605,7 @@ export default function InstagramDashboard() {
       <div className="glass rounded-2xl p-6 glow-blue-sm">
         <h3 className="text-lg font-semibold mb-4">Best Performing Content</h3>
         <div className="space-y-4">
-          <div className="p-4 bg-gray-800/50 rounded-lg">
+          <div className="p-4 bg-black/30 backdrop-blur-lg/50 rounded-2xl">
             <div className="flex justify-between items-start mb-2">
               <div className="flex items-center gap-3">
                 <ImageIcon className="h-5 w-5 text-blue-400" />
@@ -649,7 +649,7 @@ export default function InstagramDashboard() {
             <h4 className="font-medium mb-3">Follower Growth (30 days)</h4>
             <div className="text-2xl font-bold text-green-400 mb-2">+{(metrics.followers * 0.08).toFixed(0)}</div>
             <div className="text-sm text-white/60">New followers this month</div>
-            <div className="h-32 bg-gray-800/50 rounded-lg mt-3 flex items-center justify-center">
+            <div className="h-32 bg-black/30 backdrop-blur-lg/50 rounded-2xl mt-3 flex items-center justify-center">
               <p className="text-white/60">Growth Chart</p>
             </div>
           </div>
@@ -683,7 +683,7 @@ export default function InstagramDashboard() {
     <div className="min-h-screen bg-black">
       {/* Background Effects */}
       <div className="fixed inset-0 bg-grid opacity-20" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
       
       <StandardHeader variant="portal">
         <div className="flex justify-between items-center">
@@ -692,7 +692,7 @@ export default function InstagramDashboard() {
             <Button
               variant="ghost"
               onClick={() => router.push('/team-portal/dashboard')}
-              className="btn-glass px-4 py-2 rounded-lg hover-glow flex items-center"
+              className="btn-glass px-4 py-2 rounded-2xl hover-glow flex items-center"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Dashboard
@@ -729,7 +729,7 @@ export default function InstagramDashboard() {
                   variant={activeTab === tab.id ? 'default' : 'ghost'}
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`flex items-center gap-2 whitespace-nowrap flex-shrink-0 min-w-fit px-3 py-2 text-sm ${
-                    activeTab === tab.id ? 'bg-blue-700 text-white' : 'text-white/80 hover:text-white'
+                    activeTab === tab.id ? 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl text-white' : 'text-white/80 hover:text-white'
                   }`}
                 >
                   <tab.icon className="h-4 w-4" />

@@ -90,9 +90,9 @@ export default function HelpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="glass glow-blue-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
             <Link href="/app/more">
@@ -101,7 +101,7 @@ export default function HelpPage() {
                 Back
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Help & Support</h1>
+            <h1 className="text-2xl font-bold text-white/80">Help & Support</h1>
           </div>
         </div>
       </div>
@@ -111,60 +111,60 @@ export default function HelpPage() {
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
             {/* Search */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="glass rounded-2xl glow-blue-sm p-6">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-800" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/80" />
                 <input
                   type="text"
                   placeholder="Search help articles..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-10 pr-4 py-3 border border-blue-500/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="glass rounded-2xl glow-blue-sm p-6">
               <h2 className="text-lg font-semibold mb-4">Popular Help Topics</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Link href="#faq-1" className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors">
-                  <Book className="h-5 w-5 text-blue-800 mr-3" />
+                <Link href="#faq-1" className="flex items-center p-4 border border-blue-500/50 rounded-2xl hover:border-blue-300 transition-colors">
+                  <Book className="h-5 w-5 text-blue-300 mr-3" />
                   <div>
-                    <h3 className="font-medium text-gray-900">Getting Started Guide</h3>
-                    <p className="text-sm text-gray-800">Learn the basics of the system</p>
+                    <h3 className="font-medium text-white/80">Getting Started Guide</h3>
+                    <p className="text-sm text-white/80">Learn the basics of the system</p>
                   </div>
                 </Link>
                 
-                <Link href="#faq-2" className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors">
-                  <Video className="h-5 w-5 text-purple-600 mr-3" />
+                <Link href="#faq-2" className="flex items-center p-4 border border-blue-500/50 rounded-2xl hover:border-blue-300 transition-colors">
+                  <Video className="h-5 w-5 text-purple-300 mr-3" />
                   <div>
-                    <h3 className="font-medium text-gray-900">Video Tutorials</h3>
-                    <p className="text-sm text-gray-800">Watch step-by-step tutorials</p>
+                    <h3 className="font-medium text-white/80">Video Tutorials</h3>
+                    <p className="text-sm text-white/80">Watch step-by-step tutorials</p>
                   </div>
                 </Link>
                 
-                <Link href="#faq-3" className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors">
-                  <FileText className="h-5 w-5 text-green-800 mr-3" />
+                <Link href="#faq-3" className="flex items-center p-4 border border-blue-500/50 rounded-2xl hover:border-blue-300 transition-colors">
+                  <FileText className="h-5 w-5 text-green-300 mr-3" />
                   <div>
-                    <h3 className="font-medium text-gray-900">User Manual</h3>
-                    <p className="text-sm text-gray-800">Download the complete guide</p>
+                    <h3 className="font-medium text-white/80">User Manual</h3>
+                    <p className="text-sm text-white/80">Download the complete guide</p>
                   </div>
                 </Link>
                 
-                <Link href="#contact" className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors">
+                <Link href="#contact" className="flex items-center p-4 border border-blue-500/50 rounded-2xl hover:border-blue-300 transition-colors">
                   <MessageCircle className="h-5 w-5 text-orange-600 mr-3" />
                   <div>
-                    <h3 className="font-medium text-gray-900">Contact Support</h3>
-                    <p className="text-sm text-gray-800">Get help from our team</p>
+                    <h3 className="font-medium text-white/80">Contact Support</h3>
+                    <p className="text-sm text-white/80">Get help from our team</p>
                   </div>
                 </Link>
               </div>
             </div>
 
             {/* Category Filter */}
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="glass rounded-2xl glow-blue-sm p-6">
               <div className="flex flex-wrap gap-2 mb-6">
                 {categories.map((category) => (
                   <Button
@@ -188,28 +188,28 @@ export default function HelpPage() {
                 
                 {filteredFAQs.length === 0 ? (
                   <div className="text-center py-8">
-                    <HelpCircle className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                    <p className="text-gray-700">No help articles found for your search.</p>
+                    <HelpCircle className="h-12 w-12 text-white/80 mx-auto mb-4" />
+                    <p className="text-white/80">No help articles found for your search.</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
                     {filteredFAQs.map((faq) => (
-                      <div key={faq.id} className="border border-gray-200 rounded-lg">
+                      <div key={faq.id} className="border border-blue-500/50 rounded-2xl">
                         <button
                           onClick={() => toggleFAQ(faq.id)}
-                          className="w-full flex items-center justify-between p-4 text-left hover:bg-white transition-colors"
+                          className="w-full flex items-center justify-between p-4 text-left hover:glass transition-colors"
                         >
-                          <h3 className="font-medium text-gray-900">{faq.question}</h3>
+                          <h3 className="font-medium text-white/80">{faq.question}</h3>
                           {expandedFAQ === faq.id ? (
-                            <ChevronDown className="h-5 w-5 text-gray-700" />
+                            <ChevronDown className="h-5 w-5 text-white/80" />
                           ) : (
-                            <ChevronRight className="h-5 w-5 text-gray-700" />
+                            <ChevronRight className="h-5 w-5 text-white/80" />
                           )}
                         </button>
                         
                         {expandedFAQ === faq.id && (
-                          <div className="px-4 pb-4 border-t border-gray-100">
-                            <p className="text-gray-800 pt-3">{faq.answer}</p>
+                          <div className="px-4 pb-4 border-t border-blue-500/50">
+                            <p className="text-white/80 pt-3">{faq.answer}</p>
                           </div>
                         )}
                       </div>
@@ -222,48 +222,48 @@ export default function HelpPage() {
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-8 space-y-6">
+            <div className="glass rounded-2xl glow-blue-sm p-6 sticky top-8 space-y-6">
               <div>
-                <h3 className="font-semibold text-gray-900 mb-4">Contact Support</h3>
+                <h3 className="font-semibold text-white/80 mb-4">Contact Support</h3>
                 
                 <div className="space-y-4">
                   <a
                     href="tel:2532788692"
-                    className="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors"
+                    className="flex items-center p-3 border border-blue-500/50 rounded-2xl hover:border-blue-300 transition-colors"
                   >
-                    <Phone className="h-5 w-5 text-green-800 mr-3" />
+                    <Phone className="h-5 w-5 text-green-300 mr-3" />
                     <div>
-                      <div className="font-medium text-gray-900">Phone</div>
-                      <div className="text-sm text-gray-800">(253) 278-8692</div>
+                      <div className="font-medium text-white/80">Phone</div>
+                      <div className="text-sm text-white/80">(253) 278-8692</div>
                     </div>
                   </a>
                   
                   <a
                     href="mailto:support@fisherbackflows.com"
-                    className="flex items-center p-3 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors"
+                    className="flex items-center p-3 border border-blue-500/50 rounded-2xl hover:border-blue-300 transition-colors"
                   >
-                    <Mail className="h-5 w-5 text-blue-800 mr-3" />
+                    <Mail className="h-5 w-5 text-blue-300 mr-3" />
                     <div>
-                      <div className="font-medium text-gray-900">Email</div>
-                      <div className="text-sm text-gray-800">support@fisherbackflows.com</div>
+                      <div className="font-medium text-white/80">Email</div>
+                      <div className="text-sm text-white/80">support@fisherbackflows.com</div>
                     </div>
                   </a>
                 </div>
               </div>
 
               <div className="border-t pt-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Quick Links</h3>
+                <h3 className="font-semibold text-white/80 mb-4">Quick Links</h3>
                 
                 <div className="space-y-2">
-                  <a href="#" className="flex items-center text-sm text-blue-800 hover:text-blue-700">
+                  <a href="#" className="flex items-center text-sm text-blue-300 hover:text-blue-700">
                     <ExternalLink className="h-4 w-4 mr-2" />
                     System Status
                   </a>
-                  <a href="#" className="flex items-center text-sm text-blue-800 hover:text-blue-700">
+                  <a href="#" className="flex items-center text-sm text-blue-300 hover:text-blue-700">
                     <ExternalLink className="h-4 w-4 mr-2" />
                     Feature Requests
                   </a>
-                  <a href="#" className="flex items-center text-sm text-blue-800 hover:text-blue-700">
+                  <a href="#" className="flex items-center text-sm text-blue-300 hover:text-blue-700">
                     <ExternalLink className="h-4 w-4 mr-2" />
                     Report a Bug
                   </a>
@@ -271,10 +271,10 @@ export default function HelpPage() {
               </div>
 
               <div className="border-t pt-6">
-                <div className="p-4 bg-blue-200 rounded-lg">
+                <div className="p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl">
                   <div className="flex items-start">
-                    <MessageCircle className="h-5 w-5 text-blue-800 mr-3 mt-0.5" />
-                    <div className="text-sm text-blue-800">
+                    <MessageCircle className="h-5 w-5 text-blue-300 mr-3 mt-0.5" />
+                    <div className="text-sm text-blue-300">
                       <p className="font-medium mb-1">Need Help?</p>
                       <p className="text-blue-700">
                         Our support team is available Monday-Friday, 8 AM - 5 PM PST.

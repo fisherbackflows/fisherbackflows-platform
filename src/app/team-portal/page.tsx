@@ -76,27 +76,27 @@ export default function TeamPortalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 shadow-sm">
+      <header className="glass border-b border-blue-400 glow-blue-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <Link href="/" className="flex items-center space-x-3">
               <Logo width={160} height={128} />
               <div>
-                <h1 className="text-lg font-bold text-slate-900">Fisher Backflows</h1>
-                <p className="text-xs text-slate-800">Business Portal</p>
+                <h1 className="text-lg font-bold text-white">Fisher Backflows</h1>
+                <p className="text-xs text-white/90">Business Portal</p>
               </div>
             </Link>
             <nav className="hidden md:flex space-x-1">
               <Link href="/">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:glass transition-all duration-200 font-medium">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Home
                 </Button>
               </Link>
               <Link href="/portal">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:glass transition-all duration-200 font-medium">
                   Customer Portal
                 </Button>
               </Link>
@@ -106,26 +106,26 @@ export default function TeamPortalPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6 bg-white">
+      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6 glass">
         <div className="w-full max-w-md">
-          <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg">
+          <div className="glass border border-blue-400 rounded-2xl p-8 glow-blue">
             <div className="text-center mb-8">
-              <div className="inline-flex p-4 rounded-2xl bg-slate-50 mb-6">
-                <Lock className="h-8 w-8 text-slate-700" />
+              <div className="inline-flex p-4 rounded-2xl glass mb-6">
+                <Lock className="h-8 w-8 text-white/80" />
               </div>
-              <h1 className="text-3xl font-bold text-slate-900 mb-2">Business Portal</h1>
-              <p className="text-slate-800">Sign in to access team management tools</p>
+              <h1 className="text-3xl font-bold text-white mb-2">Business Portal</h1>
+              <p className="text-white/90">Sign in to access team management tools</p>
             </div>
 
             {error && (
-              <div className="bg-red-200 border border-red-200 rounded-xl p-4 mb-6">
+              <div className="bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl border border-red-200 rounded-xl p-4 mb-6">
                 <p className="text-sm text-center text-red-700">{error}</p>
               </div>
             )}
 
             <form onSubmit={handleLogin} className="space-y-6">
               <div>
-                <Label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+                <Label htmlFor="email" className="block text-sm font-medium text-white/80 mb-2">
                   Email Address
                 </Label>
                 <Input
@@ -133,14 +133,14 @@ export default function TeamPortalPage() {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                  className="w-full px-4 py-3 rounded-xl border border-blue-400 glass text-white placeholder-slate-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
                   placeholder="admin@fisherbackflows.com"
                   required
                 />
               </div>
 
               <div>
-                <Label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
+                <Label htmlFor="password" className="block text-sm font-medium text-white/80 mb-2">
                   Password
                 </Label>
                 <div className="relative">
@@ -149,14 +149,14 @@ export default function TeamPortalPage() {
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 pr-12 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder-slate-600 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                    className="w-full px-4 py-3 pr-12 rounded-xl border border-blue-400 glass text-white placeholder-slate-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
                     placeholder="Enter your password"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-800 hover:text-slate-800 transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/90 hover:text-white/90 transition-colors"
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
@@ -166,7 +166,7 @@ export default function TeamPortalPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3 text-white font-semibold rounded-xl bg-slate-900 hover:bg-slate-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                className="w-full py-3 text-white font-semibold rounded-xl bg-black/40 backdrop-blur-xl hover:bg-black/40 backdrop-blur-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed glow-blue"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center space-x-2">
@@ -182,13 +182,13 @@ export default function TeamPortalPage() {
               </Button>
             </form>
 
-            <div className="mt-8 text-center text-slate-700 text-sm">
+            <div className="mt-8 text-center text-white/80 text-sm">
               <p>Need help accessing your account?</p>
               <p className="mt-2">
                 Contact IT support at{' '}
                 <a 
                   href="mailto:support@fisherbackflows.com" 
-                  className="text-blue-800 hover:text-blue-700 transition-colors font-semibold"
+                  className="text-blue-300 hover:text-blue-700 transition-colors font-semibold"
                 >
                   support@fisherbackflows.com
                 </a>

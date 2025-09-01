@@ -100,9 +100,9 @@ export default function CustomerRegistrationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Professional Header */}
-      <header className="bg-white border-b border-slate-200 shadow-sm">
+      <header className="glass border-b border-blue-400 glow-blue-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <Link href="/">
@@ -110,17 +110,17 @@ export default function CustomerRegistrationPage() {
             </Link>
             <nav className="hidden md:flex space-x-3 items-center">
               <Link href="/">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-colors duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-colors duration-200 font-medium">
                   Home
                 </Button>
               </Link>
               <Link href="/portal">
-                <Button className="bg-blue-700 hover:bg-blue-700 text-slate-900 px-5 py-2.5 rounded-lg font-medium shadow-sm transition-colors duration-200">
+                <Button className="glass-btn-primary hover:glow-blue text-white px-5 py-2.5 rounded-2xl font-medium glow-blue-sm transition-colors duration-200">
                   Sign In
                 </Button>
               </Link>
               <Link href="/team-portal">
-                <Button variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50 hover:border-emerald-300 px-5 py-2.5 rounded-lg font-medium transition-colors duration-200">
+                <Button variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-500/20 border border-emerald-400 glow-blue-sm hover:border-emerald-300 px-5 py-2.5 rounded-2xl font-medium transition-colors duration-200">
                   Team Portal
                 </Button>
               </Link>
@@ -132,28 +132,28 @@ export default function CustomerRegistrationPage() {
       <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6">
         <div className="w-full max-w-4xl">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-slate-900 mb-4">
+            <h1 className="text-4xl font-bold text-white mb-4">
               Create Your Customer Account
             </h1>
-            <p className="text-xl text-slate-800">
+            <p className="text-xl text-white/90">
               Join Fisher Backflows to manage your backflow testing services online
             </p>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-8 max-w-2xl mx-auto shadow-lg">
+          <div className="glass border border-blue-400 rounded-2xl p-8 max-w-2xl mx-auto glow-blue">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Personal Information */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-900 border-b border-slate-200 pb-2">Personal Information</h3>
+                <h3 className="text-lg font-semibold text-white border-b border-blue-400 pb-2">Personal Information</h3>
                 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="firstName" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="firstName" className="block text-sm font-medium text-white/80 mb-2">
                       First Name *
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-slate-800" />
+                        <User className="h-5 w-5 text-white/90" />
                       </div>
                       <input
                         id="firstName"
@@ -161,19 +161,19 @@ export default function CustomerRegistrationPage() {
                         value={formData.firstName}
                         onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
                         placeholder="John"
-                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
+                        className="w-full pl-10 pr-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                         required
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="lastName" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="lastName" className="block text-sm font-medium text-white/80 mb-2">
                       Last Name *
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-slate-800" />
+                        <User className="h-5 w-5 text-white/90" />
                       </div>
                       <input
                         id="lastName"
@@ -181,7 +181,7 @@ export default function CustomerRegistrationPage() {
                         value={formData.lastName}
                         onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
                         placeholder="Doe"
-                        className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
+                        className="w-full pl-10 pr-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                         required
                       />
                     </div>
@@ -189,12 +189,12 @@ export default function CustomerRegistrationPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-white/80 mb-2">
                     Email Address *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-slate-800" />
+                      <Mail className="h-5 w-5 text-white/90" />
                     </div>
                     <input
                       id="email"
@@ -202,19 +202,19 @@ export default function CustomerRegistrationPage() {
                       value={formData.email}
                       onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                       placeholder="john@example.com"
-                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
+                      className="w-full pl-10 pr-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor="phone" className="block text-sm font-medium text-white/80 mb-2">
                     Phone Number *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Phone className="h-5 w-5 text-slate-800" />
+                      <Phone className="h-5 w-5 text-white/90" />
                     </div>
                     <input
                       id="phone"
@@ -222,7 +222,7 @@ export default function CustomerRegistrationPage() {
                       value={formData.phone}
                       onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                       placeholder="(253) 555-0123"
-                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
+                      className="w-full pl-10 pr-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                       required
                     />
                   </div>
@@ -231,15 +231,15 @@ export default function CustomerRegistrationPage() {
 
               {/* Property Address */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-900 border-b border-slate-200 pb-2">Property Address</h3>
+                <h3 className="text-lg font-semibold text-white border-b border-blue-400 pb-2">Property Address</h3>
                 
                 <div>
-                  <label htmlFor="street" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor="street" className="block text-sm font-medium text-white/80 mb-2">
                     Street Address *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Home className="h-5 w-5 text-slate-800" />
+                      <Home className="h-5 w-5 text-white/90" />
                     </div>
                     <input
                       id="street"
@@ -250,7 +250,7 @@ export default function CustomerRegistrationPage() {
                         address: { ...prev.address, street: e.target.value }
                       }))}
                       placeholder="123 Main Street"
-                      className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
+                      className="w-full pl-10 pr-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                       required
                     />
                   </div>
@@ -258,7 +258,7 @@ export default function CustomerRegistrationPage() {
 
                 <div className="grid md:grid-cols-3 gap-4">
                   <div>
-                    <label htmlFor="city" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="city" className="block text-sm font-medium text-white/80 mb-2">
                       City *
                     </label>
                     <input
@@ -270,13 +270,13 @@ export default function CustomerRegistrationPage() {
                         address: { ...prev.address, city: e.target.value }
                       }))}
                       placeholder="Tacoma"
-                      className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
+                      className="w-full px-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                       required
                     />
                   </div>
 
                   <div>
-                    <label htmlFor="state" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="state" className="block text-sm font-medium text-white/80 mb-2">
                       State
                     </label>
                     <select
@@ -286,7 +286,7 @@ export default function CustomerRegistrationPage() {
                         ...prev, 
                         address: { ...prev.address, state: e.target.value }
                       }))}
-                      className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                      className="w-full px-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                       required
                     >
                       <option value="WA">WA</option>
@@ -294,7 +294,7 @@ export default function CustomerRegistrationPage() {
                   </div>
 
                   <div>
-                    <label htmlFor="zipCode" className="block text-sm font-medium text-slate-700 mb-2">
+                    <label htmlFor="zipCode" className="block text-sm font-medium text-white/80 mb-2">
                       ZIP Code *
                     </label>
                     <input
@@ -306,21 +306,21 @@ export default function CustomerRegistrationPage() {
                         address: { ...prev.address, zipCode: e.target.value }
                       }))}
                       placeholder="98401"
-                      className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
+                      className="w-full px-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="propertyType" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor="propertyType" className="block text-sm font-medium text-white/80 mb-2">
                     Property Type
                   </label>
                   <select
                     id="propertyType"
                     value={formData.propertyType}
                     onChange={(e) => setFormData(prev => ({ ...prev, propertyType: e.target.value as 'residential' | 'commercial' }))}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900"
+                    className="w-full px-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                     required
                   >
                     <option value="residential">Residential</option>
@@ -331,15 +331,15 @@ export default function CustomerRegistrationPage() {
 
               {/* Security */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-slate-900 border-b border-slate-200 pb-2">Account Security</h3>
+                <h3 className="text-lg font-semibold text-white border-b border-blue-400 pb-2">Account Security</h3>
                 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor="password" className="block text-sm font-medium text-white/80 mb-2">
                     Password *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-slate-800" />
+                      <Lock className="h-5 w-5 text-white/90" />
                     </div>
                     <input
                       id="password"
@@ -347,14 +347,14 @@ export default function CustomerRegistrationPage() {
                       value={formData.password}
                       onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                       placeholder="Create a strong password"
-                      className="w-full pl-10 pr-12 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
+                      className="w-full pl-10 pr-12 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                       required
                       minLength={8}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-800 hover:text-slate-800 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-white/90 hover:text-white/90 transition-colors"
                     >
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
@@ -362,12 +362,12 @@ export default function CustomerRegistrationPage() {
                 </div>
 
                 <div>
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-2">
+                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-white/80 mb-2">
                     Confirm Password *
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-slate-800" />
+                      <Lock className="h-5 w-5 text-white/90" />
                     </div>
                     <input
                       id="confirmPassword"
@@ -375,14 +375,14 @@ export default function CustomerRegistrationPage() {
                       value={formData.confirmPassword}
                       onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                       placeholder="Confirm your password"
-                      className="w-full pl-10 pr-12 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-400"
+                      className="w-full pl-10 pr-12 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
                       required
                       minLength={8}
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-800 hover:text-slate-800 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-white/90 hover:text-white/90 transition-colors"
                     >
                       {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
@@ -397,16 +397,16 @@ export default function CustomerRegistrationPage() {
                   type="checkbox"
                   checked={formData.agreeToTerms}
                   onChange={(e) => setFormData(prev => ({ ...prev, agreeToTerms: e.target.checked }))}
-                  className="mt-1 h-4 w-4 text-blue-800 border-gray-300 rounded focus:ring-blue-500"
+                  className="mt-1 h-4 w-4 text-blue-300 border-blue-500/50 rounded focus:ring-blue-400"
                   required
                 />
-                <label htmlFor="agreeToTerms" className="text-sm text-slate-700">
+                <label htmlFor="agreeToTerms" className="text-sm text-white/80">
                   I agree to the{' '}
-                  <a href="/terms" className="text-blue-800 hover:text-blue-700 underline font-medium">
+                  <a href="/terms" className="text-blue-300 hover:text-blue-700 underline font-medium">
                     Terms of Service
                   </a>{' '}
                   and{' '}
-                  <a href="/privacy" className="text-blue-800 hover:text-blue-700 underline font-medium">
+                  <a href="/privacy" className="text-blue-300 hover:text-blue-700 underline font-medium">
                     Privacy Policy
                   </a>
                 </label>
@@ -414,16 +414,16 @@ export default function CustomerRegistrationPage() {
 
               {/* Error Message */}
               {error && (
-                <div className="bg-red-200 border border-red-200 rounded-lg p-4 flex items-center">
-                  <AlertCircle className="h-5 w-5 text-red-800 mr-3 flex-shrink-0" />
+                <div className="bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl border border-red-200 rounded-2xl p-4 flex items-center">
+                  <AlertCircle className="h-5 w-5 text-red-300 mr-3 flex-shrink-0" />
                   <p className="text-red-700 text-sm">{error}</p>
                 </div>
               )}
 
               {/* Success Message */}
               {success && (
-                <div className="bg-green-200 border border-green-200 rounded-lg p-4 flex items-center">
-                  <CheckCircle className="h-5 w-5 text-green-800 mr-3 flex-shrink-0" />
+                <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl border border-green-200 rounded-2xl p-4 flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-300 mr-3 flex-shrink-0" />
                   <p className="text-green-700 text-sm">{success}</p>
                 </div>
               )}
@@ -432,7 +432,7 @@ export default function CustomerRegistrationPage() {
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-blue-700 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-slate-900 py-3 text-lg font-semibold rounded-lg shadow-sm transition-colors duration-200"
+                className="w-full glass-btn-primary hover:glow-blue disabled:opacity-50 disabled:cursor-not-allowed text-white py-3 text-lg font-semibold rounded-2xl glow-blue-sm transition-colors duration-200"
               >
                 {loading ? (
                   <>
@@ -448,14 +448,14 @@ export default function CustomerRegistrationPage() {
             {/* Sign In Link */}
             <div className="mt-6 text-center">
               <div className="flex items-center my-4">
-                <div className="flex-1 border-t border-slate-200"></div>
-                <span className="px-4 text-slate-700 text-xs">Already have an account?</span>
-                <div className="flex-1 border-t border-slate-200"></div>
+                <div className="flex-1 border-t border-blue-400"></div>
+                <span className="px-4 text-white/80 text-xs">Already have an account?</span>
+                <div className="flex-1 border-t border-blue-400"></div>
               </div>
               
               <Link
                 href="/portal"
-                className="inline-flex items-center justify-center w-full border border-blue-200 bg-blue-200 text-blue-700 hover:bg-blue-300 hover:border-blue-300 py-3 rounded-lg transition-colors duration-200 font-medium"
+                className="inline-flex items-center justify-center w-full border border-blue-200 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl text-blue-700 hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm hover:border-blue-300 py-3 rounded-2xl transition-colors duration-200 font-medium"
               >
                 Sign In to Your Account
               </Link>
@@ -464,9 +464,9 @@ export default function CustomerRegistrationPage() {
 
           {/* Security Notice */}
           <div className="mt-8 text-center">
-            <div className="bg-blue-200 border border-blue-200 rounded-lg p-4 max-w-md mx-auto">
-              <div className="flex items-center justify-center space-x-3 text-slate-700 text-sm">
-                <Shield className="h-5 w-5 flex-shrink-0 text-blue-800" />
+            <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-200 rounded-2xl p-4 max-w-md mx-auto">
+              <div className="flex items-center justify-center space-x-3 text-white/80 text-sm">
+                <Shield className="h-5 w-5 flex-shrink-0 text-blue-300" />
                 <span>
                   Your information is protected with bank-level security.
                 </span>

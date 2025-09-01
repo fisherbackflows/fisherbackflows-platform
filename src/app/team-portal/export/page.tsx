@@ -34,21 +34,21 @@ export default function ExportPage() {
       id: 'customers',
       title: 'Customer Database',
       description: 'Export all customer information and device details',
-      icon: <Users className="h-6 w-6 text-blue-800" />,
+      icon: <Users className="h-6 w-6 text-blue-300" />,
       format: 'CSV/Excel'
     },
     {
       id: 'test-reports',
       title: 'Test Reports',
       description: 'Export test reports with results and compliance data',
-      icon: <FileText className="h-6 w-6 text-green-800" />,
+      icon: <FileText className="h-6 w-6 text-green-300" />,
       format: 'CSV/PDF'
     },
     {
       id: 'invoices',
       title: 'Invoice Data',
       description: 'Export billing and payment information',
-      icon: <DollarSign className="h-6 w-6 text-purple-600" />,
+      icon: <DollarSign className="h-6 w-6 text-purple-300" />,
       format: 'CSV/Excel'
     },
     {
@@ -77,9 +77,9 @@ export default function ExportPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="glass glow-blue-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
             <Link href="/app/more">
@@ -88,7 +88,7 @@ export default function ExportPage() {
                 Back
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Export Data</h1>
+            <h1 className="text-2xl font-bold text-white/80">Export Data</h1>
           </div>
         </div>
       </div>
@@ -97,33 +97,33 @@ export default function ExportPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Export Type Selection */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-sm p-6">
+            <div className="glass rounded-2xl glow-blue-sm p-6">
               <h2 className="text-lg font-semibold mb-4">Select Export Type</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {exportTypes.map((exportType) => (
                   <div
                     key={exportType.id}
-                    className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+                    className={`p-4 border-2 rounded-2xl cursor-pointer transition-colors ${
                       selectedExport === exportType.id
-                        ? 'border-blue-500 bg-blue-200'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-blue-500 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl'
+                        : 'border-blue-500/50 hover:border-blue-500/50'
                     }`}
                     onClick={() => setSelectedExport(exportType.id)}
                   >
                     <div className="flex items-start space-x-3">
                       {exportType.icon}
                       <div className="flex-1">
-                        <h3 className="font-medium text-gray-900">{exportType.title}</h3>
-                        <p className="text-sm text-gray-800 mt-1">{exportType.description}</p>
+                        <h3 className="font-medium text-white/80">{exportType.title}</h3>
+                        <p className="text-sm text-white/80 mt-1">{exportType.description}</p>
                         <div className="flex items-center mt-2">
-                          <span className="text-xs bg-slate-100 text-slate-800 px-2 py-1 rounded">
+                          <span className="text-xs glass text-white/90 px-2 py-1 rounded">
                             {exportType.format}
                           </span>
                         </div>
                       </div>
                       {selectedExport === exportType.id && (
-                        <CheckCircle className="h-5 w-5 text-blue-800" />
+                        <CheckCircle className="h-5 w-5 text-blue-300" />
                       )}
                     </div>
                   </div>
@@ -133,7 +133,7 @@ export default function ExportPage() {
 
             {/* Date Range (for applicable exports) */}
             {(selectedExport === 'test-reports' || selectedExport === 'invoices') && (
-              <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
+              <div className="glass rounded-2xl glow-blue-sm p-6 mt-6">
                 <h2 className="text-lg font-semibold mb-4">
                   <Calendar className="h-5 w-5 inline mr-2" />
                   Date Range
@@ -141,30 +141,30 @@ export default function ExportPage() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       Start Date
                     </label>
                     <input
                       type="date"
                       value={dateRange.startDate}
                       onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       End Date
                     </label>
                     <input
                       type="date"
                       value={dateRange.endDate}
                       onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                   </div>
                 </div>
                 
-                <p className="text-sm text-gray-800 mt-2">
+                <p className="text-sm text-white/80 mt-2">
                   Leave blank to export all records
                 </p>
               </div>
@@ -172,7 +172,7 @@ export default function ExportPage() {
 
             {/* Field Selection */}
             {selectedExport && (
-              <div className="bg-white rounded-lg shadow-sm p-6 mt-6">
+              <div className="glass rounded-2xl glow-blue-sm p-6 mt-6">
                 <h2 className="text-lg font-semibold mb-4">
                   <Settings className="h-5 w-5 inline mr-2" />
                   Include Fields
@@ -184,9 +184,9 @@ export default function ExportPage() {
                       type="checkbox"
                       checked={includeFields.customerInfo}
                       onChange={(e) => setIncludeFields(prev => ({ ...prev, customerInfo: e.target.checked }))}
-                      className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
+                      className="mr-3 h-4 w-4 text-blue-300 focus:ring-blue-400 border-blue-500/50 rounded"
                     />
-                    <span className="text-sm font-medium text-gray-700">Customer Information</span>
+                    <span className="text-sm font-medium text-white/80">Customer Information</span>
                   </label>
                   
                   <label className="flex items-center">
@@ -194,9 +194,9 @@ export default function ExportPage() {
                       type="checkbox"
                       checked={includeFields.deviceInfo}
                       onChange={(e) => setIncludeFields(prev => ({ ...prev, deviceInfo: e.target.checked }))}
-                      className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
+                      className="mr-3 h-4 w-4 text-blue-300 focus:ring-blue-400 border-blue-500/50 rounded"
                     />
-                    <span className="text-sm font-medium text-gray-700">Device Information</span>
+                    <span className="text-sm font-medium text-white/80">Device Information</span>
                   </label>
                   
                   <label className="flex items-center">
@@ -204,9 +204,9 @@ export default function ExportPage() {
                       type="checkbox"
                       checked={includeFields.testResults}
                       onChange={(e) => setIncludeFields(prev => ({ ...prev, testResults: e.target.checked }))}
-                      className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
+                      className="mr-3 h-4 w-4 text-blue-300 focus:ring-blue-400 border-blue-500/50 rounded"
                     />
-                    <span className="text-sm font-medium text-gray-700">Test Results</span>
+                    <span className="text-sm font-medium text-white/80">Test Results</span>
                   </label>
                   
                   <label className="flex items-center">
@@ -214,9 +214,9 @@ export default function ExportPage() {
                       type="checkbox"
                       checked={includeFields.invoiceData}
                       onChange={(e) => setIncludeFields(prev => ({ ...prev, invoiceData: e.target.checked }))}
-                      className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
+                      className="mr-3 h-4 w-4 text-blue-300 focus:ring-blue-400 border-blue-500/50 rounded"
                     />
-                    <span className="text-sm font-medium text-gray-700">Invoice Data</span>
+                    <span className="text-sm font-medium text-white/80">Invoice Data</span>
                   </label>
                   
                   <label className="flex items-center">
@@ -224,9 +224,9 @@ export default function ExportPage() {
                       type="checkbox"
                       checked={includeFields.notes}
                       onChange={(e) => setIncludeFields(prev => ({ ...prev, notes: e.target.checked }))}
-                      className="mr-3 h-4 w-4 text-blue-800 focus:ring-blue-500 border-gray-300 rounded"
+                      className="mr-3 h-4 w-4 text-blue-300 focus:ring-blue-400 border-blue-500/50 rounded"
                     />
-                    <span className="text-sm font-medium text-gray-700">Notes & Comments</span>
+                    <span className="text-sm font-medium text-white/80">Notes & Comments</span>
                   </label>
                 </div>
               </div>
@@ -235,22 +235,22 @@ export default function ExportPage() {
 
           {/* Export Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm p-6 sticky top-8">
+            <div className="glass rounded-2xl glow-blue-sm p-6 sticky top-8">
               <h2 className="text-lg font-semibold mb-4">Export Summary</h2>
               
               {selectedExport ? (
                 <div className="space-y-4">
                   <div>
-                    <span className="text-sm font-medium text-gray-700">Export Type:</span>
-                    <p className="text-sm text-gray-900 mt-1">
+                    <span className="text-sm font-medium text-white/80">Export Type:</span>
+                    <p className="text-sm text-white/80 mt-1">
                       {exportTypes.find(t => t.id === selectedExport)?.title}
                     </p>
                   </div>
                   
                   {(selectedExport === 'test-reports' || selectedExport === 'invoices') && (
                     <div>
-                      <span className="text-sm font-medium text-gray-700">Date Range:</span>
-                      <p className="text-sm text-gray-900 mt-1">
+                      <span className="text-sm font-medium text-white/80">Date Range:</span>
+                      <p className="text-sm text-white/80 mt-1">
                         {dateRange.startDate && dateRange.endDate
                           ? `${dateRange.startDate} to ${dateRange.endDate}`
                           : 'All records'
@@ -260,8 +260,8 @@ export default function ExportPage() {
                   )}
                   
                   <div>
-                    <span className="text-sm font-medium text-gray-700">Format:</span>
-                    <p className="text-sm text-gray-900 mt-1">
+                    <span className="text-sm font-medium text-white/80">Format:</span>
+                    <p className="text-sm text-white/80 mt-1">
                       {exportTypes.find(t => t.id === selectedExport)?.format}
                     </p>
                   </div>
@@ -269,7 +269,7 @@ export default function ExportPage() {
                   <div className="pt-4">
                     <Button 
                       onClick={handleExport}
-                      className="w-full bg-blue-700 hover:bg-blue-700"
+                      className="w-full glass-btn-primary hover:glow-blue"
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Export Data
@@ -278,8 +278,8 @@ export default function ExportPage() {
                 </div>
               ) : (
                 <div className="text-center py-8">
-                  <Download className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-700">Select an export type to begin</p>
+                  <Download className="h-12 w-12 text-white/80 mx-auto mb-4" />
+                  <p className="text-white/80">Select an export type to begin</p>
                 </div>
               )}
             </div>

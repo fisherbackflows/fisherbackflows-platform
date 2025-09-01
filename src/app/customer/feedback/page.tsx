@@ -31,7 +31,7 @@ export default function FeedbackPage() {
   return (
     <div className="min-h-screen bg-black">
       <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5" />
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-purple-500/5" />
 
       <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
         <FeedbackForm

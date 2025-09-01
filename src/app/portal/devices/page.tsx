@@ -91,11 +91,11 @@ export default function DevicesPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Passed': return 'text-green-400 bg-green-400/20 border-green-400/30';
-      case 'Failed': return 'text-red-400 bg-red-400/20 border-red-400/30';
+      case 'Passed': return 'text-green-400 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border-green-400/30';
+      case 'Failed': return 'text-red-400 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border-red-400/30';
       case 'Due Soon': return 'text-yellow-400 bg-yellow-400/20 border-yellow-400/30';
-      case 'Overdue': return 'text-red-400 bg-red-400/30 border-red-400/40';
-      default: return 'text-blue-400 bg-blue-400/20 border-blue-400/30';
+      case 'Overdue': return 'text-red-400 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/30 border-red-400/40';
+      default: return 'text-blue-400 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border-blue-400/30';
     }
   };
 
@@ -156,14 +156,14 @@ export default function DevicesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 shadow-sm">
+      <header className="glass border-b border-blue-400 glow-blue-sm">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <Link href="/portal/dashboard">
-                <Button className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-3 py-2 rounded-lg">
+                <Button className="glass hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm text-white px-3 py-2 rounded-2xl">
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
               </Link>
@@ -172,12 +172,12 @@ export default function DevicesPage() {
             <div className="flex items-center space-x-4">
               <Button 
                 onClick={() => { setEditingDevice(null); setShowAddForm(true); }}
-                className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg"
+                className="glass-btn-primary hover:glow-blue text-white px-4 py-2 rounded-2xl"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Add Device
               </Button>
-              <Button className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-4 py-2 rounded-lg">
+              <Button className="glass hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm text-white px-4 py-2 rounded-2xl">
                 <Settings className="h-4 w-4" />
               </Button>
             </div>
@@ -188,28 +188,28 @@ export default function DevicesPage() {
       <div className="max-w-7xl mx-auto px-4 py-8 ">
         {/* Page Title */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Backflow Device Management</h1>
-          <p className="text-slate-700">
+          <h1 className="text-3xl font-bold text-white mb-2">Backflow Device Management</h1>
+          <p className="text-white/80">
             Manage all your backflow prevention devices and stay compliant with testing requirements.
           </p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-slate-200 border border-slate-300 rounded-xl p-6 hover:shadow-md transition-shadow">
+          <div className="glass border border-blue-400 rounded-xl p-6 hover:glow-blue transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="bg-blue-200 rounded-lg p-2">
+              <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl p-2">
                 <Droplet className="h-6 w-6 text-blue-400" />
               </div>
               <span className="text-2xl font-bold">{deviceStats.total}</span>
             </div>
             <h3 className="font-medium mb-1">Total Devices</h3>
-            <p className="text-slate-700 text-sm">All registered devices</p>
+            <p className="text-white/80 text-sm">All registered devices</p>
           </div>
 
-          <div className="bg-slate-200 border border-slate-300 rounded-xl p-6 hover:shadow-md transition-shadow">
+          <div className="glass border border-blue-400 rounded-xl p-6 hover:glow-blue transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="bg-blue-200 rounded-lg p-2">
+              <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl p-2">
                 <AlertTriangle className={`h-6 w-6 ${deviceStats.dueSoon > 0 ? 'text-yellow-400' : 'text-green-400'}`} />
               </div>
               <span className={`text-2xl font-bold ${deviceStats.dueSoon > 0 ? 'text-yellow-400' : 'text-green-400'}`}>
@@ -217,57 +217,57 @@ export default function DevicesPage() {
               </span>
             </div>
             <h3 className="font-medium mb-1">Due Soon</h3>
-            <p className="text-slate-700 text-sm">Tests needed within 30 days</p>
+            <p className="text-white/80 text-sm">Tests needed within 30 days</p>
           </div>
 
-          <div className="bg-slate-200 border border-slate-300 rounded-xl p-6 hover:shadow-md transition-shadow">
+          <div className="glass border border-blue-400 rounded-xl p-6 hover:glow-blue transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="bg-blue-200 rounded-lg p-2">
+              <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl p-2">
                 <CheckCircle className="h-6 w-6 text-green-400" />
               </div>
               <span className="text-2xl font-bold text-green-400">{deviceStats.passed}</span>
             </div>
             <h3 className="font-medium mb-1">Passed Tests</h3>
-            <p className="text-slate-700 text-sm">Current compliant devices</p>
+            <p className="text-white/80 text-sm">Current compliant devices</p>
           </div>
 
-          <div className="bg-slate-200 border border-slate-300 rounded-xl p-6 hover:shadow-md transition-shadow">
+          <div className="glass border border-blue-400 rounded-xl p-6 hover:glow-blue transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="bg-blue-200 rounded-lg p-2">
+              <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl p-2">
                 <Clock className="h-6 w-6 text-blue-400" />
               </div>
               <span className="text-2xl font-bold">{deviceStats.failed}</span>
             </div>
             <h3 className="font-medium mb-1">Failed Tests</h3>
-            <p className="text-slate-700 text-sm">Devices needing attention</p>
+            <p className="text-white/80 text-sm">Devices needing attention</p>
           </div>
         </div>
 
         {/* Search and Filter */}
-        <div className="bg-slate-200 border border-slate-300 rounded-xl p-6 mb-8">
+        <div className="glass border border-blue-400 rounded-xl p-6 mb-8">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/90" />
               <input
                 type="text"
                 placeholder="Search devices by location, serial number, make, or model..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="border border-slate-300 bg-white text-slate-900 w-full pl-10 pr-4 py-3 rounded-lg text-slate-900 placeholder-slate-500"
+                className="border border-blue-400 glass text-white w-full pl-10 pr-4 py-3 rounded-2xl text-white placeholder-white/50"
               />
             </div>
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <Filter className="h-5 w-5 text-slate-700" />
+                <Filter className="h-5 w-5 text-white/80" />
                 <select
                   value={filterStatus}
                   onChange={(e) => setFilterStatus(e.target.value)}
-                  className="border border-slate-300 bg-white text-slate-900 px-4 py-3 rounded-lg text-slate-900 bg-transparent"
+                  className="border border-blue-400 glass text-white px-4 py-3 rounded-2xl text-white bg-transparent"
                 >
-                  <option value="all" className="bg-slate-200">All Devices</option>
-                  <option value="due-soon" className="bg-slate-200">Due Soon</option>
-                  <option value="passed" className="bg-slate-200">Passed</option>
-                  <option value="failed" className="bg-slate-200">Failed</option>
+                  <option value="all" className="glass">All Devices</option>
+                  <option value="due-soon" className="glass">Due Soon</option>
+                  <option value="passed" className="glass">Passed</option>
+                  <option value="failed" className="glass">Failed</option>
                 </select>
               </div>
             </div>
@@ -277,11 +277,11 @@ export default function DevicesPage() {
         {/* Device List */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredDevices.map((device) => (
-            <div key={device.id} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm ">
+            <div key={device.id} className="glass border border-blue-400 rounded-2xl p-6 glow-blue-sm ">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex-1">
-                  <h3 className="font-bold text-xl text-slate-900 mb-1">{device.location}</h3>
-                  <p className="text-slate-700 text-sm mb-2">{device.address}</p>
+                  <h3 className="font-bold text-xl text-white mb-1">{device.location}</h3>
+                  <p className="text-white/80 text-sm mb-2">{device.address}</p>
                   <div className="flex items-center space-x-4 text-sm text-white/70">
                     <span>{device.make} {device.model}</span>
                     <span>•</span>
@@ -296,21 +296,21 @@ export default function DevicesPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
-                <div className="bg-white border border-slate-200 rounded-lg p-3">
+                <div className="glass border border-blue-400 rounded-2xl p-3">
                   <p className="text-white/50 mb-1">Device Type</p>
-                  <p className="text-slate-800 font-medium">{device.type}</p>
+                  <p className="text-white/90 font-medium">{device.type}</p>
                 </div>
-                <div className="bg-white border border-slate-200 rounded-lg p-3">
+                <div className="glass border border-blue-400 rounded-2xl p-3">
                   <p className="text-white/50 mb-1">Install Date</p>
-                  <p className="text-slate-800 font-medium">{new Date(device.installDate).toLocaleDateString()}</p>
+                  <p className="text-white/90 font-medium">{new Date(device.installDate).toLocaleDateString()}</p>
                 </div>
-                <div className="bg-white border border-slate-200 rounded-lg p-3">
+                <div className="glass border border-blue-400 rounded-2xl p-3">
                   <p className="text-white/50 mb-1">Last Test</p>
-                  <p className="text-slate-800 font-medium">{new Date(device.lastTestDate).toLocaleDateString()}</p>
+                  <p className="text-white/90 font-medium">{new Date(device.lastTestDate).toLocaleDateString()}</p>
                 </div>
-                <div className="bg-white border border-slate-200 rounded-lg p-3">
+                <div className="glass border border-blue-400 rounded-2xl p-3">
                   <p className="text-white/50 mb-1">Next Test Due</p>
-                  <p className="text-slate-800 font-medium">{new Date(device.nextTestDate).toLocaleDateString()}</p>
+                  <p className="text-white/90 font-medium">{new Date(device.nextTestDate).toLocaleDateString()}</p>
                 </div>
               </div>
 
@@ -323,36 +323,36 @@ export default function DevicesPage() {
                   </p>
                 </div>
                 {device.photos.length > 0 && (
-                  <div className="text-sm text-slate-700">
+                  <div className="text-sm text-white/80">
                     {device.photos.length} photo{device.photos.length !== 1 ? 's' : ''}
                   </div>
                 )}
               </div>
 
               {device.notes && (
-                <div className="bg-blue-200 rounded-lg p-3 mb-4">
+                <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl p-3 mb-4">
                   <p className="text-white/50 text-xs mb-1">Notes</p>
-                  <p className="text-slate-800 text-sm">{device.notes}</p>
+                  <p className="text-white/90 text-sm">{device.notes}</p>
                 </div>
               )}
 
               <div className="flex space-x-2">
-                <Button className="flex-1 bg-blue-700 hover:bg-blue-800 text-white py-2 rounded-lg text-sm">
+                <Button className="flex-1 glass-btn-primary hover:glow-blue text-white py-2 rounded-2xl text-sm">
                   <Calendar className="h-4 w-4 mr-2" />
                   Schedule Test
                 </Button>
-                <Button className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-3 py-2 rounded-lg">
+                <Button className="glass hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm text-white px-3 py-2 rounded-2xl">
                   <Eye className="h-4 w-4" />
                 </Button>
                 <Button 
                   onClick={() => handleEditDevice(device)}
-                  className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-3 py-2 rounded-lg"
+                  className="glass hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm text-white px-3 py-2 rounded-2xl"
                 >
                   <Edit3 className="h-4 w-4" />
                 </Button>
                 <Button 
                   onClick={() => handleDeleteDevice(device.id)}
-                  className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-3 py-2 rounded-lg hover:bg-red-500/20"
+                  className="glass hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm text-white px-3 py-2 rounded-2xl hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -363,9 +363,9 @@ export default function DevicesPage() {
 
         {filteredDevices.length === 0 && (
           <div className="text-center py-12">
-            <Droplet className="h-16 w-16 text-slate-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-slate-700 mb-2">No devices found</h3>
-            <p className="text-slate-500 mb-6">
+            <Droplet className="h-16 w-16 text-white/90 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-white/80 mb-2">No devices found</h3>
+            <p className="text-white/90 mb-6">
               {searchTerm || filterStatus !== 'all' 
                 ? 'Try adjusting your search or filter criteria.'
                 : 'Get started by adding your first backflow device.'
@@ -373,7 +373,7 @@ export default function DevicesPage() {
             </p>
             <Button 
               onClick={() => { setEditingDevice(null); setShowAddForm(true); }}
-              className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-lg"
+              className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl"
             >
               <Plus className="h-5 w-5 mr-2" />
               Add First Device

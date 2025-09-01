@@ -98,16 +98,16 @@ export default function EditCustomerPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="glass glow-blue-sm border-b">
         <div className="max-w-2xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
             <Link href={`/app/customers/${customerId}`}>
@@ -116,13 +116,13 @@ export default function EditCustomerPage() {
                 Back
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-gray-900">Edit Customer</h1>
+            <h1 className="text-2xl font-bold text-white/80">Edit Customer</h1>
           </div>
         </div>
       </div>
 
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-sm">
+        <div className="glass rounded-2xl glow-blue-sm">
           <div className="p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Customer Information */}
@@ -134,7 +134,7 @@ export default function EditCustomerPage() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       Full Name *
                     </label>
                     <input
@@ -142,13 +142,13 @@ export default function EditCustomerPage() {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                       required
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       <Mail className="h-4 w-4 inline mr-1" />
                       Email
                     </label>
@@ -157,12 +157,12 @@ export default function EditCustomerPage() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       <Phone className="h-4 w-4 inline mr-1" />
                       Phone *
                     </label>
@@ -171,7 +171,7 @@ export default function EditCustomerPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                       required
                     />
                   </div>
@@ -187,7 +187,7 @@ export default function EditCustomerPage() {
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       Street Address *
                     </label>
                     <input
@@ -195,14 +195,14 @@ export default function EditCustomerPage() {
                       name="address"
                       value={formData.address}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                       required
                     />
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/80 mb-2">
                         City *
                       </label>
                       <input
@@ -210,20 +210,20 @@ export default function EditCustomerPage() {
                         name="city"
                         value={formData.city}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required
                       />
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/80 mb-2">
                         State
                       </label>
                       <select
                         name="state"
                         value={formData.state}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                       >
                         <option value="WA">Washington</option>
                         <option value="OR">Oregon</option>
@@ -232,7 +232,7 @@ export default function EditCustomerPage() {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                      <label className="block text-sm font-medium text-white/80 mb-2">
                         ZIP Code *
                       </label>
                       <input
@@ -240,7 +240,7 @@ export default function EditCustomerPage() {
                         name="zipCode"
                         value={formData.zipCode}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                         required
                       />
                     </div>
@@ -257,14 +257,14 @@ export default function EditCustomerPage() {
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       Device Type *
                     </label>
                     <select
                       name="deviceType"
                       value={formData.deviceType}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                       required
                     >
                       <option value="">Select device type</option>
@@ -276,7 +276,7 @@ export default function EditCustomerPage() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       Device Location
                     </label>
                     <input
@@ -285,7 +285,7 @@ export default function EditCustomerPage() {
                       value={formData.deviceLocation}
                       onChange={handleInputChange}
                       placeholder="e.g., Front yard, near water meter"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                   </div>
                 </div>
@@ -300,7 +300,7 @@ export default function EditCustomerPage() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       Last Tested
                     </label>
                     <input
@@ -308,12 +308,12 @@ export default function EditCustomerPage() {
                       name="lastTested"
                       value={formData.lastTested}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       Next Due Date
                     </label>
                     <input
@@ -321,7 +321,7 @@ export default function EditCustomerPage() {
                       name="nextDue"
                       value={formData.nextDue}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                   </div>
                 </div>
@@ -336,14 +336,14 @@ export default function EditCustomerPage() {
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       Status
                     </label>
                     <select
                       name="status"
                       value={formData.status}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                     >
                       <option value="active">Active</option>
                       <option value="inactive">Inactive</option>
@@ -351,7 +351,7 @@ export default function EditCustomerPage() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-white/80 mb-2">
                       Notes
                     </label>
                     <textarea
@@ -359,7 +359,7 @@ export default function EditCustomerPage() {
                       value={formData.notes}
                       onChange={handleInputChange}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
                       placeholder="Special instructions, gate codes, preferred appointment times, etc."
                     />
                   </div>
@@ -368,7 +368,7 @@ export default function EditCustomerPage() {
 
               {/* Submit Button */}
               <div className="flex justify-end pt-6 border-t">
-                <Button type="submit" className="bg-blue-700 hover:bg-blue-700">
+                <Button type="submit" className="glass-btn-primary hover:glow-blue">
                   <Save className="h-4 w-4 mr-2" />
                   Update Customer
                 </Button>

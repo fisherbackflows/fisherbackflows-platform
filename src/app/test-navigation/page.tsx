@@ -70,7 +70,7 @@ export default function NavigationTestPage() {
   return (
     <div className="min-h-screen bg-black p-8">
       <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
       
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-8">
@@ -106,13 +106,13 @@ export default function NavigationTestPage() {
                   return (
                     <div
                       key={route.path}
-                      className="flex items-center justify-between p-3 glass-darker rounded-lg"
+                      className="flex items-center justify-between p-3 glass-darker rounded-2xl"
                     >
                       <div className="flex items-center space-x-3">
                         <div className="flex items-center space-x-2">
                           {testResult === true && <CheckCircle className="h-5 w-5 text-green-400" />}
                           {testResult === false && <XCircle className="h-5 w-5 text-red-400" />}
-                          {testResult === undefined && <div className="h-5 w-5 rounded-full bg-white/20" />}
+                          {testResult === undefined && <div className="h-5 w-5 rounded-full glass/20" />}
                         </div>
                         
                         <div>
@@ -152,19 +152,19 @@ export default function NavigationTestPage() {
         <div className="mt-8 glass-blue rounded-2xl p-6 text-center">
           <h3 className="text-xl font-bold text-blue-400 mb-4">Test Results Summary</h3>
           <div className="grid grid-cols-3 gap-4">
-            <div className="glass-darker rounded-lg p-4">
+            <div className="glass-darker rounded-2xl p-4">
               <p className="text-2xl font-bold text-green-400">
                 {Object.values(testResults).filter(r => r === true).length}
               </p>
               <p className="text-white/70">Passed</p>
             </div>
-            <div className="glass-darker rounded-lg p-4">
+            <div className="glass-darker rounded-2xl p-4">
               <p className="text-2xl font-bold text-red-400">
                 {Object.values(testResults).filter(r => r === false).length}
               </p>
               <p className="text-white/70">Failed</p>
             </div>
-            <div className="glass-darker rounded-lg p-4">
+            <div className="glass-darker rounded-2xl p-4">
               <p className="text-2xl font-bold text-white/60">
                 {routes.length - Object.keys(testResults).length}
               </p>
@@ -178,19 +178,19 @@ export default function NavigationTestPage() {
           <h3 className="text-xl font-bold gradient-text mb-4">Complete Automation Flow</h3>
           <div className="text-white/80 space-y-4">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-sm font-bold">1</div>
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full flex items-center justify-center text-sm font-bold">1</div>
               <p><strong>Lead Generation:</strong> /api/leads/generate → Auto-qualify → Convert to customer</p>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-sm font-bold">2</div>
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full flex items-center justify-center text-sm font-bold">2</div>
               <p><strong>Customer Booking:</strong> /portal/schedule → /api/appointments → Google Calendar sync</p>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-sm font-bold">3</div>
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full flex items-center justify-center text-sm font-bold">3</div>
               <p><strong>Field Work:</strong> /field/test/[id] → Enter readings → Complete test</p>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center text-sm font-bold">4</div>
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full flex items-center justify-center text-sm font-bold">4</div>
               <p><strong>Automation:</strong> /api/test-reports/complete → Invoice + Email + Water Dept + Payment</p>
             </div>
           </div>
