@@ -20,6 +20,7 @@ import {
   Clock,
   MapPin
 } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -258,20 +259,80 @@ function TestReportContent() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="glass glow-blue-sm border-b sticky top-0 z-10">
-        <div className="px-4 py-4">
-          <div className="flex items-center space-x-4">
-            <Button className="glass hover:glass text-white/80 border border-blue-400" size="sm" asChild>
-              <Link href="/app">
-                <ArrowLeft className="h-4 w-4" />
+      {/* Fisher Backflows Header */}
+      <header className="relative z-50 glass border-b border-blue-400 sticky top-0 glow-blue-sm">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-4">
+              <Link href="/" className="relative">
+                <Image
+                  src="/fisher-backflows-logo.png"
+                  alt="Fisher Backflows LLC"
+                  width={180}
+                  height={144}
+                  priority
+                  className="drop-glow-blue-sm"
+                />
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm0 rounded-full"></div>
               </Link>
-            </Button>
-            <div>
-              <h1 className="text-xl font-bold text-white">Test Report</h1>
-              <p className="text-sm text-white/90">
-                {formData.customerName || 'New Test Report'}
-              </p>
+            </div>
+            
+            <nav className="hidden md:flex space-x-1">
+              <Link 
+                href="/#services" 
+                className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium"
+              >
+                Services
+              </Link>
+              <Link 
+                href="/#about" 
+                className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium"
+              >
+                About
+              </Link>
+              <Link 
+                href="/#contact" 
+                className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium"
+              >
+                Contact
+              </Link>
+              <div className="w-px h-8 bg-black/40 backdrop-blur-xl mx-2"></div>
+              
+              <Link 
+                href="/team-portal/dashboard" 
+                className="px-6 py-2.5 rounded-2xl glass-btn-primary hover:glow-blue text-white transition-all duration-200 font-semibold glow-blue-sm"
+              >
+                Team Dashboard
+              </Link>
+              
+              {/* Back to Test Report */}
+              <Button className="glass hover:glass text-white/80 border border-blue-400" size="sm" asChild>
+                <Link href="/team-portal">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back
+                </Link>
+              </Button>
+            </nav>
+            
+            {/* Mobile menu button */}
+            <button className="md:hidden p-2 rounded-lg glass border border-blue-400">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        {/* Page Title Section */}
+        <div className="border-t border-blue-400/20 bg-black/20">
+          <div className="max-w-7xl mx-auto px-6 py-3">
+            <div className="flex items-center space-x-4">
+              <div>
+                <h1 className="text-xl font-bold text-white">Test Report</h1>
+                <p className="text-sm text-white/90">
+                  {formData.customerName || 'New Test Report'}
+                </p>
+              </div>
             </div>
           </div>
         </div>
