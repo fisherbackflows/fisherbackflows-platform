@@ -137,7 +137,7 @@ export default function CustomerPortalDashboard() {
       <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Welcome Section */}
         <div className="mb-10">
-          <div className="bg-gradient-to-r from-blue-50 to-emerald-50 rounded-2xl p-8 border border-slate-200">
+          <div className="bg-white rounded-2xl p-8 border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-4xl font-bold mb-2 text-slate-900">
@@ -256,7 +256,7 @@ export default function CustomerPortalDashboard() {
                   </div>
                 </Link>
 
-                <div className="flex items-center p-4 bg-slate-400 hover:bg-slate-300 rounded-lg transition-colors border border-slate-200 cursor-pointer">
+                <div className="flex items-center p-4 bg-slate-50 hover:bg-slate-300 rounded-lg transition-colors border border-slate-200 cursor-pointer">
                   <Phone className="h-8 w-8 text-slate-800 mr-4" />
                   <div>
                     <h3 className="font-semibold text-slate-900">Call Support</h3>
@@ -273,7 +273,7 @@ export default function CustomerPortalDashboard() {
             <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
               <h2 className="text-xl font-bold text-slate-900 mb-6">Your Backflow Device</h2>
               {customer.devices.map((device) => (
-                <div key={device.id} className="border border-slate-200 rounded-lg p-6 bg-slate-400">
+                <div key={device.id} className="border border-slate-200 rounded-lg p-6 bg-slate-50">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="font-bold text-slate-900 text-lg">{device.location}</h3>
@@ -329,7 +329,7 @@ export default function CustomerPortalDashboard() {
               <h2 className="text-xl font-bold text-slate-900 mb-6">Recent Test History</h2>
               <div className="space-y-4">
                 {customer.recentTests.map((test) => (
-                  <div key={test.id} className="flex items-center justify-between p-4 bg-slate-400 rounded-lg border border-slate-200">
+                  <div key={test.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
                     <div className="flex items-center space-x-4">
                       <div className={`w-3 h-3 rounded-full ${test.result === 'Passed' ? 'bg-emerald-500' : 'bg-red-500'}`}></div>
                       <div>
@@ -359,7 +359,7 @@ export default function CustomerPortalDashboard() {
         </div>
 
         {/* Contact Section */}
-        <div className="mt-12 bg-slate-400 rounded-xl p-6 border border-slate-200">
+        <div className="mt-12 bg-slate-50 rounded-xl p-6 border border-slate-200">
           <div className="text-center">
             <h3 className="text-lg font-bold text-slate-900 mb-2">Need Assistance?</h3>
             <p className="text-slate-800 mb-4">Our team is here to help with any questions about your backflow testing.</p>
@@ -368,7 +368,7 @@ export default function CustomerPortalDashboard() {
                 <Phone className="h-5 w-5" />
                 <span>(253) 278-8692</span>
               </a>
-              <a href="mailto:service@fisherbackflows.com" className="flex items-center justify-center space-x-2 bg-white hover:bg-slate-400 text-slate-700 px-6 py-3 rounded-lg font-semibold border border-slate-300 transition-colors">
+              <a href="mailto:service@fisherbackflows.com" className="flex items-center justify-center space-x-2 bg-white hover:bg-slate-50 text-slate-700 px-6 py-3 rounded-lg font-semibold border border-slate-300 transition-colors">
                 <span>service@fisherbackflows.com</span>
               </a>
             </div>

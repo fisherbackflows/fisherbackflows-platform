@@ -100,7 +100,7 @@ function PaymentSuccessContent() {
       >
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto mb-4" />
-          <p className="text-white/60">Loading payment details...</p>
+          <p className="text-slate-700">Loading payment details...</p>
         </div>
       </UnifiedLayout>
     );
@@ -138,30 +138,30 @@ function PaymentSuccessContent() {
               </h2>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-white/60">Amount Paid:</span>
+                  <span className="text-slate-700">Amount Paid:</span>
                   <span className="font-semibold text-green-400 text-lg">
                     ${payment.amount.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/60">Transaction ID:</span>
-                  <span className="font-mono text-sm text-white/80">
+                  <span className="text-slate-700">Transaction ID:</span>
+                  <span className="font-mono text-sm text-slate-800">
                     {payment.transaction_id || payment.id}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-white/60">Date:</span>
-                  <span className="text-white/80">{new Date(payment.processed_at || payment.created_at).toLocaleDateString()}</span>
+                  <span className="text-slate-700">Date:</span>
+                  <span className="text-slate-800">{new Date(payment.processed_at || payment.created_at).toLocaleDateString()}</span>
                 </div>
                 {payment.invoice && (
                   <div className="flex justify-between">
-                    <span className="text-white/60">Invoice:</span>
-                    <span className="text-white/80">#{payment.invoice.invoice_number}</span>
+                    <span className="text-slate-700">Invoice:</span>
+                    <span className="text-slate-800">#{payment.invoice.invoice_number}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
-                  <span className="text-white/60">Payment Method:</span>
-                  <span className="capitalize text-white/80">
+                  <span className="text-slate-700">Payment Method:</span>
+                  <span className="capitalize text-slate-800">
                     {payment.payment_method || 'Card'}
                   </span>
                 </div>
@@ -204,7 +204,7 @@ function PaymentSuccessContent() {
           <div className="mt-8 p-4 bg-blue-700/10 border border-blue-500/30 rounded-lg">
             <div className="flex items-start space-x-2">
               <Calendar className="h-5 w-5 text-blue-400 mt-0.5" />
-              <div className="text-sm text-white/80 text-left">
+              <div className="text-sm text-slate-800 text-left">
                 <h3 className="font-medium mb-1 text-white">What happens next?</h3>
                 <ul className="space-y-1 text-xs">
                   <li>• You'll receive an email confirmation shortly</li>
@@ -219,7 +219,7 @@ function PaymentSuccessContent() {
           </div>
 
           {/* Contact Support */}
-          <p className="text-sm text-white/60 mt-6">
+          <p className="text-sm text-slate-700 mt-6">
             Questions about your payment?{' '}
             <Link href="/portal/help" className="text-blue-400 hover:text-blue-300 underline">
               Contact Support
@@ -249,7 +249,7 @@ export default function PaymentSuccessPage() {
       >
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto mb-4" />
-          <p className="text-white/60">Loading...</p>
+          <p className="text-slate-700">Loading...</p>
         </div>
       </UnifiedLayout>
     }>

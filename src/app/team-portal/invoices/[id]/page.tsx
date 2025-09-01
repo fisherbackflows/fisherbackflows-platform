@@ -83,7 +83,7 @@ export default function InvoiceDetailPage() {
       case 'paid': return 'bg-green-300 text-green-800';
       case 'sent': return 'bg-blue-300 text-blue-800';
       case 'overdue': return 'bg-red-300 text-red-800';
-      default: return 'bg-gray-300 text-gray-900';
+      default: return 'bg-slate-100 text-slate-800';
     }
   };
 

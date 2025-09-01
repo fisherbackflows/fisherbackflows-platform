@@ -48,7 +48,7 @@ const appointmentTypes = {
 };
 
 const statusConfig = {
-  scheduled: { label: 'Scheduled', color: 'bg-gray-300 text-gray-900' },
+  scheduled: { label: 'Scheduled', color: 'bg-slate-100 text-slate-800' },
   confirmed: { label: 'Confirmed', color: 'bg-blue-300 text-blue-800' },
   'in-progress': { label: 'In Progress', color: 'bg-yellow-100 text-yellow-800' },
   completed: { label: 'Completed', color: 'bg-green-300 text-green-800' },
@@ -210,7 +210,7 @@ export default function SchedulePage() {
           </header>
 
           {/* Date Navigation */}
-          <div className="bg-slate-400 rounded-xl p-6 mb-6 border border-slate-200">
+          <div className="bg-white rounded-xl p-6 mb-6 border border-slate-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Button variant="outline" size="sm" onClick={() => navigateDate('prev')}>
@@ -234,12 +234,12 @@ export default function SchedulePage() {
             </div>
           </div>
           {/* Filter Tabs */}
-          <div className="bg-slate-400 rounded-xl p-6 mb-6 border border-slate-200">
+          <div className="bg-white rounded-xl p-6 mb-6 border border-slate-200">
           <h3 className="text-lg font-semibold text-slate-900 mb-4">Filter Appointments</h3>
           <div className="flex flex-wrap gap-3">
             {[
               { key: 'active', label: 'Active', count: appointments.filter(a => ['scheduled', 'confirmed', 'in-progress'].includes(a.status)).length, color: 'bg-blue-300 text-blue-700 border-blue-200' },
-              { key: 'all', label: 'All', count: appointments.length, color: 'bg-slate-300 text-slate-700 border-slate-200' },
+              { key: 'all', label: 'All', count: appointments.length, color: 'bg-slate-50 text-slate-700 border-slate-200' },
               { key: 'scheduled', label: 'Scheduled', count: appointments.filter(a => a.status === 'scheduled').length, color: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
               { key: 'confirmed', label: 'Confirmed', count: appointments.filter(a => a.status === 'confirmed').length, color: 'bg-green-300 text-green-700 border-green-200' },
               { key: 'completed', label: 'Completed', count: appointments.filter(a => a.status === 'completed').length, color: 'bg-purple-100 text-purple-700 border-purple-200' }
@@ -263,7 +263,7 @@ export default function SchedulePage() {
           <div className="space-y-4">
           {getDayAppointments.length > 0 ? (
             getDayAppointments.map((appointment) => (
-              <div key={appointment.id} className="bg-slate-400 border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
+              <div key={appointment.id} className="bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-200">
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center space-x-4">
@@ -344,7 +344,7 @@ export default function SchedulePage() {
                           Device{appointment.deviceCount !== 1 ? 's' : ''}
                         </div>
                       </div>
-                      <div className="h-8 w-px bg-slate-300"></div>
+                      <div className="h-8 w-px bg-slate-50"></div>
                       <div className="text-center">
                         <div className="text-lg font-semibold text-slate-900">
                           {formatDuration(appointment.duration)}
@@ -398,13 +398,13 @@ export default function SchedulePage() {
                       </div>
                       
                       <div className="flex gap-2 sm:ml-auto">
-                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300 flex-1 sm:flex-initial" asChild>
+                        <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300 flex-1 sm:flex-initial" asChild>
                           <Link href={`tel:${appointment.customerPhone}`}>
                             <Phone className="h-4 w-4 mr-2" />
                             Call
                           </Link>
                         </Button>
-                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300 flex-1 sm:flex-initial" asChild>
+                        <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300 flex-1 sm:flex-initial" asChild>
                           <Link href={`/team-portal/test-report?customer=${appointment.customerId}`}>
                             <Edit className="h-4 w-4 mr-2" />
                             Start Test
@@ -417,8 +417,8 @@ export default function SchedulePage() {
               </div>
             ))
           ) : (
-            <div className="bg-slate-400 border border-slate-200 rounded-2xl shadow-sm p-12 text-center">
-              <div className="inline-flex p-4 rounded-full bg-slate-300 mb-6">
+            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-12 text-center">
+              <div className="inline-flex p-4 rounded-full bg-slate-50 mb-6">
                 <Calendar className="h-12 w-12 text-slate-700" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-3">

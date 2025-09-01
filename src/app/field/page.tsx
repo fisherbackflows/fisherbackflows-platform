@@ -19,7 +19,7 @@ export default function FieldPortal() {
                 </div>
               </Link>
               <nav className="hidden md:flex space-x-1">
-                <Link href="/" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 font-medium transition-colors">
+                <Link href="/" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 font-medium transition-colors">
                   <ArrowLeft className="h-4 w-4 mr-2 inline" />
                   Home
                 </Link>
@@ -81,7 +81,7 @@ export default function FieldPortal() {
             <p className="text-slate-800 mb-8 leading-relaxed">
               View your daily schedule, appointment details, customer contact information, and access mobile testing tools.
             </p>
-            <Button variant="outline" asChild className="w-full border-slate-300 text-slate-700 hover:bg-slate-400 py-4 text-lg font-semibold rounded-xl">
+            <Button variant="outline" asChild className="w-full border-slate-300 text-slate-700 hover:bg-white py-4 text-lg font-semibold rounded-xl">
               <Link href="/field/dashboard">
                 <ClipboardList className="h-5 w-5 mr-3" />
                 View Dashboard
@@ -91,7 +91,7 @@ export default function FieldPortal() {
         </div>
 
         {/* Features Section */}
-        <div className="bg-slate-400 rounded-2xl p-12 border border-slate-200">
+        <div className="bg-white rounded-2xl p-12 border border-slate-200">
           <div className="text-center mb-12">
             <h3 className="text-3xl font-bold text-slate-900 mb-4">Field App Features</h3>
             <p className="text-slate-800 text-lg">Professional tools designed for efficient field operations</p>

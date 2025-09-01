@@ -34,11 +34,15 @@ export default function ResetPasswordPage() {
               <Logo width={180} height={144} />
             </Link>
             <nav className="hidden md:flex space-x-4">
-              <Link href="/" className="glass border border-white/20 px-4 py-2 rounded-lg text-white/90 hover:text-slate-900 hover:border-white/40 transition-all duration-300 hover:bg-white/10 hover:scale-105">
-                Home
+              <Link href="/">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-colors duration-200 font-medium">
+                  Home
+                </Button>
               </Link>
-              <Link href="/portal" className="glass border border-blue-400/30 px-4 py-2 rounded-lg text-blue-400 hover:text-slate-900 hover:border-blue-400/60 transition-all duration-300 hover:bg-blue-400/20 hover:scale-105 glow-blue-sm">
-                Login
+              <Link href="/portal">
+                <Button className="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2.5 rounded-lg font-medium shadow-sm transition-colors duration-200">
+                  Login
+                </Button>
               </Link>
             </nav>
           </div>
@@ -47,7 +51,7 @@ export default function ResetPasswordPage() {
 
       <div className="flex items-center justify-center min-h-[calc(100vh-100px)] p-4 ">
         <Suspense fallback={
-          <div className="glass rounded-2xl p-8 w-full max-w-md mx-auto glow-blue-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-8 w-full max-w-md mx-auto shadow-sm">
             <div className="text-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto"></div>
               <p className="text-slate-700 mt-4">Loading...</p>

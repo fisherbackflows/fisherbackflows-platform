@@ -174,7 +174,7 @@ export default function MorePage() {
                   <div className={`text-xs px-1.5 py-0.5 rounded ${
                     stat.changeType === 'positive' ? 'bg-green-300 text-green-800' :
                     stat.changeType === 'negative' ? 'bg-red-300 text-red-800' :
-                    'bg-gray-300 text-gray-900'
+                    'bg-slate-100 text-slate-800'
                   }`}>
                     {stat.change}
                   </div>

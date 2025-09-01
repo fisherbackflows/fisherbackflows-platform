@@ -490,7 +490,7 @@ export default function CustomerDatabasePage() {
                   className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                     statusFilter === filter.key
                       ? 'bg-blue-700 text-white'
-                      : 'bg-gray-300 text-gray-900 hover:bg-gray-400'
+                      : 'bg-slate-100 text-slate-800 hover:bg-gray-400'
                   }`}
                 >
                   {filter.label} ({filter.count})
@@ -511,7 +511,7 @@ export default function CustomerDatabasePage() {
                   className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                     typeFilter === filter.key
                       ? 'bg-green-700 text-white'
-                      : 'bg-gray-300 text-gray-900 hover:bg-gray-400'
+                      : 'bg-slate-100 text-slate-800 hover:bg-gray-400'
                   }`}
                 >
                   {filter.label}
@@ -534,7 +534,7 @@ export default function CustomerDatabasePage() {
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           customer.status === 'active' ? 'bg-green-300 text-green-800' :
                           customer.status === 'overdue' ? 'bg-red-300 text-red-800' :
-                          'bg-gray-300 text-gray-900'
+                          'bg-slate-100 text-slate-800'
                         }`}>
                           {customer.status.toUpperCase()}
                         </span>
@@ -622,7 +622,7 @@ export default function CustomerDatabasePage() {
                       </div>
                       <div className="flex items-center space-x-2">
                         <span className={`text-xs px-2 py-1 rounded-full ${
-                          customer.preferences.autoSchedule ? 'bg-green-300 text-green-700' : 'bg-gray-300 text-gray-900'
+                          customer.preferences.autoSchedule ? 'bg-green-300 text-green-700' : 'bg-slate-100 text-slate-800'
                         }`}>
                           Auto-Schedule: {customer.preferences.autoSchedule ? 'ON' : 'OFF'}
                         </span>
@@ -632,13 +632,13 @@ export default function CustomerDatabasePage() {
                     {/* Quick Actions */}
                     <div className="flex items-center justify-between pt-3 border-t">
                       <div className="flex space-x-2">
-                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" asChild>
+                        <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300" asChild>
                           <Link href={`/app/test-report?customer=${customer.id}`}>
                             <FileText className="h-4 w-4 mr-1" />
                             Test
                           </Link>
                         </Button>
-                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" asChild>
+                        <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300" asChild>
                           <Link href={`/app/schedule?customer=${customer.id}`}>
                             <Calendar className="h-4 w-4 mr-1" />
                             Schedule
@@ -647,11 +647,11 @@ export default function CustomerDatabasePage() {
                       </div>
                       
                       <div className="flex space-x-2">
-                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300">
+                        <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300">
                           <Bell className="h-4 w-4 mr-1" />
                           Notify
                         </Button>
-                        <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300">
+                        <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300">
                           <Settings className="h-4 w-4 mr-1" />
                           Manage
                         </Button>

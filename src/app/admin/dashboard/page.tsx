@@ -192,11 +192,11 @@ function AdminDashboard() {
                   <Home className="h-4 w-4 mr-2 inline" />
                   Dashboard
                 </Link>
-                <Link href="/admin/analytics" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 font-medium transition-colors">
+                <Link href="/admin/analytics" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 font-medium transition-colors">
                   <TrendingUp className="h-4 w-4 mr-2 inline" />
                   Analytics
                 </Link>
-                <Link href="/admin/data-management" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 font-medium transition-colors">
+                <Link href="/admin/data-management" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 font-medium transition-colors">
                   <Database className="h-4 w-4 mr-2 inline" />
                   Data Export
                 </Link>
@@ -204,14 +204,14 @@ function AdminDashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <NotificationManagerComponent />
-              <div className="text-sm text-slate-800 bg-slate-400 px-3 py-2 rounded-lg border">
+              <div className="text-sm text-slate-800 bg-white px-3 py-2 rounded-lg border">
                 Last updated: {lastRefresh.toLocaleTimeString()}
               </div>
               <Button
                 onClick={fetchMetrics}
                 variant="outline"
                 size="sm"
-                className="border-slate-300 text-slate-700 hover:bg-slate-400"
+                className="border-slate-300 text-slate-700 hover:bg-white"
               >
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Refresh
@@ -391,12 +391,12 @@ function AdminDashboard() {
             <div className={`flex items-center space-x-3 px-4 py-2 rounded-xl border ${
               (systemMetrics?.automation.testsCompleted || 0) > 0
                 ? 'bg-green-200 text-green-700 border-green-200'
-                : 'bg-slate-400 text-slate-800 border-slate-200'
+                : 'bg-white text-slate-800 border-slate-200'
             }`}>
               <div className={`w-3 h-3 rounded-full ${
                 (systemMetrics?.automation.testsCompleted || 0) > 0
                   ? 'bg-green-700 animate-pulse'
-                  : 'bg-slate-400'
+                  : 'bg-white'
               }`}></div>
               <span className="font-semibold">
                 {(systemMetrics?.automation.testsCompleted || 0) > 0 ? 'Active' : 'Ready'}
@@ -430,7 +430,7 @@ function AdminDashboard() {
           {((systemMetrics?.automation.testsCompleted || 0) === 0 && 
             (systemMetrics?.automation.invoicesGenerated || 0) === 0 && 
             (systemMetrics?.automation.paymentsProcessed || 0) === 0) && (
-            <div className="bg-slate-400 rounded-xl p-6 border border-slate-200 text-center">
+            <div className="bg-white rounded-xl p-6 border border-slate-200 text-center">
               <div className="text-slate-800 mb-4">
                 <Database className="h-12 w-12 text-slate-800 mx-auto mb-3" />
                 <p className="text-lg font-semibold">No Data Available Yet</p>
@@ -485,10 +485,10 @@ function AdminDashboard() {
                   ? 'bg-emerald-100 text-emerald-600'
                   : activity.type === 'invoice_sent'
                   ? 'bg-blue-300 text-blue-800'
-                  : 'bg-slate-300 text-slate-800'
+                  : 'bg-slate-50 text-slate-800'
                 
                 return (
-                  <div key={activity.id} className="flex items-center space-x-4 p-4 bg-slate-400 rounded-xl border border-slate-200 hover:bg-slate-300 transition-colors duration-200">
+                  <div key={activity.id} className="flex items-center space-x-4 p-4 bg-white rounded-xl border border-slate-200 hover:bg-slate-50 transition-colors duration-200">
                     <div className={`p-2 rounded-lg ${iconColorClass}`}>
                       <IconComponent className="h-5 w-5" />
                     </div>
@@ -501,7 +501,7 @@ function AdminDashboard() {
               })
             ) : (
               <div className="text-center py-12">
-                <div className="inline-flex p-4 bg-slate-300 rounded-full mb-4">
+                <div className="inline-flex p-4 bg-slate-50 rounded-full mb-4">
                   <Activity className="h-8 w-8 text-slate-700" />
                 </div>
                 <h4 className="text-lg font-semibold text-slate-900 mb-2">No Business Activity Yet</h4>

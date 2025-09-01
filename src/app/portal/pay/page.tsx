@@ -132,7 +132,7 @@ function PaymentPageContent() {
                     <div className="space-y-2">
                       <h3 className="text-lg font-medium text-white">{invoice.invoiceNumber}</h3>
                       <p className="text-white/70">{invoice.description}</p>
-                      <div className="flex items-center space-x-4 text-sm text-white/60">
+                      <div className="flex items-center space-x-4 text-sm text-slate-700">
                         <span>Issued: {new Date(invoice.date).toLocaleDateString()}</span>
                         <span>Due: {new Date(invoice.dueDate).toLocaleDateString()}</span>
                       </div>
@@ -186,7 +186,7 @@ function PaymentPageContent() {
           ) : (
             <div className="text-center py-12">
               <AlertCircle className="h-12 w-12 text-gray-800 mx-auto mb-4" />
-              <p className="text-white/60">No outstanding invoices</p>
+              <p className="text-slate-700">No outstanding invoices</p>
               <p className="text-white/40 text-sm mt-1">All payments are up to date!</p>
             </div>
           )}
@@ -203,7 +203,7 @@ function PaymentPageContent() {
               <p className="text-white/70">
                 Pay instantly with your credit or debit card. Secure processing through Stripe.
               </p>
-              <div className="flex items-center space-x-2 text-sm text-white/60">
+              <div className="flex items-center space-x-2 text-sm text-slate-700">
                 <Lock className="h-4 w-4" />
                 <span>256-bit SSL encryption</span>
               </div>
@@ -222,7 +222,7 @@ function PaymentPageContent() {
               <p className="text-white/70">
                 Lower fees with ACH bank transfer. Takes 3-5 business days to process.
               </p>
-              <div className="text-sm text-white/60">
+              <div className="text-sm text-slate-700">
                 <p>Fee: 0.8% (capped at $5.00)</p>
               </div>
               <UnifiedButton className="w-full" variant="secondary">
@@ -245,7 +245,7 @@ function PaymentPageContent() {
                 information on our servers. Your data is encrypted and transmitted directly to 
                 Stripe's PCI-compliant servers.
               </p>
-              <div className="grid md:grid-cols-2 gap-4 text-sm text-white/60">
+              <div className="grid md:grid-cols-2 gap-4 text-sm text-slate-700">
                 <div className="flex items-center">
                   <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
                   PCI DSS Compliant
@@ -303,7 +303,7 @@ export default function PaymentPage() {
       >
         <div className="max-w-6xl mx-auto px-4 py-16 text-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto mb-4" />
-          <p className="text-white/60">Loading payment options...</p>
+          <p className="text-slate-700">Loading payment options...</p>
         </div>
       </UnifiedLayout>
     }>

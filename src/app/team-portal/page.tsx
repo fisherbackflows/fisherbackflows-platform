@@ -90,13 +90,13 @@ export default function TeamPortalPage() {
             </Link>
             <nav className="hidden md:flex space-x-1">
               <Link href="/">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-all duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 font-medium">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Home
                 </Button>
               </Link>
               <Link href="/portal">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 transition-all duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200 font-medium">
                   Customer Portal
                 </Button>
               </Link>
@@ -106,11 +106,11 @@ export default function TeamPortalPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6 bg-gradient-to-b from-slate-50/50 to-white">
+      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6 bg-white">
         <div className="w-full max-w-md">
           <div className="bg-white border border-slate-200 rounded-2xl p-8 shadow-lg">
             <div className="text-center mb-8">
-              <div className="inline-flex p-4 rounded-2xl bg-slate-300 mb-6">
+              <div className="inline-flex p-4 rounded-2xl bg-slate-50 mb-6">
                 <Lock className="h-8 w-8 text-slate-700" />
               </div>
               <h1 className="text-3xl font-bold text-slate-900 mb-2">Business Portal</h1>

@@ -234,7 +234,7 @@ export default function FieldDashboard() {
                 </div>
               </Link>
               <nav className="hidden md:flex space-x-1">
-                <Link href="/field" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-300 font-medium transition-colors">
+                <Link href="/field" className="px-4 py-2 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-50 font-medium transition-colors">
                   <Home className="h-4 w-4 mr-2 inline" />
                   Field Portal
                 </Link>
@@ -245,7 +245,7 @@ export default function FieldDashboard() {
               </nav>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="text-sm text-slate-800 bg-slate-400 px-3 py-2 rounded-lg border flex items-center space-x-2">
+              <div className="text-sm text-slate-800 bg-white px-3 py-2 rounded-lg border flex items-center space-x-2">
                 <Wrench className="h-4 w-4 text-green-800" />
                 <span>Welcome, {techUser?.name || 'Technician'}</span>
               </div>
@@ -300,7 +300,7 @@ export default function FieldDashboard() {
 
           {appointments.length === 0 ? (
             <div className="bg-white border border-slate-200 rounded-2xl shadow-lg p-12 text-center">
-              <div className="inline-flex p-4 bg-slate-300 rounded-full mb-6">
+              <div className="inline-flex p-4 bg-slate-50 rounded-full mb-6">
                 <Calendar className="h-12 w-12 text-slate-700" />
               </div>
               <h3 className="text-2xl font-bold text-slate-900 mb-4">
@@ -407,7 +407,7 @@ export default function FieldDashboard() {
                       <Button
                         variant="outline"
                         onClick={() => window.open(`tel:${appointment.customerPhone}`)}
-                        className="border-slate-300 text-slate-700 hover:bg-slate-400 py-4 px-6 rounded-xl"
+                        className="border-slate-300 text-slate-700 hover:bg-white py-4 px-6 rounded-xl"
                       >
                         <Phone className="h-5 w-5" />
                       </Button>

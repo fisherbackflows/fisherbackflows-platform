@@ -132,7 +132,7 @@ export default function SchedulePage() {
     return (
       <div className="min-h-screen bg-white">
         {/* Header */}
-        <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <header className="bg-white border-b border-slate-300 sticky top-0 z-50 shadow-sm">
           <div className="max-w-7xl mx-auto px-6 py-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-8">
@@ -169,7 +169,7 @@ export default function SchedulePage() {
               We'll call you within 24 hours to confirm the details.
             </p>
             
-            <div className="bg-slate-400 rounded-xl p-6 mb-8">
+            <div className="bg-slate-50 rounded-xl p-6 mb-8">
               <h3 className="text-lg font-semibold text-slate-900 mb-4">What happens next?</h3>
               <div className="space-y-3 text-left">
                 <div className="flex items-start space-x-3">
@@ -199,7 +199,7 @@ export default function SchedulePage() {
                 <Button 
                   onClick={() => window.location.href = 'tel:2532788692'}
                   variant="outline"
-                  className="border-slate-300 text-slate-700 hover:bg-slate-400 px-6 py-3 rounded-xl font-semibold transition-all duration-200"
+                  className="border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-3 rounded-xl font-semibold transition-all duration-200"
                 >
                   <Phone className="h-5 w-5 mr-2" />
                   Call (253) 278-8692
@@ -215,7 +215,7 @@ export default function SchedulePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+      <header className="bg-white border-b border-slate-300 sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-8">
@@ -254,8 +254,8 @@ export default function SchedulePage() {
         </div>
 
         {/* Booking Form */}
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-lg overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-50 to-slate-50 px-8 py-6 border-b border-slate-200">
+        <div className="bg-white border border-slate-300 rounded-2xl shadow-lg overflow-hidden">
+          <div className="bg-white px-8 py-6 border-b border-slate-300">
             <h2 className="text-xl font-bold text-slate-900">Book Your Appointment</h2>
             <p className="text-slate-800">Fill out the form below and we'll contact you within 24 hours</p>
           </div>
@@ -263,7 +263,7 @@ export default function SchedulePage() {
           <div className="p-8">
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Your Info */}
-              <div className="bg-slate-400 rounded-xl p-6 border border-slate-200">
+              <div className="bg-slate-50 rounded-xl p-6 border border-slate-300">
                 <h3 className="text-lg font-bold text-slate-900 mb-4">Your Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="flex items-center space-x-3">
@@ -304,12 +304,12 @@ export default function SchedulePage() {
                 </label>
                 
                 {loadingDates ? (
-                  <div className="bg-slate-400 rounded-xl p-12 text-center border border-slate-200">
+                  <div className="bg-slate-50 rounded-xl p-12 text-center border border-slate-300">
                     <LoadingSpinner size="lg" color="blue" text="Loading available dates from your calendar..." />
                   </div>
                 ) : availableDates.length === 0 ? (
-                  <div className="bg-slate-400 rounded-xl p-12 text-center border border-slate-200">
-                    <div className="inline-flex p-4 rounded-full bg-slate-400 mb-6">
+                  <div className="bg-slate-50 rounded-xl p-12 text-center border border-slate-300">
+                    <div className="inline-flex p-4 rounded-full bg-slate-50 mb-6">
                       <CalendarIcon className="h-8 w-8 text-slate-700" />
                     </div>
                     <h3 className="text-lg font-semibold text-slate-900 mb-3">No Available Dates Found</h3>
@@ -323,7 +323,7 @@ export default function SchedulePage() {
                     </Button>
                   </div>
                 ) : (
-                  <div className="border border-slate-200 rounded-xl overflow-hidden">
+                  <div className="border border-slate-300 rounded-xl overflow-hidden">
                     <Calendar
                       availableDates={availableDates}
                       selectedDate={formData.preferredDate}
@@ -341,10 +341,10 @@ export default function SchedulePage() {
                   Preferred Time of Day
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-400 ${
+                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-50 ${
                     formData.preferredTime === 'morning' 
                       ? 'border-blue-500 bg-blue-200' 
-                      : 'border-slate-200 bg-white'
+                      : 'border-slate-300 bg-white'
                   }`}>
                     <input
                       type="radio"
@@ -379,10 +379,10 @@ export default function SchedulePage() {
                     )}
                   </label>
 
-                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-400 ${
+                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-50 ${
                     formData.preferredTime === 'afternoon' 
                       ? 'border-blue-500 bg-blue-200' 
-                      : 'border-slate-200 bg-white'
+                      : 'border-slate-300 bg-white'
                   }`}>
                     <input
                       type="radio"
@@ -417,10 +417,10 @@ export default function SchedulePage() {
                     )}
                   </label>
 
-                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-400 ${
+                  <label className={`relative border-2 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:bg-slate-50 ${
                     formData.preferredTime === 'flexible' 
                       ? 'border-blue-500 bg-blue-200' 
-                      : 'border-slate-200 bg-white'
+                      : 'border-slate-300 bg-white'
                   }`}>
                     <input
                       type="radio"
@@ -458,7 +458,7 @@ export default function SchedulePage() {
 
                 {/* Show specific time slots for selected date */}
                 {selectedDate && formData.preferredTime !== 'flexible' && (
-                  <div className="mt-6 bg-slate-400 rounded-xl p-6 border border-slate-200">
+                  <div className="mt-6 bg-slate-50 rounded-xl p-6 border border-slate-300">
                     <h4 className="text-sm font-semibold text-slate-900 mb-3">
                       Available times on {selectedDate.dayOfWeek}:
                     </h4>
@@ -498,11 +498,11 @@ export default function SchedulePage() {
               </div>
 
               {/* Submit Button */}
-              <div className="bg-slate-400 rounded-xl p-6 border border-slate-200">
+              <div className="bg-slate-50 rounded-xl p-6 border border-slate-300">
                 <Button
                   type="submit"
                   disabled={isSubmitting || !formData.preferredDate}
-                  className="w-full bg-blue-700 hover:bg-blue-700 disabled:bg-slate-400 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg transition-all duration-200 disabled:cursor-not-allowed"
+                  className="w-full bg-blue-700 hover:bg-blue-700 disabled:bg-slate-50 text-white py-4 px-8 rounded-xl text-lg font-semibold shadow-lg transition-all duration-200 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center justify-center">
@@ -532,13 +532,13 @@ export default function SchedulePage() {
 
         {/* Alternative Contact */}
         <div className="text-center mt-10">
-          <div className="bg-slate-400 rounded-xl p-8 border border-slate-200">
+          <div className="bg-slate-50 rounded-xl p-8 border border-slate-300">
             <h3 className="text-lg font-semibold text-slate-900 mb-3">Prefer to Call?</h3>
             <p className="text-slate-800 mb-6">Speak directly with our scheduling team</p>
             <Button 
               onClick={() => window.location.href = 'tel:2532788692'}
               variant="outline"
-              className="border-slate-300 text-slate-700 hover:bg-slate-400 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200"
+              className="border-slate-300 text-slate-700 hover:bg-slate-50 px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-200"
             >
               <Phone className="h-5 w-5 mr-3" />
               Call (253) 278-8692

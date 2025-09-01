@@ -64,7 +64,7 @@ function PaymentCancelledContent() {
       >
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto mb-4" />
-          <p className="text-white/60">Loading...</p>
+          <p className="text-slate-700">Loading...</p>
         </div>
       </UnifiedLayout>
     );
@@ -182,7 +182,7 @@ export default function PaymentCancelledPage() {
       >
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto mb-4" />
-          <p className="text-white/60">Loading...</p>
+          <p className="text-slate-700">Loading...</p>
         </div>
       </UnifiedLayout>
     }>

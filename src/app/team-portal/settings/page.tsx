@@ -93,7 +93,7 @@ export default function SettingsPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="space-y-6">
           {/* Business Information */}
-          <div className="bg-slate-400 rounded-lg shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <User className="h-5 w-5 inline mr-2" />
               Business Information
@@ -155,7 +155,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Notification Settings */}
-          <div className="bg-slate-400 rounded-lg shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <Bell className="h-5 w-5 inline mr-2" />
               Notification Settings
@@ -218,7 +218,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Invoicing Settings */}
-          <div className="bg-slate-400 rounded-lg shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <Mail className="h-5 w-5 inline mr-2" />
               Invoicing Settings
@@ -271,7 +271,7 @@ export default function SettingsPage() {
           </div>
 
           {/* Security Settings */}
-          <div className="bg-slate-400 rounded-lg shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
             <h2 className="text-lg font-semibold mb-4">
               <Shield className="h-5 w-5 inline mr-2" />
               Security Settings

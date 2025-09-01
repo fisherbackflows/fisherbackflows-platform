@@ -154,7 +154,7 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-400">
+      <div className="min-h-screen bg-white">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
@@ -169,14 +169,14 @@ export default function AnalyticsPage() {
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-slate-400">
+      <div className="min-h-screen bg-white">
         <div className="max-w-7xl mx-auto px-4 py-8">
           {/* Professional Header */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
                 <Link href="/admin/dashboard">
-                  <Button className="bg-slate-300 hover:bg-slate-400 text-slate-700 p-2 rounded-lg">
+                  <Button className="bg-slate-50 hover:bg-white text-slate-700 p-2 rounded-lg">
                     <ArrowLeft className="h-5 w-5" />
                   </Button>
                 </Link>
@@ -218,14 +218,14 @@ export default function AnalyticsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-400">
+    <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Professional Header */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="flex items-center space-x-4">
               <Link href="/admin/dashboard">
-                <Button className="bg-slate-300 hover:bg-slate-400 text-slate-700 p-2 rounded-lg">
+                <Button className="bg-slate-50 hover:bg-white text-slate-700 p-2 rounded-lg">
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>
@@ -260,7 +260,7 @@ export default function AnalyticsPage() {
               <Button
                 onClick={fetchAnalytics}
                 disabled={refreshing}
-                className="bg-slate-300 hover:bg-slate-400 text-slate-700 px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center disabled:opacity-50"
+                className="bg-slate-50 hover:bg-white text-slate-700 px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center disabled:opacity-50"
               >
                 <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
                 Refresh

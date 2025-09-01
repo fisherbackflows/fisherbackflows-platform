@@ -104,8 +104,8 @@ export default function CustomersPage() {
       case 'current': return 'bg-green-300 text-green-800';
       case 'due': return 'bg-yellow-100 text-yellow-800';
       case 'overdue': return 'bg-red-300 text-red-800';
-      case 'inactive': return 'bg-gray-300 text-gray-900';
-      default: return 'bg-gray-300 text-gray-900';
+      case 'inactive': return 'bg-slate-100 text-slate-800';
+      default: return 'bg-slate-100 text-slate-800';
     }
   };
 
@@ -158,7 +158,7 @@ export default function CustomersPage() {
       <main className="p-6">
         <div className="max-w-7xl mx-auto space-y-6">
           {/* Professional Header */}
-          <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-8">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div>
                 <h1 className="text-4xl font-bold text-slate-900 mb-3">
@@ -178,7 +178,7 @@ export default function CustomersPage() {
           </div>
           {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-blue-200 rounded-lg">
                   <Users className="h-8 w-8 text-blue-800" />
@@ -189,7 +189,7 @@ export default function CustomersPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-green-200 rounded-lg">
                   <CheckCircle className="h-8 w-8 text-green-800" />
@@ -200,7 +200,7 @@ export default function CustomersPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-yellow-50 rounded-lg">
                   <Clock className="h-8 w-8 text-yellow-600" />
@@ -211,7 +211,7 @@ export default function CustomersPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-red-200 rounded-lg">
                   <AlertTriangle className="h-8 w-8 text-red-800" />
@@ -225,7 +225,7 @@ export default function CustomersPage() {
           </div>
 
           {/* Search and Filters */}
-          <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex flex-col space-y-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-800 h-4 w-4" />
@@ -287,7 +287,7 @@ export default function CustomersPage() {
           <div className="space-y-4">
             {filteredCustomers.length > 0 ? (
               filteredCustomers.map((customer) => (
-                <div key={customer.id} className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200">
+                <div key={customer.id} className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200">
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex-1">
@@ -350,19 +350,19 @@ export default function CustomersPage() {
 
                   {/* Quick Actions */}
                   <div className="flex space-x-2 mt-4">
-                    <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" asChild>
+                    <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300" asChild>
                       <Link href={`/team-portal/test-report?customer=${customer.id}`}>
                         <FileText className="h-4 w-4 mr-1" />
                         Test
                       </Link>
                     </Button>
-                    <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" asChild>
+                    <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300" asChild>
                       <Link href={`/team-portal/schedule?customer=${customer.id}`}>
                         <Calendar className="h-4 w-4 mr-1" />
                         Schedule
                       </Link>
                     </Button>
-                    <Button size="sm" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" asChild>
+                    <Button size="sm" className="bg-white hover:bg-white text-slate-700 border border-slate-300" asChild>
                       <Link href={`tel:${customer.phone}`}>
                         <Phone className="h-4 w-4 mr-1" />
                         Call
@@ -373,7 +373,7 @@ export default function CustomersPage() {
               </div>
             ))
           ) : (
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-8 text-center">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8 text-center">
               <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-slate-900 mb-2">No customers found</h3>
               <p className="text-slate-700 mb-4">

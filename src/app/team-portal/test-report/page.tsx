@@ -262,7 +262,7 @@ function TestReportContent() {
       <header className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="px-4 py-4">
           <div className="flex items-center space-x-4">
-            <Button className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300" size="sm" asChild>
+            <Button className="bg-white hover:bg-white text-slate-700 border border-slate-300" size="sm" asChild>
               <Link href="/app">
                 <ArrowLeft className="h-4 w-4" />
               </Link>
@@ -542,7 +542,7 @@ function TestReportContent() {
           </div>
 
           {/* Overall Status - COMPACT */}
-          <div className="mt-3 p-3 rounded-md bg-slate-400 border border-slate-200">
+          <div className="mt-3 p-3 rounded-md bg-white border border-slate-200">
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-slate-900">Overall Result</h3>
               <div className={`flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
@@ -615,7 +615,7 @@ function TestReportContent() {
             </h2>
             <div className="text-center py-4 border border-dashed border-gray-300 rounded">
               <Camera className="h-6 w-6 text-gray-700 mx-auto mb-1" />
-              <Button type="button" className="bg-white hover:bg-slate-400 text-slate-700 border border-slate-300 text-xs px-2 py-1" size="sm">
+              <Button type="button" className="bg-white hover:bg-white text-slate-700 border border-slate-300 text-xs px-2 py-1" size="sm">
                 <Upload className="h-3 w-3 mr-1" />
                 Add Photos
               </Button>
@@ -629,7 +629,7 @@ function TestReportContent() {
             type="button"
             onClick={(e) => handleSubmit(e, 'draft')}
             disabled={saving || !formData.customerId} 
-            className="flex-1 bg-white hover:bg-slate-400 text-slate-700 border border-slate-300 text-sm py-2"
+            className="flex-1 bg-white hover:bg-white text-slate-700 border border-slate-300 text-sm py-2"
           >
             <Save className="h-3 w-3 mr-1" />
             {saving ? 'Saving...' : 'Draft'}

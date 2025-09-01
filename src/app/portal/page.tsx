@@ -41,7 +41,7 @@ export default function CustomerPortalLoginPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6 bg-gradient-to-b from-slate-50/50 to-white">
+      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6 bg-white">
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Info */}
           <div className="hidden lg:block">

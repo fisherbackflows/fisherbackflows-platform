@@ -163,7 +163,7 @@ export default function TeamPortalDashboard() {
       <main className="p-6">
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Professional Header */}
-          <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-8">
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div>
                 <h1 className="text-4xl font-bold text-slate-900 mb-3">
@@ -193,7 +193,7 @@ export default function TeamPortalDashboard() {
           {/* Professional Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Total Customers */}
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-blue-200 rounded-lg">
                   <Users className="h-8 w-8 text-blue-800" />
@@ -207,7 +207,7 @@ export default function TeamPortalDashboard() {
             </div>
 
             {/* Scheduled Appointments */}
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-emerald-50 rounded-lg">
                   <Calendar className="h-8 w-8 text-emerald-600" />
@@ -221,7 +221,7 @@ export default function TeamPortalDashboard() {
             </div>
 
             {/* Test Results */}
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-amber-50 rounded-lg">
                   <FileText className="h-8 w-8 text-amber-600" />
@@ -235,7 +235,7 @@ export default function TeamPortalDashboard() {
             </div>
 
             {/* Monthly Revenue */}
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow duration-200">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-purple-50 rounded-lg">
                   <CreditCard className="h-8 w-8 text-purple-600" />
@@ -252,7 +252,7 @@ export default function TeamPortalDashboard() {
           {/* Dashboard Sections */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Recent Activity */}
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-8">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-slate-900 mb-2">Recent Activity</h2>
@@ -278,7 +278,7 @@ export default function TeamPortalDashboard() {
                     const IconComponent = iconMap[activity.icon] || Activity;
                     
                     return (
-                      <div key={activity.id} className="flex items-center space-x-4 p-4 rounded-lg bg-slate-400 border border-slate-100 hover:bg-slate-300 transition-colors duration-200">
+                      <div key={activity.id} className="flex items-center space-x-4 p-4 rounded-lg bg-white border border-slate-100 hover:bg-slate-50 transition-colors duration-200">
                         <div className="p-3 bg-blue-200 rounded-lg">
                           <IconComponent className="h-5 w-5 text-blue-800" />
                         </div>
@@ -300,7 +300,7 @@ export default function TeamPortalDashboard() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-slate-400 rounded-xl shadow-sm border border-slate-200 p-8">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
               <div className="mb-6">
                 <h2 className="text-2xl font-bold text-slate-900 mb-2">Quick Actions</h2>
                 <p className="text-slate-800">Common tasks and shortcuts</p>
@@ -361,7 +361,7 @@ export default function TeamPortalDashboard() {
                       </Button>
                     </Link>
                     <Link href="/team-portal/customers">
-                      <Button className="bg-slate-300 hover:bg-slate-400 text-slate-700 px-6 py-3 rounded-lg font-medium flex items-center">
+                      <Button className="bg-slate-50 hover:bg-white text-slate-700 px-6 py-3 rounded-lg font-medium flex items-center">
                         <Eye className="h-4 w-4 mr-2" />
                         View All Customers
                       </Button>

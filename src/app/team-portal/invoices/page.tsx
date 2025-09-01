@@ -48,12 +48,12 @@ interface Invoice {
 }
 
 const statusConfig = {
-  draft: { label: 'Draft', color: 'bg-slate-400 text-slate-700 border-slate-200', icon: Edit },
+  draft: { label: 'Draft', color: 'bg-white text-slate-700 border-slate-200', icon: Edit },
   sent: { label: 'Sent', color: 'bg-blue-200 text-blue-700 border-blue-200', icon: Send },
   viewed: { label: 'Viewed', color: 'bg-purple-50 text-purple-700 border-purple-200', icon: Eye },
   paid: { label: 'Paid', color: 'bg-emerald-50 text-emerald-700 border-emerald-200', icon: CheckCircle },
   overdue: { label: 'Overdue', color: 'bg-red-200 text-red-700 border-red-200', icon: AlertTriangle },
-  cancelled: { label: 'Cancelled', color: 'bg-slate-400 text-slate-800 border-slate-200', icon: Clock }
+  cancelled: { label: 'Cancelled', color: 'bg-white text-slate-800 border-slate-200', icon: Clock }
 };
 
 export default function InvoicesPage() {
@@ -174,7 +174,7 @@ export default function InvoicesPage() {
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div className="flex items-center space-x-4">
                 <Link href="/team-portal/dashboard">
-                  <Button className="bg-slate-300 hover:bg-slate-400 text-slate-700 p-2 rounded-lg">
+                  <Button className="bg-slate-50 hover:bg-white text-slate-700 p-2 rounded-lg">
                     <ArrowLeft className="h-5 w-5" />
                   </Button>
                 </Link>
@@ -251,7 +251,7 @@ export default function InvoicesPage() {
                       className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                         statusFilter === filter.key
                           ? 'bg-blue-700 text-white shadow-sm'
-                          : 'bg-slate-300 text-slate-900 hover:bg-slate-400'
+                          : 'bg-slate-50 text-slate-900 hover:bg-white'
                       }`}
                     >
                       {filter.label} ({filter.count})
@@ -310,7 +310,7 @@ export default function InvoicesPage() {
                         )}
                       </div>
 
-                      <div className="bg-slate-400 border border-slate-200 rounded-lg p-4">
+                      <div className="bg-white border border-slate-200 rounded-lg p-4">
                         <h4 className="text-sm font-medium text-slate-700 mb-3">Services</h4>
                         <div className="space-y-2">
                           {invoice.services.map((service, index) => (
@@ -327,7 +327,7 @@ export default function InvoicesPage() {
                     <div className="flex items-center justify-between pt-4 border-t border-slate-200 mt-6">
                       <div className="flex space-x-2">
                         <Link href={`/team-portal/invoices/${invoice.id}`}>
-                          <Button className="bg-slate-300 hover:bg-slate-400 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
+                          <Button className="bg-slate-50 hover:bg-white text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
                             <Eye className="h-4 w-4 mr-2" />
                             View
                           </Button>
@@ -343,7 +343,7 @@ export default function InvoicesPage() {
                       </div>
                       
                       <div className="flex space-x-2">
-                        <Button className="bg-slate-300 hover:bg-slate-400 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
+                        <Button className="bg-slate-50 hover:bg-white text-slate-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center">
                           <Download className="h-4 w-4 mr-2" />
                           PDF
                         </Button>

@@ -88,7 +88,7 @@ export default function UnlockAccountsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-400 py-12">
+    <div className="min-h-screen bg-white py-12">
       <div className="max-w-2xl mx-auto px-4">
         <div className="bg-white rounded-xl shadow-lg border border-slate-200 p-8">
           <div className="flex items-center mb-6">
