@@ -22,53 +22,10 @@ import {
   LogOut
 } from 'lucide-react';
 
-// Mock customer data 
-const mockCustomerData = {
-  id: '1',
-  name: 'John Smith',
-  email: 'john.smith@email.com',
-  phone: '(253) 555-0123',
-  accountNumber: 'FB001',
-  address: '123 Main St, Tacoma, WA 98401',
-  balance: 0.00,
-  nextTestDate: '2025-01-15',
-  devices: [
-    {
-      id: 'dev1',
-      location: '123 Main St - Backyard',
-      serialNumber: 'BF-2023-001',
-      size: '3/4"',
-      make: 'Watts',
-      model: 'Series 909',
-      installDate: '2023-01-15',
-      lastTestDate: '2024-01-15',
-      nextTestDate: '2025-01-15',
-      status: 'Passed',
-      daysUntilTest: 45
-    }
-  ],
-  recentTests: [
-    {
-      id: 'test1',
-      date: '2024-01-15',
-      location: '123 Main St - Backyard',
-      result: 'Passed',
-      testType: 'Annual Test',
-      reportUrl: '/reports/2024-001.pdf'
-    }
-  ]
-};
+import { useCustomerData } from '@/hooks/useCustomerData';
 
 export default function CustomerPortalDashboard() {
-  const [customer, setCustomer] = useState(mockCustomerData);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate loading user data
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }, []);
+  const { customer, loading, error } = useCustomerData();
 
   if (loading) {
     return (
@@ -76,6 +33,31 @@ export default function CustomerPortalDashboard() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-3 border-blue-600 mx-auto mb-4"></div>
           <p className="text-lg font-medium text-white/80">Loading your dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-400 text-4xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold text-white mb-2">Unable to Load Dashboard</h2>
+          <p className="text-white/80 mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()} className="btn-glow">
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!customer) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg font-medium text-white/80">No customer data available</p>
         </div>
       </div>
     );

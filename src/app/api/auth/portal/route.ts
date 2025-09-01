@@ -1,60 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-// import { isSupabaseConfigured } from '@/lib/supabase'
+import { createRouteHandlerClient } from '@/lib/supabase'
 import type { Customer } from '@/lib/types'
-
-// Mock customer data for authentication
-const mockCustomers: Customer[] = [
-  {
-    id: '1',
-    name: 'John Smith',
-    email: 'john.smith@email.com',
-    phone: '555-0123',
-    address: '123 Main St, City, State 12345',
-    accountNumber: 'FB001',
-    devices: [
-      {
-        id: 'dev1',
-        location: '123 Main St - Backyard',
-        serialNumber: 'BF-2023-001',
-        size: '3/4"',
-        make: 'Watts',
-        model: 'Series 909',
-        installDate: '2023-01-15',
-        lastTestDate: '2024-01-15',
-        nextTestDate: '2025-01-15',
-        status: 'Passed'
-      }
-    ],
-    balance: 0,
-    nextTestDate: '2025-01-15',
-    status: 'Active'
-  },
-  {
-    id: '2',
-    name: 'ABC Corporation',
-    email: 'admin@abccorp.com',
-    phone: '555-0456',
-    address: '456 Business Ave, City, State 12345',
-    accountNumber: 'FB002',
-    devices: [
-      {
-        id: 'dev2',
-        location: '456 Business Ave - Main Building',
-        serialNumber: 'BF-2023-002',
-        size: '1"',
-        make: 'Zurn Wilkins',
-        model: '350XL',
-        installDate: '2023-03-20',
-        lastTestDate: '2024-03-20',
-        nextTestDate: '2025-03-20',
-        status: 'Failed'
-      }
-    ],
-    balance: 150,
-    nextTestDate: '2025-03-20',
-    status: 'Needs Service'
-  }
-]
 
 export async function POST(request: NextRequest) {
   try {
@@ -67,34 +13,71 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // Demo mode - bypass authentication
+    const supabase = createRouteHandlerClient(request)
+    
+    // Demo mode - use real database but return first customer
     if (identifier === 'demo') {
-      const demoCustomer = mockCustomers[0]
-      return NextResponse.json({
-        success: true,
-        customer: demoCustomer,
-        token: 'demo-token'
-      })
+      const { data: customers } = await supabase
+        .from('customers')
+        .select('*')
+        .limit(1)
+        .single()
+        
+      if (customers) {
+        const customer = {
+          id: customers.id,
+          name: `${customers.first_name} ${customers.last_name}`,
+          email: customers.email,
+          phone: customers.phone,
+          address: `${customers.address_line1}, ${customers.city}, ${customers.state} ${customers.zip_code}`,
+          accountNumber: customers.account_number || 'FB-DEMO',
+          balance: 0,
+          status: customers.account_status || 'Active'
+        }
+        
+        return NextResponse.json({
+          success: true,
+          customer,
+          token: `auth-token-${customer.id}-${Date.now()}`
+        })
+      }
     }
     
-    // Find customer by email or phone (using mock data for now)
-    const customer = mockCustomers.find(c => {
-      if (type === 'email') {
-        return c.email.toLowerCase() === identifier.toLowerCase()
-      } else if (type === 'phone') {
-        return c.phone.replace(/\D/g, '') === identifier.replace(/\D/g, '')
-      }
-      return false
-    })
+    // Find customer by email or phone in database
+    let query = supabase
+      .from('customers')
+      .select('*')
     
-    if (!customer) {
+    if (type === 'email') {
+      query = query.ilike('email', identifier)
+    } else if (type === 'phone') {
+      // Clean phone number for comparison
+      const cleanPhone = identifier.replace(/\D/g, '')
+      query = query.ilike('phone', `%${cleanPhone}%`)
+    }
+    
+    const { data: customerData, error } = await query.single()
+    
+    if (error || !customerData) {
       return NextResponse.json(
         { error: 'Customer not found' },
         { status: 404 }
       )
     }
     
-    // In a real app, you would generate a proper JWT token here
+    // Transform database customer to API format
+    const customer = {
+      id: customerData.id,
+      name: `${customerData.first_name} ${customerData.last_name}`,
+      email: customerData.email,
+      phone: customerData.phone,
+      address: `${customerData.address_line1}, ${customerData.city}, ${customerData.state} ${customerData.zip_code}`,
+      accountNumber: customerData.account_number,
+      balance: 0, // TODO: Calculate from unpaid invoices
+      status: customerData.account_status || 'Active'
+    }
+    
+    // Generate simple token (in production, use JWT)
     const token = `auth-token-${customer.id}-${Date.now()}`
     
     return NextResponse.json({
@@ -124,17 +107,10 @@ export async function GET(request: NextRequest) {
     }
     
     const token = authHeader.substring(7)
+    const supabase = createRouteHandlerClient(request)
     
-    // Handle demo token
-    if (token === 'demo-token') {
-      return NextResponse.json({
-        success: true,
-        customer: mockCustomers[0]
-      })
-    }
-    
-    // Extract customer ID from token (in a real app, verify JWT)
-    const match = token.match(/auth-token-(\d+)-/)
+    // Extract customer ID from token (in production, verify JWT properly)
+    const match = token.match(/auth-token-([a-f0-9-]{36})-/)
     if (!match) {
       return NextResponse.json(
         { error: 'Invalid token format' },
@@ -143,13 +119,47 @@ export async function GET(request: NextRequest) {
     }
     
     const customerId = match[1]
-    const customer = mockCustomers.find(c => c.id === customerId)
     
-    if (!customer) {
+    // Get customer data from database
+    const { data: customerData, error } = await supabase
+      .from('customers')
+      .select(`
+        *,
+        devices:devices(*),
+        invoices:invoices(*)
+      `)
+      .eq('id', customerId)
+      .single()
+    
+    if (error || !customerData) {
       return NextResponse.json(
         { error: 'Customer not found' },
         { status: 404 }
       )
+    }
+    
+    // Transform to API format with devices and recent data
+    const customer = {
+      id: customerData.id,
+      name: `${customerData.first_name} ${customerData.last_name}`,
+      email: customerData.email,
+      phone: customerData.phone,
+      address: `${customerData.address_line1}, ${customerData.city}, ${customerData.state} ${customerData.zip_code}`,
+      accountNumber: customerData.account_number,
+      balance: customerData.invoices?.filter(inv => inv.status !== 'paid').reduce((sum, inv) => sum + (inv.total_amount || 0), 0) || 0,
+      status: customerData.account_status || 'Active',
+      devices: customerData.devices?.map(device => ({
+        id: device.id,
+        location: device.location_description,
+        serialNumber: device.serial_number || 'N/A',
+        size: device.size || 'N/A',
+        make: device.manufacturer,
+        model: device.model,
+        installDate: device.installation_date,
+        lastTestDate: device.last_test_date,
+        nextTestDate: device.next_test_due,
+        status: device.device_status
+      })) || []
     }
     
     return NextResponse.json({
