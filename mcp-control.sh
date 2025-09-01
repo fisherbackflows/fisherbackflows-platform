@@ -15,9 +15,17 @@ case "$1" in
     
     echo "Starting Fisher Backflows MCP Server..."
     nohup node "$SCRIPT_DIR/mcp-server.js" > "$LOG_FILE" 2>&1 & 
-    echo $! > "$PID_FILE"
-    echo "MCP Server started with PID: $(cat "$PID_FILE")"
-    echo "Logs: $LOG_FILE"
+    PID=$!
+    echo $PID > "$PID_FILE"
+    sleep 2  # Give server time to start
+    if kill -0 $PID 2>/dev/null; then
+      echo "MCP Server started with PID: $PID"
+      echo "Logs: $LOG_FILE"
+    else
+      echo "Failed to start MCP Server - check logs at $LOG_FILE"
+      rm -f "$PID_FILE"
+      exit 1
+    fi
     ;;
     
   stop)

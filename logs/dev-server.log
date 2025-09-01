@@ -1,0 +1,18 @@
+
+> fisherbackflows@0.1.0 dev
+> next dev -H 0.0.0.0 -p 3010
+
+   ▲ Next.js 15.5.2
+   - Local:        http://localhost:3010
+   - Network:      http://0.0.0.0:3010
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ scrollRestoration
+
+ ✓ Starting...
+ ✓ Ready in 22.9s
+ ○ Compiling / ...
+ ✓ Compiled / in 21.8s (932 modules)
+ ✓ Compiled in 1309ms (422 modules)
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+ GET / 200 in 27111ms

@@ -251,8 +251,8 @@ export default function HomePage() {
       <section id="services" className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-6 glass bg-clip-text text-transparent">Our Services</h2>
-            <p className="text-white/90 text-2xl">Professional backflow testing and certification services</p>
+            <h2 className="text-5xl font-bold mb-6 text-white">Our Services</h2>
+            <p className="text-xl text-white/80">Professional backflow testing and certification services</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -303,8 +303,8 @@ export default function HomePage() {
       <section id="contact" className="py-24 px-6 mb-16">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-6 glass bg-clip-text text-transparent">Get Started Today</h2>
-            <p className="text-2xl text-white/90">Choose the most convenient way to reach us</p>
+            <h2 className="text-5xl font-bold mb-6 text-white">Get Started Today</h2>
+            <p className="text-xl text-white/80">Choose the most convenient way to reach us</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">

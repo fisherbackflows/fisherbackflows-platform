@@ -27,7 +27,7 @@
 - API Endpoints: 47
 - **PRODUCTION VERCEL PROJECT**: fisherbackflows-platform-v2 (prj_63TAegRRJPFcJnVEx4Et5M9hDo74)
 - **PRODUCTION MANAGEMENT**: https://vercel.com/fisherbackflows-projects/fisherbackflows-platform-v2
-- **CURRENT LIVE SITE**: https://fisherbackflows-platform-v2-7i3r3rmit-fisherbackflows-projects.vercel.app
+- **CURRENT LIVE SITE**: https://fisherbackflows-platform-v2-lkw61b35p-fisherbackflows-projects.vercel.app
 - **TEAM/ORG ID**: team_OMXDKZL3plGWNFXXenXqKSmR
 
 ## Key Commands
@@ -72,12 +72,31 @@ scripts/           # Testing and utility scripts
 - Database tables ready for verification
 - File permissions set to 755 for scripts/src/public
 
-## Session Recovery
+## Session Recovery & Auto-Startup
 - **NEVER RECREATE SETUP** - Everything is saved and working
 - **Quick Start**: Just run `./scripts/quick-start.sh`
 - **Credentials**: Real Supabase keys already in .env.local
 - **Database**: Live connection, all tables exist
 - **Server**: Background process management automated
+
+### 🚀 Automatic Startup Features (NEW!)
+When launching Claude Code from `/fisherbackflows2`:
+1. **MCP Server**: Auto-configured for enhanced Claude Code integration
+2. **Environment Check**: `./startup.sh` runs automatically to verify:
+   - Git status and uncommitted changes
+   - Environment variables validation
+   - Node dependencies status
+   - Database connection
+   - Port availability
+   - Dev server auto-start if not running
+3. **Workspace Prep**: `./scripts/workspace-prep.sh` for deep cleaning
+4. **Quick Actions**: Suggested commands based on current state
+
+### Startup Scripts
+- `./startup.sh` - Comprehensive environment status and auto-start
+- `./scripts/quick-start.sh` - One-command full platform launch
+- `./scripts/workspace-prep.sh` - Clean and prepare workspace
+- `./restore-session.sh` - Quick restore after disconnect
 
 ## MCP Server (Model Context Protocol)
 - **Status**: ✅ FULLY OPERATIONAL
@@ -152,3 +171,19 @@ scripts/           # Testing and utility scripts
 8. `/CLAUDE.md` - Updated with authoritative production info
 
 **CONCLUSION: The platform is production-ready with no inconsistencies or "spaghetti code" issues.**
+
+## LATEST SESSION SUMMARY ✅ (September 1, 2025)
+### Glassmorphism & UI Layout Updates
+- ✅ **Applied comprehensive glassmorphism** to all 64 pages (black backgrounds, blue borders, glass effects)
+- ✅ **FIXED major mistake**: Initially replaced all page functionality with generic templates 🤦‍♂️
+- ✅ **Restored original functionality**: All pages retain their business logic, data, and features
+- ✅ **Applied billing page visual styling**: Only visual patterns applied while preserving functionality
+- ✅ **Current Live URL**: https://fisherbackflows-platform-v2-lkw61b35p-fisherbackflows-projects.vercel.app
+
+### Key Files Created/Modified
+- `/src/components/layout/PageLayout.tsx` - Reusable layout components
+- `/scripts/glassmorphism-uniformity.sh` - Mass styling script
+- `/scripts/apply-billing-styling.js` - Smart styling that preserves functionality
+- All 64 page.tsx files updated with consistent glassmorphism styling
+
+**STATUS: Platform has beautiful, consistent UI with all functionality intact! 🔷**
