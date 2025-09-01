@@ -81,7 +81,7 @@ const waterDistricts = [
 ];
 
 const statusConfig = {
-  pending: { label: 'Pending Submission', color: 'bg-yellow-100 text-yellow-800', icon: Clock },
+  pending: { label: 'Pending Submission', color: 'bg-yellow-400/20 text-yellow-400', icon: Clock },
   submitted: { label: 'Submitted', color: 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-300', icon: Send },
   confirmed: { label: 'Confirmed', color: 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300', icon: CheckCircle },
   rejected: { label: 'Rejected', color: 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300', icon: AlertTriangle },

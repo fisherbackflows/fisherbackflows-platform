@@ -50,7 +50,7 @@ const appointmentTypes = {
 const statusConfig = {
   scheduled: { label: 'Scheduled', color: 'glass text-white/90' },
   confirmed: { label: 'Confirmed', color: 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-300' },
-  'in-progress': { label: 'In Progress', color: 'bg-yellow-100 text-yellow-800' },
+  'in-progress': { label: 'In Progress', color: 'bg-yellow-400/20 text-yellow-400' },
   completed: { label: 'Completed', color: 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300' },
   cancelled: { label: 'Cancelled', color: 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300' },
   'no-show': { label: 'No Show', color: 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300' }

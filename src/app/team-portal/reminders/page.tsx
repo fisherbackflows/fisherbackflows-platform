@@ -514,7 +514,7 @@ Fisher Backflows`,
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
                       <h3 className="font-semibold text-white/80">{reminder.customerName}</h3>
-                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-400/20 text-yellow-400">
                         {reminder.contactMethod.toUpperCase()}
                       </span>
                     </div>

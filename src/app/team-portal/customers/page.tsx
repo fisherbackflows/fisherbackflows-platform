@@ -102,7 +102,7 @@ export default function CustomersPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'current': return 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300';
-      case 'due': return 'bg-yellow-100 text-yellow-800';
+      case 'due': return 'bg-yellow-400/20 text-yellow-400';
       case 'overdue': return 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300';
       case 'inactive': return 'glass text-white/90';
       default: return 'glass text-white/90';
