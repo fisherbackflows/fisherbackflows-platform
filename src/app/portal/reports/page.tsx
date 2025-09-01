@@ -167,29 +167,27 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Effects */}
-      <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5" />
+    <div className="min-h-screen bg-white">
+      {
 
       {/* Header */}
-      <header className="glass border-b border-white/10 relative z-10">
+      <header className="bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <Link href="/portal/dashboard">
-                <Button className="btn-glass px-3 py-2 rounded-lg">
+                <Button className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-3 py-2 rounded-lg">
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
               </Link>
               <Logo width={160} height={128} />
             </div>
             <div className="flex items-center space-x-4">
-              <Button className="btn-glass px-4 py-2 rounded-lg">
+              <Button className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-4 py-2 rounded-lg">
                 <Download className="h-4 w-4 mr-2" />
                 Download All
               </Button>
-              <Button className="btn-glass px-4 py-2 rounded-lg">
+              <Button className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-4 py-2 rounded-lg">
                 <Settings className="h-4 w-4" />
               </Button>
             </div>
@@ -197,42 +195,42 @@ export default function ReportsPage() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 py-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 py-8 ">
         {/* Page Title */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold gradient-text mb-2">Test Reports & Certificates</h1>
-          <p className="text-white/60">
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">Test Reports & Certificates</h1>
+          <p className="text-slate-700">
             View and download your backflow test certificates and compliance reports.
           </p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="glass rounded-xl p-6 card-hover">
+          <div className="bg-slate-200 border border-slate-300 rounded-xl p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="glass-blue rounded-lg p-2">
+              <div className="bg-blue-200 rounded-lg p-2">
                 <FileText className="h-6 w-6 text-blue-400" />
               </div>
               <span className="text-2xl font-bold">{reportStats.total}</span>
             </div>
             <h3 className="font-medium mb-1">Total Reports</h3>
-            <p className="text-white/60 text-sm">All test certificates</p>
+            <p className="text-slate-700 text-sm">All test certificates</p>
           </div>
 
-          <div className="glass rounded-xl p-6 card-hover">
+          <div className="bg-slate-200 border border-slate-300 rounded-xl p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="glass-blue rounded-lg p-2">
+              <div className="bg-blue-200 rounded-lg p-2">
                 <Award className="h-6 w-6 text-green-400" />
               </div>
               <span className="text-2xl font-bold text-green-400">{reportStats.active}</span>
             </div>
             <h3 className="font-medium mb-1">Active Certificates</h3>
-            <p className="text-white/60 text-sm">Currently valid</p>
+            <p className="text-slate-700 text-sm">Currently valid</p>
           </div>
 
-          <div className="glass rounded-xl p-6 card-hover">
+          <div className="bg-slate-200 border border-slate-300 rounded-xl p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="glass-blue rounded-lg p-2">
+              <div className="bg-blue-200 rounded-lg p-2">
                 <Clock className={`h-6 w-6 ${reportStats.expiring > 0 ? 'text-yellow-400' : 'text-green-400'}`} />
               </div>
               <span className={`text-2xl font-bold ${reportStats.expiring > 0 ? 'text-yellow-400' : 'text-green-400'}`}>
@@ -240,12 +238,12 @@ export default function ReportsPage() {
               </span>
             </div>
             <h3 className="font-medium mb-1">Expiring Soon</h3>
-            <p className="text-white/60 text-sm">Within 30 days</p>
+            <p className="text-slate-700 text-sm">Within 30 days</p>
           </div>
 
-          <div className="glass rounded-xl p-6 card-hover">
+          <div className="bg-slate-200 border border-slate-300 rounded-xl p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">
-              <div className="glass-blue rounded-lg p-2">
+              <div className="bg-blue-200 rounded-lg p-2">
                 <XCircle className={`h-6 w-6 ${reportStats.failed > 0 ? 'text-red-400' : 'text-green-400'}`} />
               </div>
               <span className={`text-2xl font-bold ${reportStats.failed > 0 ? 'text-red-400' : 'text-green-400'}`}>
@@ -253,7 +251,7 @@ export default function ReportsPage() {
               </span>
             </div>
             <h3 className="font-medium mb-1">Failed Tests</h3>
-            <p className="text-white/60 text-sm">Require attention</p>
+            <p className="text-slate-700 text-sm">Require attention</p>
           </div>
         </div>
 
@@ -262,50 +260,50 @@ export default function ReportsPage() {
           {/* Left Column - Reports */}
           <div className="lg:col-span-2 space-y-8">
             {/* Search and Filter */}
-            <div className="glass rounded-xl p-6">
+            <div className="bg-slate-200 border border-slate-300 rounded-xl p-6">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/40" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-slate-500" />
                   <input
                     type="text"
                     placeholder="Search reports by location, certificate ID, or technician..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="input-glass w-full pl-10 pr-4 py-3 rounded-lg text-white placeholder-white/40"
+                    className="border border-slate-300 bg-white text-slate-900 w-full pl-10 pr-4 py-3 rounded-lg text-slate-900 placeholder-slate-500"
                   />
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Filter className="h-5 w-5 text-white/60" />
+                  <Filter className="h-5 w-5 text-slate-700" />
                   <select
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
-                    className="input-glass px-4 py-3 rounded-lg text-white bg-transparent"
+                    className="border border-slate-300 bg-white text-slate-900 px-4 py-3 rounded-lg text-slate-900 bg-transparent"
                   >
-                    <option value="all" className="bg-black">All Reports</option>
-                    <option value="active" className="bg-black">Active</option>
-                    <option value="failed" className="bg-black">Failed</option>
-                    <option value="expiring" className="bg-black">Expiring Soon</option>
+                    <option value="all" className="bg-slate-200">All Reports</option>
+                    <option value="active" className="bg-slate-200">Active</option>
+                    <option value="failed" className="bg-slate-200">Failed</option>
+                    <option value="expiring" className="bg-slate-200">Expiring Soon</option>
                   </select>
                 </div>
               </div>
             </div>
 
             {/* Reports List */}
-            <div className="glass rounded-2xl p-6">
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold gradient-text">Test Certificates</h2>
+                <h2 className="text-xl font-bold text-slate-900">Test Certificates</h2>
               </div>
 
               <div className="space-y-6">
                 {filteredReports.map((report) => (
-                  <div key={report.id} className={`glass-darker rounded-lg p-6 hover:bg-white/[0.03] transition-colors ${
+                  <div key={report.id} className={`bg-white border border-slate-200 rounded-lg p-6 hover:bg-slate-50 transition-colors ${
                     report.status === 'failed' ? 'border-red-500/30 border' : ''
                   }`}>
                     {/* Header */}
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-2">
-                          <h3 className="font-semibold text-lg text-white">{report.certificateId}</h3>
+                          <h3 className="font-semibold text-lg text-slate-900">{report.certificateId}</h3>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getResultColor(report.testResult)}`}>
                             {report.testResult}
                           </span>
@@ -315,12 +313,12 @@ export default function ReportsPage() {
                             </span>
                           )}
                         </div>
-                        <p className="text-white/80 font-medium mb-1">{report.deviceLocation}</p>
-                        <p className="text-white/60 text-sm">{report.deviceType} • {report.deviceSize} • {report.deviceMake} {report.deviceModel}</p>
+                        <p className="text-slate-800 font-medium mb-1">{report.deviceLocation}</p>
+                        <p className="text-slate-700 text-sm">{report.deviceType} • {report.deviceSize} • {report.deviceMake} {report.deviceModel}</p>
                       </div>
                       <div className="text-right">
-                        <div className="text-white/60 text-sm mb-1">Test Date</div>
-                        <div className="font-medium text-white">{new Date(report.testDate).toLocaleDateString()}</div>
+                        <div className="text-slate-700 text-sm mb-1">Test Date</div>
+                        <div className="font-medium text-slate-900">{new Date(report.testDate).toLocaleDateString()}</div>
                         <div className={`text-sm font-medium ${getComplianceColor(report.compliance)}`}>
                           {report.compliance}
                         </div>
@@ -329,12 +327,12 @@ export default function ReportsPage() {
 
                     {/* Test Details Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                      <div className="glass-blue rounded-lg p-3">
+                      <div className="bg-blue-200 rounded-lg p-3">
                         <div className="flex items-center text-blue-400 mb-2">
                           <Calendar className="h-4 w-4 mr-2" />
                           Expiration
                         </div>
-                        <p className="text-white/80 font-medium">
+                        <p className="text-slate-800 font-medium">
                           {new Date(report.expirationDate).toLocaleDateString()}
                         </p>
                         <p className={`text-xs font-medium ${getExpirationColor(report.daysUntilExpiration)}`}>
@@ -344,35 +342,35 @@ export default function ReportsPage() {
                         </p>
                       </div>
 
-                      <div className="glass-blue rounded-lg p-3">
+                      <div className="bg-blue-200 rounded-lg p-3">
                         <div className="flex items-center text-blue-400 mb-2">
                           <Shield className="h-4 w-4 mr-2" />
                           Technician
                         </div>
-                        <p className="text-white/80 font-medium">{report.technician}</p>
-                        <p className="text-white/60 text-xs">Cert: {report.technicianCertification}</p>
+                        <p className="text-slate-800 font-medium">{report.technician}</p>
+                        <p className="text-slate-700 text-xs">Cert: {report.technicianCertification}</p>
                       </div>
 
-                      <div className="glass-blue rounded-lg p-3">
+                      <div className="bg-blue-200 rounded-lg p-3">
                         <div className="flex items-center text-blue-400 mb-2">
                           <MapPin className="h-4 w-4 mr-2" />
                           Device Info
                         </div>
-                        <p className="text-white/80 font-medium text-sm">S/N: {report.deviceSerial}</p>
-                        <p className="text-white/60 text-xs">{report.photos.length} photo{report.photos.length !== 1 ? 's' : ''}</p>
+                        <p className="text-slate-800 font-medium text-sm">S/N: {report.deviceSerial}</p>
+                        <p className="text-slate-700 text-xs">{report.photos.length} photo{report.photos.length !== 1 ? 's' : ''}</p>
                       </div>
                     </div>
 
                     {/* Test Results */}
-                    <div className="glass-darker rounded-lg p-4 mb-4">
-                      <h4 className="text-white/80 font-medium mb-3 text-sm">Test Pressures (PSI)</h4>
+                    <div className="bg-white border border-slate-200 rounded-lg p-4 mb-4">
+                      <h4 className="text-slate-800 font-medium mb-3 text-sm">Test Pressures (PSI)</h4>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
                         {Object.entries(report.testPressures).map(([key, value]) => (
                           <div key={key}>
                             <div className="text-white/50 mb-1">
                               {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                             </div>
-                            <div className="text-white/80 font-medium">{value} PSI</div>
+                            <div className="text-slate-800 font-medium">{value} PSI</div>
                           </div>
                         ))}
                       </div>
@@ -380,28 +378,28 @@ export default function ReportsPage() {
 
                     {/* Notes */}
                     {report.notes && (
-                      <div className="glass-darker rounded-lg p-3 mb-4">
+                      <div className="bg-white border border-slate-200 rounded-lg p-3 mb-4">
                         <p className="text-white/50 text-xs mb-1">Technician Notes</p>
-                        <p className="text-white/80 text-sm">{report.notes}</p>
+                        <p className="text-slate-800 text-sm">{report.notes}</p>
                       </div>
                     )}
 
                     {/* Actions */}
                     <div className="flex space-x-3">
-                      <Button className="btn-glow px-4 py-2 rounded-lg text-sm">
+                      <Button className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm">
                         <Download className="h-4 w-4 mr-2" />
                         Download Certificate
                       </Button>
-                      <Button className="btn-glass px-4 py-2 rounded-lg text-sm">
+                      <Button className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-4 py-2 rounded-lg text-sm">
                         <Eye className="h-4 w-4 mr-2" />
                         View Details
                       </Button>
-                      <Button className="btn-glass px-4 py-2 rounded-lg text-sm">
+                      <Button className="bg-slate-200 hover:bg-slate-300 text-slate-900 px-4 py-2 rounded-lg text-sm">
                         <Share2 className="h-4 w-4 mr-2" />
                         Share
                       </Button>
                       {report.repairRequired && (
-                        <Button className="btn-glow px-4 py-2 rounded-lg text-sm">
+                        <Button className="bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm">
                           <Calendar className="h-4 w-4 mr-2" />
                           Schedule Repair
                         </Button>
@@ -413,9 +411,9 @@ export default function ReportsPage() {
 
               {filteredReports.length === 0 && (
                 <div className="text-center py-12">
-                  <FileText className="h-16 w-16 text-white/30 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold text-white/60 mb-2">No reports found</h3>
-                  <p className="text-white/40 mb-6">
+                  <FileText className="h-16 w-16 text-slate-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-slate-700 mb-2">No reports found</h3>
+                  <p className="text-slate-500 mb-6">
                     {searchTerm || filterStatus !== 'all' 
                       ? 'Try adjusting your search or filter criteria.'
                       : 'Your test certificates will appear here after testing is completed.'
@@ -430,17 +428,17 @@ export default function ReportsPage() {
           <div className="space-y-8">
             {/* Failed Tests Alert */}
             {reportStats.failed > 0 && (
-              <div className="glass rounded-2xl p-6 border border-red-500/30 glow-red-sm">
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm border border-red-500/30 glow-red-sm">
                 <div className="flex items-center mb-4">
                   <AlertTriangle className="h-6 w-6 text-red-400 mr-3" />
                   <h2 className="text-xl font-bold text-red-400">Immediate Action Required</h2>
                 </div>
                 
-                <p className="text-white/80 text-sm mb-4">
+                <p className="text-slate-800 text-sm mb-4">
                   You have {reportStats.failed} device{reportStats.failed > 1 ? 's' : ''} that failed testing and require immediate attention.
                 </p>
 
-                <Button className="w-full btn-glow py-3 rounded-lg">
+                <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg">
                   <Calendar className="h-5 w-5 mr-2" />
                   Schedule Repairs
                 </Button>
@@ -449,17 +447,17 @@ export default function ReportsPage() {
 
             {/* Expiring Certificates */}
             {reportStats.expiring > 0 && (
-              <div className="glass rounded-2xl p-6 border border-yellow-500/30">
+              <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm border border-yellow-500/30">
                 <div className="flex items-center mb-4">
                   <Clock className="h-6 w-6 text-yellow-400 mr-3" />
                   <h2 className="text-xl font-bold text-yellow-400">Expiring Soon</h2>
                 </div>
                 
-                <p className="text-white/80 text-sm mb-4">
+                <p className="text-slate-800 text-sm mb-4">
                   {reportStats.expiring} certificate{reportStats.expiring > 1 ? 's' : ''} expiring within 30 days.
                 </p>
 
-                <Button className="w-full btn-glow py-3 rounded-lg">
+                <Button className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 rounded-lg">
                   <Calendar className="h-5 w-5 mr-2" />
                   Schedule Renewal Tests
                 </Button>
@@ -467,26 +465,26 @@ export default function ReportsPage() {
             )}
 
             {/* Quick Actions */}
-            <div className="glass rounded-2xl p-6">
-              <h2 className="text-xl font-bold gradient-text mb-6">Quick Actions</h2>
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <h2 className="text-xl font-bold text-slate-900 mb-6">Quick Actions</h2>
               
               <div className="space-y-3">
-                <Button className="w-full btn-glass py-3 rounded-lg justify-start">
+                <Button className="w-full bg-slate-200 hover:bg-slate-300 text-slate-900 py-3 rounded-lg justify-start">
                   <Download className="h-5 w-5 mr-3" />
                   Download All Certificates
                 </Button>
                 
-                <Button className="w-full btn-glass py-3 rounded-lg justify-start">
+                <Button className="w-full bg-slate-200 hover:bg-slate-300 text-slate-900 py-3 rounded-lg justify-start">
                   <Printer className="h-5 w-5 mr-3" />
                   Print Compliance Report
                 </Button>
                 
-                <Button className="w-full btn-glass py-3 rounded-lg justify-start">
+                <Button className="w-full bg-slate-200 hover:bg-slate-300 text-slate-900 py-3 rounded-lg justify-start">
                   <Mail className="h-5 w-5 mr-3" />
                   Email Certificates
                 </Button>
                 
-                <Button className="w-full btn-glass py-3 rounded-lg justify-start">
+                <Button className="w-full bg-slate-200 hover:bg-slate-300 text-slate-900 py-3 rounded-lg justify-start">
                   <Calendar className="h-5 w-5 mr-3" />
                   Schedule Next Test
                 </Button>
@@ -494,10 +492,10 @@ export default function ReportsPage() {
             </div>
 
             {/* Compliance Info */}
-            <div className="glass-blue rounded-2xl p-6">
+            <div className="bg-blue-200 rounded-2xl p-6">
               <h2 className="text-lg font-bold text-blue-400 mb-4">Washington State Compliance</h2>
               
-              <div className="space-y-3 text-sm text-white/80">
+              <div className="space-y-3 text-sm text-slate-800">
                 <div>
                   <strong>WAC 246-290-490:</strong> Backflow assemblies must be tested annually by certified testers.
                 </div>
@@ -511,18 +509,18 @@ export default function ReportsPage() {
             </div>
 
             {/* Contact Support */}
-            <div className="glass-blue rounded-2xl p-6">
+            <div className="bg-blue-200 rounded-2xl p-6">
               <h2 className="text-lg font-bold text-blue-400 mb-4">Certificate Support</h2>
               
               <div className="space-y-3 text-sm">
-                <p className="text-white/80">
+                <p className="text-slate-800">
                   Questions about your certificates or need official copies?
                 </p>
                 <div className="space-y-2">
-                  <a href="tel:2532788692" className="flex items-center text-white/80 hover:text-blue-400 transition-colors">
+                  <a href="tel:2532788692" className="flex items-center text-slate-800 hover:text-blue-400 transition-colors">
                     📞 (253) 278-8692
                   </a>
-                  <a href="mailto:reports@fisherbackflows.com" className="flex items-center text-white/80 hover:text-blue-400 transition-colors">
+                  <a href="mailto:reports@fisherbackflows.com" className="flex items-center text-slate-800 hover:text-blue-400 transition-colors">
                     ✉️ reports@fisherbackflows.com
                   </a>
                 </div>

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 
 export default function ForgotPasswordPage() {
   return (
-    <div className="min-h-screen bg-slate-400">
+    <div className="min-h-screen bg-white">
       {/* Professional Header */}
       <header className="bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -22,7 +22,7 @@ export default function ForgotPasswordPage() {
                 </Button>
               </Link>
               <Link href="/portal">
-                <Button className="bg-blue-700 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium shadow-sm transition-colors duration-200">
+                <Button className="bg-blue-700 hover:bg-blue-700 text-slate-900 px-5 py-2.5 rounded-lg font-medium shadow-sm transition-colors duration-200">
                   Login
                 </Button>
               </Link>
