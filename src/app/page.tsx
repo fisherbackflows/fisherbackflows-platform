@@ -111,54 +111,60 @@ export default function HomePage() {
       {/* Clean minimal background */}
       <div className="absolute inset-0 glass pointer-events-none"></div>
       
-      {/* Elegant Header */}
-      <header className="relative z-50 glass border-b border-blue-400 sticky top-0 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      {/* Unified Header */}
+      <header className="sticky top-0 z-50 glass border-b border-blue-400 glow-blue-sm">
+        <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4">
+            {/* Logo and Company Title */}
+            <Link href="/" className="flex items-center space-x-3">
               <div className="relative">
                 <Image
                   src="/fisher-backflows-logo.png"
                   alt="Fisher Backflows LLC"
-                  width={180}
-                  height={144}
+                  width={40}
+                  height={32}
                   priority
                   className="drop-glow-blue-sm"
                 />
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm0 rounded-full"></div>
               </div>
-            </div>
+              <div>
+                <h1 className="text-lg font-bold text-white">Fisher Backflows</h1>
+                <p className="text-xs text-white/60">Professional Services</p>
+              </div>
+            </Link>
             
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-1">
-              <a href="#services" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium">
+            <nav className="hidden md:flex items-center space-x-1">
+              <a href="#services" className="px-4 py-2 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium">
                 Services
               </a>
-              <a href="#about" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium">
+              <a href="#about" className="px-4 py-2 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium">
                 About
               </a>
-              <a href="#contact" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium">
+              <a href="#contact" className="px-4 py-2 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium">
                 Contact
               </a>
-              <div className="w-px h-8 bg-black/40 backdrop-blur-xl mx-2"></div>
-              <Link href="/portal" className="px-6 py-2.5 rounded-2xl glass-btn-primary hover:glow-blue text-white transition-all duration-200 font-semibold glow-blue-sm">
-                Customer Portal
+              <div className="w-px h-8 bg-white/20 mx-3"></div>
+              <Link href="/portal" className="px-4 py-2 rounded-2xl glass-btn-primary hover:glow-blue text-white transition-all duration-200 font-semibold">
+                <User className="inline h-4 w-4 mr-1" />
+                Portal
               </Link>
-              <Link href="/team-portal" className="px-6 py-2.5 rounded-2xl bg-black/40 backdrop-blur-xl hover:bg-black/40 backdrop-blur-xl text-white transition-all duration-200 font-semibold glow-blue-sm">
-                Team Login
+              <Link href="/team-portal" className="px-4 py-2 rounded-2xl bg-white/10 hover:bg-white/20 text-white transition-all duration-200 font-semibold">
+                Team
               </Link>
             </nav>
 
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-3 rounded-2xl glass hover:glow-blue-sm transition-all duration-200"
+              className="md:hidden p-2 rounded-2xl glass hover:glow-blue-sm transition-all duration-200"
               aria-label="Toggle mobile menu"
             >
               {mobileMenuOpen ? (
-                <X className="h-8 w-8 text-white" />
+                <X className="h-6 w-6 text-white" />
               ) : (
-                <Menu className="h-8 w-8 text-white" />
+                <Menu className="h-6 w-6 text-white" />
               )}
             </button>
           </div>
@@ -167,30 +173,30 @@ export default function HomePage() {
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden glass border-t border-blue-400/50">
-            <div className="px-6 py-6 space-y-4">
+            <div className="px-4 py-4 space-y-2">
               <a 
                 href="#services" 
-                className="block px-6 py-4 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium text-lg"
+                className="block px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Services
               </a>
               <a 
                 href="#about" 
-                className="block px-6 py-4 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium text-lg"
+                className="block px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About
               </a>
               <a 
                 href="#contact" 
-                className="block px-6 py-4 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium text-lg"
+                className="block px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact
               </a>
               
-              <div className="border-t border-blue-400/30 pt-4 mt-4 space-y-3">
+              <div className="border-t border-blue-400/30 pt-3 mt-3 space-y-2">
                 <Link 
                   href="/portal" 
                   className="block px-4 py-3 rounded-2xl glass-btn-primary text-white text-center font-semibold transition-all duration-200"
@@ -201,15 +207,15 @@ export default function HomePage() {
                 </Link>
                 <Link 
                   href="/team-portal" 
-                  className="block px-4 py-3 rounded-2xl bg-black/40 backdrop-blur-xl text-white text-center font-semibold transition-all duration-200"
+                  className="block px-4 py-3 rounded-2xl bg-white/10 text-white text-center font-semibold transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Team Login
                 </Link>
                 
-                <div className="border-t border-blue-400/30 pt-4 mt-4">
+                <div className="border-t border-blue-400/30 pt-3 mt-3">
                   <Button 
-                    size="lg" 
+                    size="sm" 
                     className="w-full glass-btn-primary text-white font-semibold rounded-xl transition-all duration-200"
                     onClick={() => {
                       window.location.href = 'tel:2532788692';
@@ -217,7 +223,7 @@ export default function HomePage() {
                     }}
                   >
                     <Phone className="mr-2 h-4 w-4" />
-                    Call Now: (253) 278-8692
+                    Call: (253) 278-8692
                   </Button>
                 </div>
               </div>
