@@ -9,11 +9,13 @@ import {
   CheckCircle,
   AlertCircle,
   User,
-  Wrench
+  Wrench,
+  Save
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useCustomerData } from '@/hooks/useCustomerData';
+import { useAutoSave } from '@/hooks/useAutoSave';
 
 export default function CustomerSchedulePage() {
   const { customer, loading, error } = useCustomerData();
@@ -26,6 +28,16 @@ export default function CustomerSchedulePage() {
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [bookingStep, setBookingStep] = useState(1);
+  
+  // Auto-save booking progress
+  const { saveNow, lastSavedTime, clearSaved } = useAutoSave(
+    { selectedDevice, selectedDate, selectedTime, bookingStep },
+    {
+      key: 'customer-appointment-booking',
+      interval: 15000,
+      onSave: (data) => console.log('Auto-saved booking progress:', data)
+    }
+  );
 
   useEffect(() => {
     if (customer?.id) {
@@ -127,6 +139,7 @@ export default function CustomerSchedulePage() {
       });
       
       if (response.ok) {
+        clearSaved(); // Clear auto-saved progress
         alert('Appointment booked successfully!');
         loadAppointments();
         setBookingStep(1);
@@ -254,7 +267,15 @@ export default function CustomerSchedulePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Booking Section */}
           <div className="glass rounded-2xl p-6 border border-blue-400">
-            <h2 className="text-2xl font-bold text-white mb-6">Book New Appointment</h2>
+            <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-white">Book New Appointment</h2>
+            {lastSavedTime && (
+              <div className="text-sm text-white/60 flex items-center">
+                <Save className="h-3 w-3 mr-1" />
+                Auto-saved {lastSavedTime.toLocaleTimeString()}
+              </div>
+            )}
+          </div>
             
             {/* Step 1: Select Device */}
             {bookingStep === 1 && (
