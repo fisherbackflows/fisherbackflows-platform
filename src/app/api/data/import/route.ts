@@ -247,7 +247,6 @@ async function processCustomerRecord(record: any, rowNumber: number, result: Imp
     state: record.state?.trim() || null,
     zip_code: record.zip_code?.trim() || null,
     account_status: record.account_status || 'active',
-    property_type: record.property_type || 'residential',
     created_at: new Date().toISOString()
   };
 }
