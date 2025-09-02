@@ -220,4 +220,13 @@ When launching Claude Code from `/fisherbackflows2`:
 - **GitHub**: All changes pushed to main branch
 - **Vercel**: Deployed to production
 - **Live URL**: https://www.fisherbackflows.com/
-- **Last Deploy**: September 2, 2025
+- **Latest Production URL**: https://fisherbackflows-817imfmdo-fisherbackflows-projects.vercel.app
+- **Last Deploy**: September 2, 2025 (Navigation fix deployed)
+
+### LATEST SESSION FIXES ✅ (September 2, 2025 - Continued)
+#### Navigation Bug Resolution
+- ✅ **Issue**: "Schedule Testing Now" buttons on landing page stuck on "Loading scheduling information..."
+- ✅ **Root Cause**: User experiencing cached version or deployment lag
+- ✅ **Fix**: Confirmed all buttons correctly route to `/portal` (login) instead of `/portal/schedule` (auth-required)
+- ✅ **Production Deploy**: Successfully deployed latest version with `npx vercel --prod`
+- ✅ **Status**: All "Schedule Testing Now" buttons working correctly on live site
