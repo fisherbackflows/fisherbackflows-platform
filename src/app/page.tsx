@@ -260,7 +260,7 @@ export default function HomePage() {
             <Button 
               size="lg" 
               className="w-full sm:w-auto glass-btn-primary hover:glow-blue text-white px-8 py-4 text-lg font-semibold rounded-xl group transition-all duration-200 glow-blue hover:glow-blue-lg"
-              onClick={() => window.location.href = '/portal/schedule'}
+              onClick={() => window.location.href = '/portal'}
             >
               Schedule Testing Now
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
@@ -452,7 +452,7 @@ export default function HomePage() {
               <h3 className="text-2xl font-semibold mb-4 text-white">Book Online</h3>
               <Button 
                 className="glass hover:from-amber-700 hover:to-amber-600 text-white px-8 py-3 rounded-xl transition-all duration-300"
-                onClick={() => window.location.href = '/portal/schedule'}
+                onClick={() => window.location.href = '/portal'}
               >
                 Schedule Now
               </Button>
