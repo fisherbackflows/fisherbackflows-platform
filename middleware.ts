@@ -4,6 +4,8 @@ import { productionAuthMiddleware, addSecurityHeaders } from '@/middleware/produ
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
+  console.log(`🔍 Middleware triggered: ${pathname}`);
+  
   // Skip middleware for static files and Next.js internals
   if (
     pathname.startsWith('/_next/') ||
@@ -22,8 +24,8 @@ export async function middleware(request: NextRequest) {
   // Apply production authentication middleware
   let response = await productionAuthMiddleware(request);
   
-  // If auth middleware returned a response (redirect, error, etc.), use it
-  if (response.status !== 200 || response.redirected) {
+  // If auth middleware returned a non-success response (redirect, error, etc.), use it
+  if (response.status !== 200 || response.headers.get('location')) {
     return addSecurityHeaders(response);
   }
   

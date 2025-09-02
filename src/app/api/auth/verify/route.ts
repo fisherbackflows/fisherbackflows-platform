@@ -16,14 +16,31 @@ export async function GET(request: NextRequest) {
 
     const supabase = createRouteHandlerClient(request);
 
-    // Verify the token with Supabase Auth
-    const { data, error } = await supabase.auth.verifyOtp({
+    // Verify the token with Supabase Auth with timeout handling
+    const verifyPromise = supabase.auth.verifyOtp({
       token_hash: token,
       type: type as 'signup' | 'recovery' | 'invite' || 'signup'
     });
 
+    // Add timeout to verification (5 seconds)
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Token verification timeout')), 5000);
+    });
+
+    const { data, error } = await Promise.race([
+      verifyPromise,
+      timeoutPromise
+    ]) as any;
+
     if (error) {
       console.error('Email verification error:', error);
+      
+      // Handle timeout cases
+      if (error.message === 'Token verification timeout') {
+        const errorUrl = new URL('/portal/verification-error', request.url);
+        errorUrl.searchParams.set('error', 'Verification took too long. Please try clicking the link again.');
+        return NextResponse.redirect(errorUrl);
+      }
       
       // Redirect to error page with specific error
       const errorUrl = new URL('/portal/verification-error', request.url);
@@ -75,17 +92,44 @@ export async function POST(request: NextRequest) {
 
     const supabase = createRouteHandlerClient(request);
 
-    // Resend verification email
-    const { error } = await supabase.auth.resend({
+    // Resend verification email with timeout handling
+    const resendPromise = supabase.auth.resend({
       type: 'signup',
       email: email,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/verify`
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify`
       }
     });
 
+    // Add timeout to resend operation (8 seconds)
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Resend email timeout')), 8000);
+    });
+
+    const { error } = await Promise.race([
+      resendPromise,
+      timeoutPromise
+    ]) as any;
+
     if (error) {
       console.error('Resend verification error:', error);
+      
+      // Handle timeout cases
+      if (error.message === 'Resend email timeout') {
+        return NextResponse.json(
+          { error: 'Email resend took too long. Please try again in a moment.' },
+          { status: 503 }
+        );
+      }
+      
+      // Handle rate limiting
+      if (error.message?.includes('rate limit') || error.code === 'over_email_send_rate_limit') {
+        return NextResponse.json(
+          { error: 'Please wait at least 35 seconds between email resend requests.' },
+          { status: 429 }
+        );
+      }
+      
       return NextResponse.json(
         { error: 'Failed to resend verification email' },
         { status: 500 }

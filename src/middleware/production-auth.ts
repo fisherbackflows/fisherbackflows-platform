@@ -75,6 +75,9 @@ export async function productionAuthMiddleware(request: NextRequest) {
   const clientIP = getClientIP(request);
   const userAgent = request.headers.get('user-agent') || 'unknown';
   
+  // Debug logging
+  console.log(`🔐 Auth middleware: ${pathname} - Protected: ${isProtectedRoute(pathname)} - Public: ${isPublicRoute(pathname)}`);
+  
   // Apply rate limiting to sensitive routes
   if (isRateLimitedRoute(pathname)) {
     const rateLimitResult = isRateLimited(clientIP);

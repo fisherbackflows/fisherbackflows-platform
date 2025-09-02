@@ -50,8 +50,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash the password
-    const saltRounds = 12;
+    // Hash the password with reduced rounds for faster processing
+    const saltRounds = 10;
     const _hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Initialize Supabase client
@@ -77,12 +77,12 @@ export async function POST(request: NextRequest) {
     const accountNumber = generateId('FB');
 
     try {
-      // Create user in Supabase Auth using regular signup
-      const { data: authUser, error: authError } = await supabase.auth.signUp({
+      // Create user in Supabase Auth with timeout handling
+      const authSignupPromise = supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/verify`,
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify`,
           data: {
             first_name: firstName,
             last_name: lastName,
@@ -92,8 +92,35 @@ export async function POST(request: NextRequest) {
         }
       });
 
+      // Add timeout to auth signup (10 seconds)
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Auth signup timeout')), 10000);
+      });
+
+      const { data: authUser, error: authError } = await Promise.race([
+        authSignupPromise,
+        timeoutPromise
+      ]) as any;
+
       if (authError) {
         console.error('Auth creation error:', authError);
+        
+        // Handle specific timeout case
+        if (authError.message === 'Auth signup timeout') {
+          return NextResponse.json(
+            { error: 'Registration is taking longer than expected. Please try again in a moment.' },
+            { status: 503 }
+          );
+        }
+        
+        // Handle rate limiting
+        if (authError.message?.includes('rate limit') || authError.message?.includes('too many requests')) {
+          return NextResponse.json(
+            { error: 'Too many registration attempts. Please wait a few minutes and try again.' },
+            { status: 429 }
+          );
+        }
+        
         return NextResponse.json(
           { error: authError.message || 'Failed to create authentication account' },
           { status: 500 }

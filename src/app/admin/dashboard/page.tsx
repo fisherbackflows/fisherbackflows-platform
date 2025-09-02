@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import AdminProtection from '@/components/auth/AdminProtection';
 import { withErrorBoundary } from '@/components/error-boundaries';
 import { 
   Activity,
@@ -174,7 +175,8 @@ function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <AdminProtection requiredRole="admin">
+      <div className="min-h-screen bg-black">
       {/* Header */}
       <header className="glass border-b border-blue-400 sticky top-0 z-50 glow-blue-sm">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -526,6 +528,7 @@ function AdminDashboard() {
         </div>
       </main>
     </div>
+    </AdminProtection>
   )
 }
 

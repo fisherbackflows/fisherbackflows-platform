@@ -14,6 +14,34 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Validate date format and ensure it's not in the past
+    const appointmentDate = new Date(date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (isNaN(appointmentDate.getTime())) {
+      return NextResponse.json(
+        { error: 'Invalid date format' },
+        { status: 400 }
+      );
+    }
+    
+    if (appointmentDate < today) {
+      return NextResponse.json(
+        { error: 'Cannot book appointments in the past' },
+        { status: 400 }
+      );
+    }
+
+    // Validate time format - support flexible time formats
+    const timeRegex = /^(0?[1-9]|1[0-2]):(00|30)\s?(AM|PM)$/i;
+    if (!timeRegex.test(time) && !time.match(/^\d{2}:\d{2}:\d{2}$/)) {
+      return NextResponse.json(
+        { error: 'Invalid time format. Use format like "9:00 AM" or "14:30:00"' },
+        { status: 400 }
+      );
+    }
     
     const supabase = supabaseAdmin || createRouteHandlerClient(request);
     
@@ -33,17 +61,31 @@ export async function POST(request: NextRequest) {
     }
     
     // Convert time format (e.g., "9:00 AM" to "09:00:00")
-    const timeFormatMap: { [key: string]: string } = {
-      '9:00 AM': '09:00:00',
-      '10:00 AM': '10:00:00', 
-      '11:00 AM': '11:00:00',
-      '1:00 PM': '13:00:00',
-      '2:00 PM': '14:00:00',
-      '3:00 PM': '15:00:00',
-      '4:00 PM': '16:00:00'
+    const convertTimeToDBFormat = (timeStr: string): string => {
+      // If already in HH:MM:SS format, return as-is
+      if (timeStr.match(/^\d{2}:\d{2}:\d{2}$/)) {
+        return timeStr;
+      }
+      
+      // Parse AM/PM format
+      const match = timeStr.match(/^(\d{1,2}):(\d{2})\s?(AM|PM)$/i);
+      if (!match) return timeStr; // Fallback
+      
+      let hour = parseInt(match[1]);
+      const minute = match[2];
+      const ampm = match[3].toLowerCase();
+      
+      // Convert to 24-hour format
+      if (ampm === 'pm' && hour !== 12) {
+        hour += 12;
+      } else if (ampm === 'am' && hour === 12) {
+        hour = 0;
+      }
+      
+      return `${hour.toString().padStart(2, '0')}:${minute}:00`;
     };
     
-    const dbTime = timeFormatMap[time] || time;
+    const dbTime = convertTimeToDBFormat(time);
     
     // Check for conflicts with existing appointments
     const hasConflict = existingAppointments?.some(apt => {
@@ -73,65 +115,10 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Get available technicians for this date/time slot
-    const { data: technicians, error: techError } = await supabase
-      .from('team_users')
-      .select('id, first_name, last_name, email, role')
-      .eq('is_active', true)
-      .in('role', ['technician', 'admin']); // Admin can also do tests
-
-    if (techError) {
-      console.error('Error fetching technicians:', techError);
-    }
-
-    // Find available technician by checking for scheduling conflicts
+    // For now, create appointments without automatic technician assignment
+    // Technician assignment can be done later through the admin interface
     let assignedTechnicianId = null;
-    let assignedTechnicianName = 'Unassigned';
-
-    if (technicians && technicians.length > 0) {
-      // Get existing appointments for this date to check technician availability
-      const { data: existingTechAppointments } = await supabase
-        .from('appointments')
-        .select('technician_id, scheduled_time_start, estimated_duration')
-        .eq('scheduled_date', date)
-        .neq('status', 'cancelled')
-        .not('technician_id', 'is', null);
-
-      // Find first available technician
-      const availableTechnician = technicians.find(tech => {
-        // Check if technician has conflicting appointment
-        const hasConflict = (existingTechAppointments || []).some(apt => {
-          if (apt.technician_id !== tech.id) return false;
-          
-          if (!apt.scheduled_time_start) return false;
-          
-          // Parse times and check for overlap
-          const aptStart = apt.scheduled_time_start.substring(0, 5); // HH:MM
-          const aptDuration = apt.estimated_duration || 60;
-          
-          const [aptHour, aptMin] = aptStart.split(':').map(Number);
-          const [slotHour, slotMin] = dbTime.split(':').map(Number);
-          
-          const aptStartMinutes = aptHour * 60 + aptMin;
-          const aptEndMinutes = aptStartMinutes + aptDuration;
-          const slotStartMinutes = slotHour * 60 + slotMin;
-          const slotEndMinutes = slotStartMinutes + 60; // Assume 1 hour slot
-          
-          // Check for overlap
-          return slotStartMinutes < aptEndMinutes && slotEndMinutes > aptStartMinutes;
-        });
-        
-        return !hasConflict;
-      });
-
-      if (availableTechnician) {
-        assignedTechnicianId = availableTechnician.id;
-        assignedTechnicianName = `${availableTechnician.first_name} ${availableTechnician.last_name}`;
-        console.log(`✅ Assigned technician: ${assignedTechnicianName} (${availableTechnician.id})`);
-      } else {
-        console.log('⚠️ No available technicians found for this time slot');
-      }
-    }
+    let assignedTechnicianName = 'To be assigned';
     
     // Get customer information if deviceId is provided
     let deviceInfo = '';
@@ -147,27 +134,22 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // Create the appointment with assigned technician
+    // Create basic appointment data with only essential fields
     const appointmentData = {
       customer_id: customerId,
-      technician_id: assignedTechnicianId,
-      appointment_type: serviceType || 'annual_test',
       scheduled_date: date,
       scheduled_time_start: dbTime,
-      estimated_duration: 60,
-      special_instructions: notes ? `${notes}${deviceInfo ? `. ${deviceInfo}` : ''}` : deviceInfo,
-      status: 'scheduled',
-      created_at: new Date().toISOString()
+      status: 'scheduled'
     };
+    
+    // Add optional fields if they exist in the database schema
+    if (serviceType) appointmentData.appointment_type = serviceType;
+    if (notes || deviceInfo) appointmentData.special_instructions = notes ? `${notes}${deviceInfo ? `. ${deviceInfo}` : ''}` : deviceInfo;
     
     const { data: appointment, error: createError } = await supabase
       .from('appointments')
       .insert(appointmentData)
-      .select(`
-        *,
-        customer:customers(first_name, last_name, email, phone),
-        technician:team_users(first_name, last_name, email, role)
-      `)
+      .select('*')
       .single();
     
     if (createError) {
@@ -178,32 +160,48 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send confirmation email to customer
-    if (appointment && appointment.customer) {
-      const customerName = `${appointment.customer.first_name} ${appointment.customer.last_name}`;
-      const customerEmail = appointment.customer.email;
-      
-      if (customerEmail) {
-        try {
-          const emailTemplate = emailTemplates.appointmentConfirmation(
-            customerName,
-            appointment.scheduled_date,
-            time, // Use original time format
-            serviceType || 'Annual Test'
-          );
+    // Get customer information for email confirmation
+    let customerEmail = null;
+    let customerName = 'Customer';
+    
+    if (appointment) {
+      try {
+        const { data: customer } = await supabase
+          .from('customers')
+          .select('first_name, last_name, email')
+          .eq('id', customerId)
+          .single();
           
-          await sendEmail({
-            to: customerEmail,
-            subject: emailTemplate.subject,
-            html: emailTemplate.html,
-            text: emailTemplate.text
-          });
+        if (customer) {
+          customerName = `${customer.first_name} ${customer.last_name}`;
+          customerEmail = customer.email;
           
-          console.log('✅ Confirmation email sent to:', customerEmail);
-        } catch (emailError) {
-          console.error('⚠️ Failed to send confirmation email:', emailError);
-          // Don't fail the appointment creation if email fails
+          // Send confirmation email
+          if (customerEmail) {
+            try {
+              const emailTemplate = emailTemplates.appointmentConfirmation(
+                customerName,
+                appointment.scheduled_date,
+                time, // Use original time format
+                serviceType || 'Annual Test'
+              );
+              
+              await sendEmail({
+                to: customerEmail,
+                subject: emailTemplate.subject,
+                html: emailTemplate.html,
+                text: emailTemplate.text
+              });
+              
+              console.log('✅ Confirmation email sent to:', customerEmail);
+            } catch (emailError) {
+              console.error('⚠️ Failed to send confirmation email:', emailError);
+              // Don't fail the appointment creation if email fails
+            }
+          }
         }
+      } catch (customerError) {
+        console.error('⚠️ Failed to fetch customer for email:', customerError);
       }
     }
     
