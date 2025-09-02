@@ -496,7 +496,7 @@ export default function CustomerDatabasePage() {
               ].map(filter => (
                 <Button
                   key={filter.key}
-                  onClick={() = onClick={() => window.history.back()}> setStatusFilter(filter.key)}
+                  onClick={() => setStatusFilter(filter.key)}
                   className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                     statusFilter === filter.key
                       ? 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl text-white'
@@ -517,7 +517,7 @@ export default function CustomerDatabasePage() {
               ].map(filter => (
                 <Button
                   key={filter.key}
-                  onClick={() = onClick={() => window.history.back()}> setTypeFilter(filter.key)}
+                  onClick={() => setTypeFilter(filter.key)}
                   className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                     typeFilter === filter.key
                       ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl text-white'

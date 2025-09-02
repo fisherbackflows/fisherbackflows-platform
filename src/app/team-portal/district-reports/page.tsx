@@ -369,7 +369,7 @@ export default function DistrictReportsPage() {
                 ].map(filter => (
                   <Button
                     key={filter.key}
-                    onClick={() = onClick={() => window.history.back()}> setStatusFilter(filter.key)}
+                    onClick={() => setStatusFilter(filter.key)}
                     className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${
                       statusFilter === filter.key
                         ? 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl text-white'

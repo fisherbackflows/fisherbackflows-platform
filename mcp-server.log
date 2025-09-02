@@ -1,2 +1,20 @@
-Fisher Backflows Platform MCP Server is running...
-Project root: /mnt/c/users/Fishe/fisherbackflows2/fisherbackflows-platform
+node:internal/modules/cjs/loader:678
+      throw e;
+      ^
+
+Error: Cannot find module '/data/data/com.termux/files/home/fisherbackflows/node_modules/@modelcontextprotocol/sdk/dist/cjs/dist/cjs/server/index.js'
+    at createEsmNotFoundErr (node:internal/modules/cjs/loader:1447:15)
+    at finalizeEsmResolution (node:internal/modules/cjs/loader:1436:9)
+    at resolveExports (node:internal/modules/cjs/loader:671:14)
+    at Module._findPath (node:internal/modules/cjs/loader:738:31)
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1396:27)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)
+    at Module._load (node:internal/modules/cjs/loader:1219:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24) {
+  code: 'MODULE_NOT_FOUND',
+  path: '/data/data/com.termux/files/home/fisherbackflows/node_modules/@modelcontextprotocol/sdk'
+}
+
+Node.js v24.6.0

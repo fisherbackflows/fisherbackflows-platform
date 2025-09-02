@@ -5,8 +5,8 @@
  * Provides enhanced context and capabilities for development
  */
 
-const { McpServer } = require('./node_modules/@modelcontextprotocol/sdk/dist/cjs/server/mcp.js');
-const { StdioServerTransport } = require('./node_modules/@modelcontextprotocol/sdk/dist/cjs/server/stdio.js');
+const { Server } = require('@modelcontextprotocol/sdk/dist/cjs/server/index.js');
+const { StdioServerTransport } = require('@modelcontextprotocol/sdk/dist/cjs/server/stdio.js');
 const fs = require('fs').promises;
 const path = require('path');
 const { exec } = require('child_process');
@@ -17,8 +17,8 @@ const execAsync = promisify(exec);
 
 class FisherBackflowsMCPServer {
   constructor() {
-    this.projectRoot = '/mnt/c/users/Fishe/fisherbackflows2/fisherbackflows-platform';
-    this.server = new McpServer({
+    this.projectRoot = process.cwd();
+    this.server = new Server({
       name: 'fisher-backflows-platform',
       version: '1.0.0'
     });

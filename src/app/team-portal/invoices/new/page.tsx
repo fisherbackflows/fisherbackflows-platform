@@ -597,7 +597,7 @@ export default function NewInvoicePage() {
           type="button" 
           variant="ghost" 
           className="w-full mt-2" 
-          onClick={() = onClick={() = onClick={() = onClick={() = onClick={() => window.history.back()}> window.history.back()}> window.history.back()}> window.history.back()}> router.back()}
+          onClick={() => router.back()}
         >
           Cancel
         </Button>

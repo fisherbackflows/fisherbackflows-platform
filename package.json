@@ -62,7 +62,7 @@
     "@babel/preset-env": "^7.23.8",
     "@babel/preset-typescript": "^7.23.3",
     "@eslint/eslintrc": "^3",
-    "@modelcontextprotocol/sdk": "^1.17.4",
+    "@modelcontextprotocol/sdk": "^1.17.5",
     "@playwright/test": "^1.40.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^29.5.11",

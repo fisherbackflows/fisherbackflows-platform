@@ -3,7 +3,7 @@
     "fisher-backflows-platform": {
       "command": "node",
       "args": [
-        "./mcp-server.js"
+        "./simple-mcp-server.js"
       ],
       "env": {
         "NODE_ENV": "development",

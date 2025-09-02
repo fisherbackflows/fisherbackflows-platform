@@ -522,7 +522,7 @@ export default function NewCustomerPage() {
             <Save className="h-4 w-4 mr-2" />
             {saving ? 'Saving...' : 'Save Customer'}
           </Button>
-          <Button type="button" variant="outline" onClick={() = onClick={() = onClick={() = onClick={() = onClick={() => window.history.back()}> window.history.back()}> window.history.back()}> window.history.back()}> router.back()}>
+          <Button type="button" variant="outline" onClick={() => router.back()}>
             Cancel
           </Button>
         </div>
