@@ -152,13 +152,13 @@ export default function HomePage() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-2xl glass hover:glow-blue-sm transition-all duration-200"
+              className="md:hidden p-3 rounded-2xl glass hover:glow-blue-sm transition-all duration-200"
               aria-label="Toggle mobile menu"
             >
               {mobileMenuOpen ? (
-                <X className="h-6 w-6 text-white" />
+                <X className="h-8 w-8 text-white" />
               ) : (
-                <Menu className="h-6 w-6 text-white" />
+                <Menu className="h-8 w-8 text-white" />
               )}
             </button>
           </div>
@@ -167,24 +167,24 @@ export default function HomePage() {
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden glass border-t border-blue-400/50">
-            <div className="px-6 py-4 space-y-3">
+            <div className="px-6 py-6 space-y-4">
               <a 
                 href="#services" 
-                className="block px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium"
+                className="block px-6 py-4 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium text-lg"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Services
               </a>
               <a 
                 href="#about" 
-                className="block px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium"
+                className="block px-6 py-4 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium text-lg"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 About
               </a>
               <a 
                 href="#contact" 
-                className="block px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium"
+                className="block px-6 py-4 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium text-lg"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact
@@ -227,7 +227,7 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-16 pb-24 px-6">
+      <section className="relative pt-24 pb-24 px-6">
         <div className="max-w-6xl mx-auto text-center">
           {/* Trust Badge */}
           <div className="inline-block mb-12">
