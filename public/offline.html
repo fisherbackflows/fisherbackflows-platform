@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Fisher Backflows</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .offline-container {
+      text-align: center;
+      max-width: 500px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .offline-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: rgba(239, 68, 68, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ef4444;
+    }
+
+    .offline-icon svg {
+      width: 40px;
+      height: 40px;
+      stroke: #ef4444;
+    }
+
+    .offline-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #f1f5f9;
+    }
+
+    .offline-message {
+      font-size: 1.125rem;
+      color: #cbd5e1;
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    .offline-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: #0ea5e9;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #0284c7;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .connection-status {
+      margin-top: 24px;
+      padding: 16px;
+      background: rgba(59, 130, 246, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .status-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      color: #94a3b8;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ef4444;
+    }
+
+    .status-dot.online {
+      background: #10b981;
+    }
+
+    .features-list {
+      text-align: left;
+      margin-top: 24px;
+    }
+
+    .features-list h3 {
+      font-size: 1.125rem;
+      color: #f1f5f9;
+      margin-bottom: 12px;
+    }
+
+    .features-list ul {
+      list-style: none;
+      space-y: 8px;
+    }
+
+    .features-list li {
+      color: #cbd5e1;
+      font-size: 0.875rem;
+      padding: 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .features-list li::before {
+      content: '✓';
+      color: #10b981;
+      font-weight: bold;
+    }
+
+    @media (max-width: 480px) {
+      .offline-container {
+        padding: 24px;
+      }
+      
+      .offline-title {
+        font-size: 1.5rem;
+      }
+      
+      .offline-message {
+        font-size: 1rem;
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <div class="offline-icon">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-12.728 12.728m0 0L12 12m-6.364 6.364L12 12m6.364-6.364L12 12"></path>
+      </svg>
+    </div>
+
+    <h1 class="offline-title">You're Offline</h1>
+    <p class="offline-message">
+      It looks like you've lost your internet connection. Don't worry - Fisher Backflows works offline too!
+    </p>
+
+    <div class="connection-status">
+      <div class="status-indicator">
+        <div class="status-dot pulse" id="statusDot"></div>
+        <span id="connectionStatus">Checking connection...</span>
+      </div>
+    </div>
+
+    <div class="offline-actions">
+      <button class="btn btn-primary" onclick="retryConnection()">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+        Try Again
+      </button>
+      
+      <a href="/" class="btn btn-secondary">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+        </svg>
+        Go to Home
+      </a>
+    </div>
+
+    <div class="features-list">
+      <h3>Available Offline:</h3>
+      <ul>
+        <li>View cached customer data</li>
+        <li>Access recent test reports</li>
+        <li>Browse saved appointments</li>
+        <li>Review payment history</li>
+        <li>Use app navigation</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Check connection status
+    function updateConnectionStatus() {
+      const statusDot = document.getElementById('statusDot');
+      const connectionStatus = document.getElementById('connectionStatus');
+      
+      if (navigator.onLine) {
+        statusDot.classList.remove('pulse');
+        statusDot.classList.add('online');
+        connectionStatus.textContent = 'Connection restored! Redirecting...';
+        
+        // Redirect to home after a short delay
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);
+      } else {
+        statusDot.classList.remove('online');
+        statusDot.classList.add('pulse');
+        connectionStatus.textContent = 'No internet connection';
+      }
+    }
+
+    // Retry connection
+    function retryConnection() {
+      const button = document.querySelector('.btn-primary');
+      button.textContent = 'Checking...';
+      button.disabled = true;
+      
+      // Check connection after a brief delay
+      setTimeout(() => {
+        if (navigator.onLine) {
+          window.location.href = '/';
+        } else {
+          button.innerHTML = `
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+            Try Again
+          `;
+          button.disabled = false;
+        }
+      }, 1500);
+    }
+
+    // Listen for connection changes
+    window.addEventListener('online', updateConnectionStatus);
+    window.addEventListener('offline', updateConnectionStatus);
+
+    // Initial status check
+    updateConnectionStatus();
+
+    // Periodic connection check
+    setInterval(updateConnectionStatus, 5000);
+  </script>
+</body>
+</html>
