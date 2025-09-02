@@ -82,6 +82,7 @@ export async function POST(request: NextRequest) {
         email,
         password,
         options: {
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/api/auth/verify`,
           data: {
             first_name: firstName,
             last_name: lastName,
@@ -120,7 +121,7 @@ export async function POST(request: NextRequest) {
           city: address.city,
           state: address.state,
           zip_code: address.zipCode,
-          account_status: 'active'
+          account_status: 'pending_verification'
         })
         .select()
         .single();

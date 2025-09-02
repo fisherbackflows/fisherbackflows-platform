@@ -55,26 +55,46 @@ export default function EditCustomerPage() {
   });
 
   useEffect(() => {
-    // Mock data loading - replace with actual API call
-    const mockCustomer: Customer = {
-      id: customerId,
-      name: `Customer ${customerId}`,
-      email: `customer${customerId}@example.com`,
-      phone: '(253) 555-0123',
-      address: '123 Main St',
-      city: 'Tacoma',
-      state: 'WA',
-      zipCode: '98401',
-      deviceType: 'Reduced Pressure Zone',
-      deviceLocation: 'Front yard, near water meter',
-      lastTested: '2024-03-15',
-      nextDue: '2025-03-15',
-      notes: 'Customer prefers morning appointments. Gate code: 1234',
-      status: 'active'
-    };
-
-    setFormData(mockCustomer);
-    setLoading(false);
+    async function loadCustomer() {
+      try {
+        const response = await fetch(`/api/customers/${customerId}`);
+        if (!response.ok) {
+          throw new Error('Customer not found');
+        }
+        
+        const data = await response.json();
+        const customer = data.customer;
+        
+        // Transform API data to match form structure
+        const customerData: Customer = {
+          id: customer.id,
+          name: `${customer.first_name} ${customer.last_name}`.trim(),
+          email: customer.email || '',
+          phone: customer.phone || '',
+          address: customer.address_line1 || customer.address || '',
+          city: customer.city || '',
+          state: customer.state || 'WA',
+          zipCode: customer.zip_code || '',
+          deviceType: customer.devices?.[0]?.device_type || 'Unknown',
+          deviceLocation: customer.devices?.[0]?.location || 'Unknown',
+          lastTested: customer.devices?.[0]?.last_test_date || 'Never',
+          nextDue: customer.devices?.[0]?.next_test_due || 'Unknown',
+          notes: customer.notes || '',
+          status: customer.status === 'active' ? 'active' : 'inactive'
+        };
+        
+        setFormData(customerData);
+      } catch (error) {
+        console.error('Error loading customer:', error);
+        alert('Failed to load customer data. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    if (customerId) {
+      loadCustomer();
+    }
   }, [customerId]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -85,15 +105,47 @@ export default function EditCustomerPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Mock save - replace with actual API call
-    console.log('Saving customer:', formData);
-    
-    // Simulate successful save
-    alert('Customer updated successfully!');
-    window.location.href = `/app/customers/${customerId}`;
+    try {
+      // Transform form data to match API expectations
+      const customerData = {
+        first_name: formData.name.split(' ')[0] || formData.name,
+        last_name: formData.name.split(' ').slice(1).join(' ') || '',
+        email: formData.email,
+        phone: formData.phone,
+        address_line1: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zip_code: formData.zipCode,
+        notes: formData.notes,
+        status: formData.status
+      };
+
+      // Update customer
+      const response = await fetch(`/api/customers/${customerId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customerData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to update customer');
+      }
+
+      const result = await response.json();
+      console.log('Customer updated successfully:', result);
+
+      alert('Customer updated successfully!');
+      window.location.href = `/team-portal/customers/${customerId}`;
+    } catch (error) {
+      console.error('Error updating customer:', error);
+      alert(`Error updating customer: ${error.message}`);
+    }
   };
 
   if (loading) {

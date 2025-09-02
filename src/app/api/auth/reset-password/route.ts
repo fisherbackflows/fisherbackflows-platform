@@ -1,27 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-// TEMP: Disabled for clean builds
-// import { hashPassword, generateToken, setAuthCookie } from '@/lib/auth';
-import { resetTokens } from '../forgot-password/route';
-
-// Mock users database (in production, use real database)
-const mockUsers = [
-  {
-    id: '1',
-    email: 'john.smith@email.com',
-    phone: '5550123',
-    name: 'John Smith',
-    accountNumber: 'FB001',
-    role: 'customer' as const
-  },
-  {
-    id: '2',
-    email: 'admin@abccorp.com',
-    phone: '5550456',
-    name: 'ABC Corporation',
-    accountNumber: 'FB002',
-    role: 'customer' as const
-  }
-];
+import { createRouteHandlerClient } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
@@ -48,65 +26,55 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Find and validate reset token
-    const resetData = resetTokens.get(token);
+    const supabase = createRouteHandlerClient(request);
     
-    if (!resetData) {
+    // Use Supabase auth to verify and reset password with token
+    const { data, error } = await supabase.auth.verifyOtp({
+      token_hash: token,
+      type: 'recovery'
+    });
+    
+    if (error || !data.user) {
       return NextResponse.json(
         { error: 'Invalid or expired reset token' },
         { status: 400 }
       );
     }
     
-    // Check if expired
-    if (new Date() > resetData.expires) {
-      resetTokens.delete(token);
-      return NextResponse.json(
-        { error: 'Reset token has expired. Please start the reset process again.' },
-        { status: 400 }
-      );
-    }
-    
-    // Find user
-    const user = mockUsers.find(u => u.id === resetData.userId);
-    
-    if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
-    }
-    
-    // Hash new password
-    const hashedPassword = await hashPassword(password);
-    
-    // In production: Update user password in database
-    console.log(`Password updated for user ${user.email}: ${hashedPassword}`);
-    
-    // Clean up reset token
-    resetTokens.delete(token);
-    
-    // Generate new auth token and log user in
-    const authToken = generateToken({
-      userId: user.id,
-      email: user.email,
-      role: user.role
+    // Update password using Supabase auth
+    const { error: updateError } = await supabase.auth.updateUser({
+      password: password
     });
     
-    // Set authentication cookie
-    await setAuthCookie(authToken);
+    if (updateError) {
+      console.error('Password update error:', updateError);
+      return NextResponse.json(
+        { error: 'Failed to update password' },
+        { status: 500 }
+      );
+    }
+    
+    // Get user profile from database
+    const { data: userProfile, error: profileError } = await supabase
+      .from('auth_users')
+      .select('*')
+      .eq('id', data.user.id)
+      .single();
+    
+    if (profileError) {
+      console.error('Profile fetch error:', profileError);
+      // Continue with basic user data from auth
+    }
     
     return NextResponse.json({
       success: true,
       message: 'Password reset successfully. You are now logged in.',
       user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        accountNumber: user.accountNumber
-      },
-      token: authToken
+        id: data.user.id,
+        email: data.user.email,
+        name: userProfile?.name || data.user.user_metadata?.name || 'User',
+        role: userProfile?.role || 'customer'
+      }
     });
     
   } catch (error) {

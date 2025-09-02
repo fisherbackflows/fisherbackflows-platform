@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
+import { sendEmail, emailTemplates } from '@/lib/email';
 
 export interface TestReport {
   id: string
@@ -195,7 +196,38 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    return NextResponse.json({ testReport }, { status: 201 });
+    // Send completion email to customer if test report was created successfully
+    try {
+      // Get customer information
+      const { data: customer, error: customerError } = await supabase
+        .from('customers')
+        .select('first_name, last_name, email')
+        .eq('id', data.customer_id)
+        .single();
+      
+      if (!customerError && customer && customer.email) {
+        const customerName = `${customer.first_name} ${customer.last_name}`;
+        const reportUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/portal/reports`;
+        
+        const emailTemplate = emailTemplates.testComplete(customerName, reportUrl);
+        
+        await sendEmail({
+          to: customer.email,
+          subject: emailTemplate.subject,
+          html: emailTemplate.html
+        });
+        
+        console.log('✅ Test completion email sent to:', customer.email);
+      }
+    } catch (emailError) {
+      console.error('⚠️ Failed to send test completion email:', emailError);
+      // Don't fail the test report creation if email fails
+    }
+    
+    return NextResponse.json({ 
+      testReport,
+      message: 'Test report created successfully and customer notified'
+    }, { status: 201 });
   } catch (error) {
     console.error('Error creating test report:', error);
     return NextResponse.json(

@@ -204,16 +204,49 @@ export default function NewInvoicePage() {
     setSaving(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      console.log('Saving invoice:', { ...formData, action });
-      
+      // Transform form data to match API expectations
+      const invoiceData = {
+        customer_id: formData.customerId,
+        invoice_number: `INV-${Date.now()}`,
+        issue_date: formData.issueDate,
+        due_date: formData.dueDate,
+        subtotal: formData.subtotal,
+        tax_rate: formData.taxRate / 100, // Convert percentage to decimal
+        tax_amount: formData.taxAmount,
+        total_amount: formData.total,
+        status: action === 'save' ? 'draft' : 'sent',
+        notes: formData.notes,
+        terms: formData.terms,
+        line_items: JSON.stringify(formData.services.map(service => ({
+          description: service.description,
+          quantity: service.quantity,
+          unit_price: service.rate,
+          total: service.amount
+        })))
+      };
+
+      // Create invoice
+      const response = await fetch('/api/invoices', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(invoiceData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to create invoice');
+      }
+
+      const result = await response.json();
+      console.log('Invoice created successfully:', result);
+
       alert(`Invoice ${action === 'save' ? 'saved as draft' : 'saved and sent'} successfully!`);
       router.push('/team-portal/invoices');
     } catch (error) {
       console.error('Error saving invoice:', error);
-      alert('Error saving invoice. Please try again.');
+      alert(`Error saving invoice: ${error.message}`);
     } finally {
       setSaving(false);
     }

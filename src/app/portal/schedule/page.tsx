@@ -19,7 +19,9 @@ export default function CustomerSchedulePage() {
   const { customer, loading, error } = useCustomerData();
   const [appointments, setAppointments] = useState([]);
   const [availableDates, setAvailableDates] = useState([]);
+  const [availableTimes, setAvailableTimes] = useState([]);
   const [loadingAppointments, setLoadingAppointments] = useState(true);
+  const [loadingTimes, setLoadingTimes] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -72,6 +74,30 @@ export default function CustomerSchedulePage() {
       }
     } catch (error) {
       console.error('Failed to load available dates:', error);
+    }
+  }
+
+  async function loadAvailableTimes(date) {
+    try {
+      setLoadingTimes(true);
+      const token = localStorage.getItem('portal_token');
+      
+      const response = await fetch(`/api/appointments/available-times?date=${date}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setAvailableTimes(data.availableSlots || []);
+      }
+    } catch (error) {
+      console.error('Failed to load available times:', error);
+      setAvailableTimes([]);
+    } finally {
+      setLoadingTimes(false);
     }
   }
 
@@ -245,6 +271,7 @@ export default function CustomerSchedulePage() {
                       key={date}
                       onClick={() => {
                         setSelectedDate(date);
+                        loadAvailableTimes(date);
                         setBookingStep(3);
                       }}
                       className={`p-3 rounded-xl ${
@@ -274,25 +301,41 @@ export default function CustomerSchedulePage() {
             {bookingStep === 3 && (
               <div>
                 <h3 className="text-lg font-bold text-blue-400 mb-4">Step 3: Select Time</h3>
-                <div className="grid grid-cols-2 gap-3">
-                  {['9:00 AM', '10:00 AM', '11:00 AM', '1:00 PM', '2:00 PM', '3:00 PM'].map((time) => (
-                    <Button
-                      key={time}
-                      onClick={() => {
-                        setSelectedTime(time);
-                        setBookingStep(4);
-                      }}
-                      className={`p-3 rounded-xl ${
-                        selectedTime === time
-                          ? 'glass-btn-primary glow-blue-sm'
-                          : 'btn-glass'
-                      }`}
-                    >
-                      <Clock className="h-4 w-4 mr-2" />
-                      {time}
-                    </Button>
-                  ))}
-                </div>
+                {loadingTimes ? (
+                  <div className="text-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p className="text-white/80">Loading available times...</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-2 gap-3">
+                      {availableTimes.map((timeSlot) => (
+                        <Button
+                          key={timeSlot.time}
+                          onClick={() => {
+                            setSelectedTime(timeSlot.label);
+                            setBookingStep(4);
+                          }}
+                          className={`p-3 rounded-xl ${
+                            selectedTime === timeSlot.label
+                              ? 'glass-btn-primary glow-blue-sm'
+                              : 'btn-glass'
+                          }`}
+                        >
+                          <Clock className="h-4 w-4 mr-2" />
+                          {timeSlot.label}
+                        </Button>
+                      ))}
+                    </div>
+                    {availableTimes.length === 0 && (
+                      <div className="text-center py-8">
+                        <Clock className="h-12 w-12 text-blue-400/50 mx-auto mb-4" />
+                        <p className="text-white/60 mb-2">No available times for this date</p>
+                        <p className="text-sm text-white/40">Please select a different date</p>
+                      </div>
+                    )}
+                  </>
+                )}
                 <Button
                   onClick={() => setBookingStep(2)}
                   className="btn-glass mt-4 px-4 py-2 rounded-2xl"

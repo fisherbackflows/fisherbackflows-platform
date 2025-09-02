@@ -52,6 +52,36 @@ export default function CustomerBillingPage() {
     }
   }
 
+  async function downloadInvoicePDF(invoiceId) {
+    try {
+      const token = localStorage.getItem('portal_token');
+      
+      const response = await fetch(`/api/invoices/${invoiceId}/pdf`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `invoice-${invoiceId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } else {
+        console.error('Failed to download PDF');
+        alert('Failed to download invoice. Please try again.');
+      }
+    } catch (error) {
+      console.error('Download error:', error);
+      alert('An error occurred while downloading the invoice.');
+    }
+  }
+
   async function handlePayInvoice(invoice) {
     // Navigate to payment page with invoice details
     window.location.href = `/portal/pay?invoiceId=${invoice.id}&amount=${invoice.total}`;
@@ -228,6 +258,13 @@ export default function CustomerBillingPage() {
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
+                      <Button
+                        onClick={() => downloadInvoicePDF(invoice.id)}
+                        className="btn-glass p-2 rounded-2xl"
+                        title="Download Invoice"
+                      >
+                        <Download className="h-4 w-4" />
+                      </Button>
                       {invoice.status !== 'paid' && (
                         <Button
                           onClick={() => handlePayInvoice(invoice)}
@@ -305,6 +342,12 @@ export default function CustomerBillingPage() {
                   className="btn-glass px-6 py-2 rounded-2xl"
                 >
                   Close
+                </Button>
+                <Button
+                  onClick={() => downloadInvoicePDF(selectedInvoice.id)}
+                  className="btn-glass px-6 py-2 rounded-2xl"
+                >
+                  Download PDF
                 </Button>
                 {selectedInvoice.status !== 'paid' && (
                   <Button

@@ -488,15 +488,12 @@ export default function DistrictReportsPage() {
                         {(report.status === 'pending' || report.status === 'rejected') && (
                           <Button 
                             size="sm"
-                            onClick={() => handleSubmitReport(report.id)}
-                            disabled={isSubmitting || submitting === 'bulk'}
+                            asChild
                           >
-                            {isSubmitting ? (
-                              <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
-                            ) : (
+                            <Link href={`/team-portal/test-reports/${report.id}/submit-district`}>
                               <Send className="h-4 w-4 mr-1" />
-                            )}
-                            Submit
+                              Submit to District
+                            </Link>
                           </Button>
                         )}
                         {report.status === 'rejected' && (

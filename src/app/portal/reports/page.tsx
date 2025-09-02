@@ -54,6 +54,36 @@ export default function CustomerReportsPage() {
     }
   }
 
+  async function downloadReportPDF(reportId) {
+    try {
+      const token = localStorage.getItem('portal_token');
+      
+      const response = await fetch(`/api/test-reports/${reportId}/pdf`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `test-report-${reportId}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } else {
+        console.error('Failed to download PDF');
+        alert('Failed to download report. Please try again.');
+      }
+    } catch (error) {
+      console.error('Download error:', error);
+      alert('An error occurred while downloading the report.');
+    }
+  }
+
   if (loading || loadingReports) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -254,7 +284,7 @@ export default function CustomerReportsPage() {
                       <Button
                         className="btn-glass p-2 rounded-2xl"
                         title="Download Report"
-                        disabled
+                        onClick={() => downloadReportPDF(report.id)}
                       >
                         <Download className="h-4 w-4" />
                       </Button>
@@ -359,7 +389,7 @@ export default function CustomerReportsPage() {
                 </Button>
                 <Button
                   className="btn-glow px-6 py-2 rounded-2xl"
-                  disabled
+                  onClick={() => downloadReportPDF(selectedReport.id)}
                 >
                   Download PDF
                 </Button>

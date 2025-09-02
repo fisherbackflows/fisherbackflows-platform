@@ -123,16 +123,74 @@ export default function NewCustomerPage() {
     setSaving(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // In a real app, you'd send this data to your API
-      console.log('Saving customer:', formData);
-      
+      // Transform form data to match API expectations
+      const customerData = {
+        first_name: formData.name.split(' ')[0] || formData.name,
+        last_name: formData.name.split(' ').slice(1).join(' ') || '',
+        email: formData.email,
+        phone: formData.phone,
+        address: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`,
+        customer_type: formData.customerType,
+        water_district: formData.waterDistrict,
+        notes: formData.notes,
+        status: 'active'
+      };
+
+      // Create customer
+      const response = await fetch('/api/customers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customerData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to create customer');
+      }
+
+      const result = await response.json();
+      console.log('Customer created successfully:', result);
+
+      // If devices were added, create them separately
+      if (formData.devices.length > 0) {
+        for (const device of formData.devices) {
+          const deviceData = {
+            customer_id: result.customer.id,
+            serial_number: device.serialNumber,
+            device_type: device.type,
+            make: device.manufacturer,
+            model: device.model,
+            size: device.size,
+            location: device.location,
+            install_date: device.installDate,
+            status: 'active'
+          };
+
+          try {
+            const deviceResponse = await fetch('/api/devices', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(deviceData),
+            });
+
+            if (!deviceResponse.ok) {
+              console.warn('Failed to create device:', device);
+            }
+          } catch (deviceError) {
+            console.warn('Error creating device:', deviceError);
+          }
+        }
+      }
+
+      alert('Customer created successfully!');
       router.push('/team-portal/customers');
     } catch (error) {
       console.error('Error saving customer:', error);
-      alert('Error saving customer. Please try again.');
+      alert(`Error saving customer: ${error.message}`);
     } finally {
       setSaving(false);
     }
