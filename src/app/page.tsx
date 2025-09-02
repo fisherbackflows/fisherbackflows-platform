@@ -19,17 +19,51 @@ import {
   Star,
   Award,
   MapPin,
-  Zap
+  Zap,
+  Menu,
+  X
 } from 'lucide-react';
 
 export default function HomePage() {
   const [currentYear, setCurrentYear] = useState(2024);
   const [mounted, setMounted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
     setCurrentYear(new Date().getFullYear());
   }, []);
+
+  // Close mobile menu on escape key or outside click
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (mobileMenuOpen && !target.closest('header')) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    if (mobileMenuOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.addEventListener('click', handleClickOutside);
+      // Prevent body scroll when menu is open
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener('click', handleClickOutside);
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
 
   if (!mounted) {
     return (
@@ -95,6 +129,7 @@ export default function HomePage() {
               </div>
             </div>
             
+            {/* Desktop Navigation */}
             <nav className="hidden md:flex space-x-1">
               <a href="#services" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium">
                 Services
@@ -113,8 +148,82 @@ export default function HomePage() {
                 Team Login
               </Link>
             </nav>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 rounded-2xl glass hover:glow-blue-sm transition-all duration-200"
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="h-6 w-6 text-white" />
+              ) : (
+                <Menu className="h-6 w-6 text-white" />
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden glass border-t border-blue-400/50">
+            <div className="px-6 py-4 space-y-3">
+              <a 
+                href="#services" 
+                className="block px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Services
+              </a>
+              <a 
+                href="#about" 
+                className="block px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </a>
+              <a 
+                href="#contact" 
+                className="block px-4 py-3 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl transition-all duration-200 font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Contact
+              </a>
+              
+              <div className="border-t border-blue-400/30 pt-4 mt-4 space-y-3">
+                <Link 
+                  href="/portal" 
+                  className="block px-4 py-3 rounded-2xl glass-btn-primary text-white text-center font-semibold transition-all duration-200"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <User className="inline h-4 w-4 mr-2" />
+                  Customer Portal
+                </Link>
+                <Link 
+                  href="/team-portal" 
+                  className="block px-4 py-3 rounded-2xl bg-black/40 backdrop-blur-xl text-white text-center font-semibold transition-all duration-200"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Team Login
+                </Link>
+                
+                <div className="border-t border-blue-400/30 pt-4 mt-4">
+                  <Button 
+                    size="lg" 
+                    className="w-full glass-btn-primary text-white font-semibold rounded-xl transition-all duration-200"
+                    onClick={() => {
+                      window.location.href = 'tel:2532788692';
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <Phone className="mr-2 h-4 w-4" />
+                    Call Now: (253) 278-8692
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Hero Section */}
@@ -129,20 +238,22 @@ export default function HomePage() {
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight text-white">
-            Professional Backflow<br />
-            <span className="bg-gradient-to-r from-blue-600/80 via-blue-700 to-emerald-600 bg-clip-text text-transparent">Testing & Certification</span>
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white">
+            Professional Backflow<br className="hidden sm:block" />
+            <span className="block sm:inline">
+              <span className="bg-gradient-to-r from-blue-600/80 via-blue-700 to-emerald-600 bg-clip-text text-transparent">Testing & Certification</span>
+            </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed px-4">
             Protecting Pierce County's water supply with expert backflow prevention services. 
             <strong className="text-white/90">Fast scheduling, same-week service, and full compliance guaranteed.</strong>
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20 px-4">
             <Button 
               size="lg" 
-              className="glass-btn-primary hover:glow-blue text-white px-8 py-4 text-lg font-semibold rounded-xl group transition-all duration-200 glow-blue hover:glow-blue-lg"
+              className="w-full sm:w-auto glass-btn-primary hover:glow-blue text-white px-8 py-4 text-lg font-semibold rounded-xl group transition-all duration-200 glow-blue hover:glow-blue-lg"
               onClick={() => window.location.href = '/portal/schedule'}
             >
               Schedule Testing Now
@@ -150,7 +261,7 @@ export default function HomePage() {
             </Button>
             <Button 
               size="lg" 
-              className="glass border-2 border-blue-400 text-white/80 hover:bg-black/40 backdrop-blur-xl hover:border-blue-500/40 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 glow-blue-sm"
+              className="w-full sm:w-auto glass border-2 border-blue-400 text-white/80 hover:bg-black/40 backdrop-blur-xl hover:border-blue-500/40 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 glow-blue-sm"
               onClick={() => window.location.href = 'tel:2532788692'}
             >
               <Phone className="mr-2 h-5 w-5" />
@@ -159,7 +270,7 @@ export default function HomePage() {
           </div>
           
           {/* Trust Indicators */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto px-4">
             <div className="glass border border-blue-400 rounded-2xl p-8 glow-blue-sm hover:glow-blue transition-all duration-200">
               <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Shield className="h-8 w-8 text-emerald-300" />
