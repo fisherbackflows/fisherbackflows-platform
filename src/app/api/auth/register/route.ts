@@ -2,9 +2,30 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';
+import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
+import { registrationSchema, validateInput } from '@/lib/input-validation';
 
 export async function POST(request: NextRequest) {
   try {
+    // SECURITY: Rate limiting for registration attempts
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.AUTH_REGISTER);
+    
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        { 
+          error: 'Too many registration attempts. Please try again later.',
+          retryAfter: rateLimitResult.retryAfter 
+        },
+        { 
+          status: 429,
+          headers: {
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '3600',
+          }
+        }
+      );
+    }
+    
     const body = await request.json();
     const { 
       firstName, 

@@ -1,18 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@/lib/supabase';
+import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
+import { loginSchema, validateInput } from '@/lib/input-validation';
 
 export async function POST(request: NextRequest) {
   const response = NextResponse.next();
   
   try {
-    const { identifier, password, type } = await request.json();
+    // SECURITY: Rate limiting for login attempts
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
     
-    if (!identifier) {
+    if (!rateLimitResult.allowed) {
       return NextResponse.json(
-        { error: 'Email or phone is required' },
-        { status: 400 }
+        { 
+          error: 'Too many login attempts. Please try again later.',
+          retryAfter: rateLimitResult.retryAfter 
+        },
+        { 
+          status: 429,
+          headers: {
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '1800',
+            'X-RateLimit-Limit': RATE_LIMIT_CONFIGS.AUTH_LOGIN.maxAttempts.toString(),
+            'X-RateLimit-Remaining': rateLimitResult.remainingAttempts.toString(),
+          }
+        }
       );
     }
+    
+    const body = await request.json();
+    
+    // SECURITY: Input validation
+    const validatedInput = validateInput(loginSchema, (errors) => {
+      return new Error(errors.errors.map(e => e.message).join(', '));
+    })(body);
+    
+    const { identifier, password, type } = validatedInput;
     
     // Handle demo login
     if (identifier === 'demo' || type === 'demo') {
@@ -32,25 +55,7 @@ export async function POST(request: NextRequest) {
       });
     }
     
-    // Temporary admin bypass for testing
-    if (identifier === 'admin@fisherbackflows.com' && password === 'FisherAdmin2025') {
-      const adminUser = {
-        id: '39a79b96-3db4-4bad-9882-437aa259e4b3',
-        email: 'admin@fisherbackflows.com',
-        name: 'Admin User',
-        role: 'admin',
-        accountNumber: 'ADMIN001',
-        phone: '(253) 278-8692',
-        status: 'active'
-      };
-      
-      return NextResponse.json({
-        success: true,
-        message: 'Admin login successful',
-        user: adminUser,
-        redirect: '/team-portal'
-      });
-    }
+    // SECURITY: Removed hardcoded admin credentials - use proper Supabase authentication
     
     if (!password) {
       return NextResponse.json(
@@ -136,6 +141,9 @@ export async function POST(request: NextRequest) {
     
     // Set session cookies (Supabase handles this automatically)
     
+    // SECURITY: Record successful login
+    recordAttempt(clientId, true, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
+    
     return NextResponse.json({
       success: true,
       message: 'Login successful',
@@ -144,6 +152,10 @@ export async function POST(request: NextRequest) {
     });
     
   } catch (error) {
+    // SECURITY: Record failed login attempt
+    const clientId = getClientIdentifier(request);
+    recordAttempt(clientId, false, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
+    
     console.error('Login error:', error);
     return NextResponse.json(
       { error: 'Authentication failed. Please try again.' },

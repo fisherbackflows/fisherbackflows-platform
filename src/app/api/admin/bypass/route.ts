@@ -1,27 +1,61 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
+import { adminBypassSchema, validateInput } from '@/lib/input-validation';
 
-// Admin bypass code - in production, use a strong, unique code
-const ADMIN_BYPASS_CODE = process.env.ADMIN_BYPASS_CODE || 'fisher-admin-2025';
+// SECURITY: Admin bypass code - cryptographically secure
+const ADMIN_BYPASS_CODE = process.env.ADMIN_BYPASS_CODE || '18e6443e086999819ade470550ab0257ddc97378812e5b4cd1ee249988e29f2b';
 
 export async function POST(request: NextRequest) {
   try {
-    const { code } = await request.json();
-
-    if (!code) {
+    // SECURITY: Rate limiting for admin bypass attempts
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.ADMIN_BYPASS);
+    
+    if (!rateLimitResult.allowed) {
       return NextResponse.json(
-        { error: 'Access code is required' },
+        { 
+          error: 'Too many bypass attempts. Access temporarily blocked.',
+          retryAfter: rateLimitResult.retryAfter 
+        },
+        { 
+          status: 429,
+          headers: {
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '86400',
+          }
+        }
+      );
+    }
+    
+    const body = await request.json();
+    
+    // SECURITY: Input validation
+    try {
+      const validatedInput = validateInput(adminBypassSchema)(body);
+      const { code } = validatedInput;
+    } catch (error) {
+      recordAttempt(clientId, false, RATE_LIMIT_CONFIGS.ADMIN_BYPASS);
+      return NextResponse.json(
+        { error: 'Invalid input format' },
         { status: 400 }
       );
     }
+    
+    const { code } = validateInput(adminBypassSchema)(body);
 
     // Verify the bypass code
     if (code !== ADMIN_BYPASS_CODE) {
+      // SECURITY: Record failed bypass attempt
+      recordAttempt(clientId, false, RATE_LIMIT_CONFIGS.ADMIN_BYPASS);
+      
       return NextResponse.json(
         { error: 'Invalid access code' },
         { status: 401 }
       );
     }
+    
+    // SECURITY: Record successful bypass
+    recordAttempt(clientId, true, RATE_LIMIT_CONFIGS.ADMIN_BYPASS);
 
     // Set admin bypass cookie
     const cookieStore = await cookies();

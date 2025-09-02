@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
   try {
     // Verify this is an authorized cron job or admin request
     const authHeader = request.headers.get('authorization');
-    const cronSecret = process.env.CRON_SECRET || 'dev-secret-123';
+    const cronSecret = process.env.CRON_SECRET || 'be9489d8bc62cc3d4ffaf1534132884d';
     
     if (authHeader !== `Bearer ${cronSecret}`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -119,7 +119,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const secret = searchParams.get('secret');
   
-  if (secret !== (process.env.CRON_SECRET || 'dev-secret-123')) {
+  if (secret !== (process.env.CRON_SECRET || 'be9489d8bc62cc3d4ffaf1534132884d')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   

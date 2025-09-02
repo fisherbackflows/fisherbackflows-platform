@@ -2,7 +2,7 @@ node:internal/modules/cjs/loader:678
       throw e;
       ^
 
-Error: Cannot find module '/data/data/com.termux/files/home/fisherbackflows/node_modules/@modelcontextprotocol/sdk/dist/cjs/dist/cjs/server/index.js'
+Error: Cannot find module '/data/data/com.termux/files/home/fisherbackflows/node_modules/@modelcontextprotocol/sdk/dist/cjs/dist/cjs/server/index'
     at createEsmNotFoundErr (node:internal/modules/cjs/loader:1447:15)
     at finalizeEsmResolution (node:internal/modules/cjs/loader:1436:9)
     at resolveExports (node:internal/modules/cjs/loader:671:14)

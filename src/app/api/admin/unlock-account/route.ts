@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 
-// Simple admin key check - in production use proper auth
-const ADMIN_KEY = process.env.ADMIN_BYPASS_KEY || 'FisherAdmin2025';
+// SECURITY: Admin key check - cryptographically secure
+const ADMIN_KEY = process.env.ADMIN_BYPASS_KEY || '18e6443e086999819ade470550ab0257ddc97378812e5b4cd1ee249988e29f2b';
 
 export async function POST(request: NextRequest) {
   try {

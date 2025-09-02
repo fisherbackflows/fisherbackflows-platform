@@ -21,12 +21,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/team-portal', request.url));
   }
   
-  // EMERGENCY: Temporarily disable production auth middleware to restore site access
-  // TODO: Re-enable after debugging the 401 issue
-  console.log('🚨 EMERGENCY: Production auth middleware temporarily disabled');
+  // SECURITY: Re-enabled production authentication middleware
+  console.log('🔐 Production auth middleware active');
   
-  // Only apply basic security headers for now
-  return addSecurityHeaders(NextResponse.next());
+  // Apply full authentication and security
+  const authResponse = await productionAuthMiddleware(request);
+  return addSecurityHeaders(authResponse);
 }
 
 export const config = {
