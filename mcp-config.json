@@ -3,10 +3,22 @@
     "fisher-backflows-platform": {
       "command": "node",
       "args": [
-        "/mnt/c/users/Fishe/fisherbackflows2/fisherbackflows-platform/mcp-server.js"
+        "./mcp-server.js"
       ],
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "PWD": "."
+      }
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--project-ref=jvhbqfueutvfepsjmztx"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "sbp_bc8d8e30325000a099ffb06310f3e53d87d37c21"
       }
     }
   }
