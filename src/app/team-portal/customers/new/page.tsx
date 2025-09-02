@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { SmartBackButton } from '@/components/ui/SmartBreadcrumb';
 import { useKeyboardShortcuts, createFormShortcuts } from '@/hooks/useKeyboardShortcuts';
-import { useAutoSave, RecoveryNotification, AutoSaveStatus } from '@/hooks/useAutoSave';
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { RecoveryNotification, AutoSaveStatus } from '@/components/ui/AutoSaveComponents';
 import { 
   ArrowLeft,
   Save,

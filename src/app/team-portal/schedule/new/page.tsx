@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { SmartBackButton } from '@/components/ui/SmartBreadcrumb';
+import { useKeyboardShortcuts, createFormShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { 
   ArrowLeft,
   Calendar,

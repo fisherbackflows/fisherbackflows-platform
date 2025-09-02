@@ -117,8 +117,8 @@ export async function POST(request: NextRequest) {
     
     // For now, create appointments without automatic technician assignment
     // Technician assignment can be done later through the admin interface
-    let assignedTechnicianId = null;
-    let assignedTechnicianName = 'To be assigned';
+    const assignedTechnicianId = null;
+    const assignedTechnicianName = 'To be assigned';
     
     // Get customer information if deviceId is provided
     let deviceInfo = '';
