@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
 import RouteOptimizer from '@/components/admin/RouteOptimizer';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
   title: 'Route Optimizer - Fisher Backflows Admin',
