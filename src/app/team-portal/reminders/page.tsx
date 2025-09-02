@@ -315,6 +315,16 @@ Fisher Backflows`,
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
+      {/* Navigation Bar */}
+      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <Link href="/team-portal/dashboard">
+            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
+              ← Back to Dashboard
+            </Button>
+          </Link>
+        </div>
+      </div>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-white/80">Loading reminder system...</p>

@@ -51,9 +51,9 @@ export default function VerificationSuccessPage() {
             </Link>
             
             <Link href="/">
-              <Button variant="outline" className="w-full btn-glass">
+              <Link href="/"><button variant="outline" className="w-full btn-glass">
                 Return to Home
-              </Button>
+              </button></Link>
             </Link>
           </div>
           

@@ -217,6 +217,34 @@ export default function CustomerSchedulePage() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8 relative z-10">
+
+      {/* Navigation Header */}
+      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <Link href="/portal/dashboard">
+              <Button variant="ghost" className="text-blue-300 hover:text-white">
+                ← Back to Dashboard
+              </Button>
+            </Link>
+            <nav className="flex space-x-4">
+              <Link href="/portal/billing">
+                <Button variant="ghost" className="text-blue-300 hover:text-white">Billing</Button>
+              </Link>
+              <Link href="/portal/devices">
+                <Button variant="ghost" className="text-blue-300 hover:text-white">Devices</Button>
+              </Link>
+              <Link href="/portal/reports">
+                <Button variant="ghost" className="text-blue-300 hover:text-white">Reports</Button>
+              </Link>
+              <Link href="/portal/schedule">
+                <Button variant="ghost" className="text-blue-300 hover:text-white">Schedule</Button>
+              </Link>
+            </nav>
+          </div>
+        </div>
+      </header>
+
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2 text-white">Schedule Service</h1>

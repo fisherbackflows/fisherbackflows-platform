@@ -69,6 +69,20 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-black">
+
+      {/* Navigation Header */}
+      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <Link href="/team-portal/dashboard">
+              <Button variant="ghost" className="text-blue-300 hover:text-white">
+                ← Team Dashboard
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </header>
+
       {/* Header */}
       <div className="glass glow-blue-sm border-b">
         <div className="max-w-4xl mx-auto px-4 py-4">

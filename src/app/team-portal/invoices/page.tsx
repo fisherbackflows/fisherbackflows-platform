@@ -150,6 +150,20 @@ export default function InvoicesPage() {
       <div className="min-h-screen bg-black">
         <TeamPortalNavigation userInfo={null} />
         <main className="p-6">
+
+      {/* Navigation Header */}
+      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex justify-between items-center">
+            <Link href="/team-portal/dashboard">
+              <Button variant="ghost" className="text-blue-300 hover:text-white">
+                ← Team Dashboard
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </header>
+
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-center py-20">
               <div className="text-center">

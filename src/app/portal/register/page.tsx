@@ -110,9 +110,9 @@ export default function CustomerRegistrationPage() {
             </Link>
             <nav className="hidden md:flex space-x-3 items-center">
               <Link href="/">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-colors duration-200 font-medium">
+                <Link href="/"><Button variant="ghost" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-colors duration-200 font-medium">
                   Home
-                </Button>
+                </Button></Link>
               </Link>
               <Link href="/portal">
                 <Button className="glass-btn-primary hover:glow-blue text-white px-5 py-2.5 rounded-2xl font-medium glow-blue-sm transition-colors duration-200">

@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -173,6 +175,18 @@ export default function AdminSearchPage() {
 
   return (
     <div className="min-h-screen bg-black">
+
+      {/* Navigation Header */}
+      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <Link href="/admin/dashboard">
+            <Button variant="ghost" className="text-blue-300 hover:text-white">
+              ← Admin Dashboard
+            </Button>
+          </Link>
+        </div>
+      </header>
+
       <div className="fixed inset-0 bg-grid opacity-10" />
       <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-purple-500/5" />
 

@@ -210,6 +210,16 @@ export default function NewCustomerPage() {
 
   return (
     <div className="min-h-screen bg-black">
+      {/* Navigation Bar */}
+      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <Link href="/team-portal/dashboard">
+            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
+              ← Back to Dashboard
+            </Button>
+          </Link>
+        </div>
+      </div>
       {/* Header */}
       <header className="glass glow-blue-sm border-b sticky top-0 z-10">
         <div className="px-4 py-4">
@@ -512,7 +522,7 @@ export default function NewCustomerPage() {
             <Save className="h-4 w-4 mr-2" />
             {saving ? 'Saving...' : 'Save Customer'}
           </Button>
-          <Button type="button" variant="outline" onClick={() => router.back()}>
+          <Button type="button" variant="outline" onClick={() = onClick={() = onClick={() = onClick={() = onClick={() => window.history.back()}> window.history.back()}> window.history.back()}> window.history.back()}> router.back()}>
             Cancel
           </Button>
         </div>

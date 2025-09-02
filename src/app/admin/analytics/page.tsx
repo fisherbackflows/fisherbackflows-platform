@@ -200,7 +200,7 @@ export default function AnalyticsPage() {
               </p>
               <div className="flex flex-wrap gap-3 justify-center">
                 <Link href="/admin/dashboard">
-                  <Button className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl">
+                  <Button className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl" onClick={() => window.history.back()}>
                     Back to Dashboard
                   </Button>
                 </Link>

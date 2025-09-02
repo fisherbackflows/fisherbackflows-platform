@@ -161,6 +161,16 @@ export default function SubscriptionsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
+      {/* Navigation Bar */}
+      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <Link href="/team-portal/dashboard">
+            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
+              ← Back to Dashboard
+            </Button>
+          </Link>
+        </div>
+      </div>
         <div className="glass rounded-2xl p-8 border border-blue-400 glow-blue-sm">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto"></div>
           <p className="text-white mt-4 text-center">Loading subscriptions...</p>

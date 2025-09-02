@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -154,6 +156,18 @@ export default function HealthMonitoringPage() {
     <UnifiedLayout variant="wide" background="gradient">
       {/* Header */}
       <div className="mb-8">
+
+      {/* Navigation Header */}
+      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <Link href="/admin/dashboard">
+            <Button variant="ghost" className="text-blue-300 hover:text-white">
+              ← Admin Dashboard
+            </Button>
+          </Link>
+        </div>
+      </header>
+
         <UnifiedFlex variant="between">
           <div>
             <UnifiedText variant="primary" size="3xl" weight="bold">

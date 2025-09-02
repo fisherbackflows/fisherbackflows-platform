@@ -113,21 +113,21 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-8 w-full max-w-md mx-auto shadow-lg">
+    <div className="glass border border-blue-400 glow-blue-sm-200 rounded-2xl p-8 w-full max-w-md mx-auto shadow-lg">
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-slate-900 mb-2">Customer Login</h2>
-        <p className="text-slate-800">Access your backflow testing account</p>
+        <h2 className="text-3xl font-bold text-white mb-2">Customer Login</h2>
+        <p className="text-blue-200">Access your backflow testing account</p>
       </div>
 
       {/* Login Type Selector */}
-      <div className="flex bg-slate-200 rounded-lg p-1 mb-6">
+      <div className="flex bg-blue-900/30 rounded-lg p-1 mb-6">
         <button
           type="button"
           onClick={() => setFormData(prev => ({ ...prev, loginType: 'email' }))}
           className={`flex-1 flex items-center justify-center px-4 py-2 rounded-md transition-all ${
             formData.loginType === 'email' 
               ? 'bg-blue-700 text-white' 
-              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-300'
+              : 'text-blue-300 hover:text-white hover:bg-blue-800/50'
           }`}
         >
           <Mail className="h-4 w-4 mr-2" />
@@ -139,7 +139,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
           className={`flex-1 flex items-center justify-center px-4 py-2 rounded-md transition-all ${
             formData.loginType === 'phone' 
               ? 'bg-blue-700 text-white' 
-              : 'text-slate-700 hover:text-slate-900 hover:bg-slate-300'
+              : 'text-blue-300 hover:text-white hover:bg-blue-800/50'
           }`}
         >
           <Phone className="h-4 w-4 mr-2" />
@@ -150,15 +150,15 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Identifier Input */}
         <div>
-          <label htmlFor="identifier" className="block text-sm font-medium text-slate-900 mb-2">
+          <label htmlFor="identifier" className="block text-sm font-medium text-white mb-2">
             {formData.loginType === 'email' ? 'Email Address' : 'Phone Number'}
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               {formData.loginType === 'email' ? (
-                <Mail className="h-5 w-5 text-slate-700" />
+                <Mail className="h-5 w-5 text-blue-300" />
               ) : (
-                <Phone className="h-5 w-5 text-slate-700" />
+                <Phone className="h-5 w-5 text-blue-300" />
               )}
             </div>
             <input
@@ -167,7 +167,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
               value={formData.identifier}
               onChange={(e) => setFormData(prev => ({ ...prev, identifier: e.target.value }))}
               placeholder={formData.loginType === 'email' ? 'your@email.com' : '(253) 555-0123'}
-              className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-700 bg-white"
+              className="w-full pl-10 pr-4 py-3 rounded-lg border border-blue-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-700 bg-blue-950/50"
               required
             />
           </div>
@@ -175,12 +175,12 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
 
         {/* Password Input */}
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-slate-900 mb-2">
+          <label htmlFor="password" className="block text-sm font-medium text-white mb-2">
             Password
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Lock className="h-5 w-5 text-slate-700" />
+              <Lock className="h-5 w-5 text-blue-300" />
             </div>
             <input
               id="password"
@@ -188,13 +188,13 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
               value={formData.password}
               onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
               placeholder="Enter your password"
-              className="w-full pl-10 pr-12 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-slate-900 placeholder-slate-700 bg-white"
+              className="w-full pl-10 pr-12 py-3 rounded-lg border border-blue-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white placeholder-slate-700 bg-blue-950/50"
               required
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-700 hover:text-slate-900"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-blue-300 hover:text-white"
             >
               {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
             </button>
@@ -240,7 +240,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
           type="button"
           onClick={handleDemoLogin}
           disabled={loading}
-          className="w-full bg-slate-300 hover:bg-slate-400 text-slate-900 py-3 rounded-lg transition-colors"
+          className="w-full bg-blue-800/50 hover:bg-slate-400 text-white py-3 rounded-lg transition-colors"
         >
           Try Demo Account
         </Button>
@@ -258,7 +258,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
         
         <div className="flex items-center my-4">
           <div className="flex-1 border-t border-slate-200"></div>
-          <span className="px-4 text-slate-700 text-xs">or</span>
+          <span className="px-4 text-blue-300 text-xs">or</span>
           <div className="flex-1 border-t border-slate-200"></div>
         </div>
         
@@ -270,7 +270,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
           Create New Account
         </Button>
         
-        <div className="text-slate-700 text-xs mt-3">
+        <div className="text-blue-300 text-xs mt-3">
           Need help? Contact us at{' '}
           <a href="tel:2532788692" className="text-blue-700 hover:text-blue-800 font-medium">
             (253) 278-8692

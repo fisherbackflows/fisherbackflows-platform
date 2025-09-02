@@ -261,6 +261,16 @@ export default function NewInvoicePage() {
 
   return (
     <div className="min-h-screen bg-black">
+      {/* Navigation Bar */}
+      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <Link href="/team-portal/dashboard">
+            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
+              ← Back to Dashboard
+            </Button>
+          </Link>
+        </div>
+      </div>
       {/* Header */}
       <header className="glass glow-blue-sm border-b sticky top-0 z-10">
         <div className="px-4 py-4">
@@ -372,14 +382,14 @@ export default function NewInvoicePage() {
               <p className="text-sm text-white/80 mb-2">Quick Add Common Services:</p>
               <div className="flex flex-wrap gap-2">
                 {serviceTemplates.slice(0, 3).map((template, index) => (
-                  <button
+                  <Button
                     key={index}
                     type="button"
                     onClick={() => addServiceFromTemplate(template)}
                     className="text-xs bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl text-blue-700 px-2 py-1 rounded hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm"
                   >
                     {template.description} - {formatCurrency(template.rate)}
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -587,7 +597,7 @@ export default function NewInvoicePage() {
           type="button" 
           variant="ghost" 
           className="w-full mt-2" 
-          onClick={() => router.back()}
+          onClick={() = onClick={() = onClick={() = onClick={() = onClick={() => window.history.back()}> window.history.back()}> window.history.back()}> window.history.back()}> router.back()}
         >
           Cancel
         </Button>
