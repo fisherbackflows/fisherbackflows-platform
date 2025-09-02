@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { resetTokens } from '../forgot-password/route';
+
+// Simple in-memory token store for demo (use Redis in production)
+const resetTokens = new Map<string, { otp: string; email: string; expiresAt: number }>();
 
 export async function POST(request: NextRequest) {
   try {

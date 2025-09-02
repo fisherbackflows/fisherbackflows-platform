@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { AlertCircle, RefreshCw, ArrowLeft, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 
-export default function VerificationErrorPage() {
+function VerificationErrorContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get('error') || 'Verification failed';
   const [resending, setResending] = useState(false);
@@ -129,5 +129,20 @@ export default function VerificationErrorPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function VerificationErrorPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="glass rounded-2xl p-8 border border-blue-400 glow-blue-sm">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto"></div>
+          <p className="text-white mt-4 text-center">Loading...</p>
+        </div>
+      </div>
+    }>
+      <VerificationErrorContent />
+    </Suspense>
   );
 }
