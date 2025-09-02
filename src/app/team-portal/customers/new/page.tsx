@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { SmartBackButton } from '@/components/ui/SmartBreadcrumb';
+import { useKeyboardShortcuts, createFormShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { useAutoSave, RecoveryNotification, AutoSaveStatus } from '@/hooks/useAutoSave';
 import { 
   ArrowLeft,
   Save,
@@ -44,6 +47,7 @@ interface CustomerForm {
 export default function NewCustomerPage() {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const [showRecovery, setShowRecovery] = useState(false);
   const [formData, setFormData] = useState<CustomerForm>({
     name: '',
     email: '',
@@ -57,6 +61,33 @@ export default function NewCustomerPage() {
     notes: '',
     devices: []
   });
+
+  // Auto-save functionality
+  const { saveNow, clearSave, recoverData, hasSavedData, lastSaved } = useAutoSave(formData, {
+    key: 'new_customer_form',
+    interval: 15000, // Save every 15 seconds
+    onSave: (data) => console.log('🔄 Customer form auto-saved'),
+    onRecover: (data) => {
+      setFormData(data);
+      setShowRecovery(false);
+    }
+  });
+
+  // Check for saved data on mount
+  useEffect(() => {
+    if (hasSavedData) {
+      setShowRecovery(true);
+    }
+  }, [hasSavedData]);
+
+  // Keyboard shortcuts for better UX
+  useKeyboardShortcuts([
+    ...createFormShortcuts(
+      () => saveNow(), // Manual save on Ctrl+S
+      () => handleSubmit(new Event('submit') as any), // Submit on Ctrl+Enter
+      () => router.back() // Cancel on Escape
+    )
+  ]);
 
   const deviceTypes = [
     { value: 'RP', label: 'Reduced Pressure (RP)' },
@@ -187,6 +218,7 @@ export default function NewCustomerPage() {
       }
 
       alert('Customer created successfully!');
+      clearSave(); // Clear auto-save after successful submission
       router.push('/team-portal/customers');
     } catch (error) {
       console.error('Error saving customer:', error);
@@ -210,26 +242,25 @@ export default function NewCustomerPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Navigation Bar */}
-      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <Link href="/team-portal/dashboard">
-            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
-              ← Back to Dashboard
-            </Button>
-          </Link>
-        </div>
-      </div>
+      {/* Smart Navigation */}
+      <SmartBackButton 
+        breadcrumb={[
+          { label: 'Team Portal', href: '/team-portal/dashboard' },
+          { label: 'Customers', href: '/team-portal/customers' },
+          { label: 'New Customer', href: '/team-portal/customers/new', current: true }
+        ]}
+      />
+      
       {/* Header */}
-      <header className="glass glow-blue-sm border-b sticky top-0 z-10">
+      <header className="glass glow-blue-sm border-b mb-6">
         <div className="px-4 py-4">
-          <div className="flex items-center space-x-4">
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/team-portal/customers">
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-            </Button>
-            <h1 className="text-xl font-bold text-white">Add New Customer</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-xl font-bold text-white flex items-center">
+              <User className="h-6 w-6 mr-2" />
+              Add New Customer
+              <span className="text-sm text-blue-300 ml-2">(Ctrl+S to save, Esc to cancel)</span>
+            </h1>
+            <AutoSaveStatus lastSaved={lastSaved} saving={saving} />
           </div>
         </div>
       </header>
@@ -527,6 +558,23 @@ export default function NewCustomerPage() {
           </Button>
         </div>
       </form>
+
+      {/* Recovery Notification */}
+      <RecoveryNotification
+        show={showRecovery}
+        onRecover={() => {
+          const saved = recoverData();
+          if (saved) {
+            setFormData(saved);
+          }
+          setShowRecovery(false);
+        }}
+        onDiscard={() => {
+          clearSave();
+          setShowRecovery(false);
+        }}
+        formName="customer form"
+      />
     </div>
   );
 }
