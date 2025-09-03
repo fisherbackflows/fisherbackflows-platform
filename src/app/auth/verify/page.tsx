@@ -19,8 +19,10 @@ function VerifyContent() {
   useEffect(() => {
     const verifyEmail = async () => {
       try {
-        const tokenHash = searchParams.get('token_hash');
+        const tokenHash = searchParams.get('token_hash') || searchParams.get('token');
         const type = searchParams.get('type');
+
+        console.log('Verification params:', { tokenHash, type });
 
         if (!tokenHash || !type) {
           setStatus('error');
@@ -29,12 +31,14 @@ function VerifyContent() {
         }
 
         // Verify the email confirmation token
+        // Try both token_hash and token parameters
         const { data, error } = await supabase.auth.verifyOtp({
           token_hash: tokenHash,
           type: type as any
         });
 
         if (error) {
+          console.error('Verification error:', error);
           setStatus('error');
           setMessage(error.message || 'Verification failed. The link may have expired.');
           return;

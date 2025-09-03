@@ -12,12 +12,32 @@
 - Test commands work in both bash/zsh environments
 - Be mindful of case sensitivity (Linux is case-sensitive)
 
+## MANDATORY CLAUDE TECHNICAL ACCURACY PROTOCOL
+### CORE PRINCIPLES - MUST FOLLOW EVERY SESSION
+1. **NEVER ASSUME SUCCESS** - Always verify with actual testing
+2. **ADMIT FAILURES IMMEDIATELY** - No sugarcoating broken functionality  
+3. **CHECK ACTUAL STATUS** - Don't guess about system states
+4. **BE PRECISE ABOUT REQUIREMENTS** - State exactly what needs to be done
+5. **ACKNOWLEDGE MISTAKES** - Own configuration errors immediately
+6. **TEST BEFORE CLAIMING VICTORY** - No "should work" without proof
+
+### ENFORCEMENT
+- Reference this file if Claude violates these principles
+- Demand actual testing before any success claims
+- Require honest status of broken systems
+
+### CURRENT BROKEN SYSTEMS
+- **Customer Registration**: FAILS - Email sending error
+- **Resend Domain**: mail.fisherbackflows.com shows PENDING verification
+- **SMTP**: Non-functional until domain verified
+
 ## Current Development Status
 - **Database**: Tables migration completed (verify with verify-tables.sql)
 - **Dev Server**: Running on port 3010 (background process)
 - **Authentication**: Working with `admin@fisherbackflows.com` / `FisherAdmin2025`
 - **Error Monitoring**: Logs set up in ./logs/ directory
 - **API Testing**: Script available at scripts/test-api.sh
+- **EMAIL SYSTEM**: **BROKEN** - Customer registration fails due to unverified Resend domain
 
 ## Project Context
 - Repository: Fisher Backflows Platform
