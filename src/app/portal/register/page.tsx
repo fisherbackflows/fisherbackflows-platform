@@ -286,7 +286,7 @@ export default function CustomerRegistrationPage() {
                         ...prev, 
                         address: { ...prev.address, state: e.target.value }
                       }))}
-                      className="w-full px-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
+                      className="w-full px-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black"
                       required
                     >
                       <option value="WA">WA</option>
@@ -320,7 +320,7 @@ export default function CustomerRegistrationPage() {
                     id="propertyType"
                     value={formData.propertyType}
                     onChange={(e) => setFormData(prev => ({ ...prev, propertyType: e.target.value as 'residential' | 'commercial' }))}
-                    className="w-full px-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
+                    className="w-full px-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black"
                     required
                   >
                     <option value="residential">Residential</option>
