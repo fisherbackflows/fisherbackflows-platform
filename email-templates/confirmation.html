@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Fisher Backflows Account</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .tagline {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .title {
+            color: #1e40af;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .message {
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            color: #4b5563;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+        .cta-container {
+            text-align: center;
+        }
+        .backup-link {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9fafb;
+            border-radius: 6px;
+            border-left: 4px solid #3b82f6;
+        }
+        .footer {
+            background-color: #f8fafc;
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .company-info {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .contact-info {
+            margin-top: 15px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+        .security-notice {
+            background-color: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #92400e;
+        }
+        @media (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+            .title {
+                font-size: 20px;
+            }
+            .cta-button {
+                padding: 14px 24px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Fisher Backflows</div>
+            <div class="tagline">Professional Backflow Testing & Prevention</div>
+        </div>
+        
+        <div class="content">
+            <h1 class="title">Welcome to Fisher Backflows!</h1>
+            
+            <div class="message">
+                <p>Thank you for creating your customer account with Fisher Backflows. We're excited to help you maintain your backflow prevention systems with our professional testing and certification services.</p>
+                
+                <p>To complete your account setup and ensure the security of your information, please verify your email address by clicking the button below:</p>
+            </div>
+            
+            <div class="cta-container">
+                <a href="{{ .ConfirmationURL }}" class="cta-button">
+                    ✓ Verify My Account
+                </a>
+            </div>
+            
+            <div class="backup-link">
+                <strong>Having trouble with the button?</strong><br>
+                Copy and paste this link into your browser:<br>
+                <span style="word-break: break-all; color: #3b82f6;">{{ .ConfirmationURL }}</span>
+            </div>
+            
+            <div class="security-notice">
+                <strong>🔒 Security Note:</strong> This verification link will expire in 24 hours for your security. If you didn't create this account, you can safely ignore this email.
+            </div>
+            
+            <div class="message">
+                <p>Once verified, you'll be able to:</p>
+                <ul>
+                    <li>Schedule backflow testing appointments online</li>
+                    <li>View your testing history and certificates</li>
+                    <li>Manage your property information</li>
+                    <li>Receive important compliance reminders</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="company-info">
+                <strong>Fisher Backflows</strong><br>
+                Professional Backflow Testing & Prevention Services<br>
+                Serving the Tacoma, WA Area
+            </div>
+            <div class="contact-info">
+                Phone: (253) 555-0123 | Email: service@fisherbackflows.com<br>
+                Visit us: <a href="https://www.fisherbackflows.com" style="color: #3b82f6;">www.fisherbackflows.com</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
