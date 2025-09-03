@@ -153,7 +153,7 @@ export default function CustomerRegistrationPage() {
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-white/90" />
+                        <User className="h-5 w-5 text-gray-600" />
                       </div>
                       <input
                         id="firstName"
@@ -173,7 +173,7 @@ export default function CustomerRegistrationPage() {
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-white/90" />
+                        <User className="h-5 w-5 text-gray-600" />
                       </div>
                       <input
                         id="lastName"
@@ -194,7 +194,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-white/90" />
+                      <Mail className="h-5 w-5 text-gray-600" />
                     </div>
                     <input
                       id="email"
@@ -214,7 +214,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Phone className="h-5 w-5 text-white/90" />
+                      <Phone className="h-5 w-5 text-gray-600" />
                     </div>
                     <input
                       id="phone"
@@ -239,7 +239,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Home className="h-5 w-5 text-white/90" />
+                      <Home className="h-5 w-5 text-gray-600" />
                     </div>
                     <input
                       id="street"
@@ -339,7 +339,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-white/90" />
+                      <Lock className="h-5 w-5 text-gray-600" />
                     </div>
                     <input
                       id="password"
@@ -354,7 +354,7 @@ export default function CustomerRegistrationPage() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-white/90 hover:text-white/90 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 hover:text-gray-800 transition-colors"
                     >
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
@@ -367,7 +367,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-white/90" />
+                      <Lock className="h-5 w-5 text-gray-600" />
                     </div>
                     <input
                       id="confirmPassword"
@@ -382,7 +382,7 @@ export default function CustomerRegistrationPage() {
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-white/90 hover:text-white/90 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 hover:text-gray-800 transition-colors"
                     >
                       {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
