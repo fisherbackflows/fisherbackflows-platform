@@ -287,7 +287,7 @@ export default function NewSchedulePage() {
                     placeholder="Search by name, phone, or address..."
                     value={customerSearch}
                     onChange={(e) => setCustomerSearch(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-black/50 border border-blue-500/50 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-500/50 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   />
                 </div>
               </div>
@@ -577,7 +577,7 @@ export default function NewSchedulePage() {
                     value={formData.notes}
                     onChange={handleInputChange}
                     rows={4}
-                    className="w-full px-3 py-3 bg-black/50 border border-blue-500/50 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full px-3 py-3 bg-white/90 border border-blue-500/50 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
                     placeholder="Any special instructions, access notes, or specific requirements..."
                   />
                 </div>

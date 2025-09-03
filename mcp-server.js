@@ -5,8 +5,8 @@
  * Provides enhanced context and capabilities for development
  */
 
-const { Server } = require('@modelcontextprotocol/sdk/dist/cjs/server/index');
-const { StdioServerTransport } = require('@modelcontextprotocol/sdk/dist/cjs/server/stdio');
+const { Server } = require('./node_modules/@modelcontextprotocol/sdk/dist/cjs/server/index.js');
+const { StdioServerTransport } = require('./node_modules/@modelcontextprotocol/sdk/dist/cjs/server/stdio.js');
 const fs = require('fs').promises;
 const path = require('path');
 const { exec } = require('child_process');

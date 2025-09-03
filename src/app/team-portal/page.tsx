@@ -133,7 +133,7 @@ export default function TeamPortalPage() {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-blue-400 glass text-white placeholder-slate-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
+                  className="w-full px-4 py-3 rounded-xl bg-white/90 border border-blue-400 glass text-black placeholder-gray-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
                   placeholder="admin@fisherbackflows.com"
                   required
                 />
@@ -149,7 +149,7 @@ export default function TeamPortalPage() {
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 pr-12 rounded-xl border border-blue-400 glass text-white placeholder-slate-600 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
+                    className="w-full px-4 py-3 pr-12 rounded-xl bg-white/90 border border-blue-400 glass text-black placeholder-gray-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
                     placeholder="Enter your password"
                     required
                   />

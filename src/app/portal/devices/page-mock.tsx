@@ -253,7 +253,7 @@ export default function DevicesPage() {
                 placeholder="Search devices by location, serial number, make, or model..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="border border-blue-400 glass text-white w-full pl-10 pr-4 py-3 rounded-2xl text-white placeholder-white/50"
+                className="bg-white/90 border border-blue-400 glass text-black w-full pl-10 pr-4 py-3 rounded-2xl placeholder-gray-500"
               />
             </div>
             <div className="flex items-center space-x-4">

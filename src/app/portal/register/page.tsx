@@ -161,7 +161,7 @@ export default function CustomerRegistrationPage() {
                         value={formData.firstName}
                         onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
                         placeholder="John"
-                        className="w-full pl-10 pr-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
+                        className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
                         required
                       />
                     </div>
@@ -181,7 +181,7 @@ export default function CustomerRegistrationPage() {
                         value={formData.lastName}
                         onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
                         placeholder="Doe"
-                        className="w-full pl-10 pr-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
+                        className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
                         required
                       />
                     </div>
@@ -202,7 +202,7 @@ export default function CustomerRegistrationPage() {
                       value={formData.email}
                       onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                       placeholder="john@example.com"
-                      className="w-full pl-10 pr-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
+                      className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
                       required
                     />
                   </div>
@@ -222,7 +222,7 @@ export default function CustomerRegistrationPage() {
                       value={formData.phone}
                       onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                       placeholder="(253) 555-0123"
-                      className="w-full pl-10 pr-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
+                      className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
                       required
                     />
                   </div>
@@ -250,7 +250,7 @@ export default function CustomerRegistrationPage() {
                         address: { ...prev.address, street: e.target.value }
                       }))}
                       placeholder="123 Main Street"
-                      className="w-full pl-10 pr-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
+                      className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
                       required
                     />
                   </div>
@@ -270,7 +270,7 @@ export default function CustomerRegistrationPage() {
                         address: { ...prev.address, city: e.target.value }
                       }))}
                       placeholder="Tacoma"
-                      className="w-full px-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
+                      className="w-full px-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
                       required
                     />
                   </div>
@@ -306,7 +306,7 @@ export default function CustomerRegistrationPage() {
                         address: { ...prev.address, zipCode: e.target.value }
                       }))}
                       placeholder="98401"
-                      className="w-full px-4 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
+                      className="w-full px-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
                       required
                     />
                   </div>
@@ -347,7 +347,7 @@ export default function CustomerRegistrationPage() {
                       value={formData.password}
                       onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                       placeholder="Create a strong password"
-                      className="w-full pl-10 pr-12 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
+                      className="w-full pl-10 pr-12 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
                       required
                       minLength={8}
                     />
@@ -375,7 +375,7 @@ export default function CustomerRegistrationPage() {
                       value={formData.confirmPassword}
                       onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                       placeholder="Confirm your password"
-                      className="w-full pl-10 pr-12 py-3 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-white/50"
+                      className="w-full pl-10 pr-12 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
                       required
                       minLength={8}
                     />

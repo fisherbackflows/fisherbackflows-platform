@@ -14,7 +14,12 @@ case "$1" in
     fi
     
     echo "Starting Fisher Backflows MCP Server..."
-    nohup node "$SCRIPT_DIR/mcp-server.js" > "$LOG_FILE" 2>&1 & 
+    # Use simplified server if available
+    if [ -f "$SCRIPT_DIR/mcp-server-simple.js" ]; then
+      nohup node "$SCRIPT_DIR/mcp-server-simple.js" > "$LOG_FILE" 2>&1 &
+    else
+      nohup node "$SCRIPT_DIR/mcp-server.js" > "$LOG_FILE" 2>&1 &
+    fi
     PID=$!
     echo $PID > "$PID_FILE"
     sleep 2  # Give server time to start

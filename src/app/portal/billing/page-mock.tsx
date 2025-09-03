@@ -273,7 +273,7 @@ export default function BillingPage() {
                     placeholder={`Search ${activeTab}...`}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="border border-blue-400 glass text-white w-full pl-10 pr-4 py-3 rounded-2xl text-white placeholder-white/50"
+                    className="bg-white/90 border border-blue-400 glass text-black w-full pl-10 pr-4 py-3 rounded-2xl placeholder-gray-500"
                   />
                 </div>
                 {activeTab === 'invoices' && (
