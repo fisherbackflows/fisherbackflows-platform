@@ -5,6 +5,9 @@ import { Toaster } from 'react-hot-toast';
 import { GlobalErrorBoundary } from '@/components/error-boundaries';
 import { logger } from '@/lib/logger';
 import { reportError } from '@/components/error-boundaries/utils';
+import PWAProvider from '@/components/pwa/PWAProvider';
+import PWAInstallPrompt from '@/components/pwa/PWAInstallPrompt';
+import PWAUpdatePrompt from '@/components/pwa/PWAUpdatePrompt';
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -79,32 +82,38 @@ export default function AppProviders({ children }: AppProvidersProps) {
 
   return (
     <GlobalErrorBoundary onError={handleGlobalError}>
-      {/* Toast notifications for user feedback */}
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#1f2937',
-            color: '#f9fafb',
-            border: '1px solid #374151'
-          },
-          success: {
-            iconTheme: {
-              primary: '#10b981',
-              secondary: '#f9fafb'
+      <PWAProvider>
+        {/* Toast notifications for user feedback */}
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#1f2937',
+              color: '#f9fafb',
+              border: '1px solid #374151'
+            },
+            success: {
+              iconTheme: {
+                primary: '#10b981',
+                secondary: '#f9fafb'
+              }
+            },
+            error: {
+              iconTheme: {
+                primary: '#ef4444',
+                secondary: '#f9fafb'
+              }
             }
-          },
-          error: {
-            iconTheme: {
-              primary: '#ef4444',
-              secondary: '#f9fafb'
-            }
-          }
-        }}
-      />
-      
-      {children}
+          }}
+        />
+        
+        {/* PWA Features */}
+        <PWAInstallPrompt />
+        <PWAUpdatePrompt />
+        
+        {children}
+      </PWAProvider>
     </GlobalErrorBoundary>
   );
 }

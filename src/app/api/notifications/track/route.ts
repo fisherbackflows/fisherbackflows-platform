@@ -3,56 +3,37 @@ import { createRouteHandlerClient } from '@/lib/supabase'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { trackingId, action, timestamp } = body
+    const { 
+      trackingId, 
+      action, 
+      timestamp 
+    } = await request.json()
 
     if (!trackingId || !action) {
-      return NextResponse.json(
-        { success: false, error: 'trackingId and action are required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
     const supabase = createRouteHandlerClient(request)
 
-    // Log the notification interaction
-    const { error: insertError } = await supabase
+    // Store notification interaction
+    const { error } = await supabase
       .from('notification_interactions')
       .insert({
         tracking_id: trackingId,
-        action,
-        timestamp: new Date(timestamp || Date.now()).toISOString(),
-        user_agent: request.headers.get('user-agent') || '',
-        ip_address: request.headers.get('x-forwarded-for') || 
-                   request.headers.get('x-real-ip') || 
-                   'unknown'
+        action: action,
+        timestamp: new Date(timestamp).toISOString(),
+        created_at: new Date().toISOString()
       })
 
-    if (insertError) {
-      console.error('Error logging notification interaction:', insertError)
-      // Don't fail the request if logging fails
+    if (error) {
+      console.error('Error tracking notification:', error)
+      return NextResponse.json({ error: 'Failed to track notification' }, { status: 500 })
     }
 
-    // Update the main notification log with interaction stats
-    const { error: updateError } = await supabase.rpc('update_notification_stats', {
-      p_tracking_id: trackingId,
-      p_action: action
-    })
-
-    if (updateError) {
-      console.warn('Error updating notification stats:', updateError)
-    }
-
-    return NextResponse.json({ 
-      success: true,
-      message: 'Interaction tracked successfully'
-    })
+    return NextResponse.json({ success: true })
 
   } catch (error) {
-    console.error('Error tracking notification:', error)
-    return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
-    )
+    console.error('Notification tracking error:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

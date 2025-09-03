@@ -19,7 +19,22 @@ export const metadata: Metadata = {
   description: "State-certified backflow testing for Pierce County homes and businesses. Fast, reliable, and compliant backflow preventer testing services.",
   keywords: "backflow testing, backflow prevention, Pierce County, Tacoma, backflow certification, water testing",
   authors: [{ name: "Fisher Backflows" }],
-  robots: "index, follow"
+  robots: "index, follow",
+  manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icons/icon-192x192.svg", sizes: "192x192", type: "image/svg+xml" },
+      { url: "/icons/icon-512x512.svg", sizes: "512x512", type: "image/svg+xml" }
+    ],
+    apple: [
+      { url: "/icons/icon-152x152.svg", sizes: "152x152", type: "image/svg+xml" }
+    ]
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Fisher Backflows"
+  }
 };
 
 export const viewport: Viewport = {
