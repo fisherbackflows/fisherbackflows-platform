@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
-import { registrationSchema, validateInput } from '@/lib/input-validation';
+import { sendEmail, getVerificationEmailHtml } from '@/lib/resend';
+import { generateVerificationToken, storeVerificationToken } from '@/lib/verification-tokens';
 
 export async function POST(request: NextRequest) {
   try {
@@ -71,16 +72,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash the password with reduced rounds for faster processing
+    // Hash the password
     const saltRounds = 10;
-    const _hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     // Initialize Supabase client
     const supabase = createRouteHandlerClient(request);
 
-    // Note: We'll let Supabase handle checking for existing auth users
-
-    // Check if customer already exists in database
+    // Check if customer already exists
     const { data: existingCustomer } = await supabase
       .from('customers')
       .select('id')
@@ -98,50 +97,22 @@ export async function POST(request: NextRequest) {
     const accountNumber = generateId('FB');
 
     try {
-      // Create user in Supabase Auth with timeout handling
-      const authSignupPromise = supabase.auth.signUp({
+      // Create user in Supabase Auth WITHOUT sending email (we'll use Resend)
+      console.log('Creating user in Supabase Auth...');
+      const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
         email,
         password,
-        options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify`,
-          data: {
-            first_name: firstName,
-            last_name: lastName,
-            phone,
-            account_type: 'customer'
-          }
+        email_confirm: false, // Don't confirm email yet - we'll handle verification with Resend
+        user_metadata: {
+          first_name: firstName,
+          last_name: lastName,
+          phone,
+          account_type: 'customer'
         }
       });
-
-      // Add timeout to auth signup (10 seconds)
-      const timeoutPromise = new Promise((_, reject) => {
-        setTimeout(() => reject(new Error('Auth signup timeout')), 10000);
-      });
-
-      const { data: authUser, error: authError } = await Promise.race([
-        authSignupPromise,
-        timeoutPromise
-      ]) as any;
 
       if (authError) {
         console.error('Auth creation error:', authError);
-        
-        // Handle specific timeout case
-        if (authError.message === 'Auth signup timeout') {
-          return NextResponse.json(
-            { error: 'Registration is taking longer than expected. Please try again in a moment.' },
-            { status: 503 }
-          );
-        }
-        
-        // Handle rate limiting
-        if (authError.message?.includes('rate limit') || authError.message?.includes('too many requests')) {
-          return NextResponse.json(
-            { error: 'Too many registration attempts. Please wait a few minutes and try again.' },
-            { status: 429 }
-          );
-        }
-        
         return NextResponse.json(
           { error: authError.message || 'Failed to create authentication account' },
           { status: 500 }
@@ -159,7 +130,7 @@ export async function POST(request: NextRequest) {
       const { data: customer, error: customerError } = await supabase
         .from('customers')
         .insert({
-          id: authUser.user!.id,
+          id: authUser.user.id,
           account_number: accountNumber,
           first_name: firstName,
           last_name: lastName,
@@ -169,7 +140,7 @@ export async function POST(request: NextRequest) {
           city: address.city,
           state: address.state,
           zip_code: address.zipCode,
-          account_status: 'pending_verification'
+          account_status: 'pending_verification' // Will be updated when email is verified
         })
         .select()
         .single();
@@ -182,7 +153,35 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Log successful registration
+      // Generate custom verification token
+      console.log('Generating verification token...');
+      const verificationToken = generateVerificationToken();
+      
+      // Store verification token in database
+      await storeVerificationToken(authUser.user.id, email, verificationToken, request);
+      
+      // Generate verification URL with our custom token
+      const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify-email?token=${verificationToken}`;
+      
+      // Send verification email via Resend ONLY
+      console.log('Sending verification email via Resend...');
+      const emailResult = await sendEmail({
+        to: email,
+        subject: 'Welcome to Fisher Backflows - Verify Your Email',
+        html: getVerificationEmailHtml(verificationUrl, `${firstName} ${lastName}`),
+        from: 'Fisher Backflows <noreply@mail.fisherbackflows.com>',
+        replyTo: 'fisherbackflows@gmail.com'
+      });
+
+      if (!emailResult.success) {
+        console.error('Failed to send verification email:', emailResult.error);
+        return NextResponse.json(
+          { error: 'Account created but failed to send verification email. Please contact support.' },
+          { status: 500 }
+        );
+      }
+
+      console.log('Verification email sent successfully via Resend');
       console.log('New customer registration:', {
         id: customer.id,
         accountNumber: customer.account_number,
@@ -192,9 +191,6 @@ export async function POST(request: NextRequest) {
         phone: customer.phone,
         propertyType
       });
-
-      // Send verification email (Supabase will handle this automatically)
-      // You can customize email templates in Supabase dashboard
 
       return NextResponse.json({
         success: true,

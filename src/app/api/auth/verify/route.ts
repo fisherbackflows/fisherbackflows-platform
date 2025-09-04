@@ -5,20 +5,30 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const token = searchParams.get('token');
+    const tokenHash = searchParams.get('token_hash'); // Supabase uses token_hash
     const type = searchParams.get('type');
     
-    if (!token) {
-      return NextResponse.json(
-        { error: 'Verification token is required' },
-        { status: 400 }
-      );
+    // Check for either token or token_hash (Supabase uses token_hash)
+    const verificationToken = tokenHash || token;
+    
+    if (!verificationToken) {
+      // Return HTML error page instead of JSON for better UX
+      const errorUrl = new URL('/portal/verification-error', request.url);
+      errorUrl.searchParams.set('error', 'Verification link is invalid or expired');
+      return NextResponse.redirect(errorUrl);
     }
 
     const supabase = createRouteHandlerClient(request);
 
+    console.log('Verifying token:', { 
+      hasToken: !!token, 
+      hasTokenHash: !!tokenHash, 
+      type 
+    });
+
     // Verify the token with Supabase Auth with timeout handling
     const verifyPromise = supabase.auth.verifyOtp({
-      token_hash: token,
+      token_hash: verificationToken,
       type: type as 'signup' | 'recovery' | 'invite' || 'signup'
     });
 
