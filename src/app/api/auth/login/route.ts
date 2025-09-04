@@ -132,11 +132,11 @@ export async function POST(request: NextRequest) {
     const user = {
       id: (customer as any).id,
       email: (customer as any).email,
-      name: (customer as any).name,
+      name: `${(customer as any).first_name || ''} ${(customer as any).last_name || ''}`.trim(),
       role,
       accountNumber: (customer as any).account_number,
       phone: (customer as any).phone,
-      status: (customer as any).status
+      status: (customer as any).account_status
     };
     
     // Set session cookies (Supabase handles this automatically)
