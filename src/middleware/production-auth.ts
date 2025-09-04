@@ -9,18 +9,25 @@ const PROTECTED_ROUTES = [
   '/api/admin',
   '/field',
   '/api/field',
-  '/portal' // Customer portal also needs authentication
+  '/portal/dashboard', // Only dashboard needs auth, not the login page
+  '/portal/billing',
+  '/portal/devices',
+  '/portal/schedule',
+  '/portal/reports'
 ];
 
 // Routes that should remain public (no authentication required)
 const PUBLIC_ROUTES = [
   '/',
   '/login',
-  '/maintenance',
+  '/maintenance', 
   '/test-navigation',
+  '/portal', // Customer portal login page
   '/portal/login',
   '/portal/register',
   '/portal/forgot-password',
+  '/portal/verification-success',
+  '/portal/verification-error',
   '/api/auth',
   '/api/register'
 ];
