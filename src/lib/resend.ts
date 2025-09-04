@@ -50,6 +50,12 @@ export async function sendEmail({
   }
 }
 
+// Simple verification email template that works with email parameter
+export function getSimpleVerificationEmailHtml(email: string, customerName: string = 'Valued Customer') {
+  const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify-simple?email=${encodeURIComponent(email)}`;
+  return getVerificationEmailHtml(verificationUrl, customerName);
+}
+
 // Verification email template
 export function getVerificationEmailHtml(verificationUrl: string, customerName: string = 'Valued Customer') {
   return `

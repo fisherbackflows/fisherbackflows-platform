@@ -3,8 +3,7 @@ import bcrypt from 'bcryptjs';
 import { createRouteHandlerClient } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
-import { sendEmail, getVerificationEmailHtml } from '@/lib/resend';
-import { generateVerificationToken, storeVerificationToken } from '@/lib/verification-tokens';
+import { sendEmail, getSimpleVerificationEmailHtml } from '@/lib/resend';
 
 export async function POST(request: NextRequest) {
   try {
@@ -153,22 +152,12 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Generate custom verification token
-      console.log('Generating verification token...');
-      const verificationToken = generateVerificationToken();
-      
-      // Store verification token in database
-      await storeVerificationToken(authUser.user.id, email, verificationToken, request);
-      
-      // Generate verification URL with our custom token
-      const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify-email?token=${verificationToken}`;
-      
-      // Send verification email via Resend ONLY
+      // Send verification email via Resend using simple verification
       console.log('Sending verification email via Resend...');
       const emailResult = await sendEmail({
         to: email,
         subject: 'Welcome to Fisher Backflows - Verify Your Email',
-        html: getVerificationEmailHtml(verificationUrl, `${firstName} ${lastName}`),
+        html: getSimpleVerificationEmailHtml(email, `${firstName} ${lastName}`),
         from: 'Fisher Backflows <noreply@mail.fisherbackflows.com>',
         replyTo: 'fisherbackflows@gmail.com'
       });
