@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
-import { sendEmail, getSimpleVerificationEmailHtml } from '@/lib/resend';
+import { sendEmail } from '@/lib/resend';
 
 export async function POST(request: NextRequest) {
   try {
@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
       const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email,
         password,
-        email_confirm: false, // Don't confirm email yet - we'll handle verification with Resend
+        email_confirm: true, // Confirm email in Supabase auth to allow login
         user_metadata: {
           first_name: firstName,
           last_name: lastName,
@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
           city: address.city,
           state: address.state,
           zip_code: address.zipCode,
-          account_status: 'pending_verification' // Will be updated when email is verified
+          account_status: 'active' // Account is immediately active since email_confirm is true
         })
         .select()
         .single();
@@ -162,10 +162,24 @@ export async function POST(request: NextRequest) {
 
       // Send verification email via Resend using simple verification
       console.log('Sending verification email via Resend...');
+      const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify-simple?email=${encodeURIComponent(email)}`;
       const emailResult = await sendEmail({
         to: email,
         subject: 'Welcome to Fisher Backflows - Verify Your Email',
-        html: getSimpleVerificationEmailHtml(email, `${firstName} ${lastName}`),
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+            <h2 style="color: #2c3e50;">Welcome to Fisher Backflows, ${firstName} ${lastName}!</h2>
+            <p>Thank you for creating an account with Fisher Backflows. To complete your registration and access your customer portal, please verify your email address.</p>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${verificationUrl}" style="background-color: #007bff; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">Verify Email Address</a>
+            </div>
+            <p style="color: #666; font-size: 14px;">If the button doesn't work, copy and paste this link into your browser:</p>
+            <p style="word-break: break-all; color: #007bff; font-size: 14px;">${verificationUrl}</p>
+            <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;">
+            <p style="color: #666; font-size: 12px;">If you didn't create an account with Fisher Backflows, please ignore this email.</p>
+            <p style="color: #666; font-size: 12px;"><strong>Fisher Backflows</strong><br>Professional Backflow Testing Services<br>Tacoma, WA | (253) 278-8692</p>
+          </div>
+        `,
         from: 'Fisher Backflows <noreply@mail.fisherbackflows.com>',
         replyTo: 'fisherbackflows@gmail.com'
       });

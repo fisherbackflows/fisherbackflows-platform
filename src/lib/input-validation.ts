@@ -51,8 +51,12 @@ export const addressSchema = z.object({
 
 // Login validation schema
 export const loginSchema = z.object({
-  identifier: z.union([emailSchema, phoneSchema], {
-    errorMap: () => ({ message: 'Please enter a valid email or phone number' })
+  identifier: z.union([
+    emailSchema, 
+    phoneSchema, 
+    z.literal('demo') // Allow "demo" for demo login
+  ], {
+    errorMap: () => ({ message: 'Please enter a valid email, phone number, or demo' })
   }),
   password: z.string().min(1, 'Password is required'),
   type: z.enum(['email', 'phone', 'demo']).optional(),

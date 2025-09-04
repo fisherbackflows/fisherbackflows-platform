@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@/lib/supabase';
+import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
   try {
@@ -45,15 +45,19 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(errorUrl);
     }
 
-    // Also update the auth user to confirmed if needed
-    const { error: confirmError } = await supabase.auth.admin.updateUserById(
+    // Also update the auth user to confirmed if needed using admin client
+    if (!supabaseAdmin) {
+      console.error('Supabase admin client not available');
+    } else {
+      const { error: confirmError } = await supabaseAdmin.auth.admin.updateUserById(
       customer.id,
       { email_confirm: true }
     );
 
-    if (confirmError) {
-      console.warn('Warning: Could not confirm auth email:', confirmError);
-      // Don't fail - customer record is already activated
+      if (confirmError) {
+        console.warn('Warning: Could not confirm auth email:', confirmError);
+        // Don't fail - customer record is already activated
+      }
     }
 
     console.log('Account verified and activated successfully for:', email);

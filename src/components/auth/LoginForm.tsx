@@ -58,9 +58,10 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
       if (onSuccess) {
         onSuccess(data.user);
       } else {
-        // Redirect after success
+        // Redirect to the URL provided by the API response
+        const redirectUrl = data.redirect || redirectTo;
         setTimeout(() => {
-          window.location.href = redirectTo;
+          window.location.href = redirectUrl;
         }, 1500);
       }
     } catch (err) {

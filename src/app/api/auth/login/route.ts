@@ -4,7 +4,6 @@ import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS 
 import { loginSchema, validateInput } from '@/lib/input-validation';
 
 export async function POST(request: NextRequest) {
-  const response = NextResponse.next();
   
   try {
     // SECURITY: Rate limiting for login attempts
@@ -64,6 +63,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Create response that will be used for setting cookies
+    const response = NextResponse.json({ temp: true });
+    
     // Initialize Supabase client
     const supabase = createRouteHandlerClient(request, response);
     
@@ -144,11 +146,15 @@ export async function POST(request: NextRequest) {
     // SECURITY: Record successful login
     recordAttempt(clientId, true, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
     
+    // Update the response body with success data
     return NextResponse.json({
       success: true,
       message: 'Login successful',
       user,
-      redirect: role === 'admin' ? '/team-portal' : '/portal/dashboard'
+      redirect: role === 'admin' ? '/team-portal' : '/'
+    }, {
+      headers: response.headers,
+      status: 200
     });
     
   } catch (error) {
