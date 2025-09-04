@@ -132,36 +132,60 @@ export async function POST(request: NextRequest) {
       const customerId = crypto.randomUUID();
       console.log('Creating customer record only (no Supabase Auth)...');
 
-      // Create customer record in database
+      // Create customer record in database using direct API call
       console.log('Inserting customer with hash length:', hashedPassword?.length);
-      const { data: customer, error: customerError } = await supabaseAdmin
-        .from('customers')
-        .insert({
-          id: customerId,
-          account_number: accountNumber,
-          first_name: firstName,
-          last_name: lastName,
-          email,
-          phone,
-          password_hash: hashedPassword,
-          address_line1: address?.street || 'Not provided',
-          city: address?.city || 'Not provided',
-          state: address?.state || 'Not provided',
-          zip_code: address?.zipCode || 'Not provided',
-          account_status: 'pending_verification' // Account inactive until email verified
-        })
-        .select()
-        .single();
       
-      console.log('Customer insertion result:', { success: !customerError, hasData: !!customer });
-
-      if (customerError) {
-        console.error('Customer creation error:', customerError);
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://jvhbqfueutvfepsjmztx.supabase.co';
+      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGJxZnVldXR2ZmVwc2ptenR4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjI3MzQ3NSwiZXhwIjoyMDcxODQ5NDc1fQ.UNDLGdqkRe26QyOzXltQ7y4KwcTCuuqxsgB-a1r3VrY';
+      
+      const customerData = {
+        id: customerId,
+        account_number: accountNumber,
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        phone,
+        password_hash: hashedPassword,
+        address_line1: address?.street || 'Not provided',
+        city: address?.city || 'Not provided',
+        state: address?.state || 'Not provided',
+        zip_code: address?.zipCode || 'Not provided',
+        account_status: 'pending_verification'
+      };
+      
+      console.log('Sending data with password_hash:', hashedPassword?.substring(0, 20) + '...');
+      
+      const response = await fetch(`${supabaseUrl}/rest/v1/customers`, {
+        method: 'POST',
+        headers: {
+          'apikey': serviceRoleKey,
+          'Authorization': `Bearer ${serviceRoleKey}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify(customerData)
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Customer creation failed:', response.status, errorText);
         return NextResponse.json(
-          { error: 'Failed to create customer record: ' + customerError.message },
+          { error: 'Failed to create customer record' },
           { status: 500 }
         );
       }
+      
+      const customers = await response.json();
+      const customer = Array.isArray(customers) ? customers[0] : customers;
+      
+      if (!customer) {
+        return NextResponse.json(
+          { error: 'Failed to create customer record' },
+          { status: 500 }
+        );
+      }
+      
+      console.log('Customer created successfully');
 
       // Send verification email using simple system
       const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify-simple?email=${encodeURIComponent(email)}`;
