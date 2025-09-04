@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
 import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 import { sendEmail, getVerificationEmailHtml } from '@/lib/resend';
-
-export const runtime = 'nodejs';
+import { hashPassword } from '@/lib/crypto';
 
 export async function POST(request: NextRequest) {
   try {
@@ -73,9 +71,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash the password
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    // Hash the password using Web Crypto API
+    const hashedPassword = await hashPassword(password);
 
     // Initialize Supabase clients
     const supabase = createRouteHandlerClient(request);

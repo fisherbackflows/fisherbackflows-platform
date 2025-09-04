@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
-
-export const runtime = 'nodejs';
+import { verifyPassword } from '@/lib/crypto';
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,7 +37,7 @@ export async function POST(request: NextRequest) {
     const customer = customers[0];
     
     // Verify password against hash stored in database
-    const isPasswordValid = await bcrypt.compare(password, customer.password_hash);
+    const isPasswordValid = await verifyPassword(password, customer.password_hash);
     
     if (!isPasswordValid) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
