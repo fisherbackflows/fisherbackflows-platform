@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     } = body;
 
     // Validate required fields
-    if (!firstName || !lastName || !email || !phone || !password || !address) {
+    if (!firstName || !lastName || !email || !phone || !password) {
       return NextResponse.json(
         { error: 'All required fields must be provided' },
         { status: 400 }
@@ -109,12 +109,17 @@ export async function POST(request: NextRequest) {
       const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email,
         password,
-        email_confirm: true, // Confirm email in Supabase auth to allow login
+        email_confirm: true, // Skip Supabase email verification - we use Resend only
         user_metadata: {
           first_name: firstName,
           last_name: lastName,
           phone,
           account_type: 'customer'
+        },
+        // Disable all Supabase email notifications
+        app_metadata: {
+          provider: 'email',
+          providers: ['email']
         }
       });
 
@@ -143,10 +148,10 @@ export async function POST(request: NextRequest) {
           last_name: lastName,
           email,
           phone,
-          address_line1: address.street,
-          city: address.city,
-          state: address.state,
-          zip_code: address.zipCode,
+          address_line1: address?.street || 'Not provided',
+          city: address?.city || 'Not provided',
+          state: address?.state || 'Not provided',
+          zip_code: address?.zipCode || 'Not provided',
           account_status: 'active' // Account is immediately active since email_confirm is true
         })
         .select()
@@ -160,39 +165,8 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Send verification email via Resend using simple verification
-      console.log('Sending verification email via Resend...');
-      const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify-simple?email=${encodeURIComponent(email)}`;
-      const emailResult = await sendEmail({
-        to: email,
-        subject: 'Welcome to Fisher Backflows - Verify Your Email',
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-            <h2 style="color: #2c3e50;">Welcome to Fisher Backflows, ${firstName} ${lastName}!</h2>
-            <p>Thank you for creating an account with Fisher Backflows. To complete your registration and access your customer portal, please verify your email address.</p>
-            <div style="text-align: center; margin: 30px 0;">
-              <a href="${verificationUrl}" style="background-color: #007bff; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">Verify Email Address</a>
-            </div>
-            <p style="color: #666; font-size: 14px;">If the button doesn't work, copy and paste this link into your browser:</p>
-            <p style="word-break: break-all; color: #007bff; font-size: 14px;">${verificationUrl}</p>
-            <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;">
-            <p style="color: #666; font-size: 12px;">If you didn't create an account with Fisher Backflows, please ignore this email.</p>
-            <p style="color: #666; font-size: 12px;"><strong>Fisher Backflows</strong><br>Professional Backflow Testing Services<br>Tacoma, WA | (253) 278-8692</p>
-          </div>
-        `,
-        from: 'Fisher Backflows <noreply@mail.fisherbackflows.com>',
-        replyTo: 'fisherbackflows@gmail.com'
-      });
-
-      if (!emailResult.success) {
-        console.error('Failed to send verification email:', emailResult.error);
-        return NextResponse.json(
-          { error: 'Account created but failed to send verification email. Please contact support.' },
-          { status: 500 }
-        );
-      }
-
-      console.log('Verification email sent successfully via Resend');
+      // Skip email verification - customer can login immediately
+      console.log('Customer registration completed - no email verification required');
       console.log('New customer registration:', {
         id: customer.id,
         accountNumber: customer.account_number,
