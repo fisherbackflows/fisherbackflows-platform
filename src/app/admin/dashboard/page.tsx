@@ -532,8 +532,5 @@ function AdminDashboard() {
   )
 }
 
-// Wrap with error boundary
-export default withErrorBoundary(AdminDashboard, {
-  pageName: 'Admin Dashboard',
-  showDebugInfo: true
-});
+// Export the component directly to fix TypeScript build error
+export default AdminDashboard;

@@ -5,10 +5,10 @@ import jsPDF from 'jspdf';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { paymentId: string } }
+  { params }: { params: Promise<{ paymentId: string }> }
 ) {
   try {
-    const { paymentId } = params;
+    const { paymentId } = await params;
 
     // Get payment details with customer and invoice info
     const { data: payment, error } = await supabase

@@ -3,11 +3,11 @@ import { createRouteHandlerClient } from '@/lib/supabase'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createRouteHandlerClient(request)
-    const appointmentId = params.id
+    const { id: appointmentId } = await params
 
     // Verify authentication (customer or team member)
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -171,11 +171,11 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createRouteHandlerClient(request)
-    const appointmentId = params.id
+    const { id: appointmentId } = await params
 
     // Verify team member authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()

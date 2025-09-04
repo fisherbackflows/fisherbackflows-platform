@@ -474,7 +474,7 @@ export default function AIShowcasePage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-green-500/10 rounded-lg border border-green-500/20">
                   {Object.entries(demoData.results).map(([key, value]) => (
                     <div key={key} className="text-center">
-                      <div className="text-lg font-bold text-green-400">{value}</div>
+                      <div className="text-lg font-bold text-green-400">{String(value)}</div>
                       <div className="text-xs text-gray-400 capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
                     </div>
                   ))}
@@ -490,7 +490,7 @@ export default function AIShowcasePage() {
                         {Object.entries(prediction).filter(([key]) => key !== 'type').map(([key, value]) => (
                           <div key={key} className="flex justify-between">
                             <span className="capitalize">{key}:</span>
-                            <span className="font-medium">{value}</span>
+                            <span className="font-medium">{String(value)}</span>
                           </div>
                         ))}
                       </div>
@@ -504,7 +504,7 @@ export default function AIShowcasePage() {
                   {Object.entries(demoData.schedule || demoData.tracking || demoData.performance).map(([key, value]) => (
                     <div key={key} className="flex justify-between items-center py-1">
                       <span className="text-gray-300 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</span>
-                      <span className="font-semibold text-purple-400">{value}</span>
+                      <span className="font-semibold text-purple-400">{String(value)}</span>
                     </div>
                   ))}
                 </div>

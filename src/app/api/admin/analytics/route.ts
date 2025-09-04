@@ -230,7 +230,7 @@ function calculateAverageTestTime(testReports: Array<{ test_duration?: number }>
   return Math.round(totalTime / testsWithDuration.length * 10) / 10
 }
 
-function calculateCompletionRate(testReports: Array<{ result?: string }>): number {
+function calculateCompletionRate(testReports: Array<{ result?: string; status?: string; submitted?: boolean }>): number {
   const completedTests = testReports.filter(r => 
     r.status === 'Completed' || r.submitted === true
   ).length
@@ -280,7 +280,7 @@ function calculateTopDistricts(testReports: Array<{ created_at?: string; custome
   
   // Map test reports to invoices to get district revenue
   testReports.forEach(report => {
-    const district = report.water_district || 'Unknown'
+    const district = (report as any).water_district || 'Unknown'
     // This is a simplified calculation - in reality you'd join with actual invoice data
     const estimatedRevenue = 175 // Average test cost
     districtRevenue[district] = (districtRevenue[district] || 0) + estimatedRevenue

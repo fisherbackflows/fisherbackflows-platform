@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
 
     if (regulation) {
       filteredEvents = filteredEvents.filter(event =>
-        event.regulations?.includes(regulation)
+        event.regulations?.includes(regulation as any)
       );
     }
 

@@ -5,9 +5,10 @@ import { generateTestReport } from '@/lib/pdf-generator';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const user = await auth.getApiUser(request);
     if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -24,7 +25,7 @@ export async function GET(
         device:devices(serial_number, device_type, size, location),
         appointment:appointments(appointment_type)
       `)
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (error || !testReport) {

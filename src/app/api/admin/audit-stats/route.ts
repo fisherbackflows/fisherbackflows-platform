@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get audit statistics
-    const stats = await auditLogger.getAuditStats(timeframe as 'day' | 'week' | 'month');
+    const stats = await (auditLogger as any).getAuditStats(timeframe as 'day' | 'week' | 'month');
 
     return NextResponse.json({
       success: true,

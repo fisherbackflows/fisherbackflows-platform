@@ -5,7 +5,7 @@ import { generateInvoicePDF } from '@/lib/pdf-generator';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await auth.getApiUser(request);
@@ -13,6 +13,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    const { id } = await params;
     const supabase = supabaseAdmin || createRouteHandlerClient(request);
     
     // Get invoice with customer information
@@ -22,7 +23,7 @@ export async function GET(
         *,
         customer:customers(first_name, last_name, address, phone, email, company_name)
       `)
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (error || !invoice) {
@@ -83,7 +84,7 @@ export async function GET(
     const pdfBuffer = generateInvoicePDF(pdfData);
     
     // Set response headers for PDF download
-    const filename = `invoice-${invoice.invoice_number || invoice.id}.pdf`;
+    const filename = `invoice-${invoice.invoice_number || id}.pdf`;
     
     return new NextResponse(pdfBuffer, {
       status: 200,

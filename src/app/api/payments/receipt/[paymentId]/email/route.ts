@@ -5,10 +5,10 @@ import { sendEmail } from '@/lib/email';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { paymentId: string } }
+  { params }: { params: Promise<{ paymentId: string }> }
 ) {
   try {
-    const { paymentId } = params;
+    const { paymentId } = await params;
 
     // Get payment details with customer info
     const { data: payment, error } = await supabase
@@ -280,7 +280,8 @@ Thank you for choosing Fisher Backflows!
     });
 
   } catch (error) {
-    logger.error('Email receipt error', { error, paymentId: params.paymentId });
+    const { paymentId } = await params;
+    logger.error('Email receipt error', { error, paymentId });
     return NextResponse.json(
       { error: 'Failed to send receipt email' },
       { status: 500 }

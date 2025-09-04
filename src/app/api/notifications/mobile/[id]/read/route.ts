@@ -3,11 +3,12 @@ import { createRouteHandlerClient } from '@/lib/supabase'
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const supabase = createRouteHandlerClient(request)
-    const notificationId = params.id
+    const notificationId = id
 
     // Verify authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()
