@@ -5,6 +5,8 @@ import { generateId } from '@/lib/utils';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 import { sendEmail, getVerificationEmailHtml } from '@/lib/resend';
 
+export const runtime = 'nodejs';
+
 export async function POST(request: NextRequest) {
   try {
     // SECURITY: Rate limiting for registration attempts
