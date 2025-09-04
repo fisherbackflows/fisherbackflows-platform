@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { createRouteHandlerClient } from '@/lib/supabase';
+import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 import { sendEmail, getSimpleVerificationEmailHtml } from '@/lib/resend';
@@ -75,8 +75,16 @@ export async function POST(request: NextRequest) {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Initialize Supabase client
+    // Initialize Supabase clients
     const supabase = createRouteHandlerClient(request);
+    
+    // Verify we have admin client for user creation
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Server configuration error: Admin client not available' },
+        { status: 500 }
+      );
+    }
 
     // Check if customer already exists
     const { data: existingCustomer } = await supabase
@@ -98,7 +106,7 @@ export async function POST(request: NextRequest) {
     try {
       // Create user in Supabase Auth WITHOUT sending email (we'll use Resend)
       console.log('Creating user in Supabase Auth...');
-      const { data: authUser, error: authError } = await supabase.auth.admin.createUser({
+      const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email,
         password,
         email_confirm: false, // Don't confirm email yet - we'll handle verification with Resend
@@ -126,7 +134,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Create customer record in database
-      const { data: customer, error: customerError } = await supabase
+      const { data: customer, error: customerError } = await supabaseAdmin
         .from('customers')
         .insert({
           id: authUser.user.id,
