@@ -43,7 +43,7 @@ export default function VerificationSuccessPage() {
           </div>
           
           <div className="space-y-3">
-            <Link href="/portal/login">
+            <Link href="/portal">
               <Button className="w-full btn-glow">
                 <ArrowRight className="h-4 w-4 mr-2" />
                 Continue to Customer Portal
@@ -51,9 +51,9 @@ export default function VerificationSuccessPage() {
             </Link>
             
             <Link href="/">
-              <Link href="/"><button variant="outline" className="w-full btn-glass">
+              <button variant="outline" className="w-full btn-glass">
                 Return to Home
-              </button></Link>
+              </button>
             </Link>
           </div>
           
