@@ -115,44 +115,15 @@ export async function POST(request: NextRequest) {
     const accountNumber = generateId('FB');
 
     try {
-      // Create user in Supabase Auth with email verification required
-      console.log('Creating user in Supabase Auth...');
-      const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
-        email,
-        password,
-        email_confirm: false, // Require email verification
-        user_metadata: {
-          first_name: firstName,
-          last_name: lastName,
-          phone,
-          account_type: 'customer'
-        },
-        app_metadata: {
-          provider: 'email',
-          providers: ['email']
-        }
-      });
-
-      if (authError) {
-        console.error('Auth creation error:', authError);
-        return NextResponse.json(
-          { error: authError.message || 'Failed to create authentication account' },
-          { status: 500 }
-        );
-      }
-
-      if (!authUser.user) {
-        return NextResponse.json(
-          { error: 'Failed to create user' },
-          { status: 500 }
-        );
-      }
+      // Generate UUID for customer
+      const customerId = crypto.randomUUID();
+      console.log('Creating customer record only (no Supabase Auth)...');
 
       // Create customer record in database
       const { data: customer, error: customerError } = await supabaseAdmin
         .from('customers')
         .insert({
-          id: authUser.user.id,
+          id: customerId,
           account_number: accountNumber,
           first_name: firstName,
           last_name: lastName,
