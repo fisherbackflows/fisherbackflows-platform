@@ -3,7 +3,7 @@ import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 import { sendEmail, getVerificationEmailHtml } from '@/lib/resend';
-import { hashPassword } from '@/lib/crypto';
+import { hashPassword } from '@/lib/simple-hash';
 
 export async function POST(request: NextRequest) {
   try {
@@ -71,10 +71,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash the password using Web Crypto API
-    console.log('Hashing password...');
+    // Hash the password using simple SHA-256
     const hashedPassword = await hashPassword(password);
-    console.log('Password hashed successfully, length:', hashedPassword?.length);
+    console.log('Password hashed, length:', hashedPassword?.length);
 
     // Initialize Supabase clients
     const supabase = createRouteHandlerClient(request);

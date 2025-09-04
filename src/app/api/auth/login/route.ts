@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyPassword } from '@/lib/crypto';
+import { verifyPassword } from '@/lib/simple-hash';
 
 export async function POST(request: NextRequest) {
   try {
