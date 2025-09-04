@@ -72,7 +72,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Hash the password using Web Crypto API
+    console.log('Hashing password...');
     const hashedPassword = await hashPassword(password);
+    console.log('Password hashed successfully, length:', hashedPassword?.length);
 
     // Initialize Supabase clients
     const supabase = createRouteHandlerClient(request);
@@ -119,6 +121,7 @@ export async function POST(request: NextRequest) {
       console.log('Creating customer record only (no Supabase Auth)...');
 
       // Create customer record in database
+      console.log('Inserting customer with hash length:', hashedPassword?.length);
       const { data: customer, error: customerError } = await supabaseAdmin
         .from('customers')
         .insert({
@@ -137,6 +140,8 @@ export async function POST(request: NextRequest) {
         })
         .select()
         .single();
+      
+      console.log('Customer insertion result:', { success: !customerError, hasData: !!customer });
 
       if (customerError) {
         console.error('Customer creation error:', customerError);
