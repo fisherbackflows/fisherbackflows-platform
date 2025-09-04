@@ -1000,7 +1000,7 @@ export class AIRouteOptimizer {
   private updateRouteMetrics(route: OptimizedRoute): void {
     let totalDistance = 0
     let totalTravelTime = 0
-    let totalFuelCost = 0
+    const totalFuelCost = 0
     
     for (let i = 0; i < route.appointments.length; i++) {
       const current = route.appointments[i]

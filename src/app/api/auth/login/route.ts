@@ -1,242 +1,76 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@/lib/supabase';
-import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
-import { loginSchema, validateInput } from '@/lib/input-validation';
+import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
-  
   try {
-    // SECURITY: Rate limiting for login attempts
-    const clientId = getClientIdentifier(request);
-    const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
-    
-    if (!rateLimitResult.allowed) {
-      return NextResponse.json(
-        { 
-          error: 'Too many login attempts. Please try again later.',
-          retryAfter: rateLimitResult.retryAfter 
-        },
-        { 
-          status: 429,
-          headers: {
-            'Retry-After': rateLimitResult.retryAfter?.toString() || '1800',
-            'X-RateLimit-Limit': RATE_LIMIT_CONFIGS.AUTH_LOGIN.maxAttempts.toString(),
-            'X-RateLimit-Remaining': rateLimitResult.remainingAttempts.toString(),
-          }
-        }
-      );
-    }
-    
     const body = await request.json();
+    const { email, password } = body;
     
-    // SECURITY: Input validation
-    const validatedInput = validateInput(loginSchema, (errors) => {
-      return new Error(errors.errors.map(e => e.message).join(', '));
-    })(body);
-    
-    const { identifier, password, type } = validatedInput;
-    
-    // Handle demo login
-    if (identifier === 'demo' || type === 'demo') {
-      const demoUser = {
-        id: 'demo',
-        email: 'demo@fisherbackflows.com',
-        role: 'customer' as const,
-        name: 'Demo Customer',
-        accountNumber: 'DEMO'
-      };
-      
-      return NextResponse.json({
-        success: true,
-        message: 'Demo login successful',
-        user: demoUser,
-        redirect: '/portal/dashboard'
-      });
+    if (!email || !password) {
+      return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
     }
     
-    // SECURITY: Removed hardcoded admin credentials - use proper Supabase authentication
+    // Direct Supabase API calls
+    const supabaseUrl = 'https://jvhbqfueutvfepsjmztx.supabase.co';
+    const serviceRoleKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGJxZnVldXR2ZmVwc2ptenR4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjI3MzQ3NSwiZXhwIjoyMDcxODQ5NDc1fQ.UNDLGdqkRe26QyOzXltQ7y4KwcTCuuqxsgB-a1r3VrY';
     
-    if (!password) {
-      return NextResponse.json(
-        { error: 'Password is required' },
-        { status: 400 }
-      );
-    }
-
-    // Create response that will be used for setting cookies
-    const response = NextResponse.json({ temp: true });
-    
-    // Initialize Supabase client
-    const supabase = createRouteHandlerClient(request, response);
-    
-    // Determine if identifier is email or phone
-    let email = identifier;
-    
-    // If it looks like a phone number, find the email first
-    if (type === 'phone' || /^\d+/.test(identifier.replace(/\D/g, ''))) {
-      const normalizedPhone = identifier.replace(/\D/g, '');
-      
-      if (normalizedPhone.length >= 10) {
-        // Find customer by phone number
-        const { data: customer, error: customerError } = await supabase
-          .from('customers')
-          .select('email')
-          .eq('phone', identifier)
-          .single();
-        
-        if (customerError || !customer) {
-          return NextResponse.json(
-            { error: 'No account found with this phone number' },
-            { status: 401 }
-          );
-        }
-        
-        email = (customer as any).email;
+    // Get customer record with password hash
+    const customerResponse = await fetch(`${supabaseUrl}/rest/v1/customers?email=eq.${encodeURIComponent(email)}&select=*`, {
+      method: 'GET',
+      headers: {
+        'apikey': serviceRoleKey,
+        'Authorization': `Bearer ${serviceRoleKey}`,
+        'Content-Type': 'application/json'
       }
-    }
-    
-    // Attempt to sign in with Supabase Auth
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email,
-      password
     });
     
-    if (authError || !authData.user) {
-      console.error('Authentication error:', authError);
-      return NextResponse.json(
-        { error: 'Invalid email/phone or password' },
-        { status: 401 }
-      );
+    if (!customerResponse.ok) {
+      return NextResponse.json({ error: 'Customer lookup failed' }, { status: 500 });
     }
     
-    // Get customer details from database
-    const { data: customer, error: customerError } = await supabase
-      .from('customers')
-      .select('*')
-      .eq('email', email)
-      .single();
+    const customers = await customerResponse.json();
     
-    if (customerError || !customer) {
-      console.error('Customer lookup error:', customerError);
-      return NextResponse.json(
-        { error: 'Account not found' },
-        { status: 404 }
-      );
+    if (!customers || customers.length === 0) {
+      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
     
-    // Determine user role based on email domain or metadata
-    let role = 'customer';
-    if ((customer as any).email.includes('@fisherbackflows.com') || 
-        authData.user.user_metadata?.account_type === 'admin') {
-      role = 'admin';
+    const customer = customers[0];
+    
+    // Verify password against hash stored in database
+    const isPasswordValid = await bcrypt.compare(password, customer.password_hash);
+    
+    if (!isPasswordValid) {
+      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
     
-    const user = {
-      id: (customer as any).id,
-      email: (customer as any).email,
-      name: `${(customer as any).first_name || ''} ${(customer as any).last_name || ''}`.trim(),
-      role,
-      accountNumber: (customer as any).account_number,
-      phone: (customer as any).phone,
-      status: (customer as any).account_status
-    };
+    if (customer.account_status !== 'active') {
+      return NextResponse.json({ error: 'Account not verified' }, { status: 403 });
+    }
     
-    // Set session cookies (Supabase handles this automatically)
-    
-    // SECURITY: Record successful login
-    recordAttempt(clientId, true, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
-    
-    // Update the response body with success data
     return NextResponse.json({
       success: true,
       message: 'Login successful',
-      user,
-      redirect: role === 'admin' ? '/team-portal' : '/'
-    }, {
-      headers: response.headers,
-      status: 200
+      user: {
+        id: customer.id,
+        email: customer.email,
+        name: `${customer.first_name} ${customer.last_name}`,
+        accountNumber: customer.account_number,
+        phone: customer.phone,
+        role: 'customer',
+        status: customer.account_status
+      },
+      redirect: '/'
     });
     
   } catch (error) {
-    // SECURITY: Record failed login attempt
-    const clientId = getClientIdentifier(request);
-    recordAttempt(clientId, false, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
-    
     console.error('Login error:', error);
-    return NextResponse.json(
-      { error: 'Authentication failed. Please try again.' },
-      { status: 500 }
-    );
+    return NextResponse.json({ 
+      error: 'Login failed',
+      debug: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }
 
 export async function GET(request: NextRequest) {
-  try {
-    const supabase = createRouteHandlerClient(request);
-    
-    // Get the current session
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    
-    if (sessionError || !session?.user) {
-      return NextResponse.json(
-        { error: 'No active session' },
-        { status: 401 }
-      );
-    }
-    
-    // Get customer details
-    const { data: customer, error: customerError } = await supabase
-      .from('customers')
-      .select('*')
-      .eq('id', session.user.id)
-      .single();
-    
-    if (customerError || !customer) {
-      // Handle demo user case
-      if (session.user.email === 'demo@fisherbackflows.com') {
-        return NextResponse.json({
-          success: true,
-          user: {
-            id: 'demo',
-            email: 'demo@fisherbackflows.com',
-            name: 'Demo Customer',
-            role: 'customer',
-            accountNumber: 'DEMO'
-          }
-        });
-      }
-      
-      return NextResponse.json(
-        { error: 'Customer record not found' },
-        { status: 404 }
-      );
-    }
-    
-    // Determine role
-    let role = 'customer';
-    if (customer.email.includes('@fisherbackflows.com') || 
-        session.user.user_metadata?.account_type === 'admin') {
-      role = 'admin';
-    }
-    
-    return NextResponse.json({
-      success: true,
-      user: {
-        id: customer.id,
-        email: customer.email,
-        name: customer.name,
-        role,
-        accountNumber: customer.account_number,
-        phone: customer.phone,
-        status: customer.status
-      }
-    });
-    
-  } catch (error) {
-    console.error('Session verification error:', error);
-    return NextResponse.json(
-      { error: 'Authentication failed' },
-      { status: 500 }
-    );
-  }
+  return NextResponse.json({ error: 'Method not allowed' }, { status: 405 });
 }

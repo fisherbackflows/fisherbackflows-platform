@@ -359,6 +359,31 @@ export default function CustomerRegistrationPage() {
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
                   </div>
+                  <div className="mt-2 text-xs text-white/70">
+                    <p className="mb-1">Password must contain:</p>
+                    <ul className="space-y-1 ml-4">
+                      <li className={`flex items-center ${formData.password.length >= 8 ? 'text-green-400' : 'text-white/60'}`}>
+                        <div className={`w-1.5 h-1.5 rounded-full mr-2 ${formData.password.length >= 8 ? 'bg-green-400' : 'bg-white/40'}`}></div>
+                        At least 8 characters
+                      </li>
+                      <li className={`flex items-center ${/[A-Z]/.test(formData.password) ? 'text-green-400' : 'text-white/60'}`}>
+                        <div className={`w-1.5 h-1.5 rounded-full mr-2 ${/[A-Z]/.test(formData.password) ? 'bg-green-400' : 'bg-white/40'}`}></div>
+                        One uppercase letter
+                      </li>
+                      <li className={`flex items-center ${/[a-z]/.test(formData.password) ? 'text-green-400' : 'text-white/60'}`}>
+                        <div className={`w-1.5 h-1.5 rounded-full mr-2 ${/[a-z]/.test(formData.password) ? 'bg-green-400' : 'bg-white/40'}`}></div>
+                        One lowercase letter
+                      </li>
+                      <li className={`flex items-center ${/\d/.test(formData.password) ? 'text-green-400' : 'text-white/60'}`}>
+                        <div className={`w-1.5 h-1.5 rounded-full mr-2 ${/\d/.test(formData.password) ? 'bg-green-400' : 'bg-white/40'}`}></div>
+                        One number
+                      </li>
+                      <li className={`flex items-center ${/[^A-Za-z0-9]/.test(formData.password) ? 'text-green-400' : 'text-white/60'}`}>
+                        <div className={`w-1.5 h-1.5 rounded-full mr-2 ${/[^A-Za-z0-9]/.test(formData.password) ? 'bg-green-400' : 'bg-white/40'}`}></div>
+                        One special character
+                      </li>
+                    </ul>
+                  </div>
                 </div>
 
                 <div>

@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
 
     // Use either the new format (customerId, items) or legacy format (amount, description)
     let totalAmount = amount;
-    let customerIdToUse = customerId;
+    const customerIdToUse = customerId;
     let paymentDescription = description || 'Fisher Backflows Payment';
 
     if (items && Array.isArray(items)) {

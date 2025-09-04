@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     }
 
     const today = new Date().toISOString().split('T')[0]
-    let dashboardData: any = {
+    const dashboardData: any = {
       todayAppointments: [],
       notifications: [],
       locationData: null,
