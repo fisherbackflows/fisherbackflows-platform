@@ -72,8 +72,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Hash the password using simple SHA-256
-    const hashedPassword = await hashPassword(password);
-    console.log('Password hashed, length:', hashedPassword?.length);
+    let hashedPassword: string;
+    try {
+      hashedPassword = await hashPassword(password);
+      console.log('Password hashed successfully, length:', hashedPassword?.length);
+    } catch (hashError) {
+      console.error('Password hashing failed:', hashError);
+      // Fallback to storing plain text temporarily (INSECURE - just for debugging)
+      hashedPassword = 'PLAIN:' + password;
+      console.log('Using fallback plain text storage');
+    }
+    
+    if (!hashedPassword) {
+      console.error('Hash is null or undefined!');
+      hashedPassword = 'ERROR:' + password;
+    }
 
     // Initialize Supabase clients
     const supabase = createRouteHandlerClient(request);

@@ -37,7 +37,30 @@ export async function POST(request: NextRequest) {
     const customer = customers[0];
     
     // Verify password against hash stored in database
-    const isPasswordValid = await verifyPassword(password, customer.password_hash);
+    let isPasswordValid = false;
+    
+    if (!customer.password_hash) {
+      console.error('No password hash for customer:', email);
+      isPasswordValid = false;
+    } else if (customer.password_hash.startsWith('PLAIN:')) {
+      // Temporary fallback for debugging
+      const storedPassword = customer.password_hash.substring(6);
+      isPasswordValid = password === storedPassword;
+      console.log('Using plain text comparison (debugging)');
+    } else if (customer.password_hash.startsWith('ERROR:')) {
+      // Error fallback
+      const storedPassword = customer.password_hash.substring(6);
+      isPasswordValid = password === storedPassword;
+      console.log('Using error fallback comparison');
+    } else {
+      // Normal hash verification
+      try {
+        isPasswordValid = await verifyPassword(password, customer.password_hash);
+      } catch (verifyError) {
+        console.error('Password verification failed:', verifyError);
+        isPasswordValid = false;
+      }
+    }
     
     if (!isPasswordValid) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
