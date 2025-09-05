@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
-import { sendEmail, getVerificationEmailHtml } from '@/lib/resend';
-// Removed hashPassword import - using inline SHA-256 for reliability
 
 export async function POST(request: NextRequest) {
   try {
@@ -71,19 +69,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash the password using reliable SHA-256 (same as working endpoint)
-    const salt = 'fisherbackflows2024salt';
-    const data = password + salt;
-    const encoder = new TextEncoder();
-    const dataBuffer = encoder.encode(data);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-
-    // Initialize Supabase clients
-    const supabase = createRouteHandlerClient(request);
-    
-    // Verify we have admin client for user creation
+    // Verify we have admin client
     if (!supabaseAdmin) {
       return NextResponse.json(
         { error: 'Server configuration error: Admin client not available' },
@@ -91,113 +77,88 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if customer already exists (prevent enumeration)
-    const { data: existingCustomer } = await supabase
-      .from('customers')
-      .select('id, account_status')
-      .eq('email', email)
-      .single();
-
-    if (existingCustomer) {
-      // Don't reveal if account exists - always return success message
-      // This prevents email enumeration attacks
-      return NextResponse.json({
-        success: true,
-        message: 'If an account with this email doesn\'t exist, we\'ve created one. Please check your email to verify your account before signing in.',
-        user: {
-          id: 'hidden',
-          accountNumber: 'hidden',
-          firstName: 'hidden',
-          lastName: 'hidden',
-          email: email,
-          phone: 'hidden',
-          status: 'pending_verification'
-        }
-      }, { status: 201 });
-    }
-
-    // Generate account number
-    const accountNumber = generateId('FB');
+    // Skip user existence check for now - just try to create and handle errors
 
     try {
-      // Generate UUID for customer
-      const customerId = crypto.randomUUID();
-      console.log('Creating customer record only (no Supabase Auth)...');
+      // Step 1: Create Supabase Auth user using client signUp method
+      const supabase = createRouteHandlerClient(request);
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            full_name: `${firstName} ${lastName}`
+          }
+        }
+      });
 
-      // Create customer record using direct API call (same as working endpoint)
-      const response = await fetch('https://jvhbqfueutvfepsjmztx.supabase.co/rest/v1/customers', {
-        method: 'POST',
-        headers: {
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGJxZnVldXR2ZmVwc2ptenR4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjI3MzQ3NSwiZXhwIjoyMDcxODQ5NDc1fQ.UNDLGdqkRe26QyOzXltQ7y4KwcTCuuqxsgB-a1r3VrY',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGJxZnVldXR2ZmVwc2ptenR4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjI3MzQ3NSwiZXhwIjoyMDcxODQ5NDc1fQ.UNDLGdqkRe26QyOzXltQ7y4KwcTCuuqxsgB-a1r3VrY',
-          'Content-Type': 'application/json',
-          'Prefer': 'return=representation'
-        },
-        body: JSON.stringify({
-          id: customerId,
+      if (authError || !authData.user) {
+        console.error('Auth user creation failed:', authError);
+        return NextResponse.json(
+          { error: 'Failed to create user account' },
+          { status: 500 }
+        );
+      }
+
+      // Step 2: Generate account number
+      const accountNumber = generateId('FB');
+
+      // Step 3: Create customer record linked to auth user  
+      const { data: customerData, error: customerError } = await supabaseAdmin
+        .from('customers')
+        .insert({
+          auth_user_id: authData.user.id, // Link to auth user
           account_number: accountNumber,
           first_name: firstName,
           last_name: lastName,
           email,
           phone,
-          password_hash: hashedPassword,
           address_line1: (address && address.street) ? address.street : 'Not provided',
           city: (address && address.city) ? address.city : 'Not provided',
           state: (address && address.state) ? address.state : 'TX',
           zip_code: (address && address.zipCode) ? address.zipCode : '00000',
           account_status: 'pending_verification'
         })
-      });
+        .select()
+        .single();
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Customer creation failed:', response.status, errorText);
+      if (customerError || !customerData) {
+        console.error('Customer creation failed:', customerError);
         return NextResponse.json(
           { error: 'Failed to create customer record' },
           { status: 500 }
         );
       }
 
-      const customers = await response.json();
-      const customer = Array.isArray(customers) ? customers[0] : customers;
+      // Email confirmation will be sent automatically by Supabase Auth via the configured SMTP (Resend)
 
-      // Send verification email using simple system
-      const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify-simple?email=${encodeURIComponent(email)}`;
-      const emailResult = await sendEmail({
-        to: email,
-        subject: 'Verify Your Fisher Backflows Account',
-        html: getVerificationEmailHtml(verificationUrl, `${firstName} ${lastName}`)
-      });
-
-      if (!emailResult.success) {
-        console.error('Failed to send verification email:', emailResult.error);
-      }
-
-      console.log('Customer registration completed - email verification required');
+      console.log('Customer registration completed with Supabase Auth');
       console.log('New customer registration:', {
-        id: customer.id,
-        accountNumber: customer.account_number,
-        firstName: customer.first_name,
-        lastName: customer.last_name,
-        email: customer.email,
-        phone: customer.phone,
-        propertyType,
-        emailSent: emailResult.success
+        authUserId: authData.user.id,
+        customerId: customerData.id,
+        accountNumber: customerData.account_number,
+        firstName: customerData.first_name,
+        lastName: customerData.last_name,
+        email: customerData.email,
+        phone: customerData.phone,
+        propertyType
       });
 
       return NextResponse.json({
         success: true,
         message: 'Account created successfully! Please check your email to verify your account before signing in.',
         user: {
-          id: customer.id,
-          accountNumber: customer.account_number,
+          id: customerData.id,
+          authUserId: authData.user.id,
+          accountNumber: customerData.account_number,
           firstName,
           lastName,
           email,
           phone,
           status: 'pending_verification'
-        },
-        redirect: '/portal/registration-success'
+        }
       }, { status: 201 });
 
     } catch (error) {
