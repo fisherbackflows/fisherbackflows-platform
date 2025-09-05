@@ -196,7 +196,8 @@ export async function POST(request: NextRequest) {
           email,
           phone,
           status: 'pending_verification'
-        }
+        },
+        redirect: '/portal/registration-success'
       }, { status: 201 });
 
     } catch (error) {
