@@ -146,6 +146,7 @@ export async function POST(request: NextRequest) {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://jvhbqfueutvfepsjmztx.supabase.co';
       const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGJxZnVldXR2ZmVwc2ptenR4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjI3MzQ3NSwiZXhwIjoyMDcxODQ5NDc1fQ.UNDLGdqkRe26QyOzXltQ7y4KwcTCuuqxsgB-a1r3VrY';
       
+      // Ensure all required fields have values
       const customerData = {
         id: customerId,
         account_number: accountNumber,
@@ -154,10 +155,10 @@ export async function POST(request: NextRequest) {
         email,
         phone,
         password_hash: hashedPassword,
-        address_line1: address?.street || 'Not provided',
-        city: address?.city || 'Not provided',
-        state: address?.state || 'Not provided',
-        zip_code: address?.zipCode || 'Not provided',
+        address_line1: (address && address.street) ? address.street : 'Not provided',
+        city: (address && address.city) ? address.city : 'Not provided', 
+        state: (address && address.state) ? address.state : 'TX',
+        zip_code: (address && address.zipCode) ? address.zipCode : '00000',
         account_status: 'pending_verification'
       };
       
@@ -185,8 +186,13 @@ export async function POST(request: NextRequest) {
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Customer creation failed:', response.status, errorText);
+        console.error('Failed request URL:', `${supabaseUrl}/rest/v1/customers`);
+        console.error('Failed request body:', JSON.stringify(customerData));
         return NextResponse.json(
-          { error: 'Failed to create customer record' },
+          { 
+            error: 'Failed to create customer record',
+            debug: process.env.NODE_ENV === 'development' ? errorText : undefined 
+          },
           { status: 500 }
         );
       }
