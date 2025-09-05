@@ -153,6 +153,9 @@ export default function HomePage() {
               <Link href="/team-portal" className="px-4 py-2 rounded-2xl bg-white/10 hover:bg-white/20 text-white transition-all duration-200 font-semibold">
                 Team
               </Link>
+              <Link href="/business-admin" className="px-2 py-1 rounded-xl bg-black/20 hover:bg-black/40 text-white/60 hover:text-white/80 transition-all duration-200 text-xs font-medium">
+                Admin
+              </Link>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -211,6 +214,13 @@ export default function HomePage() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Team Login
+                </Link>
+                <Link 
+                  href="/business-admin" 
+                  className="block px-4 py-2 rounded-2xl bg-black/20 text-white/60 text-center text-sm font-medium transition-all duration-200"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Business Admin
                 </Link>
                 
                 <div className="border-t border-blue-400/30 pt-3 mt-3">

@@ -1,0 +1,81 @@
+{
+  "timestamp": "2025-09-05T21:03:21.658Z",
+  "totalAudited": 4,
+  "meetsCriteria": 0,
+  "successRate": 0,
+  "criteriaRequired": "Name + Phone + Office Address + Company + Title + Email + Cell Phone",
+  "auditResults": [
+    {
+      "id": "audit_001",
+      "companyName": "Kalles Properties",
+      "verified": {
+        "name": "Harold Kalles",
+        "phone": "(253) 848-9393",
+        "officeAddress": "2702 E. Main - Suite A, Puyallup, WA 98372",
+        "company": "Kalles Properties",
+        "title": "President/Owner"
+      },
+      "missing": {
+        "email": "MISSING - Only generic info@kallespm.com available",
+        "cellPhone": "MISSING - No personal cell phone found"
+      },
+      "verificationStatus": "PARTIAL - Missing Email & Cell",
+      "meets100PercentCriteria": false,
+      "note": "Harold Kalles verified as real person, company president, but no personal contact details"
+    },
+    {
+      "id": "audit_002",
+      "companyName": "SJC Management Group",
+      "verified": {
+        "name": "Jason Clifford",
+        "phone": "(253) 863-8117",
+        "officeAddress": "913 Kincaid Ave, Sumner, WA 98390",
+        "company": "SJC Management Group",
+        "title": "Designated Broker/CEO"
+      },
+      "missing": {
+        "email": "MISSING - No personal email verified",
+        "cellPhone": "UNVERIFIED - (253) 826-7559 found but NOT confirmed as his cell"
+      },
+      "verificationStatus": "PARTIAL - Missing Email & Unverified Cell",
+      "meets100PercentCriteria": false,
+      "note": "Jason Clifford verified real person with LinkedIn, but personal contacts not publicly available"
+    },
+    {
+      "id": "audit_003",
+      "companyName": "Vista Property Management",
+      "verified": {
+        "phone": "(253) 235-4311",
+        "officeAddress": "1002 39th Ave SW Suite 302, Puyallup, WA 98373",
+        "company": "Vista Property Management"
+      },
+      "missing": {
+        "name": "Julia Vega mentioned in reviews but NOT confirmed as decision maker",
+        "title": "UNKNOWN - No verified title for Julia Vega",
+        "email": "MISSING - No personal email found",
+        "cellPhone": "MISSING - No cell phone found"
+      },
+      "verificationStatus": "FAILED - Missing Name/Title/Email/Cell",
+      "meets100PercentCriteria": false,
+      "note": "Julia Vega name found in reviews but no verified role or contact details"
+    },
+    {
+      "id": "audit_004",
+      "companyName": "Bell-Anderson & Associates",
+      "verified": {
+        "phone": "(253) 852-8195",
+        "company": "Bell-Anderson & Associates"
+      },
+      "missing": {
+        "name": "Tim & Vickie Gaskill - UNVERIFIED in current searches",
+        "title": "UNVERIFIED - Owner claims not confirmed in recent data",
+        "officeAddress": "MISSING - No specific office address confirmed",
+        "email": "GENERIC ONLY - info@bell-anderson.net",
+        "cellPhone": "MISSING - No cell phones found"
+      },
+      "verificationStatus": "FAILED - Most criteria missing/unverified",
+      "meets100PercentCriteria": false,
+      "note": "Company exists but ownership/contact details not verified in current searches"
+    }
+  ]
+}
