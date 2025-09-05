@@ -24,7 +24,12 @@ export async function POST(request: NextRequest) {
         last_name: 'User',
         phone: '555-0000', 
         account_number: 'MIN' + Date.now(),
-        account_status: 'active'
+        account_status: 'active',
+        // Add missing required fields
+        address_line1: 'Test Address',
+        city: 'Test City',
+        state: 'TX',
+        zip_code: '12345'
       })
     });
     
