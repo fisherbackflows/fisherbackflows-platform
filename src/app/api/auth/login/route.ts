@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyPassword } from '@/lib/simple-hash';
+// Removed verifyPassword import - using inline SHA-256 verification
 
 export async function POST(request: NextRequest) {
   try {
@@ -36,28 +36,27 @@ export async function POST(request: NextRequest) {
     
     const customer = customers[0];
     
-    // Verify password against hash stored in database
+    // Verify password using same SHA-256 method as registration
     let isPasswordValid = false;
     
     if (!customer.password_hash) {
       console.error('No password hash for customer:', email);
       isPasswordValid = false;
-    } else if (customer.password_hash.startsWith('PLAIN:')) {
-      // Temporary fallback for debugging
-      const storedPassword = customer.password_hash.substring(6);
-      isPasswordValid = password === storedPassword;
-      console.log('Using plain text comparison (debugging)');
-    } else if (customer.password_hash.startsWith('ERROR:')) {
-      // Error fallback
-      const storedPassword = customer.password_hash.substring(6);
-      isPasswordValid = password === storedPassword;
-      console.log('Using error fallback comparison');
     } else {
-      // Normal hash verification
       try {
-        isPasswordValid = await verifyPassword(password, customer.password_hash);
-      } catch (verifyError) {
-        console.error('Password verification failed:', verifyError);
+        // Generate hash of input password using same method as registration
+        const salt = 'fisherbackflows2024salt';
+        const data = password + salt;
+        const encoder = new TextEncoder();
+        const dataBuffer = encoder.encode(data);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const inputHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        
+        // Compare with stored hash
+        isPasswordValid = inputHash === customer.password_hash;
+      } catch (hashError) {
+        console.error('Password hashing failed during verification:', hashError);
         isPasswordValid = false;
       }
     }
