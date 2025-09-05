@@ -71,22 +71,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Hash the password using simple SHA-256
+    // Hash the password using simple SHA-256 - EXTREME DEBUGGING
+    console.log('=== HASH DEBUG START ===');
+    console.log('Input password:', password);
+    
     let hashedPassword: string;
     try {
+      console.log('About to call hashPassword...');
       hashedPassword = await hashPassword(password);
-      console.log('Password hashed successfully, length:', hashedPassword?.length);
+      console.log('Hash result:', hashedPassword);
+      console.log('Hash length:', hashedPassword?.length);
+      console.log('Hash first 10 chars:', hashedPassword?.substring(0, 10));
     } catch (hashError) {
       console.error('Password hashing failed:', hashError);
-      // Fallback to storing plain text temporarily (INSECURE - just for debugging)
-      hashedPassword = 'PLAIN:' + password;
-      console.log('Using fallback plain text storage');
+      hashedPassword = 'HASH_ERROR:' + password;
+      console.log('Using hash error fallback');
     }
     
     if (!hashedPassword) {
       console.error('Hash is null or undefined!');
-      hashedPassword = 'ERROR:' + password;
+      hashedPassword = 'NULL_ERROR:' + password;
     }
+    
+    console.log('Final hash to insert:', hashedPassword);
+    console.log('=== HASH DEBUG END ===');
 
     // Initialize Supabase clients
     const supabase = createRouteHandlerClient(request);
@@ -153,7 +161,11 @@ export async function POST(request: NextRequest) {
         account_status: 'pending_verification'
       };
       
-      console.log('Sending data with password_hash:', hashedPassword?.substring(0, 20) + '...');
+      console.log('=== DATABASE INSERT DEBUG ===');
+      console.log('customerData.password_hash:', customerData.password_hash);
+      console.log('customerData keys:', Object.keys(customerData));
+      console.log('JSON.stringify customerData:', JSON.stringify(customerData));
+      console.log('=== DATABASE INSERT DEBUG END ===');
       
       const response = await fetch(`${supabaseUrl}/rest/v1/customers`, {
         method: 'POST',
@@ -166,6 +178,10 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify(customerData)
       });
       
+      console.log('=== DATABASE RESPONSE DEBUG ===');
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+      
       if (!response.ok) {
         const errorText = await response.text();
         console.error('Customer creation failed:', response.status, errorText);
@@ -175,8 +191,20 @@ export async function POST(request: NextRequest) {
         );
       }
       
-      const customers = await response.json();
+      const responseText = await response.text();
+      console.log('Raw response body:', responseText);
+      
+      let customers;
+      try {
+        customers = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        return NextResponse.json({ error: 'Response parse error' }, { status: 500 });
+      }
+      
       const customer = Array.isArray(customers) ? customers[0] : customers;
+      console.log('Parsed customer data:', customer);
+      console.log('Customer password_hash from response:', customer?.password_hash);
       
       if (!customer) {
         return NextResponse.json(
@@ -185,7 +213,7 @@ export async function POST(request: NextRequest) {
         );
       }
       
-      console.log('Customer created successfully');
+      console.log('=== DATABASE RESPONSE DEBUG END ===');
 
       // Send verification email using simple system
       const verificationUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify-simple?email=${encodeURIComponent(email)}`;
