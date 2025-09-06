@@ -228,202 +228,135 @@ export default function BusinessAdminPortal() {
     setActiveTab('overview');
   };
 
-  const loadBusinessData = () => {
-    // Mock business data - in production this would come from your APIs
-    const mockMetrics: BusinessMetrics = {
-      backflow_leads: {
-        total: 73,
-        new: 18,
-        contacted: 24,
-        qualified: 15,
-        converted: 12,
-        lost: 4,
-        conversion_rate: 75.8,
-        average_value: 627,
-        pipeline_value: 47850
-      },
-      saas_clients: {
-        total: 31,
-        prospects: 12,
-        trials: 6,
-        active: 9,
-        suspended: 2,
-        churned: 2,
-        mrr: 18950,
-        arr: 227400,
-        churn_rate: 6.5,
-        average_deal_size: 2105
-      },
-      revenue: {
-        total_ytd: 394750,
-        backflow_revenue: 287200,
-        saas_revenue: 107550,
-        monthly_growth: 22.7,
-        projected_annual: 512000,
-        last_month: 28450,
-        this_month: 34900
-      },
-      business_health: {
-        customer_satisfaction: 4.8,
-        lead_response_time: 2.3,
-        client_retention_rate: 93.5,
-        upsell_rate: 28.4
-      }
-    };
+  const loadBusinessData = async () => {
+    try {
+      // Fetch real business data from our API
+      const response = await fetch('/api/business-admin/metrics');
+      const data = await response.json();
+      
+      if (data.success) {
+        setMetrics(data.metrics);
+        
+        // Convert real leads to the expected format
+        const formattedLeads: Lead[] = (data.leads || []).map((lead: any) => ({
+          id: lead.id,
+          first_name: lead.first_name || '',
+          last_name: lead.last_name || '',
+          company_name: lead.company_name || '',
+          email: lead.email || '',
+          phone: lead.phone || '',
+          address_line1: lead.address || '',
+          city: lead.city || '',
+          state: lead.state || '',
+          zip_code: lead.zip_code || '',
+          source: lead.source || 'Unknown',
+          status: lead.status || 'new',
+          estimated_value: parseFloat(lead.estimated_value) || 0,
+          notes: lead.message || lead.notes || '',
+          assigned_to: lead.assigned_to || 'Unassigned',
+          contacted_date: lead.contacted_date,
+          qualified_date: lead.qualified_date,
+          converted_date: lead.converted_date,
+          converted_customer_id: lead.converted_customer_id,
+          created_at: lead.created_at,
+          updated_at: lead.updated_at || lead.created_at
+        }));
 
-    const mockLeads: Lead[] = [
-      {
-        id: '1',
-        first_name: 'Robert',
-        last_name: 'Chen',
-        company_name: 'Northwest Industrial Complex',
-        email: 'r.chen@nwindustrial.com',
-        phone: '(253) 555-0198',
-        address_line1: '4500 Industrial Park Dr',
-        city: 'Tacoma',
-        state: 'WA',
-        zip_code: '98409',
-        source: 'Google Ads - Backflow Testing',
-        status: 'qualified',
-        estimated_value: 3200,
-        notes: 'Large industrial facility with 8 backflow devices. Annual contract potential.',
-        assigned_to: 'Fisher Admin',
-        contacted_date: '2024-01-22T14:30:00Z',
-        qualified_date: '2024-01-23T10:15:00Z',
-        created_at: '2024-01-22T14:30:00Z',
-        updated_at: '2024-01-23T10:15:00Z'
-      },
-      {
-        id: '2',
-        first_name: 'Maria',
-        last_name: 'Gonzalez',
-        company_name: 'Pierce County Restaurant Group',
-        email: 'maria@pcrestaurants.com',
-        phone: '(253) 555-0287',
-        address_line1: '1200 South Hill Mall',
-        city: 'Puyallup',
-        state: 'WA',
-        zip_code: '98374',
-        source: 'Referral - Existing Customer',
-        status: 'new',
-        estimated_value: 2400,
-        notes: 'Restaurant group expanding to 6 new locations. Need comprehensive backflow testing program.',
-        assigned_to: 'Fisher Admin',
-        created_at: '2024-01-25T09:45:00Z',
-        updated_at: '2024-01-25T09:45:00Z'
-      },
-      {
-        id: '3',
-        first_name: 'David',
-        last_name: 'Johnson',
-        company_name: 'Johnson Medical Associates',
-        email: 'djohnson@jma-tacoma.com',
-        phone: '(253) 555-0354',
-        address_line1: '890 Medical Center Blvd',
-        city: 'Tacoma',
-        state: 'WA',
-        zip_code: '98405',
-        source: 'Cold Call Campaign',
-        status: 'contacted',
-        estimated_value: 1850,
-        notes: 'Medical practice with specific compliance requirements. Interested in quarterly testing.',
-        assigned_to: 'Fisher Admin',
-        contacted_date: '2024-01-24T11:20:00Z',
-        created_at: '2024-01-23T16:30:00Z',
-        updated_at: '2024-01-24T11:20:00Z'
+        setLeads(formattedLeads);
+        
+        // For SaaS clients, we'll use mock data until we have a real SaaS client table
+        const mockSaasClients: SaasClient[] = [
+          {
+            id: '1',
+            company_name: 'Fisher Backflows Platform',
+            contact_first_name: 'Internal',
+            contact_last_name: 'System',
+            contact_email: 'system@fisherbackflows.com',
+            contact_phone: '(253) 278-8692',
+            industry: 'Backflow Testing Management',
+            company_size: 'small',
+            subscription_plan: 'enterprise',
+            monthly_revenue: Math.round((data.metrics?.saas_clients?.mrr || 0) / Math.max(1, data.metrics?.saas_clients?.total || 1)),
+            account_status: 'active',
+            lead_source: 'Internal Development',
+            assigned_account_manager: 'Fisher Admin',
+            company_website: 'https://fisherbackflows.com',
+            address_line1: 'Tacoma',
+            city: 'Tacoma',
+            state: 'WA',
+            zip_code: '98402',
+            lead_score: 100,
+            last_contact_date: new Date().toISOString(),
+            notes: 'Internal platform for Fisher Backflows business management.',
+            tags: ['internal', 'platform'],
+            integration_status: 'active',
+            created_at: '2024-01-01T00:00:00Z',
+            updated_at: new Date().toISOString()
+          }
+        ];
+        
+        setSaasClients(mockSaasClients);
+        
+        console.log(`✅ Loaded real business data:`, {
+          dataSource: data.data_source,
+          totalLeads: formattedLeads.length,
+          totalRevenue: data.metrics?.revenue?.total_ytd,
+          rawCounts: data.metrics?.raw_counts
+        });
+        
+      } else {
+        throw new Error(data.error || 'Failed to fetch business data');
       }
-    ];
-
-    const mockSaasClients: SaasClient[] = [
-      {
-        id: '1',
-        company_name: 'Pacific Water Systems',
-        contact_first_name: 'Jennifer',
-        contact_last_name: 'Park',
-        contact_email: 'j.park@pacificwater.com',
-        contact_phone: '(206) 555-0134',
-        industry: 'Water Treatment & Testing',
-        company_size: 'large',
-        subscription_plan: 'enterprise',
-        monthly_revenue: 899,
-        subscription_start_date: '2024-01-10T00:00:00Z',
-        account_status: 'active',
-        lead_source: 'Industry Trade Show - Water Expo 2024',
-        assigned_account_manager: 'Fisher Admin',
-        company_website: 'https://pacificwater.com',
-        address_line1: '2100 Harbor View Dr',
-        city: 'Seattle',
-        state: 'WA',
-        zip_code: '98101',
-        lead_score: 95,
-        last_contact_date: '2024-01-26T15:45:00Z',
-        notes: 'Major water treatment company serving 500+ commercial clients. Great reference customer and expansion potential.',
-        tags: ['enterprise', 'reference-customer', 'high-value', 'expansion-ready'],
-        integration_status: 'active',
-        created_at: '2024-01-08T12:30:00Z',
-        updated_at: '2024-01-26T15:45:00Z'
-      },
-      {
-        id: '2',
-        company_name: 'Cascade Property Solutions',
-        contact_first_name: 'Michael',
-        contact_last_name: 'Rodriguez',
-        contact_email: 'mrodriguez@cascadeprop.com',
-        contact_phone: '(425) 555-0267',
-        industry: 'Property Management',
-        company_size: 'medium',
-        subscription_plan: 'professional',
-        monthly_revenue: 399,
-        subscription_start_date: '2024-01-15T00:00:00Z',
-        account_status: 'active',
-        lead_source: 'LinkedIn Outreach Campaign',
-        assigned_account_manager: 'Fisher Admin',
-        company_website: 'https://cascadeprop.com',
-        address_line1: '750 Corporate Center',
-        city: 'Bellevue',
-        state: 'WA',
-        zip_code: '98006',
-        lead_score: 82,
-        last_contact_date: '2024-01-25T13:20:00Z',
-        notes: 'Property management company with 150+ commercial properties. Strong potential for enterprise upgrade.',
-        tags: ['property-management', 'upsell-potential', 'stable'],
-        integration_status: 'active',
-        created_at: '2024-01-12T10:15:00Z',
-        updated_at: '2024-01-25T13:20:00Z'
-      },
-      {
-        id: '3',
-        company_name: 'Northwest Compliance Partners',
-        contact_first_name: 'Sarah',
-        contact_last_name: 'Williams',
-        contact_email: 'swilliams@nwcompliance.com',
-        contact_phone: '(360) 555-0398',
-        industry: 'Compliance & Consulting',
-        company_size: 'large',
-        subscription_plan: 'enterprise',
-        monthly_revenue: 699,
-        subscription_start_date: '2024-01-20T00:00:00Z',
-        account_status: 'trial',
-        lead_source: 'Partner Referral - ABC Consulting',
-        assigned_account_manager: 'Fisher Admin',
-        company_website: 'https://nwcompliance.com',
-        address_line1: '1400 Business Park Way',
-        city: 'Olympia',
-        state: 'WA',
-        zip_code: '98502',
-        lead_score: 88,
-        next_follow_up_date: '2024-02-05T14:00:00Z',
-        notes: 'Large consulting firm evaluating our platform for their 300+ client portfolio. Trial ends Feb 15 - high conversion probability.',
-        tags: ['enterprise-trial', 'high-probability', 'consulting-partner', 'large-portfolio'],
-        integration_status: 'configured',
-        created_at: '2024-01-18T14:45:00Z',
-        updated_at: '2024-01-26T11:30:00Z'
-      }
-    ];
-
-    setMetrics(mockMetrics);
-    setLeads(mockLeads);
-    setSaasClients(mockSaasClients);
+      
+    } catch (error) {
+      console.error('❌ Failed to load real business data, using fallback:', error);
+      
+      // Fallback to empty/minimal data
+      const fallbackMetrics: BusinessMetrics = {
+        backflow_leads: {
+          total: 0,
+          new: 0,
+          contacted: 0,
+          qualified: 0,
+          converted: 0,
+          lost: 0,
+          conversion_rate: 0,
+          average_value: 0,
+          pipeline_value: 0
+        },
+        saas_clients: {
+          total: 1,
+          prospects: 0,
+          trials: 0,
+          active: 1,
+          suspended: 0,
+          churned: 0,
+          mrr: 0,
+          arr: 0,
+          churn_rate: 0,
+          average_deal_size: 0
+        },
+        revenue: {
+          total_ytd: 0,
+          backflow_revenue: 0,
+          saas_revenue: 0,
+          monthly_growth: 0,
+          projected_annual: 0,
+          last_month: 0,
+          this_month: 0
+        },
+        business_health: {
+          customer_satisfaction: 4.5,
+          lead_response_time: 24,
+          client_retention_rate: 100,
+          upsell_rate: 0
+        }
+      };
+      
+      setMetrics(fallbackMetrics);
+      setLeads([]);
+      setSaasClients([]);
+    }
   };
 
   if (loading) {
