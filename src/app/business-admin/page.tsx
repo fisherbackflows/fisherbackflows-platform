@@ -790,8 +790,425 @@ export default function BusinessAdminPortal() {
           </>
         )}
 
-        {/* Additional tabs would follow the same pattern as the business intelligence page */}
-        {/* For brevity, I'm including the structure but the full implementation would include all tabs */}
+        {activeTab === 'backflow-leads' && (
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-4xl font-bold text-white">Backflow Leads Management</h2>
+              <p className="text-white/70 text-lg">Manage and track all backflow testing leads</p>
+            </div>
+            
+            {/* Leads Summary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card className="glass border-blue-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">New Leads</p>
+                      <p className="text-3xl font-bold text-white">{metrics?.backflow_leads.new || 0}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-blue-400">
+                      <UserPlus className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-yellow-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Contacted</p>
+                      <p className="text-3xl font-bold text-white">{metrics?.backflow_leads.contacted || 0}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-yellow-400">
+                      <Phone className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-green-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Qualified</p>
+                      <p className="text-3xl font-bold text-white">{metrics?.backflow_leads.qualified || 0}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-green-400">
+                      <CheckCircle className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-emerald-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Converted</p>
+                      <p className="text-3xl font-bold text-white">{metrics?.backflow_leads.converted || 0}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-emerald-400">
+                      <DollarSign className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            {/* Leads List */}
+            <Card className="glass border-blue-400/30">
+              <CardHeader>
+                <CardTitle className="text-white">All Leads</CardTitle>
+                <CardDescription className="text-white/70">
+                  {leads.length > 0 ? `${leads.length} total leads` : 'No leads found - generate some test leads to see data here'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {leads.length === 0 ? (
+                  <div className="text-center py-8 text-white/60">
+                    <UserPlus className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                    <p className="text-lg">No leads available</p>
+                    <p className="text-sm">Leads will appear here when they exist in the database</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {leads.slice(0, 10).map((lead) => (
+                      <div key={lead.id} className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10">
+                        <div className="flex items-center space-x-4">
+                          <div className={`w-3 h-3 rounded-full ${
+                            lead.status === 'new' ? 'bg-blue-400' :
+                            lead.status === 'contacted' ? 'bg-yellow-400' :
+                            lead.status === 'qualified' ? 'bg-green-400' :
+                            lead.status === 'converted' ? 'bg-emerald-400' :
+                            'bg-gray-400'
+                          }`}></div>
+                          <div>
+                            <p className="font-medium text-white">{lead.first_name} {lead.last_name}</p>
+                            <p className="text-sm text-white/60">{lead.email}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-white font-medium">${lead.estimated_value?.toLocaleString() || '0'}</p>
+                          <p className="text-sm text-white/60 capitalize">{lead.status}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+        
+        {activeTab === 'saas-clients' && (
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-4xl font-bold text-white">SaaS Clients Management</h2>
+              <p className="text-white/70 text-lg">Manage SaaS platform subscriptions and clients</p>
+            </div>
+            
+            {/* SaaS Metrics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card className="glass border-purple-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Total Clients</p>
+                      <p className="text-3xl font-bold text-white">{metrics?.saas_clients.total || 0}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-purple-400">
+                      <Building2 className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-emerald-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Monthly Recurring Revenue</p>
+                      <p className="text-3xl font-bold text-white">${(metrics?.saas_clients.mrr || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-emerald-400">
+                      <DollarSign className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-blue-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Active Subscriptions</p>
+                      <p className="text-3xl font-bold text-white">{metrics?.saas_clients.active || 0}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-blue-400">
+                      <CheckCircle className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-yellow-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Trial Users</p>
+                      <p className="text-3xl font-bold text-white">{metrics?.saas_clients.trials || 0}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-yellow-400">
+                      <Clock className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            {/* SaaS Clients List */}
+            <Card className="glass border-purple-400/30">
+              <CardHeader>
+                <CardTitle className="text-white">SaaS Client Directory</CardTitle>
+                <CardDescription className="text-white/70">
+                  {saasClients.length > 0 ? `${saasClients.length} SaaS clients` : 'No SaaS clients found'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {saasClients.length === 0 ? (
+                  <div className="text-center py-8 text-white/60">
+                    <Building2 className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                    <p className="text-lg">No SaaS clients available</p>
+                    <p className="text-sm">SaaS client subscriptions will appear here when added to the database</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {saasClients.map((client) => (
+                      <div key={client.id} className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10">
+                        <div className="flex items-center space-x-4">
+                          <div className={`w-3 h-3 rounded-full ${
+                            client.account_status === 'active' ? 'bg-emerald-400' :
+                            client.account_status === 'trial' ? 'bg-yellow-400' :
+                            'bg-gray-400'
+                          }`}></div>
+                          <div>
+                            <p className="font-medium text-white">{client.company_name}</p>
+                            <p className="text-sm text-white/60">{client.contact_first_name} {client.contact_last_name}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-white font-medium">${client.monthly_revenue}/mo</p>
+                          <p className="text-sm text-white/60 capitalize">{client.subscription_plan}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        )}
+        
+        {activeTab === 'revenue' && (
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-4xl font-bold text-white">Revenue Analytics</h2>
+              <p className="text-white/70 text-lg">Comprehensive financial performance analysis</p>
+            </div>
+            
+            {/* Revenue Metrics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card className="glass border-emerald-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Total YTD Revenue</p>
+                      <p className="text-3xl font-bold text-white">${(metrics?.revenue.total_ytd || 0).toLocaleString()}</p>
+                      <div className="flex items-center space-x-2">
+                        <Badge className="bg-emerald-500/20 text-emerald-300 border-0 text-xs">
+                          +{metrics?.revenue.monthly_growth || 0}% vs last month
+                        </Badge>
+                      </div>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-emerald-400">
+                      <DollarSign className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-blue-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Backflow Revenue</p>
+                      <p className="text-3xl font-bold text-white">${(metrics?.revenue.backflow_revenue || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-blue-400">
+                      <Activity className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-purple-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">SaaS Revenue</p>
+                      <p className="text-3xl font-bold text-white">${(metrics?.revenue.saas_revenue || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-purple-400">
+                      <Building2 className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-yellow-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">This Month</p>
+                      <p className="text-3xl font-bold text-white">${(metrics?.revenue.this_month || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-yellow-400">
+                      <CalendarIcon className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-orange-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Last Month</p>
+                      <p className="text-3xl font-bold text-white">${(metrics?.revenue.last_month || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-orange-400">
+                      <Clock className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-cyan-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Projected Annual</p>
+                      <p className="text-3xl font-bold text-white">${(metrics?.revenue.projected_annual || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-cyan-400">
+                      <TrendingUp className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        )}
+        
+        {activeTab === 'pipeline' && (
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <h2 className="text-4xl font-bold text-white">Sales Pipeline</h2>
+              <p className="text-white/70 text-lg">Track sales funnel and conversion metrics</p>
+            </div>
+            
+            {/* Pipeline Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <Card className="glass border-blue-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Pipeline Value</p>
+                      <p className="text-3xl font-bold text-white">${(metrics?.backflow_leads.pipeline_value || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-blue-400">
+                      <TrendingUp className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-emerald-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Conversion Rate</p>
+                      <p className="text-3xl font-bold text-white">{metrics?.backflow_leads.conversion_rate || 0}%</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-emerald-400">
+                      <Target className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-yellow-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Average Deal Size</p>
+                      <p className="text-3xl font-bold text-white">${(metrics?.backflow_leads.average_value || 0).toLocaleString()}</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-yellow-400">
+                      <DollarSign className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="glass border-purple-400/30">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <p className="text-white/70 text-sm font-medium">Response Time</p>
+                      <p className="text-3xl font-bold text-white">{metrics?.business_health.lead_response_time || 0}h</p>
+                    </div>
+                    <div className="p-3 rounded-2xl bg-black/40 text-purple-400">
+                      <Clock className="h-6 w-6" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            {/* Pipeline Visualization */}
+            <Card className="glass border-blue-400/30">
+              <CardHeader>
+                <CardTitle className="text-white">Sales Funnel</CardTitle>
+                <CardDescription className="text-white/70">Lead progression through the sales process</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {[
+                    { stage: 'New Leads', count: metrics?.backflow_leads.new || 0, color: 'bg-blue-500', width: '100%' },
+                    { stage: 'Contacted', count: metrics?.backflow_leads.contacted || 0, color: 'bg-yellow-500', width: '75%' },
+                    { stage: 'Qualified', count: metrics?.backflow_leads.qualified || 0, color: 'bg-green-500', width: '50%' },
+                    { stage: 'Converted', count: metrics?.backflow_leads.converted || 0, color: 'bg-emerald-500', width: '25%' }
+                  ].map((stage) => (
+                    <div key={stage.stage} className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-white/70 font-medium">{stage.stage}</span>
+                        <span className="text-white font-bold">{stage.count}</span>
+                      </div>
+                      <div className="w-full bg-white/10 rounded-full h-3">
+                        <div 
+                          className={`${stage.color} h-3 rounded-full transition-all duration-500`}
+                          style={{ width: stage.width }}
+                        ></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {activeTab === 'reports' && (
           <div className="space-y-6">
