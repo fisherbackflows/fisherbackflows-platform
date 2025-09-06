@@ -264,38 +264,8 @@ export default function BusinessAdminPortal() {
 
         setLeads(formattedLeads);
         
-        // For SaaS clients, we'll use mock data until we have a real SaaS client table
-        const mockSaasClients: SaasClient[] = [
-          {
-            id: '1',
-            company_name: 'Fisher Backflows Platform',
-            contact_first_name: 'Internal',
-            contact_last_name: 'System',
-            contact_email: 'system@fisherbackflows.com',
-            contact_phone: '(253) 278-8692',
-            industry: 'Backflow Testing Management',
-            company_size: 'small',
-            subscription_plan: 'enterprise',
-            monthly_revenue: Math.round((data.metrics?.saas_clients?.mrr || 0) / Math.max(1, data.metrics?.saas_clients?.total || 1)),
-            account_status: 'active',
-            lead_source: 'Internal Development',
-            assigned_account_manager: 'Fisher Admin',
-            company_website: 'https://fisherbackflows.com',
-            address_line1: 'Tacoma',
-            city: 'Tacoma',
-            state: 'WA',
-            zip_code: '98402',
-            lead_score: 100,
-            last_contact_date: new Date().toISOString(),
-            notes: 'Internal platform for Fisher Backflows business management.',
-            tags: ['internal', 'platform'],
-            integration_status: 'active',
-            created_at: '2024-01-01T00:00:00Z',
-            updated_at: new Date().toISOString()
-          }
-        ];
-        
-        setSaasClients(mockSaasClients);
+        // SaaS clients will be empty until we have real SaaS client data in the database
+        setSaasClients([]);
         
         console.log(`✅ Loaded real business data:`, {
           dataSource: data.data_source,
