@@ -229,6 +229,7 @@ export default function BusinessAdminPortal() {
   };
 
   const loadBusinessData = async () => {
+    setLoading(true);
     try {
       // Fetch real business data from our API
       const response = await fetch('/api/business-admin/metrics');
@@ -326,6 +327,8 @@ export default function BusinessAdminPortal() {
       setMetrics(fallbackMetrics);
       setLeads([]);
       setSaasClients([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -491,9 +494,9 @@ export default function BusinessAdminPortal() {
             </div>
             
             <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm" className="glass border-blue-400/50">
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Refresh Data
+              <Button variant="outline" size="sm" onClick={loadBusinessData} className="glass border-blue-400/50" disabled={loading}>
+                <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                {loading ? 'Refreshing...' : 'Refresh Data'}
               </Button>
               <div className="text-right">
                 <p className="font-medium text-white">{session.user.first_name} {session.user.last_name}</p>
