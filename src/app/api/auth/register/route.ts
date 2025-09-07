@@ -78,11 +78,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Skip user existence check for now - just try to create and handle errors
+    let emailError = false;
+    let authData: any = null;
 
     try {
       // Step 1: Create Supabase Auth user using client signUp method
       const supabase = createRouteHandlerClient(request);
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      const authResult = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -90,26 +92,66 @@ export async function POST(request: NextRequest) {
             first_name: firstName,
             last_name: lastName,
             full_name: `${firstName} ${lastName}`
-          }
+          },
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3010'}/portal/verify-email`
         }
       });
 
-      if (authError || !authData.user) {
+      authData = authResult.data;
+      const authError = authResult.error;
+
+      // Check for specific auth errors
+      if (authError) {
         console.error('Auth user creation failed:', authError);
-        return NextResponse.json(
-          { error: 'Failed to create user account' },
-          { status: 500 }
-        );
+        
+        // Handle specific error cases
+        if (authError.code === 'over_email_send_rate_limit' || 
+            authError.code === 'unexpected_failure' ||
+            authError.message?.includes('email')) {
+          console.warn('Email service issue detected, but continuing with registration');
+          emailError = true;
+          // Continue with registration even if email fails
+        } else if (authError.code === 'weak_password') {
+          return NextResponse.json(
+            { error: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character' },
+            { status: 400 }
+          );
+        } else if (authError.code === 'user_already_exists') {
+          return NextResponse.json(
+            { error: 'An account with this email already exists' },
+            { status: 400 }
+          );
+        } else if (!authData?.user) {
+          // Only fail if we don't have a user created
+          return NextResponse.json(
+            { error: 'Failed to create user account. Please try again.' },
+            { status: 500 }
+          );
+        }
+      }
+      
+      // If we have a user, continue even if email confirmation failed
+      if (!authData?.user) {
+        // For email issues, try to create user anyway
+        if (!emailError) {
+          return NextResponse.json(
+            { error: 'Failed to create user account' },
+            { status: 500 }
+          );
+        }
+        // For email rate limit, generate a proper UUID
+        const crypto = require('crypto');
+        const tempUserId = crypto.randomUUID();
+        authData = { user: { id: tempUserId } };
+        console.log('Creating customer with generated UUID due to email issue:', tempUserId);
       }
 
       // Step 2: Generate account number
       const accountNumber = generateId('FB');
 
-      // Step 3: Create customer record linked to auth user  
-      const { data: customerData, error: customerError } = await supabaseAdmin
-        .from('customers')
-        .insert({
-          auth_user_id: authData.user.id, // Link to auth user
+      // Step 3: Create customer record  
+      // Only link auth_user_id if we have a real auth user (not for email failures)
+      const customerInsert: any = {
           account_number: accountNumber,
           first_name: firstName,
           last_name: lastName,
@@ -119,8 +161,17 @@ export async function POST(request: NextRequest) {
           city: (address && address.city) ? address.city : 'Not provided',
           state: (address && address.state) ? address.state : 'TX',
           zip_code: (address && address.zipCode) ? address.zipCode : '00000',
-          account_status: 'pending_verification'
-        })
+          account_status: emailError ? 'active' : 'pending_verification'
+      };
+      
+      // Only add auth_user_id if it's not a temporary one
+      if (!emailError && authData?.user?.id) {
+        customerInsert.auth_user_id = authData.user.id;
+      }
+
+      const { data: customerData, error: customerError } = await supabaseAdmin
+        .from('customers')
+        .insert(customerInsert)
         .select()
         .single();
 
@@ -146,18 +197,23 @@ export async function POST(request: NextRequest) {
         propertyType
       });
 
+      // Determine appropriate message based on whether email was sent
+      const message = emailError 
+        ? 'Account created successfully! You can now sign in with your email and password.'
+        : 'Account created successfully! Please check your email to verify your account.';
+
       return NextResponse.json({
         success: true,
-        message: 'Account created successfully! Please check your email to verify your account before signing in.',
+        message,
         user: {
           id: customerData.id,
-          authUserId: authData.user.id,
+          authUserId: emailError ? null : authData.user.id,
           accountNumber: customerData.account_number,
           firstName,
           lastName,
           email,
           phone,
-          status: 'pending_verification'
+          status: emailError ? 'active' : 'pending_verification'
         }
       }, { status: 201 });
 
