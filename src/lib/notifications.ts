@@ -97,7 +97,10 @@ export class NotificationManager {
 
       if (!subscription) {
         // Create new subscription
-        const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_KEY || 'BEl62iUYgUivxIkv69yViEuiBIa40HI6YUTpZrLZjkRgF9n7X7wgqz6rS1WdAPHBSqLZswRk6Q4_dNa_gU7WGwE'
+        const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_KEY
+        if (!vapidPublicKey) {
+          throw new Error('Missing NEXT_PUBLIC_VAPID_KEY for push notifications')
+        }
         
         subscription = await this.swRegistration.pushManager.subscribe({
           userVisibleOnly: true,

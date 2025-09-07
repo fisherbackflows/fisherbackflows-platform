@@ -127,7 +127,7 @@ export async function GET(request: NextRequest) {
       ? (activeCustomers / safeCustomers.length) * 100 
       : 95;
 
-    // Build comprehensive metrics response (with sample data if database is empty)
+    // Build comprehensive metrics response (with sensible fallbacks if no data)
     const hasRealLeads = totalLeads > 0;
     const businessMetrics = {
       backflow_leads: {
@@ -181,8 +181,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       metrics: businessMetrics,
-      leads: safeLeads.slice(0, 10), // Return top 10 leads
-      customers: safeCustomers.slice(0, 10), // Return top 10 customers
+      leads: safeLeads.slice(0, 10),
+      customers: safeCustomers.slice(0, 10),
       data_source: 'real_database',
       last_updated: new Date().toISOString()
     });

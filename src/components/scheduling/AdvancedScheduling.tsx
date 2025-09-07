@@ -437,8 +437,9 @@ export function AdvancedScheduling({
               </div>
             )}
           </div>
-        ) : null}
+        )}
       </div>
+      
     </div>
   );
 }

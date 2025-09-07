@@ -26,7 +26,6 @@ export default function Logo({
       draggable={false}
       className={`max-w-full h-auto w-auto ${className}`}
       style={{
-        WebkitUserDrag: "none",
         userSelect: "none",
         filter: "brightness(1.1) contrast(1.05)"
       }}

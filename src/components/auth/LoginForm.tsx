@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 interface LoginFormProps {
-  onSuccess?: (user: any) => void;
+  onSuccess?: (user: unknown) => void;
   onError?: (error: string) => void;
   redirectTo?: string;
 }

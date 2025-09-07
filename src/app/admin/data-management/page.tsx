@@ -9,15 +9,19 @@ export const metadata: Metadata = {
 };
 
 export default function DataManagementPage() {
-  return <DataExportManager />
+  return (
+    <>
       {/* Navigation Bar */}
       <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <Link href="/admin/dashboard">
-            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
+            <Button variant="ghost" className="text-blue-300 hover:text-white">
               ← Back to Dashboard
             </Button>
           </Link>
         </div>
-      </div>;
+      </div>
+      <DataExportManager />
+    </>
+  );
 }

@@ -3,11 +3,18 @@ import { cookies } from 'next/headers';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 import { adminBypassSchema, validateInput } from '@/lib/input-validation';
 
-// SECURITY: Admin bypass code - cryptographically secure
-const ADMIN_BYPASS_CODE = process.env.ADMIN_BYPASS_CODE || '18e6443e086999819ade470550ab0257ddc97378812e5b4cd1ee249988e29f2b';
+// SECURITY: Admin bypass code must be provided via environment; no default
+const ADMIN_BYPASS_CODE = process.env.ADMIN_BYPASS_CODE;
 
 export async function POST(request: NextRequest) {
   try {
+    // Block if not configured
+    if (!ADMIN_BYPASS_CODE) {
+      return NextResponse.json(
+        { error: 'Admin bypass not configured' },
+        { status: 503 }
+      );
+    }
     // SECURITY: Rate limiting for admin bypass attempts
     const clientId = getClientIdentifier(request);
     const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.ADMIN_BYPASS);

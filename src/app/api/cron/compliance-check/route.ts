@@ -28,7 +28,7 @@ interface ComplianceAlert {
 }
 
 // Simulate cron job storage (in production, use database)
-let cronJobs: CronJob[] = [
+const cronJobs: CronJob[] = [
   {
     id: 'compliance_monitor_hourly',
     name: 'Hourly Compliance Check',

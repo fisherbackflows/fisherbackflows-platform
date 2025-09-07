@@ -45,7 +45,13 @@ class SecurityManager {
       requireMFA: process.env.NODE_ENV === 'production',
       passwordMinLength: 12,
       passwordRequireSpecial: true,
-      encryptionKey: process.env.ENCRYPTION_KEY || 'default-key-change-in-production',
+      encryptionKey: (() => {
+        const key = process.env.ENCRYPTION_KEY
+        if (!key) {
+          throw new Error('Missing ENCRYPTION_KEY. Set a strong key in environment.');
+        }
+        return key
+      })(),
       allowedDomains: ['fisherbackflows.com', 'localhost'],
       rateLimitRequests: 100,
       rateLimitWindow: 60 // 1 minute

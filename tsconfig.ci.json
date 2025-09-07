@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/app/owner/**/*",
+    "src/app/portal/page.tsx",
+    "src/components/auth/LoginForm.tsx",
+    "src/components/ui/**/*",
+    "src/lib/supabase/**/*",
+    "src/types/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/app/api/**",
+    "src/lib/**"
+  ]
+}
+

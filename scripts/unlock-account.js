@@ -10,7 +10,11 @@ const http = require('http');
 
 // Configuration
 const API_BASE = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3010';
-const ADMIN_KEY = process.env.ADMIN_BYPASS_KEY || 'FisherAdmin2025';
+const ADMIN_KEY = process.env.ADMIN_BYPASS_KEY;
+if (!ADMIN_KEY) {
+  console.error('ADMIN_BYPASS_KEY is required to unlock accounts');
+  process.exit(1);
+}
 
 // Get email from command line
 const email = process.argv[2];

@@ -5,7 +5,7 @@ import { cn, componentVariants, animations } from '@/lib/design-system';
 
 interface UnifiedInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   variant?: 'default' | 'error' | 'success';
-  size?: 'sm' | 'md' | 'lg';
+  uiSize?: 'sm' | 'md' | 'lg';
   label?: string;
   error?: string;
   success?: string;
@@ -21,7 +21,7 @@ const sizeClasses = {
 
 export default function UnifiedInput({
   variant = 'default',
-  size = 'md',
+  uiSize = 'md',
   label,
   error,
   success,
@@ -31,7 +31,7 @@ export default function UnifiedInput({
   ...props
 }: UnifiedInputProps) {
   const variantClass = componentVariants.input[variant];
-  const sizeClass = sizeClasses[size];
+  const sizeClass = sizeClasses[uiSize];
   const transitionClass = animations.transition.fast;
   
   const inputClasses = cn(
@@ -45,7 +45,7 @@ export default function UnifiedInput({
     className
   );
 
-  const iconSize = size === 'sm' ? 'h-4 w-4' : size === 'md' ? 'h-5 w-5' : 'h-6 w-6';
+  const iconSize = uiSize === 'sm' ? 'h-4 w-4' : uiSize === 'md' ? 'h-5 w-5' : 'h-6 w-6';
 
   return (
     <div className="w-full">
