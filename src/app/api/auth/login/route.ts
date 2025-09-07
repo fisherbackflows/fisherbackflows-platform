@@ -56,10 +56,74 @@ export async function POST(request: NextRequest) {
       .from('customers')
       .select('*')
       .eq('auth_user_id', authData.user.id)
-      .single();
+      .maybeSingle();
 
-    if (customerError || !customerData) {
+    if (customerError) {
       console.error('Customer lookup failed:', customerError);
+      console.error('Auth user ID:', authData.user.id);
+      
+      // If it's a PGRST116 error (multiple rows), try to handle it gracefully
+      if (customerError.code === 'PGRST116') {
+        console.error('Multiple customer records found for auth_user_id:', authData.user.id);
+        // Try to get all records and use the most recent one
+        const { data: allCustomers, error: allCustomersError } = await supabaseAdmin
+          .from('customers')
+          .select('*')
+          .eq('auth_user_id', authData.user.id)
+          .order('created_at', { ascending: false })
+          .limit(1);
+        
+        if (allCustomersError || !allCustomers || allCustomers.length === 0) {
+          console.error('Fallback customer lookup failed:', allCustomersError);
+          return NextResponse.json({ 
+            error: 'Customer account lookup failed. Please contact support.' 
+          }, { status: 500 });
+        }
+        
+        // Use the most recent customer record
+        const fallbackCustomer = allCustomers[0];
+        console.log('Using fallback customer record:', fallbackCustomer.id);
+        
+        // Continue with the fallback customer
+        if (fallbackCustomer.account_status !== 'active') {
+          return NextResponse.json({ 
+            error: 'Account not active. Please contact support if you believe this is an error.' 
+          }, { status: 403 });
+        }
+        
+        // Return successful login response with fallback customer
+        return NextResponse.json({
+          success: true,
+          message: 'Login successful',
+          user: {
+            id: fallbackCustomer.id,
+            authUserId: authData.user.id,
+            email: fallbackCustomer.email,
+            name: `${fallbackCustomer.first_name} ${fallbackCustomer.last_name}`,
+            firstName: fallbackCustomer.first_name,
+            lastName: fallbackCustomer.last_name,
+            accountNumber: fallbackCustomer.account_number,
+            phone: fallbackCustomer.phone,
+            role: 'customer',
+            status: fallbackCustomer.account_status
+          },
+          session: {
+            access_token: authData.session?.access_token,
+            refresh_token: authData.session?.refresh_token,
+            expires_at: authData.session?.expires_at,
+            expires_in: authData.session?.expires_in
+          },
+          redirect: '/portal'
+        });
+      }
+      
+      return NextResponse.json({ 
+        error: 'Customer account not found. Please contact support.' 
+      }, { status: 404 });
+    }
+
+    if (!customerData) {
+      console.error('No customer data found for auth_user_id:', authData.user.id);
       return NextResponse.json({ 
         error: 'Customer account not found. Please contact support.' 
       }, { status: 404 });
