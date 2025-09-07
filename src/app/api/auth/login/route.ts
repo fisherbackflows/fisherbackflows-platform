@@ -6,9 +6,19 @@ import { supabaseAdmin } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
-    // Environment & service role check
-    console.log('[auth/login] service key present?', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
-    console.log('[auth/login] supabase url present?', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
+    // EMERGENCY Environment check
+    console.log('[EMERGENCY LOGIN] service key present?', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+    console.log('[EMERGENCY LOGIN] supabase url present?', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
+    
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return NextResponse.json({
+        error: 'Server configuration error - missing environment variables',
+        debug: {
+          url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+          serviceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY
+        }
+      }, { status: 500 });
+    }
     
     const body = await request.json();
     const { email, password, identifier, type } = body;
