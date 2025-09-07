@@ -3,6 +3,7 @@
 // Updated: Production deployment trigger - All 79 leads and export functionality working
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { 
   Users, 
   TrendingUp, 
@@ -960,11 +961,21 @@ export default function BusinessAdminPortal() {
             
             {/* Leads List */}
             <Card className="glass border-blue-400/30">
-              <CardHeader>
-                <CardTitle className="text-white">All Leads</CardTitle>
-                <CardDescription className="text-white/70">
-                  {leads.length > 0 ? `${leads.length} total leads` : 'No leads found - generate some test leads to see data here'}
-                </CardDescription>
+              <CardHeader className="flex flex-row items-center justify-between">
+                <div>
+                  <CardTitle className="text-white">Recent Leads</CardTitle>
+                  <CardDescription className="text-white/70">
+                    {leads.length > 0 ? `Showing 10 of ${leads.length} total leads` : 'No leads found - generate some test leads to see data here'}
+                  </CardDescription>
+                </div>
+                {leads.length > 0 && (
+                  <Link href="/business-admin/leads">
+                    <Button className="glass-btn-primary hover:glow-blue">
+                      <Users className="h-4 w-4 mr-2" />
+                      View All Leads ({leads.length})
+                    </Button>
+                  </Link>
+                )}
               </CardHeader>
               <CardContent>
                 {leads.length === 0 ? (
@@ -974,29 +985,45 @@ export default function BusinessAdminPortal() {
                     <p className="text-sm">Leads will appear here when they exist in the database</p>
                   </div>
                 ) : (
-                  <div className="space-y-4">
-                    {leads.slice(0, 10).map((lead) => (
-                      <div key={lead.id} className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10">
-                        <div className="flex items-center space-x-4">
-                          <div className={`w-3 h-3 rounded-full ${
-                            lead.status === 'new' ? 'bg-blue-400' :
-                            lead.status === 'contacted' ? 'bg-yellow-400' :
-                            lead.status === 'qualified' ? 'bg-green-400' :
-                            lead.status === 'converted' ? 'bg-emerald-400' :
-                            'bg-gray-400'
-                          }`}></div>
-                          <div>
-                            <p className="font-medium text-white">{lead.first_name} {lead.last_name}</p>
-                            <p className="text-sm text-white/60">{lead.email}</p>
+                  <>
+                    <div className="space-y-4">
+                      {leads.slice(0, 10).map((lead) => (
+                        <Link key={lead.id} href={`/business-admin/leads/${lead.id}`}>
+                          <div className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10 hover:border-blue-400/50 transition-colors cursor-pointer group">
+                            <div className="flex items-center space-x-4">
+                              <div className={`w-3 h-3 rounded-full ${
+                                lead.status === 'new' ? 'bg-blue-400' :
+                                lead.status === 'contacted' ? 'bg-yellow-400' :
+                                lead.status === 'qualified' ? 'bg-green-400' :
+                                lead.status === 'converted' ? 'bg-emerald-400' :
+                                'bg-gray-400'
+                              }`}></div>
+                              <div>
+                                <p className="font-medium text-white group-hover:text-blue-300 transition-colors">
+                                  {lead.first_name} {lead.last_name}
+                                </p>
+                                <p className="text-sm text-white/60">{lead.email}</p>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-white font-medium">${lead.estimated_value?.toLocaleString() || '0'}</p>
+                              <p className="text-sm text-white/60 capitalize">{lead.status}</p>
+                            </div>
                           </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-white font-medium">${lead.estimated_value?.toLocaleString() || '0'}</p>
-                          <p className="text-sm text-white/60 capitalize">{lead.status}</p>
-                        </div>
+                        </Link>
+                      ))}
+                    </div>
+                    {leads.length > 10 && (
+                      <div className="mt-4 text-center">
+                        <Link href="/business-admin/leads">
+                          <Button variant="outline" className="glass border-blue-400/50 text-white hover:bg-blue-500/20">
+                            View {leads.length - 10} More Leads
+                            <ArrowRight className="h-4 w-4 ml-2" />
+                          </Button>
+                        </Link>
                       </div>
-                    ))}
-                  </div>
+                    )}
+                  </>
                 )}
               </CardContent>
             </Card>
