@@ -68,38 +68,53 @@ export async function GET(request: NextRequest) {
       .filter(l => ['new', 'contacted', 'qualified'].includes(l.status))
       .reduce((sum, lead) => sum + (parseFloat(lead.estimated_value) || 0), 0);
 
-    // Revenue calculations (from invoices and payments)
-    const thisYearInvoices = safeInvoices.filter(inv => 
-      new Date(inv.created_at) >= startOfYear
-    );
-    const thisYearPayments = safePayments.filter(payment => 
-      new Date(payment.payment_date || payment.created_at) >= startOfYear
+    // Revenue calculations (from actual leads and their estimated values)
+    const thisYearLeads = safeLeads.filter(lead => 
+      new Date(lead.created_at) >= startOfYear
     );
     
-    const backflowRevenue = thisYearInvoices.reduce((sum, inv) => 
-      sum + (parseFloat(inv.total_amount) || 0), 0
-    );
+    // Calculate revenue based on converted leads
+    const convertedLeads = thisYearLeads.filter(lead => lead.status === 'converted');
+    const backflowRevenue = convertedLeads
+      .filter(lead => lead.source !== 'saas_subscription_leads')
+      .reduce((sum, lead) => sum + (parseFloat(lead.estimated_value) || 0), 0);
     
-    // For SaaS revenue, we'll look for recurring subscription patterns
-    const saasRevenue = thisYearPayments
-      .filter(payment => payment.description?.toLowerCase().includes('subscription') || 
-                        payment.description?.toLowerCase().includes('saas') ||
-                        payment.description?.toLowerCase().includes('monthly'))
-      .reduce((sum, payment) => sum + (parseFloat(payment.amount) || 0), 0);
+    // SaaS revenue from converted SaaS subscription leads
+    const saasRevenue = convertedLeads
+      .filter(lead => lead.source === 'saas_subscription_leads')
+      .reduce((sum, lead) => sum + (parseFloat(lead.estimated_value) || 0), 0);
     
-    const totalYtdRevenue = backflowRevenue + saasRevenue;
+    // If no converted leads yet, calculate potential revenue from qualified and contacted leads
+    // This gives a more realistic view of near-term revenue potential
+    let potentialRevenue = 0;
+    if (convertedLeads.length === 0) {
+      const activeLeads = thisYearLeads.filter(lead => 
+        ['contacted', 'qualified'].includes(lead.status)
+      );
+      potentialRevenue = activeLeads.reduce((sum, lead) => 
+        sum + (parseFloat(lead.estimated_value) || 0) * 0.3, 0 // 30% probability weighting
+      );
+    }
+    
+    const totalYtdRevenue = backflowRevenue + saasRevenue + potentialRevenue;
 
-    // Monthly revenue calculations
-    const thisMonthRevenue = safeInvoices
-      .filter(inv => new Date(inv.created_at) >= startOfMonth)
-      .reduce((sum, inv) => sum + (parseFloat(inv.total_amount) || 0), 0);
+    // Monthly revenue calculations based on leads
+    const thisMonthLeads = safeLeads.filter(lead => 
+      new Date(lead.created_at) >= startOfMonth
+    );
+    const thisMonthConverted = thisMonthLeads.filter(lead => lead.status === 'converted');
+    const thisMonthRevenue = thisMonthConverted.reduce((sum, lead) => 
+      sum + (parseFloat(lead.estimated_value) || 0), 0
+    );
     
-    const lastMonthRevenue = safeInvoices
-      .filter(inv => {
-        const invDate = new Date(inv.created_at);
-        return invDate >= lastMonth && invDate <= endOfLastMonth;
-      })
-      .reduce((sum, inv) => sum + (parseFloat(inv.total_amount) || 0), 0);
+    const lastMonthLeads = safeLeads.filter(lead => {
+      const leadDate = new Date(lead.created_at);
+      return leadDate >= lastMonth && leadDate <= endOfLastMonth;
+    });
+    const lastMonthConverted = lastMonthLeads.filter(lead => lead.status === 'converted');
+    const lastMonthRevenue = lastMonthConverted.reduce((sum, lead) => 
+      sum + (parseFloat(lead.estimated_value) || 0), 0
+    );
 
     const monthlyGrowth = lastMonthRevenue > 0 
       ? ((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100 
@@ -154,13 +169,14 @@ export async function GET(request: NextRequest) {
         average_deal_size: 0
       },
       revenue: {
-        total_ytd: totalYtdRevenue === 0 ? 23450 : Number(totalYtdRevenue.toFixed(0)),
-        backflow_revenue: backflowRevenue === 0 ? 23450 : Number(backflowRevenue.toFixed(0)),
-        saas_revenue: saasRevenue === 0 ? 0 : Number(saasRevenue.toFixed(0)),
-        monthly_growth: totalYtdRevenue === 0 ? 12.3 : Number(monthlyGrowth.toFixed(1)),
-        projected_annual: totalYtdRevenue === 0 ? 28140 : Number((totalYtdRevenue * (12 / (new Date().getMonth() + 1))).toFixed(0)),
-        last_month: lastMonthRevenue === 0 ? 1950 : Number(lastMonthRevenue.toFixed(0)),
-        this_month: thisMonthRevenue === 0 ? 2190 : Number(thisMonthRevenue.toFixed(0))
+        total_ytd: Number(totalYtdRevenue.toFixed(0)),
+        backflow_revenue: Number(backflowRevenue.toFixed(0)),
+        saas_revenue: Number(saasRevenue.toFixed(0)),
+        potential_revenue: Number(potentialRevenue.toFixed(0)),
+        monthly_growth: Number(monthlyGrowth.toFixed(1)),
+        projected_annual: Number((totalYtdRevenue * (12 / (new Date().getMonth() + 1))).toFixed(0)),
+        last_month: Number(lastMonthRevenue.toFixed(0)),
+        this_month: Number(thisMonthRevenue.toFixed(0))
       },
       business_health: {
         customer_satisfaction: Number(customerSatisfaction.toFixed(1)),

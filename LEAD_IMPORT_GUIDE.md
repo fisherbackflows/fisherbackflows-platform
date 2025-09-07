@@ -4,11 +4,29 @@ This guide documents the process for importing leads from CSV files into the Fis
 
 ## Recent Import Summary
 - **Date**: September 7, 2025
-- **File**: `new_decision_makers_puyallup.csv` 
-- **Total Processed**: 120 leads
-- **New Leads Added**: 49 leads
-- **Duplicates Skipped**: 71 leads
-- **Final Lead Count**: 273 total leads
+- **File**: `western_wa_backflow_testers.csv` 
+- **Lead Type**: SaaS Subscription Leads (Backflow Testers)
+- **Total Processed**: 346 leads
+- **New Leads Added**: 193 leads (second run)
+- **Duplicates Skipped**: 147 leads
+- **Estimated Value**: $2,500 per lead
+- **Total Potential Value**: $482,500
+- **Final Lead Count**: 1,371 total leads
+
+### Previous Imports
+1. **Western WA Backflow Customers**
+   - **Date**: September 7, 2025
+   - **File**: `western_wa_backflow_customers.csv` 
+   - **Total Processed**: 664 leads
+   - **New Leads Added**: 553 leads
+   - **Duplicates Skipped**: 110 leads
+
+2. **Puyallup Decision Makers**
+   - **Date**: September 7, 2025
+   - **File**: `new_decision_makers_puyallup.csv` 
+   - **Total Processed**: 120 leads
+   - **New Leads Added**: 49 leads
+   - **Duplicates Skipped**: 71 leads
 
 ## CSV Format Requirements
 
@@ -43,6 +61,11 @@ Lori Morrison,General Manager & Designated Broker,Vista Property Management,"100
 - `updated_at` - Import timestamp
 
 ## Value Estimation Rules
+
+### SaaS Subscription Leads
+- **Certified Backflow Testers**: $2,500 (High-value SaaS platform candidates)
+
+### Service Leads  
 - **Managers & Brokers**: $1,500
 - **Coordinators & Accounting**: $750  
 - **General Contacts**: $500
