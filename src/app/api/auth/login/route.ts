@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
       if (customerError.code === 'PGRST116') {
         console.error('Multiple customer records found for auth_user_id:', authData.user.id);
         // Try to get all records and use the most recent one
-        const { data: allCustomers, error: allCustomersError } = await supabaseAdmin
+        const { data: allCustomers, error: allCustomersError } = await serviceClient
           .from('customers')
           .select('*')
           .eq('auth_user_id', authData.user.id)
@@ -142,10 +142,37 @@ export async function POST(request: NextRequest) {
     }
 
     if (!customerData) {
-      console.error('No customer data found for auth_user_id:', authData.user.id);
-      return NextResponse.json({ 
-        error: 'Customer account not found. Please contact support.' 
-      }, { status: 404 });
+      console.warn('No customer data found for auth_user_id:', authData.user.id, '— attempting self-heal creation');
+      // Attempt to create a minimal customer record linked to this auth user
+      const meta: any = authData.user.user_metadata || {};
+      const firstName = meta.first_name || meta.firstName || 'Customer';
+      const lastName = meta.last_name || meta.lastName || 'Account';
+      const { data: created, error: createErr } = await serviceClient
+        .from('customers')
+        .insert({
+          auth_user_id: authData.user.id,
+          account_number: `FB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+          first_name: firstName,
+          last_name: lastName,
+          email: authData.user.email,
+          phone: 'Not provided',
+          address_line1: 'Not provided',
+          city: 'Not provided',
+          state: 'TX',
+          zip_code: '00000',
+          account_status: 'active',
+        })
+        .select('*')
+        .single();
+
+      if (createErr || !created) {
+        console.error('Self-heal customer creation failed:', createErr);
+        return NextResponse.json({ 
+          error: 'Customer account not found. Please contact support.' 
+        }, { status: 404 });
+      }
+
+      customerData = created;
     }
 
     // Step 4: Check account status

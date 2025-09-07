@@ -20,6 +20,7 @@
     "test:coverage": "jest --coverage",
     "test:smoke": "jest tests/smoke --testTimeout=30000",
     "test:health": "node scripts/health-check.js",
+    "prod:auth:check": "node scripts/prod-auth-verify.js",
     "test:build": "npm run build && npm run test:unit",
     "db:setup:test": "node scripts/setup-test-db.js",
     "setup": "node scripts/verify-setup.js",

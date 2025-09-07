@@ -1,0 +1,55 @@
+name: CI Auto PR
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: ["completed"]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  pr-on-success:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # Optional: run codegen/formatters here if you want automated updates
+      # - name: Format
+      #   run: npm run format
+      #   working-directory: fisherbackflows-platform
+
+      - name: Detect changes
+        id: changes
+        run: |
+          if git status --porcelain | grep .; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(ci): auto updates after CI success"
+          branch: chore/ci-auto-updates
+          title: "chore(ci): auto updates after CI success"
+          body: "Automated changes generated after CI succeeded."
+          labels: "automerge"
+          signoff: false
+
+      - name: No changes
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "No changes to commit."
+

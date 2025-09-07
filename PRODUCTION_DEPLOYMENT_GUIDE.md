@@ -5,17 +5,15 @@
 ### 1. Email Configuration (Resend)
 
 #### Current Issue
-- **Code expects**: `noreply@mail.fisherbackflows.com`
-- **ENV has**: `onboarding@resend.dev` (development only)
-- **Your API Key**: `re_2mF6DsA4_PkGykgVtLgJ1hpYF1qYPf16t`
+- Code expects: `noreply@mail.fisherbackflows.com`
+- ENV may still be using a development sender like `onboarding@resend.dev`
+- Do NOT commit or paste API keys into this repo
 
 #### Required Actions
 
 1. **Update `.env.local` file:**
    ```bash
    RESEND_FROM_EMAIL=noreply@fisherbackflows.com
-   # OR use your preferred email like:
-   # RESEND_FROM_EMAIL=noreply@fisherbackflows.com
    ```
 
 2. **Verify Domain in Resend Dashboard:**
@@ -33,19 +31,19 @@
 
 ### 2. Environment Variables for Production
 
-Add these to your hosting platform (Vercel, Railway, etc.):
+Add these to your hosting platform (Vercel, Railway, etc.). Never commit secrets to the repo:
 
 ```bash
 # Supabase (Required)
-NEXT_PUBLIC_SUPABASE_URL=https://jvhbqfueutvfepsjmztx.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGJxZnVldXR2ZmVwc2ptenR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYyNzM0NzUsImV4cCI6MjA3MTg0OTQ3NX0.UuEuNrFU-JXWvoICUNCupz1MzLvWVrcIqRA-LwpI1Jo
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGJxZnVldXR2ZmVwc2ptenR4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjI3MzQ3NSwiZXhwIjoyMDcxODQ5NDc1fQ.UNDLGdqkRe26QyOzXltQ7y4KwcTCuuqxsgB-a1r3VrY
+NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_PROJECT_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_ROLE_KEY
 
 # App Configuration (Required)
 NEXT_PUBLIC_APP_URL=https://fisherbackflows.com
 
 # Resend Email (Required)
-RESEND_API_KEY=re_2mF6DsA4_PkGykgVtLgJ1hpYF1qYPf16t
+RESEND_API_KEY=YOUR_RESEND_API_KEY
 RESEND_FROM_EMAIL=noreply@fisherbackflows.com  # Update after domain verification
 
 # Stripe (Optional - Update with real keys when ready)
@@ -89,8 +87,29 @@ CREATE INDEX idx_customer_feedback_status ON customer_feedback(status);
 #### For Vercel:
 1. Push code to GitHub
 2. Import project in Vercel
-3. Add all environment variables above
-4. Deploy
+3. Add all environment variables above (Project Settings → Environment Variables)
+4. In Project Settings → General, ensure Node.js runtime for Next.js Route Handlers
+5. Clear build cache (Deployments → Redeploy → Clear cache & Redeploy)
+6. Deploy
+
+7. Optional: Auto production auth check
+   - In GitHub → Settings → Secrets and variables → Actions → Secrets: add `ADMIN_SEED_KEY` (same as Vercel Production)
+   - Optional: In GitHub → Settings → Secrets and variables → Actions → Variables: add `PROD_URL=https://fisherbackflows.com`
+   - Three ways to run checks:
+     - Manual: "Production Auth Check" (workflow_dispatch)
+     - Auto: "Production Auth Check (Auto)" (runs on push to main and daily)
+     - On Deploy: "Production Auth Check (On Deploy)" (runs automatically when a GitHub Deployment succeeds)
+   - Ensure Vercel → Git Integration → “GitHub Deployments” is enabled so GitHub receives deployment_status events with environment_url.
+
+8. Optional: Auto-merge CI automation PRs
+   - Actions → General:
+     - Allow all actions and reusable workflows
+     - Workflow permissions: Read and write permissions
+     - (Optional) Allow GitHub Actions to create and approve PRs
+   - Workflows:
+     - `ci-auto-pr.yml`: opens/updates PR `chore/ci-auto-updates` after CI success (if there are changes)
+     - `auto-merge.yml`: auto-merges PRs labeled `automerge` after checks pass
+   - To enable zero-click merges: turn on Auto-merge in repo settings and/or rely on the auto-merge workflow above.
 
 #### For Other Platforms:
 1. Build the project: `npm run build`
@@ -112,6 +131,12 @@ Test these features after deployment:
 - [ ] Customer Login
   - Should authenticate successfully
   - Should redirect to dashboard
+
+- [ ] Admin Seeded Test User (for quick E2E)
+  - Endpoint: `POST /api/auth/seed-test-user`
+  - Header: `x-admin-seed-key: <ADMIN_SEED_KEY>`
+  - Body (optional): `{ "email": "user@example.com", "password": "TestPassword123!" }`
+  - Response includes created/updated user, customer, and a session token
   
 - [ ] Appointment Booking
   - Should show available dates
@@ -134,8 +159,18 @@ Test these features after deployment:
 - **Check**: Service role key included?
 
 #### Issue: Login not working
-- **Check**: Password hashing working?
-- **Check**: Database has customers table?
+- Check: Customer row exists for the auth user (`customers.auth_user_id = auth.users.id`)
+- Check: Auth email is verified or admin-created with `email_confirm = true`
+- Check: Service role key present for server-side lookups
+
+#### Issue: "Invalid JSON in request body"
+- Ensure client sends `Content-Type: application/json`
+- Our API now also accepts `multipart/form-data` and `x-www-form-urlencoded` as fallback
+
+#### Issue: Vercel deploying stale code or caching API routes
+- Use Redeploy with “Clear cache & redeploy”
+- Verify the active deployment URL matches the commit you expect
+- Confirm no botched `.env.production` overrides (we ship it commented out)
 
 ### 7. Monitoring
 
@@ -177,3 +212,7 @@ After deployment, monitor:
 **Last Updated**: 2025-09-05
 **Tested On**: Local development (Termux/Android)
 **Ready For**: Desktop deployment setup
+#### Issue: Need a quick production test user
+- Set `ADMIN_SEED_KEY` in your `.env.local` and Vercel Production env
+- Call `POST /api/auth/seed-test-user` with header `x-admin-seed-key`
+- Use returned credentials to test login
