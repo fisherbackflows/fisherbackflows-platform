@@ -117,8 +117,8 @@ export class CustomerRegistrationService {
   ): Promise<{ userId: string; emailSent: boolean }> {
     
     if (!canSendEmail) {
-      // Email service unavailable - create user without email confirmation
-      const { data: authData, error } = await this.supabase.auth.admin.createUser({
+      // Email service unavailable - use service role client for admin operations
+      const { data: authData, error } = await supabaseAdmin.auth.admin.createUser({
         email: data.email,
         password: data.password,
         email_confirm: true, // Skip email confirmation
@@ -243,7 +243,7 @@ export class CustomerRegistrationService {
       
       // Clean up auth user if customer creation fails
       try {
-        await this.supabase.auth.admin.deleteUser(authResult.userId);
+        await supabaseAdmin.auth.admin.deleteUser(authResult.userId);
       } catch (cleanupError) {
         console.error('Failed to cleanup auth user:', cleanupError);
       }

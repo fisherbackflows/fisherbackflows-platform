@@ -1,0 +1,14 @@
+{
+  "firstName": "TestNew",
+  "lastName": "Architecture1757270031",
+  "email": "newarch1757270031@example.com",
+  "password": "NewArchitecture123!",
+  "phone": "555-123-7890",
+  "address": {
+    "street": "New Architecture St",
+    "city": "CleanCode",
+    "state": "WA",
+    "zipCode": "98100"
+  },
+  "propertyType": "residential"
+}

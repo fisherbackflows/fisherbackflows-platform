@@ -1,0 +1,14 @@
+{
+  "firstName": "ProperArch",
+  "lastName": "Test1757270209",
+  "email": "properarch1757270209@example.com", 
+  "password": "ProperArchitecture123!",
+  "phone": "555-123-4321",
+  "address": {
+    "street": "Clean Architecture Ave",
+    "city": "Production",
+    "state": "WA", 
+    "zipCode": "98001"
+  },
+  "propertyType": "residential"
+}
