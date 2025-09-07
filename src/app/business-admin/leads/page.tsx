@@ -248,17 +248,17 @@ export default function LeadsManagementPage() {
       setLoading(true);
       setError(null);
       
-      console.log('🔄 Loading leads...');
-      const response = await fetch('/api/business-admin/leads');
-      console.log('📡 Response status:', response.status);
+      const response = await fetch('/api/business-admin/leads', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       
       if (!response.ok) {
         throw new Error(`Failed to load leads: ${response.status} ${response.statusText}`);
       }
       
       const data = await response.json();
-      console.log('📊 API Data received:', { success: data.success, leadCount: data.leads?.length || 0 });
-      
       if (!data.success || !data.leads) {
         throw new Error('Invalid response format');
       }
@@ -287,10 +287,9 @@ export default function LeadsManagementPage() {
         updated_at: lead.updated_at || new Date().toISOString()
       }));
       
-      console.log('✅ Formatted leads:', formattedLeads.length);
       setLeads(formattedLeads);
     } catch (error) {
-      console.error('❌ Failed to load leads:', error);
+      console.error('Failed to load leads:', error);
       setError(error instanceof Error ? error.message : 'Failed to load leads');
       setLeads([]);
     } finally {
