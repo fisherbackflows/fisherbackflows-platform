@@ -22,7 +22,8 @@ import {
   PlusCircle,
   Eye,
   Edit,
-  Send
+  Send,
+  Shield
 } from 'lucide-react';
 import Link from 'next/link';
 
