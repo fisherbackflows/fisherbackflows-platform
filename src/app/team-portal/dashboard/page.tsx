@@ -174,6 +174,12 @@ export default function TeamPortalDashboard() {
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
+                <Link href="/admin/dashboard">
+                  <Button className="glass-btn-primary hover:glow-blue bg-purple-500/20 border border-purple-400 text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
+                    <Shield className="h-5 w-5 mr-2" />
+                    Admin Portal
+                  </Button>
+                </Link>
                 <Link href="/team-portal/customers/new">
                   <Button className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
                     <PlusCircle className="h-5 w-5 mr-2" />
@@ -181,7 +187,7 @@ export default function TeamPortalDashboard() {
                   </Button>
                 </Link>
                 <Link href="/team-portal/schedule/new">
-                  <Button className="glass-btn-primary hover:glow-blue bg-emerald-500/20 border border-emerald-400 glow-blue-sm0/30 border-emerald-400 text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
+                  <Button className="glass-btn-primary hover:glow-blue bg-emerald-500/20 border border-emerald-400 text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
                     <Calendar className="h-5 w-5 mr-2" />
                     Schedule Test
                   </Button>
