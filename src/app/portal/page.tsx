@@ -3,12 +3,10 @@
 import Link from 'next/link';
 import LoginForm from '@/components/auth/LoginForm';
 import Logo from '@/components/ui/Logo';
-import { UnifiedPageLayout, UnifiedCard, THEME } from '@/components/ui/UnifiedTheme';
 import { Button } from '@/components/ui/button';
 import { 
   Shield,
   CheckCircle,
-  Clock,
   CreditCard,
   Calendar,
   FileText
