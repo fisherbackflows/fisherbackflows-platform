@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient();
+    const supabase = createRouteHandlerClient(request);
     const { data: activities, error } = await supabase
       .from('lead_activity')
       .select('*')
@@ -48,7 +48,7 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient();
+    const supabase = createRouteHandlerClient(request);
     const body = await request.json();
     
     const { data: activity, error } = await supabase

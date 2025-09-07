@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@/lib/supabase';
 
 export async function GET(request: NextRequest) {
+  console.log('🚀 Leads API - GET request received');
+  
   try {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '100');
@@ -9,10 +11,25 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status');
     const source = searchParams.get('source');
 
-    const supabase = createRouteHandlerClient();
+    console.log('📊 Query params:', { limit, offset, status, source });
+
+    // Check environment variables
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    console.log('🔑 Environment check:', {
+      hasUrl: !!supabaseUrl,
+      hasAnonKey: !!supabaseAnonKey,
+      urlFirst20: supabaseUrl?.substring(0, 20) + '...',
+      keyFirst20: supabaseAnonKey?.substring(0, 20) + '...'
+    });
+
+    const supabase = createRouteHandlerClient(request);
+    console.log('✅ Supabase client created successfully');
+
     let query = supabase
       .from('leads')
-      .select('*')
+      .select('*', { count: 'exact' })
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
@@ -24,27 +41,56 @@ export async function GET(request: NextRequest) {
       query = query.eq('source', source);
     }
 
+    console.log('🔍 Executing Supabase query...');
     const { data: leads, error, count } = await query;
 
     if (error) {
-      console.error('Error fetching leads:', error);
+      console.error('❌ Supabase error:', {
+        code: error.code,
+        message: error.message,
+        details: error.details,
+        hint: error.hint
+      });
       return NextResponse.json(
-        { success: false, error: 'Failed to fetch leads' },
+        { 
+          success: false, 
+          error: 'Failed to fetch leads',
+          debug: {
+            supabaseError: error.message,
+            code: error.code
+          }
+        },
         { status: 500 }
       );
     }
+
+    console.log('✅ Query successful:', { 
+      leadsCount: leads?.length || 0, 
+      totalCount: count 
+    });
 
     return NextResponse.json({
       success: true,
       leads: leads || [],
       total: count,
-      data_source: 'database'
+      data_source: 'database',
+      debug: {
+        timestamp: new Date().toISOString(),
+        params: { limit, offset, status, source }
+      }
     });
 
   } catch (error) {
-    console.error('API error:', error);
+    console.error('❌ API error:', error);
     return NextResponse.json(
-      { success: false, error: 'Internal server error' },
+      { 
+        success: false, 
+        error: 'Internal server error',
+        debug: {
+          message: error instanceof Error ? error.message : 'Unknown error',
+          stack: error instanceof Error ? error.stack?.substring(0, 500) : undefined
+        }
+      },
       { status: 500 }
     );
   }
@@ -54,7 +100,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     
-    const supabase = createRouteHandlerClient();
+    const supabase = createRouteHandlerClient(request);
     const { data: lead, error } = await supabase
       .from('leads')
       .insert([{

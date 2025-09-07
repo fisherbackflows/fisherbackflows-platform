@@ -6,7 +6,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient();
+    const supabase = createRouteHandlerClient(request);
     const { data: lead, error } = await supabase
       .from('leads')
       .select('*')
@@ -46,7 +46,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient();
+    const supabase = createRouteHandlerClient(request);
     const body = await request.json();
     
     // Build update object
@@ -96,7 +96,7 @@ export async function PUT(
 
     // Log activity
     try {
-      const activitySupabase = createRouteHandlerClient();
+      const activitySupabase = createRouteHandlerClient(request);
       await activitySupabase
         .from('lead_activity')
         .insert([{
@@ -130,7 +130,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const supabase = createRouteHandlerClient();
+    const supabase = createRouteHandlerClient(request);
     const { error } = await supabase
       .from('leads')
       .delete()
