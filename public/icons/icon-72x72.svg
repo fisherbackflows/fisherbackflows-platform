@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="72" height="72" rx="10.799999999999999" fill="#0ea5e9"/>
-  <circle cx="36" cy="36" r="18" fill="white" fill-opacity="0.9"/>
-  <text x="36" y="40" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10.799999999999999" font-weight="bold">FB</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none">
+  <defs>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#00000020"/>
+    </filter>
+  </defs>
+  
+  <!-- White background -->
+  <rect width="72" height="72" rx="11" fill="#FFFFFF"/>
+  
+  <!-- Main Diamond Element -->
+  <g transform="translate(14, 14)">
+    <path d="M22 4 L39.6 22 L22 39.6 L4 22 Z" 
+          fill="#000000" 
+          filter="url(#softShadow)"
+          stroke="#FFFFFF" 
+          stroke-width="1"/>
+    <path d="M22 11 L33 22 L22 33 L11 22 Z" 
+          fill="#FFFFFF" 
+          fill-opacity="0.9"/>
+    <circle cx="22" cy="22" r="2" fill="#000000"/>
+    <!-- Corner accents -->
+    <circle cx="22" cy="7" r="1" fill="#FFFFFF"/>
+    <circle cx="37" cy="22" r="1" fill="#FFFFFF"/>
+    <circle cx="22" cy="37" r="1" fill="#FFFFFF"/>
+    <circle cx="7" cy="22" r="1" fill="#FFFFFF"/>
+  </g>
+  
 </svg>

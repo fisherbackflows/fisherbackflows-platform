@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="192" height="192" rx="28.799999999999997" fill="#0ea5e9"/>
-  <circle cx="96" cy="96" r="48" fill="white" fill-opacity="0.9"/>
-  <text x="96" y="100" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="28.799999999999997" font-weight="bold">FB</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none">
+  <defs>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#00000020"/>
+    </filter>
+  </defs>
+  
+  <!-- White background -->
+  <rect width="192" height="192" rx="29" fill="#FFFFFF"/>
+  
+  <!-- Main Diamond Element -->
+  <g transform="translate(38, 38)">
+    <path d="M58 12 L104.4 58 L58 104.4 L12 58 Z" 
+          fill="#000000" 
+          filter="url(#softShadow)"
+          stroke="#FFFFFF" 
+          stroke-width="2"/>
+    <path d="M58 29 L87 58 L58 87 L29 58 Z" 
+          fill="#FFFFFF" 
+          fill-opacity="0.9"/>
+    <circle cx="58" cy="58" r="6" fill="#000000"/>
+    <!-- Corner accents -->
+    <circle cx="58" cy="17" r="3" fill="#FFFFFF"/>
+    <circle cx="99" cy="58" r="3" fill="#FFFFFF"/>
+    <circle cx="58" cy="99" r="3" fill="#FFFFFF"/>
+    <circle cx="17" cy="58" r="3" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Brand text -->
+  <text x="96" y="177" text-anchor="middle" fill="#000000" font-family="Arial, sans-serif" font-size="15" font-weight="bold">FISHER BACKFLOWS</text>
 </svg>
