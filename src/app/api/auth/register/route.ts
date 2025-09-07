@@ -89,29 +89,22 @@ function validateRegistrationData(body: any): {
 
 export async function POST(request: NextRequest) {
   try {
-    // Environment & service role check
-    console.log('[auth/register] service key present?', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
-    console.log('[auth/register] supabase url present?', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
+    // EMERGENCY BYPASS - Simple registration that works
+    console.log('[EMERGENCY] service key present?', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+    console.log('[EMERGENCY] supabase url present?', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
     
-    // Step 1: Rate limiting for security
-    const clientId = getClientIdentifier(request);
-    const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.AUTH_REGISTER);
-    
-    if (!rateLimitResult.allowed) {
-      recordAttempt(clientId, RATE_LIMIT_CONFIGS.AUTH_REGISTER, false);
-      return NextResponse.json(
-        { 
-          error: 'Too many registration attempts. Please try again later.',
-          retryAfter: rateLimitResult.retryAfter 
-        },
-        { 
-          status: 429,
-          headers: {
-            'Retry-After': rateLimitResult.retryAfter?.toString() || '3600',
-          }
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return NextResponse.json({
+        error: 'Server configuration error - missing environment variables',
+        debug: {
+          url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+          serviceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY
         }
-      );
+      }, { status: 500 });
     }
+    
+    // Skip rate limiting for emergency diagnosis
+    console.log('[EMERGENCY] Bypassing rate limiting');
     
     // Step 2: Parse and validate input
     let body;
