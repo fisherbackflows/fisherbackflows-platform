@@ -89,36 +89,48 @@ function validateRegistrationData(body: any): {
 
 export async function POST(request: NextRequest) {
   try {
-    // EMERGENCY BYPASS - Simple registration that works
+    // EMERGENCY BYPASS - Simple, robust registration path
     console.log('[EMERGENCY] service key present?', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
     console.log('[EMERGENCY] supabase url present?', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
-    
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      return NextResponse.json({
-        error: 'Server configuration error - missing environment variables',
-        debug: {
-          url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-          serviceKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY
-        }
-      }, { status: 500 });
-    }
-    
-    // Skip rate limiting for emergency diagnosis
-    console.log('[EMERGENCY] Bypassing rate limiting');
-    
-    // Step 2: Parse and validate input
-    let body;
+
+    // Step 1: Parse and validate input with flexible content-type handling
+    let body: any | undefined;
+    const contentType = request.headers.get('content-type') || '';
     try {
-      body = await request.json();
+      if (contentType.includes('application/json')) {
+        body = await request.json();
+      } else if (contentType.includes('application/x-www-form-urlencoded')) {
+        const form = await request.formData();
+        body = Object.fromEntries(form.entries());
+      } else if (contentType.includes('multipart/form-data')) {
+        const form = await request.formData();
+        body = Object.fromEntries(form.entries());
+        // Convert nested address fields if provided as flat keys
+        body.address = body.address || {
+          street: body.street,
+          city: body.city,
+          state: body.state,
+          zipCode: body.zipCode,
+        };
+      } else {
+        // Try JSON first, then formData as a fallback
+        try {
+          body = await request.json();
+        } catch {
+          const form = await request.formData();
+          body = Object.fromEntries(form.entries());
+        }
+      }
     } catch (error) {
       return NextResponse.json(
-        { error: 'Invalid JSON in request body' },
+        { error: 'Invalid request body. Expected JSON or form data.' },
         { status: 400 }
       );
     }
 
     const validation = validateRegistrationData(body);
     if (!validation.isValid) {
+      const clientId = getClientIdentifier(request);
       recordAttempt(clientId, RATE_LIMIT_CONFIGS.AUTH_REGISTER, false);
       return NextResponse.json(
         { 
@@ -129,11 +141,143 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Step 3: Process registration
-    const registrationService = new CustomerRegistrationService(request);
-    const result = await registrationService.register(validation.data!);
+    // Step 3: If env is healthy, use the full service; otherwise use a direct service-client path
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
+
+    let result;
+    const envOk = !!(supabaseUrl && serviceKey);
+    if (!envOk) {
+      return NextResponse.json({
+        error: 'Server configuration error - missing environment variables',
+        missing: {
+          NEXT_PUBLIC_SUPABASE_URL: !supabaseUrl,
+          SUPABASE_SERVICE_ROLE_KEY: !serviceKey,
+        }
+      }, { status: 500 });
+    }
+
+    // Prefer using the direct service client here to avoid failures when anon client is misconfigured
+    const { createClient } = await import('@supabase/supabase-js');
+    const serviceClient = createClient(supabaseUrl!, serviceKey!);
+
+    // Create auth user with fallback logic
+    let authUserId: string | null = null;
+    let emailSent = false;
+    let useAdminFallback = false;
+    
+    // First try anon client with email confirmation (if anon key exists)
+    if (Boolean(anonKey)) {
+      console.log('[REGISTRATION] Attempting email signup with anon client');
+      try {
+        const { createServerClient } = await import('@supabase/ssr');
+        const anonClient = createServerClient(supabaseUrl!, anonKey!, {
+          cookies: { getAll: () => [], setAll: () => {} as any },
+        });
+        const { data: authData, error: authError } = await anonClient.auth.signUp({
+          email: validation.data!.email,
+          password: validation.data!.password,
+          options: {
+            data: {
+              first_name: validation.data!.firstName,
+              last_name: validation.data!.lastName,
+              full_name: `${validation.data!.firstName} ${validation.data!.lastName}`,
+            },
+            emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3010'}/portal/verify-email`,
+          },
+        });
+        
+        if (authError) {
+          console.warn('[REGISTRATION] Anon signup failed, falling back to admin:', authError.message);
+          useAdminFallback = true;
+        } else if (authData.user) {
+          console.log('[REGISTRATION] Anon signup successful');
+          authUserId = authData.user.id;
+          emailSent = true;
+        } else {
+          console.warn('[REGISTRATION] No user returned from anon signup, falling back to admin');
+          useAdminFallback = true;
+        }
+      } catch (error) {
+        console.warn('[REGISTRATION] Anon signup threw error, falling back to admin:', error);
+        useAdminFallback = true;
+      }
+    } else {
+      console.log('[REGISTRATION] No anon key, using admin client directly');
+      useAdminFallback = true;
+    }
+    
+    // Fallback to admin user creation if anon signup failed
+    if (useAdminFallback) {
+      console.log('[REGISTRATION] Using admin createUser with email_confirm: true');
+      const { data: adminData, error: adminError } = await serviceClient.auth.admin.createUser({
+        email: validation.data!.email,
+        password: validation.data!.password,
+        email_confirm: true,
+        user_metadata: {
+          first_name: validation.data!.firstName,
+          last_name: validation.data!.lastName,
+          full_name: `${validation.data!.firstName} ${validation.data!.lastName}`,
+        },
+      });
+      if (adminError || !adminData.user) {
+        console.error('[REGISTRATION] Admin createUser failed:', adminError);
+        const message = adminError?.message?.includes('already registered')
+          ? 'An account with this email already exists'
+          : 'Failed to create user account';
+        return NextResponse.json({ error: message }, { status: 400 });
+      }
+      authUserId = adminData.user.id;
+      emailSent = false;
+    }
+
+    // Create customer record
+    const { data: customer, error: customerError } = await serviceClient
+      .from('customers')
+      .insert({
+        auth_user_id: authUserId,
+        account_number: `FB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+        first_name: validation.data!.firstName,
+        last_name: validation.data!.lastName,
+        email: validation.data!.email,
+        phone: validation.data!.phone,
+        address_line1: validation.data!.address?.street || 'Not provided',
+        city: validation.data!.address?.city || 'Not provided',
+        state: validation.data!.address?.state || 'TX',
+        zip_code: validation.data!.address?.zipCode || '00000',
+        account_status: emailSent ? 'pending_verification' : 'active',
+      })
+      .select('*')
+      .single();
+
+    if (customerError || !customer) {
+      console.error('Customer creation failed:', customerError);
+      // Attempt cleanup of auth user
+      try { await serviceClient.auth.admin.deleteUser(authUserId!); } catch {}
+      return NextResponse.json({ error: 'Failed to create customer record' }, { status: 500 });
+    }
+
+    result = {
+      success: true,
+      message: emailSent
+        ? 'Account created successfully! Please check your email to verify your account before signing in.'
+        : 'Account created successfully! You can now sign in with your email and password.',
+      user: {
+        id: customer.id,
+        authUserId: authUserId!,
+        accountNumber: customer.account_number,
+        firstName: validation.data!.firstName,
+        lastName: validation.data!.lastName,
+        email: validation.data!.email,
+        phone: validation.data!.phone,
+        status: emailSent ? 'pending_verification' : 'active',
+        emailSent,
+      },
+    } as const;
     
     // Step 4: Record successful attempt and return success
+    const clientId = getClientIdentifier(request);
     recordAttempt(clientId, RATE_LIMIT_CONFIGS.AUTH_REGISTER, true);
     
     // Log registration for audit (without sensitive data)
