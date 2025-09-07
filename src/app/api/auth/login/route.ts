@@ -1,8 +1,15 @@
+import 'server-only';
+export const runtime = 'nodejs'; // Force Node.js runtime for service role access
+
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 
 export async function POST(request: NextRequest) {
   try {
+    // Environment & service role check
+    console.log('[auth/login] service key present?', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+    console.log('[auth/login] supabase url present?', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
+    
     const body = await request.json();
     const { email, password, identifier, type } = body;
 

@@ -1,3 +1,6 @@
+import 'server-only';
+export const runtime = 'nodejs'; // Force Node.js runtime for service role access
+
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 import { 
@@ -86,6 +89,10 @@ function validateRegistrationData(body: any): {
 
 export async function POST(request: NextRequest) {
   try {
+    // Environment & service role check
+    console.log('[auth/register] service key present?', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+    console.log('[auth/register] supabase url present?', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
+    
     // Step 1: Rate limiting for security
     const clientId = getClientIdentifier(request);
     const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.AUTH_REGISTER);
