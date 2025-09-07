@@ -697,3 +697,8 @@ export default function BusinessIntelligencePage() {
     </div>
   );
 }
+
+// Missing closing braces for JSX structure
+}
+}
+}
