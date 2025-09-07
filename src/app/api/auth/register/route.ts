@@ -232,21 +232,23 @@ export async function POST(request: NextRequest) {
       emailSent = false;
     }
 
-    // Create customer record
+    // Create customer record (align with current DB schema: name/address/status)
+    const addressString = (() => {
+      const a = validation.data!.address || {}
+      const parts = [a.street, a.city, a.state, a.zipCode].filter(Boolean)
+      return parts.length ? parts.join(', ') : 'Not provided'
+    })();
+
     const { data: customer, error: customerError } = await serviceClient
       .from('customers')
       .insert({
         auth_user_id: authUserId,
         account_number: `FB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
-        first_name: validation.data!.firstName,
-        last_name: validation.data!.lastName,
+        name: `${validation.data!.firstName} ${validation.data!.lastName}`.trim(),
         email: validation.data!.email,
         phone: validation.data!.phone,
-        address_line1: validation.data!.address?.street || 'Not provided',
-        city: validation.data!.address?.city || 'Not provided',
-        state: validation.data!.address?.state || 'TX',
-        zip_code: validation.data!.address?.zipCode || '00000',
-        account_status: emailSent ? 'pending_verification' : 'active',
+        address: addressString,
+        status: 'Active',
       })
       .select('*')
       .single();

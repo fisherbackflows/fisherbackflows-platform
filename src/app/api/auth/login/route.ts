@@ -152,15 +152,11 @@ export async function POST(request: NextRequest) {
         .insert({
           auth_user_id: authData.user.id,
           account_number: `FB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
-          first_name: firstName,
-          last_name: lastName,
+          name: `${firstName} ${lastName}`,
           email: authData.user.email,
           phone: 'Not provided',
-          address_line1: 'Not provided',
-          city: 'Not provided',
-          state: 'TX',
-          zip_code: '00000',
-          account_status: 'active',
+          address: 'Not provided',
+          status: 'Active',
         })
         .select('*')
         .single();
@@ -190,13 +186,13 @@ export async function POST(request: NextRequest) {
         id: customerData.id,
         authUserId: authData.user.id,
         email: customerData.email,
-        name: `${customerData.first_name} ${customerData.last_name}`,
-        firstName: customerData.first_name,
-        lastName: customerData.last_name,
+        name: customerData.name || authData.user.email || 'Customer',
+        firstName: (customerData.name || '').split(' ')[0] || 'Customer',
+        lastName: (customerData.name || '').split(' ').slice(1).join(' ') || '',
         accountNumber: customerData.account_number,
         phone: customerData.phone,
         role: 'customer',
-        status: customerData.account_status
+        status: customerData.status || 'Active'
       },
       session: {
         access_token: authData.session?.access_token,
