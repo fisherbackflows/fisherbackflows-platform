@@ -42,16 +42,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
     }
     
-    // Verify we have admin client
-    if (!supabaseAdmin) {
-      return NextResponse.json(
-        { error: 'Server configuration error: Admin client not available' },
-        { status: 500 }
-      );
-    }
+    // EMERGENCY: Create service client directly instead of using imported one
+    const { createClient } = await import('@supabase/supabase-js');
+    const serviceClient = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
 
-    // Step 1: Authenticate with Supabase Auth
-    const { data: authData, error: authError } = await supabaseAdmin.auth.signInWithPassword({
+    console.log('[EMERGENCY LOGIN] Created service client directly');
+
+    // Step 1: Authenticate with service client (bypasses anon key issues)
+    const { data: authData, error: authError } = await serviceClient.auth.signInWithPassword({
       email,
       password,
     });
@@ -68,8 +69,9 @@ export async function POST(request: NextRequest) {
       }, { status: 403 });
     }
 
-    // Step 3: Get customer data using auth user ID
-    const { data: customerData, error: customerError } = await supabaseAdmin
+    // Step 3: Get customer data using service client (avoid anon key issues)
+    console.log('[EMERGENCY LOGIN] Looking up customer with auth_user_id:', authData.user.id);
+    const { data: customerData, error: customerError } = await serviceClient
       .from('customers')
       .select('*')
       .eq('auth_user_id', authData.user.id)
