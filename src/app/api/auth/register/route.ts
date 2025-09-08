@@ -173,7 +173,7 @@ export async function POST(request: NextRequest) {
       try {
         const { createServerClient } = await import('@supabase/ssr');
         const anonClient = createServerClient(supabaseUrl!, anonKey!, {
-          cookies: { getAll: () => [], setAll: () => {} as any },
+          cookies: { getAll: () => [], setAll: () => {} },
         });
         const { data: authData, error: authError } = await anonClient.auth.signUp({
           email: validation.data!.email,
