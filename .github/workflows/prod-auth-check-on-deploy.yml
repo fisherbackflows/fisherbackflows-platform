@@ -1,0 +1,56 @@
+name: Production Auth Check (On Deploy)
+
+  on:
+    deployment_status:
+      types: [success]
+
+  jobs:
+    auth-check:
+      if: github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production'
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Wait for deployment propagation
+        run: sleep 30
+
+      - name: Health Check
+        id: health
+        run: |
+          response=$(curl -s -w "HTTP:%{http_code}" https://fisherbackflows.com/api/auth/health)
+          http_code=$(echo "$response" | grep -o "HTTP:[0-9]*" | cut -d: -f2)
+
+          if [ "$http_code" = "200" ]; then
+            echo "✅ Health check passed"
+            echo "health=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Health check failed: $http_code"
+            echo "$response"
+            echo "health=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Test Login
+        id: login
+        run: |
+          response=$(curl -s -w "HTTP:%{http_code}" -X POST https://fisherbackflows.com/api/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"email": "test@example.com", "password": "testpass123"}')
+          http_code=$(echo "$response" | grep -o "HTTP:[0-9]*" | cut -d: -f2)
+
+          if [ "$http_code" = "200" ] && echo "$response" | grep -q '"success":true'; then
+            echo "✅ Login test passed"
+            echo "login=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Login test failed: $http_code"
+            echo "$response"
+            echo "login=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Create success badge
+        if: success()
+        run: |
+          echo "🎉 Production authentication system verified successfully!"
+          echo "- Health check: ✅ PASSED"
+          echo "- Login test: ✅ PASSED"
+          echo "- Timestamp: $(date -u)"
