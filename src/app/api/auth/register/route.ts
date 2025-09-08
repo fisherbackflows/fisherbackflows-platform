@@ -242,7 +242,6 @@ export async function POST(request: NextRequest) {
     const { data: customer, error: customerError } = await serviceClient
       .from('customers')
       .insert({
-        auth_user_id: authUserId,
         account_number: `FB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
         name: `${validation.data!.firstName} ${validation.data!.lastName}`.trim(),
         email: validation.data!.email,

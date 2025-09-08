@@ -69,12 +69,12 @@ export async function POST(request: NextRequest) {
       }, { status: 403 });
     }
 
-    // Step 3: Get customer data using service client (avoid anon key issues)
-    console.log('[EMERGENCY LOGIN] Looking up customer with auth_user_id:', authData.user.id);
+    // Step 3: Get customer data using service client by email lookup
+    console.log('[EMERGENCY LOGIN] Looking up customer by email:', authData.user.email);
     const { data: customerData, error: customerError } = await serviceClient
       .from('customers')
       .select('*')
-      .eq('auth_user_id', authData.user.id)
+      .eq('email', authData.user.email)
       .maybeSingle();
 
     if (customerError) {
@@ -83,12 +83,12 @@ export async function POST(request: NextRequest) {
       
       // If it's a PGRST116 error (multiple rows), try to handle it gracefully
       if (customerError.code === 'PGRST116') {
-        console.error('Multiple customer records found for auth_user_id:', authData.user.id);
+        console.error('Multiple customer records found for email:', authData.user.email);
         // Try to get all records and use the most recent one
         const { data: allCustomers, error: allCustomersError } = await serviceClient
           .from('customers')
           .select('*')
-          .eq('auth_user_id', authData.user.id)
+          .eq('email', authData.user.email)
           .order('created_at', { ascending: false })
           .limit(1);
         
@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (!customerData) {
-      console.warn('No customer data found for auth_user_id:', authData.user.id, '— attempting self-heal creation');
+      console.warn('No customer data found for email:', authData.user.email, '— attempting self-heal creation');
       // Attempt to create a minimal customer record linked to this auth user
       const meta: any = authData.user.user_metadata || {};
       const firstName = meta.first_name || meta.firstName || 'Customer';
@@ -150,7 +150,6 @@ export async function POST(request: NextRequest) {
       const { data: created, error: createErr } = await serviceClient
         .from('customers')
         .insert({
-          auth_user_id: authData.user.id,
           account_number: `FB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
           name: `${firstName} ${lastName}`,
           email: authData.user.email,
