@@ -246,7 +246,6 @@ export async function POST(request: NextRequest) {
         name: `${validation.data!.firstName} ${validation.data!.lastName}`.trim(),
         email: validation.data!.email,
         phone: validation.data!.phone,
-        address: addressString,
         status: 'Active',
       })
       .select('*')
