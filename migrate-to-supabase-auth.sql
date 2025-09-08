@@ -1,18 +1,23 @@
 -- Migration to integrate customers table with Supabase Auth
 -- This adds auth_user_id column and sets up proper relationships
 
--- Step 1: Add auth_user_id column to customers table
+-- Step 1: Add auth_user_id column to customers table (if not exists)
 ALTER TABLE customers 
-ADD COLUMN auth_user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE;
+ADD COLUMN IF NOT EXISTS auth_user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE;
 
--- Step 2: Create index for better performance
-CREATE INDEX idx_customers_auth_user_id ON customers(auth_user_id);
+-- Step 2: Create index for better performance (if not exists)
+CREATE INDEX IF NOT EXISTS idx_customers_auth_user_id ON customers(auth_user_id);
 
--- Step 3: Update RLS policies to use auth.uid()
+-- Step 3: Enable RLS on customers table
+ALTER TABLE customers ENABLE ROW LEVEL SECURITY;
+
+-- Step 4: Update RLS policies to use auth.uid()
 -- Drop existing policies first
 DROP POLICY IF EXISTS "Users can view their own customer data" ON customers;
 DROP POLICY IF EXISTS "Users can update their own customer data" ON customers;
+DROP POLICY IF EXISTS "Users can insert their own customer data" ON customers;
 DROP POLICY IF EXISTS "Allow service role full access" ON customers;
+DROP POLICY IF EXISTS "Service role full access" ON customers;
 
 -- Create new policies using auth.uid()
 CREATE POLICY "Users can view their own customer data"
@@ -30,7 +35,9 @@ CREATE POLICY "Users can insert their own customer data"
 -- Allow service role full access for admin operations
 CREATE POLICY "Service role full access"
   ON customers FOR ALL
-  USING (auth.role() = 'service_role');
+  TO service_role
+  USING (true)
+  WITH CHECK (true);
 
 -- Step 4: Create trigger to sync user email changes
 CREATE OR REPLACE FUNCTION sync_customer_email()
