@@ -244,10 +244,11 @@ export async function POST(request: NextRequest) {
       .insert({
         auth_user_id: authUserId,
         account_number: `FB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
-        name: `${validation.data!.firstName} ${validation.data!.lastName}`.trim(),
+        first_name: validation.data!.firstName,
+        last_name: validation.data!.lastName,
         email: validation.data!.email,
         phone: validation.data!.phone,
-        status: 'Active',
+        account_status: 'active',
       })
       .select('*')
       .single();
