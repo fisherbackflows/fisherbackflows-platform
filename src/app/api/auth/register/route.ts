@@ -242,6 +242,7 @@ export async function POST(request: NextRequest) {
     const { data: customer, error: customerError } = await serviceClient
       .from('customers')
       .insert({
+        auth_user_id: authUserId,
         account_number: `FB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
         name: `${validation.data!.firstName} ${validation.data!.lastName}`.trim(),
         email: validation.data!.email,
@@ -255,7 +256,9 @@ export async function POST(request: NextRequest) {
       console.error('Customer creation failed:', customerError);
       // Attempt cleanup of auth user
       try { await serviceClient.auth.admin.deleteUser(authUserId!); } catch {}
-      return NextResponse.json({ error: 'Failed to create customer record' }, { status: 500 });
+      const msg = (customerError as any)?.message || 'Failed to create customer record';
+      const code = (customerError as any)?.code || 'INSERT_FAILED';
+      return NextResponse.json({ error: msg, code }, { status: 500 });
     }
 
     result = {
