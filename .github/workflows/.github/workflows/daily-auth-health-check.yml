@@ -1,0 +1,93 @@
+name: Daily Authentication Health Check
+
+  on:
+    schedule:
+      # Run daily at 9 AM UTC (1 AM PST / 2 AM PDT)
+      - cron: '0 9 * * *'
+    workflow_dispatch:  # Allow manual triggers
+
+  jobs:
+    auth-health-check:
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Health Check
+        id: health
+        run: |
+          response=$(curl -s -w "HTTP:%{http_code}" https://fisherbackflows.com/api/auth/health)
+          http_code=$(echo "$response" | grep -o "HTTP:[0-9]*" | cut -d: -f2)
+
+          if [ "$http_code" = "200" ]; then
+            echo "✅ Health check passed"
+            echo "health=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Health check failed: $http_code"
+            echo "$response"
+            echo "health=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Test Demo Login
+        id: demo_login
+        run: |
+          response=$(curl -s -w "HTTP:%{http_code}" -X POST https://fisherbackflows.com/api/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"type": "demo", "identifier": "demo", "email": "demo@example.com", "password": "demo"}')
+          http_code=$(echo "$response" | grep -o "HTTP:[0-9]*" | cut -d: -f2)
+
+          if [ "$http_code" = "200" ] && echo "$response" | grep -q '"success":true'; then
+            echo "✅ Demo login test passed"
+            echo "demo_login=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Demo login test failed: $http_code"
+            echo "$response"
+            echo "demo_login=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Test Registration Flow
+        id: registration
+        run: |
+          # Generate unique test email
+          timestamp=$(date +%s)
+          test_email="test-${timestamp}@fisherbackflows.test"
+
+          response=$(curl -s -w "HTTP:%{http_code}" -X POST https://fisherbackflows.com/api/auth/register \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"firstName\": \"Test\",
+              \"lastName\": \"User\",
+              \"email\": \"$test_email\",
+              \"phone\": \"555-123-4567\",
+              \"password\": \"TestPass123!\"
+            }")
+          http_code=$(echo "$response" | grep -o "HTTP:[0-9]*" | cut -d: -f2)
+
+          if [ "$http_code" = "201" ] && echo "$response" | grep -q '"success":true'; then
+            echo "✅ Registration test passed"
+            echo "registration=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Registration test failed: $http_code"
+            echo "$response"
+            echo "registration=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Create success report
+        if: success()
+        run: |
+          echo "🎉 Daily authentication health check completed successfully!"
+          echo "- Health endpoint: ✅ PASSED"
+          echo "- Demo login: ✅ PASSED"
+          echo "- Registration flow: ✅ PASSED"
+          echo "- Timestamp: $(date -u)"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "🚨 Daily authentication health check FAILED"
+          echo "- Health endpoint: ${{ steps.health.outputs.health || 'failed' }}"
+          echo "- Demo login: ${{ steps.demo_login.outputs.demo_login || 'failed' }}"
+          echo "- Registration: ${{ steps.registration.outputs.registration || 'failed' }}"
+          echo "- Timestamp: $(date -u)"
+          echo "Please check the logs above for detailed error information."
