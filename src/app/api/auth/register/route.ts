@@ -248,6 +248,10 @@ export async function POST(request: NextRequest) {
         last_name: validation.data!.lastName,
         email: validation.data!.email,
         phone: validation.data!.phone,
+        address_line1: validation.data!.address?.street || 'Not provided',
+        city: validation.data!.address?.city || 'Not provided',
+        state: validation.data!.address?.state || 'Not provided',
+        zip_code: validation.data!.address?.zipCode || 'Not provided',
         account_status: 'active',
       })
       .select('*')
