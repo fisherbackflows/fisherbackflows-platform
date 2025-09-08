@@ -1,0 +1,176 @@
+name: Manual Authentication Verification
+
+  on:
+    workflow_dispatch:
+      inputs:
+        test_level:
+          description: 'Test Level'
+          required: true
+          default: 'full'
+          type: choice
+          options:
+          - basic
+          - full
+          - extended
+        include_registration:
+          description: 'Test Registration Flow'
+          required: false
+          default: true
+          type: boolean
+        include_login:
+          description: 'Test Login Flow'
+          required: false
+          default: true
+          type: boolean
+
+  jobs:
+    manual-auth-verification:
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Display test configuration
+        run: |
+          echo "🔧 Test Configuration:"
+          echo "- Test Level: ${{ github.event.inputs.test_level }}"
+          echo "- Include Registration: ${{ github.event.inputs.include_registration }}"
+          echo "- Include Login: ${{ github.event.inputs.include_login }}"
+          echo "- Started by: ${{ github.actor }}"
+          echo "- Timestamp: $(date -u)"
+
+      - name: Health Check
+        id: health
+        run: |
+          echo "🏥 Running health check..."
+          response=$(curl -s -w "HTTP:%{http_code}" https://fisherbackflows.com/api/auth/health)
+          http_code=$(echo "$response" | grep -o "HTTP:[0-9]*" | cut -d: -f2)
+          body=$(echo "$response" | sed 's/HTTP:[0-9]*$//')
+
+          echo "Response: $body"
+
+          if [ "$http_code" = "200" ]; then
+            echo "✅ Health check passed"
+            echo "health=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Health check failed: $http_code"
+            echo "health=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Test Demo Login
+        if: github.event.inputs.include_login == 'true'
+        id: demo_login
+        run: |
+          echo "🎭 Testing demo login..."
+          response=$(curl -s -w "HTTP:%{http_code}" -X POST https://fisherbackflows.com/api/auth/login \
+            -H "Content-Type: application/json" \
+            -d '{"type": "demo", "identifier": "demo", "email": "demo@example.com", "password": "demo"}')
+          http_code=$(echo "$response" | grep -o "HTTP:[0-9]*" | cut -d: -f2)
+          body=$(echo "$response" | sed 's/HTTP:[0-9]*$//')
+
+          echo "Response: $body"
+
+          if [ "$http_code" = "200" ] && echo "$response" | grep -q '"success":true'; then
+            echo "✅ Demo login test passed"
+            echo "demo_login=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Demo login test failed: $http_code"
+            echo "demo_login=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Test Registration Flow
+        if: github.event.inputs.include_registration == 'true'
+        id: registration
+        run: |
+          echo "📝 Testing registration flow..."
+          # Generate unique test email
+          timestamp=$(date +%s)
+          test_email="test-manual-${timestamp}@fisherbackflows.test"
+
+          echo "Using test email: $test_email"
+
+          response=$(curl -s -w "HTTP:%{http_code}" -X POST https://fisherbackflows.com/api/auth/register \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"firstName\": \"Manual\",
+              \"lastName\": \"Test\",
+              \"email\": \"$test_email\",
+              \"phone\": \"555-987-6543\",
+              \"password\": \"ManualTest123!\"
+            }")
+          http_code=$(echo "$response" | grep -o "HTTP:[0-9]*" | cut -d: -f2)
+          body=$(echo "$response" | sed 's/HTTP:[0-9]*$//')
+
+          echo "Response: $body"
+
+          if [ "$http_code" = "201" ] && echo "$response" | grep -q '"success":true'; then
+            echo "✅ Registration test passed"
+            echo "registration=success" >> $GITHUB_OUTPUT
+            echo "test_email=$test_email" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Registration test failed: $http_code"
+            echo "registration=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Extended Testing
+        if: github.event.inputs.test_level == 'extended'
+        run: |
+          echo "🔍 Running extended tests..."
+
+          # Test multiple registration attempts (should handle duplicates gracefully)
+          if [ "${{ steps.registration.outputs.test_email }}" != "" ]; then
+            echo "Testing duplicate registration with same email..."
+            duplicate_response=$(curl -s -w "HTTP:%{http_code}" -X POST https://fisherbackflows.com/api/auth/register \
+              -H "Content-Type: application/json" \
+              -d "{
+                \"firstName\": \"Duplicate\",
+                \"lastName\": \"Test\",
+                \"email\": \"${{ steps.registration.outputs.test_email }}\",
+                \"phone\": \"555-000-0000\",
+                \"password\": \"DuplicateTest123!\"
+              }")
+            dup_http_code=$(echo "$duplicate_response" | grep -o "HTTP:[0-9]*" | cut -d: -f2)
+
+            if [ "$dup_http_code" = "400" ]; then
+              echo "✅ Duplicate registration properly rejected"
+            else
+              echo "⚠️ Duplicate registration handling: HTTP $dup_http_code"
+            fi
+          fi
+
+          # Test invalid data submissions
+          echo "Testing invalid registration data..."
+          invalid_response=$(curl -s -w "HTTP:%{http_code}" -X POST https://fisherbackflows.com/api/auth/register \
+            -H "Content-Type: application/json" \
+            -d '{"firstName": "", "lastName": "", "email": "invalid-email", "phone": "", "password": "123"}')
+          invalid_http_code=$(echo "$invalid_response" | grep -o "HTTP:[0-9]*" | cut -d: -f2)
+
+          if [ "$invalid_http_code" = "400" ]; then
+            echo "✅ Invalid data properly rejected"
+          else
+            echo "⚠️ Invalid data handling: HTTP $invalid_http_code"
+          fi
+
+      - name: Generate Test Report
+        if: always()
+        run: |
+          echo "📊 Manual Authentication Verification Report"
+          echo "=============================================="
+          echo "Test Configuration:"
+          echo "- Level: ${{ github.event.inputs.test_level }}"
+          echo "- Registration: ${{ github.event.inputs.include_registration }}"
+          echo "- Login: ${{ github.event.inputs.include_login }}"
+          echo "- Initiated by: ${{ github.actor }}"
+          echo "- Timestamp: $(date -u)"
+          echo ""
+          echo "Results:"
+          echo "- Health Check: ${{ steps.health.outputs.health || 'skipped' }}"
+          echo "- Demo Login: ${{ steps.demo_login.outputs.demo_login || 'skipped' }}"
+          echo "- Registration: ${{ steps.registration.outputs.registration || 'skipped' }}"
+          echo ""
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "🎉 Overall Status: PASSED"
+          else
+            echo "🚨 Overall Status: FAILED"
+          fi
