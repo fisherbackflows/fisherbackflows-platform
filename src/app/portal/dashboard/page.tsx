@@ -19,13 +19,16 @@ import {
   Shield,
   Award,
   Home,
-  LogOut
+  LogOut,
+  Menu,
+  X
 } from 'lucide-react';
 
 import { useCustomerData } from '@/hooks/useCustomerData';
 
 export default function CustomerPortalDashboard() {
   const { customer, loading, error } = useCustomerData();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   if (loading) {
     return (
@@ -65,96 +68,150 @@ export default function CustomerPortalDashboard() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Professional Header */}
+      {/* Mobile-Responsive Header */}
       <header className="glass border-b border-blue-400 sticky top-0 z-50 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-8">
-              <Link href="/" className="text-2xl font-bold text-white">
-                Fisher Backflows
-              </Link>
-              <nav className="hidden md:flex space-x-1">
-                <Link href="/portal/dashboard" className="px-4 py-2 rounded-2xl glass-btn-primary text-white glow-blue-sm font-medium">
-                  Dashboard
-                </Link>
-                <Link href="/portal/schedule" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Schedule
-                </Link>
-                <Link href="/portal/billing" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Billing
-                </Link>
-                <Link href="/portal/devices" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Devices
-                </Link>
-                <Link href="/portal/reports" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Reports
-                </Link>
-              </nav>
-            </div>
+            {/* Logo */}
+            <Link href="/" className="text-xl sm:text-2xl font-bold text-white flex-shrink-0">
+              Fisher Backflows
+            </Link>
             
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:block text-right">
-                <p className="font-semibold text-white">{customer.name}</p>
-                <p className="text-sm text-white/80">Account: {customer.accountNumber}</p>
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex space-x-1">
+              <Link href="/portal/dashboard" className="px-3 py-2 rounded-xl glass-btn-primary text-white glow-blue-sm font-medium text-sm">
+                Dashboard
+              </Link>
+              <Link href="/portal/schedule" className="px-3 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm">
+                Schedule
+              </Link>
+              <Link href="/portal/billing" className="px-3 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm">
+                Billing
+              </Link>
+              <Link href="/portal/devices" className="px-3 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm">
+                Devices
+              </Link>
+              <Link href="/portal/reports" className="px-3 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm">
+                Reports
+              </Link>
+            </nav>
+            
+            {/* Desktop User Info & Actions */}
+            <div className="hidden lg:flex items-center space-x-3">
+              <div className="text-right">
+                <p className="font-semibold text-white text-sm">{customer.name}</p>
+                <p className="text-xs text-white/80">Account: {customer.accountNumber}</p>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex space-x-1">
                 <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
-                  <Bell className="h-5 w-5" />
+                  <Bell className="h-4 w-4" />
                 </Button>
                 <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
-                  <Settings className="h-5 w-5" />
+                  <Settings className="h-4 w-4" />
                 </Button>
                 <Link href="/">
                   <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
-                    <LogOut className="h-5 w-5" />
+                    <LogOut className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
             </div>
+            
+            {/* Mobile Menu Button */}
+            <div className="flex items-center space-x-2 lg:hidden">
+              <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
+                <Bell className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-white/80 hover:text-white/80"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+            </div>
           </div>
+          
+          {/* Mobile Menu Dropdown */}
+          {mobileMenuOpen && (
+            <div className="lg:hidden mt-4 pb-4 border-t border-blue-400/30 pt-4">
+              {/* Mobile User Info */}
+              <div className="mb-4 text-center">
+                <p className="font-semibold text-white text-sm">{customer.name}</p>
+                <p className="text-xs text-white/80">Account: {customer.accountNumber}</p>
+              </div>
+              
+              {/* Mobile Navigation */}
+              <nav className="space-y-2">
+                <Link 
+                  href="/portal/dashboard" 
+                  className="block px-4 py-2 rounded-xl glass-btn-primary text-white glow-blue-sm font-medium text-sm text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link 
+                  href="/portal/schedule" 
+                  className="block px-4 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Schedule
+                </Link>
+                <Link 
+                  href="/portal/billing" 
+                  className="block px-4 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Billing
+                </Link>
+                <Link 
+                  href="/portal/devices" 
+                  className="block px-4 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Devices
+                </Link>
+                <Link 
+                  href="/portal/reports" 
+                  className="block px-4 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm text-center"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Reports
+                </Link>
+                
+                {/* Mobile Actions */}
+                <div className="flex justify-center space-x-4 pt-4 border-t border-blue-400/30 mt-4">
+                  <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Settings
+                  </Button>
+                  <Link href="/">
+                    <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </Button>
+                  </Link>
+                </div>
+              </nav>
+            </div>
+          )}
         </div>
       </header>
 
       {/* Main Dashboard Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
-
-      {/* Navigation Header */}
-      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/portal/dashboard">
-              <Button variant="ghost" className="text-blue-300 hover:text-white">
-                ← Back to Dashboard
-              </Button>
-            </Link>
-            <nav className="flex space-x-4">
-              <Link href="/portal/billing">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Billing</Button>
-              </Link>
-              <Link href="/portal/devices">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Devices</Button>
-              </Link>
-              <Link href="/portal/reports">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Reports</Button>
-              </Link>
-              <Link href="/portal/schedule">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Schedule</Button>
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
         {/* Welcome Section */}
-        <div className="mb-10">
-          <div className="glass rounded-2xl p-8 border border-blue-400">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl font-bold mb-2 text-white">
+        <div className="mb-8 sm:mb-10">
+          <div className="glass rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-blue-400">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex-1">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 text-white">
                   Welcome back, <span className="text-blue-300">{customer.name}!</span>
                 </h1>
-                <p className="text-white/90 text-lg mb-4">Your backflow testing is up to date and compliant.</p>
-                <div className="flex items-center space-x-6">
+                <p className="text-white/90 text-base sm:text-lg mb-4">Your backflow testing is up to date and compliant.</p>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-2 sm:space-y-0">
                   <div className="flex items-center space-x-2">
                     <div className="w-3 h-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-full"></div>
                     <span className="text-sm font-medium text-white/80">System Protected</span>
@@ -165,7 +222,7 @@ export default function CustomerPortalDashboard() {
                   </div>
                 </div>
               </div>
-              <div className="hidden lg:block">
+              <div className="hidden lg:block flex-shrink-0 mt-4 lg:mt-0 lg:ml-6">
                 <div className="w-24 h-24 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-2xl flex items-center justify-center">
                   <CheckCircle className="h-12 w-12 text-emerald-300" />
                 </div>
@@ -175,55 +232,55 @@ export default function CustomerPortalDashboard() {
         </div>
 
         {/* Status Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10">
           {/* Device Status */}
-          <div className="glass border border-blue-400 rounded-xl p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
+          <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-xl flex items-center justify-center">
                 <Shield className="h-6 w-6 text-emerald-300" />
               </div>
               <span className="px-3 py-1 bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-200 text-xs font-semibold rounded-full">ACTIVE</span>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-1">{customer.devices.length}</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">{customer.devices.length}</h3>
             <p className="text-white/80 font-medium">Active Device</p>
             <p className="text-white/80 text-sm mt-2">Last tested: Jan 15, 2024</p>
           </div>
 
           {/* Next Test */}
-          <div className="glass border border-blue-400 rounded-xl p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
+          <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-xl flex items-center justify-center">
                 <Calendar className="h-6 w-6 text-blue-300" />
               </div>
               <span className="px-3 py-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-200 text-xs font-semibold rounded-full">UPCOMING</span>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-1">45</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">45</h3>
             <p className="text-white/80 font-medium">Days Until Test</p>
             <p className="text-white/80 text-sm mt-2">Due: Jan 15, 2025</p>
           </div>
 
           {/* Account Balance */}
-          <div className="glass border border-blue-400 rounded-xl p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
+          <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm rounded-xl flex items-center justify-center">
                 <CreditCard className="h-6 w-6 text-green-300" />
               </div>
               <span className="px-3 py-1 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-200 text-xs font-semibold rounded-full">PAID</span>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-1">${customer.balance.toFixed(2)}</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">${customer.balance.toFixed(2)}</h3>
             <p className="text-white/80 font-medium">Account Balance</p>
             <p className="text-white/80 text-sm mt-2">All payments current</p>
           </div>
 
           {/* Service Status */}
-          <div className="glass border border-blue-400 rounded-xl p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
+          <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-xl flex items-center justify-center">
                 <Award className="h-6 w-6 text-amber-300" />
               </div>
               <span className="px-3 py-1 bg-amber-500/20 border border-amber-400 glow-blue-sm text-amber-200 text-xs font-semibold rounded-full">CERTIFIED</span>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-1">100%</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">100%</h3>
             <p className="text-white/80 font-medium">Compliance Rate</p>
             <p className="text-white/80 text-sm mt-2">BAT certified testing</p>
           </div>
@@ -280,8 +337,8 @@ export default function CustomerPortalDashboard() {
           {/* Device Details and Recent Activity */}
           <div className="lg:col-span-2 space-y-6 lg:space-y-8">
             {/* Current Device */}
-            <div className="glass border border-blue-400 rounded-xl p-6 glow-blue-sm">
-              <h2 className="text-xl font-bold text-white mb-6">Your Backflow Device</h2>
+            <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm">
+              <h2 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6">Your Backflow Device</h2>
               {customer.devices.map((device) => (
                 <div key={device.id} className="border border-blue-400 rounded-2xl p-6 glass">
                   <div className="flex items-start justify-between mb-4">
@@ -335,8 +392,8 @@ export default function CustomerPortalDashboard() {
             </div>
 
             {/* Recent Test History */}
-            <div className="glass border border-blue-400 rounded-xl p-6 glow-blue-sm">
-              <h2 className="text-xl font-bold text-white mb-6">Recent Test History</h2>
+            <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm">
+              <h2 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6">Recent Test History</h2>
               <div className="space-y-4">
                 {customer.recentTests.map((test) => (
                   <div key={test.id} className="flex items-center justify-between p-4 glass rounded-2xl border border-blue-400">
