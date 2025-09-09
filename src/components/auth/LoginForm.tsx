@@ -222,7 +222,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
         <Button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 text-lg font-semibold rounded-lg transition-colors"
+          className="w-full bg-blue-700 hover:bg-blue-800 text-white py-3 text-lg font-semibold rounded-lg transition-colors !text-white"
         >
           {loading ? (
             <>
@@ -265,7 +265,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
         
         <Button
           type="button"
-          className="w-full border border-blue-300 bg-blue-200 text-blue-800 hover:bg-blue-300 py-3 rounded-lg transition-all"
+          className="w-full border border-blue-300 bg-blue-200 text-white hover:bg-blue-300 hover:text-white py-3 rounded-lg transition-all"
           onClick={() => window.location.href = '/portal/register'}
         >
           Create New Account

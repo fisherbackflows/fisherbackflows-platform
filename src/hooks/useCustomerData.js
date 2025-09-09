@@ -1,47 +1,68 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export function useCustomerData() {
-  const [customer, setCustomer] = useState({
-    id: 'temp-customer',
-    name: 'Customer Dashboard',
-    email: 'customer@fisherbackflows.com',
-    accountNumber: 'TEMP-001',
-    phone: '(253) 278-8692',
-    status: 'active',
-    balance: 0,
-    devices: [
-      {
-        id: 'device-1',
-        location: 'Main Building - Water Service',
-        make: 'Watts',
-        model: 'Series 909',
-        size: '3/4"',
-        serialNumber: 'WTS-2024-001',
-        lastTestDate: 'Jan 15, 2024',
-        nextTestDate: 'Jan 15, 2025',
-        status: 'Passed',
-        daysUntilTest: 45
-      }
-    ],
-    recentTests: [
-      {
-        id: 'test-1',
-        testType: 'Annual Compliance Test',
-        location: 'Main Building - Water Service',
-        date: 'Jan 15, 2024',
-        result: 'Passed'
-      },
-      {
-        id: 'test-2',
-        testType: 'Follow-up Test',
-        location: 'Main Building - Water Service',
-        date: 'Feb 10, 2023',
-        result: 'Passed'
-      }
-    ]
-  });
-  const [loading, setLoading] = useState(false);
+  const [customer, setCustomer] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    const supabase = createClientComponentClient();
+    
+    async function loadCustomerData() {
+      try {
+        // Get current user
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        
+        if (userError || !user) {
+          setError('Please login to view your devices');
+          setLoading(false);
+          return;
+        }
+        
+        // Get customer record
+        const { data: customerData, error: customerError } = await supabase
+          .from('customers')
+          .select('*')
+          .eq('auth_user_id', user.id)
+          .single();
+          
+        if (customerError || !customerData) {
+          setError('Unable to load customer data');
+          setLoading(false);
+          return;
+        }
+        
+        // Get customer's devices
+        const { data: devices, error: devicesError } = await supabase
+          .from('devices')
+          .select('*')
+          .eq('customer_id', customerData.id);
+          
+        // Format customer data
+        const formattedCustomer = {
+          id: customerData.id,
+          name: `${customerData.first_name} ${customerData.last_name}`,
+          email: customerData.email,
+          accountNumber: customerData.account_number,
+          phone: customerData.phone,
+          status: customerData.account_status || 'active',
+          balance: customerData.balance || 0,
+          devices: devices || []
+        };
+        
+        setCustomer(formattedCustomer);
+        setLoading(false);
+        
+      } catch (err) {
+        console.error('Error loading customer data:', err);
+        setError('Failed to load customer data');
+        setLoading(false);
+      }
+    }
+    
+    loadCustomerData();
+  }, []);
 
   return { customer, loading, error };
 }

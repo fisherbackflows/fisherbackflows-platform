@@ -93,37 +93,14 @@ export async function POST(request: NextRequest) {
     console.log('[EMERGENCY] service key present?', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
     console.log('[EMERGENCY] supabase url present?', !!process.env.NEXT_PUBLIC_SUPABASE_URL);
 
-    // Step 1: Parse and validate input with flexible content-type handling
-    let body: any | undefined;
-    const contentType = request.headers.get('content-type') || '';
+    // Step 1: Parse request body - simplified for production
+    let body: any;
     try {
-      if (contentType.includes('application/json')) {
-        body = await request.json();
-      } else if (contentType.includes('application/x-www-form-urlencoded')) {
-        const form = await request.formData();
-        body = Object.fromEntries(form.entries());
-      } else if (contentType.includes('multipart/form-data')) {
-        const form = await request.formData();
-        body = Object.fromEntries(form.entries());
-        // Convert nested address fields if provided as flat keys
-        body.address = body.address || {
-          street: body.street,
-          city: body.city,
-          state: body.state,
-          zipCode: body.zipCode,
-        };
-      } else {
-        // Try JSON first, then formData as a fallback
-        try {
-          body = await request.json();
-        } catch {
-          const form = await request.formData();
-          body = Object.fromEntries(form.entries());
-        }
-      }
+      body = await request.json();
     } catch (error) {
+      console.error('[REGISTRATION] Failed to parse JSON:', error);
       return NextResponse.json(
-        { error: 'Invalid request body. Expected JSON or form data.' },
+        { error: 'Invalid JSON in request body' },
         { status: 400 }
       );
     }
@@ -162,75 +139,28 @@ export async function POST(request: NextRequest) {
     const { createClient } = await import('@supabase/supabase-js');
     const serviceClient = createClient(supabaseUrl!, serviceKey!);
 
-    // Create auth user with fallback logic
-    let authUserId: string | null = null;
-    let emailSent = false;
-    let useAdminFallback = false;
+    // Create auth user directly with admin client (skip email verification)
+    console.log('[REGISTRATION] Creating user with auto-confirmed email');
+    const { data: adminData, error: adminError } = await serviceClient.auth.admin.createUser({
+      email: validation.data!.email,
+      password: validation.data!.password,
+      email_confirm: true, // Auto-confirm - no email verification needed
+      user_metadata: {
+        first_name: validation.data!.firstName,
+        last_name: validation.data!.lastName,
+        full_name: `${validation.data!.firstName} ${validation.data!.lastName}`,
+      },
+    });
     
-    // First try anon client with email confirmation (if anon key exists)
-    if (Boolean(anonKey)) {
-      console.log('[REGISTRATION] Attempting email signup with anon client');
-      try {
-        const { createServerClient } = await import('@supabase/ssr');
-        const anonClient = createServerClient(supabaseUrl!, anonKey!, {
-          cookies: { getAll: () => [], setAll: () => {} },
-        });
-        const { data: authData, error: authError } = await anonClient.auth.signUp({
-          email: validation.data!.email,
-          password: validation.data!.password,
-          options: {
-            data: {
-              first_name: validation.data!.firstName,
-              last_name: validation.data!.lastName,
-              full_name: `${validation.data!.firstName} ${validation.data!.lastName}`,
-            },
-            emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3010'}/portal/verify-email`,
-          },
-        });
-        
-        if (authError) {
-          console.warn('[REGISTRATION] Anon signup failed, falling back to admin:', authError.message);
-          useAdminFallback = true;
-        } else if (authData.user) {
-          console.log('[REGISTRATION] Anon signup successful');
-          authUserId = authData.user.id;
-          emailSent = true;
-        } else {
-          console.warn('[REGISTRATION] No user returned from anon signup, falling back to admin');
-          useAdminFallback = true;
-        }
-      } catch (error) {
-        console.warn('[REGISTRATION] Anon signup threw error, falling back to admin:', error);
-        useAdminFallback = true;
-      }
-    } else {
-      console.log('[REGISTRATION] No anon key, using admin client directly');
-      useAdminFallback = true;
+    if (adminError || !adminData.user) {
+      console.error('[REGISTRATION] User creation failed:', adminError);
+      const message = adminError?.message?.includes('already registered')
+        ? 'An account with this email already exists'
+        : 'Failed to create user account';
+      return NextResponse.json({ error: message }, { status: 400 });
     }
     
-    // Fallback to admin user creation if anon signup failed
-    if (useAdminFallback) {
-      console.log('[REGISTRATION] Using admin createUser with email_confirm: true');
-      const { data: adminData, error: adminError } = await serviceClient.auth.admin.createUser({
-        email: validation.data!.email,
-        password: validation.data!.password,
-        email_confirm: true,
-        user_metadata: {
-          first_name: validation.data!.firstName,
-          last_name: validation.data!.lastName,
-          full_name: `${validation.data!.firstName} ${validation.data!.lastName}`,
-        },
-      });
-      if (adminError || !adminData.user) {
-        console.error('[REGISTRATION] Admin createUser failed:', adminError);
-        const message = adminError?.message?.includes('already registered')
-          ? 'An account with this email already exists'
-          : 'Failed to create user account';
-        return NextResponse.json({ error: message }, { status: 400 });
-      }
-      authUserId = adminData.user.id;
-      emailSent = false;
-    }
+    const authUserId = adminData.user.id;
 
     // Create customer record (align with current DB schema: name/address/status)
     const addressString = (() => {
@@ -268,9 +198,7 @@ export async function POST(request: NextRequest) {
 
     result = {
       success: true,
-      message: emailSent
-        ? 'Account created successfully! Please check your email to verify your account before signing in.'
-        : 'Account created successfully! You can now sign in with your email and password.',
+      message: 'Account created successfully! You can now sign in with your email and password.',
       user: {
         id: customer.id,
         authUserId: authUserId!,
@@ -279,8 +207,8 @@ export async function POST(request: NextRequest) {
         lastName: validation.data!.lastName,
         email: validation.data!.email,
         phone: validation.data!.phone,
-        status: emailSent ? 'pending_verification' : 'active',
-        emailSent,
+        status: 'active',
+        emailSent: false,
       },
     } as const;
     

@@ -146,12 +146,12 @@ export default function CustomerDevicesPage() {
                 <div className="flex items-center space-x-3">
                   <Droplet className="h-8 w-8 text-blue-400" />
                   <div>
-                    <h3 className="text-lg font-bold text-white">{device.make} {device.model}</h3>
-                    <p className="text-white/60 text-sm">Size: {device.size}</p>
+                    <h3 className="text-lg font-bold text-white">{device.manufacturer || 'Unknown'} {device.model || ''}</h3>
+                    <p className="text-white/60 text-sm">Size: {device.size_inches || device.size || 'N/A'}"</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-1">
-                  {device.status === 'active' ? (
+                  {device.device_status === 'active' ? (
                     <CheckCircle className="h-5 w-5 text-green-400" />
                   ) : (
                     <AlertTriangle className="h-5 w-5 text-yellow-400" />
@@ -162,25 +162,25 @@ export default function CustomerDevicesPage() {
               <div className="space-y-3 mb-4">
                 <div className="flex items-center space-x-2 text-white/80">
                   <MapPin className="h-4 w-4 text-blue-400" />
-                  <span className="text-sm">{device.location}</span>
+                  <span className="text-sm">{device.location_description || device.location || 'No location'}</span>
                 </div>
                 
                 <div className="flex items-center space-x-2 text-white/80">
                   <Settings className="h-4 w-4 text-blue-400" />
-                  <span className="text-sm">Serial: {device.serialNumber}</span>
+                  <span className="text-sm">Serial: {device.serial_number || device.serialNumber || 'N/A'}</span>
                 </div>
 
-                {device.lastTestDate && (
+                {(device.last_test_date || device.lastTestDate) && (
                   <div className="flex items-center space-x-2 text-white/80">
                     <Calendar className="h-4 w-4 text-blue-400" />
-                    <span className="text-sm">Last Test: {new Date(device.lastTestDate).toLocaleDateString()}</span>
+                    <span className="text-sm">Last Test: {new Date(device.last_test_date || device.lastTestDate).toLocaleDateString()}</span>
                   </div>
                 )}
 
-                {device.nextTestDate && (
+                {(device.next_test_due || device.nextTestDate) && (
                   <div className="flex items-center space-x-2 text-white/80">
                     <Clock className="h-4 w-4 text-blue-400" />
-                    <span className="text-sm">Next Test: {new Date(device.nextTestDate).toLocaleDateString()}</span>
+                    <span className="text-sm">Next Test: {new Date(device.next_test_due || device.nextTestDate).toLocaleDateString()}</span>
                   </div>
                 )}
               </div>
@@ -189,11 +189,11 @@ export default function CustomerDevicesPage() {
                 <div className="text-center">
                   <p className="text-white/60 text-xs">Status</p>
                   <p className={`text-sm font-bold ${
-                    device.status === 'active' 
+                    device.device_status === 'active' 
                       ? 'text-green-400' 
                       : 'text-yellow-400'
                   }`}>
-                    {device.status === 'active' ? 'Active' : 'Needs Service'}
+                    {device.device_status === 'active' ? 'Active' : 'Needs Service'}
                   </p>
                 </div>
                 <Button
@@ -225,36 +225,36 @@ export default function CustomerDevicesPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="text-white/60 text-sm">Manufacturer</label>
-                    <p className="text-white font-bold">{selectedDevice.make}</p>
+                    <p className="text-white font-bold">{selectedDevice.manufacturer || selectedDevice.make || 'Unknown'}</p>
                   </div>
                   <div>
                     <label className="text-white/60 text-sm">Model</label>
-                    <p className="text-white font-bold">{selectedDevice.model}</p>
+                    <p className="text-white font-bold">{selectedDevice.model || 'N/A'}</p>
                   </div>
                   <div>
                     <label className="text-white/60 text-sm">Size</label>
-                    <p className="text-white font-bold">{selectedDevice.size}</p>
+                    <p className="text-white font-bold">{selectedDevice.size_inches || selectedDevice.size || 'N/A'}"</p>
                   </div>
                   <div>
                     <label className="text-white/60 text-sm">Status</label>
                     <p className={`font-bold ${
-                      selectedDevice.status === 'active' 
+                      selectedDevice.device_status === 'active' 
                         ? 'text-green-400' 
                         : 'text-yellow-400'
                     }`}>
-                      {selectedDevice.status === 'active' ? 'Active' : 'Needs Service'}
+                      {selectedDevice.device_status === 'active' ? 'Active' : 'Needs Service'}
                     </p>
                   </div>
                 </div>
                 
                 <div>
                   <label className="text-white/60 text-sm">Location</label>
-                  <p className="text-white">{selectedDevice.location}</p>
+                  <p className="text-white">{selectedDevice.location_description || selectedDevice.location || 'No location'}</p>
                 </div>
                 
                 <div>
                   <label className="text-white/60 text-sm">Serial Number</label>
-                  <p className="text-white font-mono">{selectedDevice.serialNumber}</p>
+                  <p className="text-white font-mono">{selectedDevice.serial_number || selectedDevice.serialNumber || 'N/A'}</p>
                 </div>
                 
                 {selectedDevice.installDate && (
