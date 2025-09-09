@@ -156,7 +156,7 @@ export default function CustomerPortalDashboard() {
                 <p className="text-white/90 text-lg mb-4">Your backflow testing is up to date and compliant.</p>
                 <div className="flex items-center space-x-6">
                   <div className="flex items-center space-x-2">
-                    <div className="w-3 h-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm0 rounded-full"></div>
+                    <div className="w-3 h-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-full"></div>
                     <span className="text-sm font-medium text-white/80">System Protected</span>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -182,7 +182,7 @@ export default function CustomerPortalDashboard() {
               <div className="w-12 h-12 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-xl flex items-center justify-center">
                 <Shield className="h-6 w-6 text-emerald-300" />
               </div>
-              <span className="px-3 py-1 bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-700 text-xs font-semibold rounded-full">ACTIVE</span>
+              <span className="px-3 py-1 bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-200 text-xs font-semibold rounded-full">ACTIVE</span>
             </div>
             <h3 className="text-2xl font-bold text-white mb-1">{customer.devices.length}</h3>
             <p className="text-white/80 font-medium">Active Device</p>
@@ -195,7 +195,7 @@ export default function CustomerPortalDashboard() {
               <div className="w-12 h-12 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-xl flex items-center justify-center">
                 <Calendar className="h-6 w-6 text-blue-300" />
               </div>
-              <span className="px-3 py-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-700 text-xs font-semibold rounded-full">UPCOMING</span>
+              <span className="px-3 py-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-200 text-xs font-semibold rounded-full">UPCOMING</span>
             </div>
             <h3 className="text-2xl font-bold text-white mb-1">45</h3>
             <p className="text-white/80 font-medium">Days Until Test</p>
@@ -208,7 +208,7 @@ export default function CustomerPortalDashboard() {
               <div className="w-12 h-12 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm rounded-xl flex items-center justify-center">
                 <CreditCard className="h-6 w-6 text-green-300" />
               </div>
-              <span className="px-3 py-1 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-700 text-xs font-semibold rounded-full">PAID</span>
+              <span className="px-3 py-1 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-200 text-xs font-semibold rounded-full">PAID</span>
             </div>
             <h3 className="text-2xl font-bold text-white mb-1">${customer.balance.toFixed(2)}</h3>
             <p className="text-white/80 font-medium">Account Balance</p>
@@ -221,7 +221,7 @@ export default function CustomerPortalDashboard() {
               <div className="w-12 h-12 bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-xl flex items-center justify-center">
                 <Award className="h-6 w-6 text-amber-300" />
               </div>
-              <span className="px-3 py-1 bg-amber-500/20 border border-amber-400 glow-blue-sm text-amber-700 text-xs font-semibold rounded-full">CERTIFIED</span>
+              <span className="px-3 py-1 bg-amber-500/20 border border-amber-400 glow-blue-sm text-amber-200 text-xs font-semibold rounded-full">CERTIFIED</span>
             </div>
             <h3 className="text-2xl font-bold text-white mb-1">100%</h3>
             <p className="text-white/80 font-medium">Compliance Rate</p>
@@ -237,7 +237,7 @@ export default function CustomerPortalDashboard() {
               <h2 className="text-xl font-bold text-white mb-6">Quick Actions</h2>
               <div className="space-y-4">
                 <Link href="/portal/schedule" className="block">
-                  <div className="flex items-center p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-2xl transition-colors border border-blue-200">
+                  <div className="flex items-center p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl hover:bg-gradient-to-r from-blue-600/70 to-blue-500/70 backdrop-blur-xl border border-blue-400 glow-blue-sm rounded-2xl transition-colors">
                     <Calendar className="h-8 w-8 text-blue-300 mr-4" />
                     <div>
                       <h3 className="font-semibold text-white">Schedule Test</h3>
@@ -247,7 +247,7 @@ export default function CustomerPortalDashboard() {
                 </Link>
                 
                 <Link href="/portal/billing" className="block">
-                  <div className="flex items-center p-4 bg-emerald-500/20 border border-emerald-400 glow-blue-sm hover:bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-2xl transition-colors border border-emerald-200">
+                  <div className="flex items-center p-4 bg-emerald-500/20 border border-emerald-400 glow-blue-sm hover:bg-emerald-500/30 rounded-2xl transition-colors">
                     <CreditCard className="h-8 w-8 text-emerald-300 mr-4" />
                     <div>
                       <h3 className="font-semibold text-white">Pay Bill</h3>
@@ -257,7 +257,7 @@ export default function CustomerPortalDashboard() {
                 </Link>
                 
                 <Link href="/portal/reports" className="block">
-                  <div className="flex items-center p-4 bg-amber-50 hover:bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-2xl transition-colors border border-amber-200">
+                  <div className="flex items-center p-4 bg-amber-500/20 border border-amber-400 glow-blue-sm hover:bg-amber-500/30 rounded-2xl transition-colors">
                     <FileText className="h-8 w-8 text-amber-300 mr-4" />
                     <div>
                       <h3 className="font-semibold text-white">View Reports</h3>
@@ -291,8 +291,8 @@ export default function CustomerPortalDashboard() {
                     </div>
                     <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
                       device.status === 'Passed' 
-                        ? 'bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-700' 
-                        : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-700'
+                        ? 'bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-200' 
+                        : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-200'
                     }`}>
                       {device.status}
                     </span>
@@ -341,7 +341,7 @@ export default function CustomerPortalDashboard() {
                 {customer.recentTests.map((test) => (
                   <div key={test.id} className="flex items-center justify-between p-4 glass rounded-2xl border border-blue-400">
                     <div className="flex items-center space-x-4">
-                      <div className={`w-3 h-3 rounded-full ${test.result === 'Passed' ? 'bg-emerald-500/20 border border-emerald-400 glow-blue-sm0' : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl'}`}></div>
+                      <div className={`w-3 h-3 rounded-full ${test.result === 'Passed' ? 'bg-emerald-500/20 border border-emerald-400 glow-blue-sm' : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl'}`}></div>
                       <div>
                         <p className="font-semibold text-white">{test.testType}</p>
                         <p className="text-sm text-white/90">{test.location}</p>
@@ -351,8 +351,8 @@ export default function CustomerPortalDashboard() {
                     <div className="flex items-center space-x-3">
                       <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
                         test.result === 'Passed' 
-                          ? 'bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-700' 
-                          : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-700'
+                          ? 'bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-200' 
+                          : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-200'
                       }`}>
                         {test.result}
                       </span>
