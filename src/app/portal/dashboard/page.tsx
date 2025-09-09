@@ -230,47 +230,47 @@ export default function CustomerPortalDashboard() {
         </div>
 
         {/* Quick Actions and Recent Activity */}
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Quick Actions */}
           <div className="lg:col-span-1">
-            <div className="glass border border-blue-400 rounded-xl p-6 glow-blue-sm">
-              <h2 className="text-xl font-bold text-white mb-6">Quick Actions</h2>
-              <div className="space-y-4">
+            <div className="glass border border-blue-400 rounded-xl p-4 md:p-6 glow-blue-sm">
+              <h2 className="text-lg md:text-xl font-bold text-white mb-4 md:mb-6">Quick Actions</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 md:space-y-4 md:gap-0 md:grid-cols-1">
                 <Link href="/portal/schedule" className="block">
-                  <div className="flex items-center p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl hover:bg-gradient-to-r from-blue-600/70 to-blue-500/70 backdrop-blur-xl border border-blue-400 glow-blue-sm rounded-2xl transition-colors">
-                    <Calendar className="h-8 w-8 text-blue-300 mr-4" />
+                  <div className="flex items-center p-3 md:p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl hover:bg-gradient-to-r from-blue-600/70 to-blue-500/70 backdrop-blur-xl border border-blue-400 glow-blue-sm rounded-xl md:rounded-2xl transition-colors">
+                    <Calendar className="h-6 w-6 md:h-8 md:w-8 text-blue-300 mr-3 md:mr-4 flex-shrink-0" />
                     <div>
-                      <h3 className="font-semibold text-white">Schedule Test</h3>
-                      <p className="text-sm text-white/90">Book your annual testing</p>
+                      <h3 className="text-sm md:text-base font-semibold text-white">Schedule Test</h3>
+                      <p className="text-xs md:text-sm text-white/90">Book your annual testing</p>
                     </div>
                   </div>
                 </Link>
                 
                 <Link href="/portal/billing" className="block">
-                  <div className="flex items-center p-4 bg-emerald-500/20 border border-emerald-400 glow-blue-sm hover:bg-emerald-500/30 rounded-2xl transition-colors">
-                    <CreditCard className="h-8 w-8 text-emerald-300 mr-4" />
+                  <div className="flex items-center p-3 md:p-4 bg-emerald-500/20 border border-emerald-400 glow-blue-sm hover:bg-emerald-500/30 rounded-xl md:rounded-2xl transition-colors">
+                    <CreditCard className="h-6 w-6 md:h-8 md:w-8 text-emerald-300 mr-3 md:mr-4 flex-shrink-0" />
                     <div>
-                      <h3 className="font-semibold text-white">Pay Bill</h3>
-                      <p className="text-sm text-white/90">Make a payment online</p>
+                      <h3 className="text-sm md:text-base font-semibold text-white">Pay Bill</h3>
+                      <p className="text-xs md:text-sm text-white/90">Make a payment online</p>
                     </div>
                   </div>
                 </Link>
                 
                 <Link href="/portal/reports" className="block">
-                  <div className="flex items-center p-4 bg-amber-500/20 border border-amber-400 glow-blue-sm hover:bg-amber-500/30 rounded-2xl transition-colors">
-                    <FileText className="h-8 w-8 text-amber-300 mr-4" />
+                  <div className="flex items-center p-3 md:p-4 bg-amber-500/20 border border-amber-400 glow-blue-sm hover:bg-amber-500/30 rounded-xl md:rounded-2xl transition-colors">
+                    <FileText className="h-6 w-6 md:h-8 md:w-8 text-amber-300 mr-3 md:mr-4 flex-shrink-0" />
                     <div>
-                      <h3 className="font-semibold text-white">View Reports</h3>
-                      <p className="text-sm text-white/90">Download test certificates</p>
+                      <h3 className="text-sm md:text-base font-semibold text-white">View Reports</h3>
+                      <p className="text-xs md:text-sm text-white/90">Download test certificates</p>
                     </div>
                   </div>
                 </Link>
 
-                <div className="flex items-center p-4 glass hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm rounded-2xl transition-colors border border-blue-400 cursor-pointer">
-                  <Phone className="h-8 w-8 text-white/90 mr-4" />
+                <div className="flex items-center p-3 md:p-4 glass hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm rounded-xl md:rounded-2xl transition-colors border border-blue-400 cursor-pointer sm:col-span-2 lg:col-span-1">
+                  <Phone className="h-6 w-6 md:h-8 md:w-8 text-white/90 mr-3 md:mr-4 flex-shrink-0" />
                   <div>
-                    <h3 className="font-semibold text-white">Call Support</h3>
-                    <p className="text-sm text-white/90">(253) 278-8692</p>
+                    <h3 className="text-sm md:text-base font-semibold text-white">Call Support</h3>
+                    <p className="text-xs md:text-sm text-white/90">(253) 278-8692</p>
                   </div>
                 </div>
               </div>
@@ -278,7 +278,7 @@ export default function CustomerPortalDashboard() {
           </div>
 
           {/* Device Details and Recent Activity */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6 lg:space-y-8">
             {/* Current Device */}
             <div className="glass border border-blue-400 rounded-xl p-6 glow-blue-sm">
               <h2 className="text-xl font-bold text-white mb-6">Your Backflow Device</h2>
