@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useCustomerData } from '@/hooks/useCustomerData';
+import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
 
 export default function CustomerBillingPage() {
   const { customer, loading, error } = useCustomerData();
@@ -122,80 +123,24 @@ export default function CustomerBillingPage() {
       <div className="fixed inset-0 bg-grid opacity-10" />
       <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
 
-      {/* Header */}
-      <header className="glass border-b border-blue-400 sticky top-0 z-50 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-8">
-              <Link href="/" className="text-2xl font-bold text-white">
-                Fisher Backflows
-              </Link>
-              <nav className="hidden md:flex space-x-1">
-                <Link href="/portal/dashboard" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Dashboard
-                </Link>
-                <Link href="/portal/devices" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Devices
-                </Link>
-                <Link href="/portal/billing" className="px-4 py-2 rounded-2xl glass-btn-primary text-white glow-blue-sm font-medium">
-                  Billing
-                </Link>
-                <Link href="/portal/reports" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Reports
-                </Link>
-              </nav>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:block text-right">
-                <p className="font-semibold text-white">{customer?.name}</p>
-                <p className="text-sm text-white/80">Account: {customer?.accountNumber}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PortalNavigation userInfo={{
+        name: customer?.name,
+        email: customer?.email,
+        accountNumber: customer?.accountNumber
+      }} />
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8 relative z-10">
-
-      {/* Navigation Header */}
-      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/portal/dashboard">
-              <Button variant="ghost" className="text-blue-300 hover:text-white">
-                ← Back to Dashboard
-              </Button>
-            </Link>
-            <nav className="flex space-x-4">
-              <Link href="/portal/billing">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Billing</Button>
-              </Link>
-              <Link href="/portal/devices">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Devices</Button>
-              </Link>
-              <Link href="/portal/reports">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Reports</Button>
-              </Link>
-              <Link href="/portal/schedule">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Schedule</Button>
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 relative z-10">
 
         {/* Page Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-bold mb-2 text-white">Billing & Payments</h1>
-              <p className="text-white/90 text-lg">Manage your invoices and payment methods</p>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 text-white">Billing & Payments</h1>
+              <p className="text-white/90 text-base sm:text-lg">Manage your invoices and payment methods</p>
             </div>
-            <div className="text-right">
+            <div className="text-left sm:text-right">
               <p className="text-white/60 text-sm">Current Balance</p>
-              <p className={`text-3xl font-bold ${balance > 0 ? 'text-orange-400' : 'text-green-400'}`}>
+              <p className={`text-2xl sm:text-3xl font-bold ${balance > 0 ? 'text-orange-200' : 'text-green-200'}`}>
                 ${balance.toFixed(2)}
               </p>
             </div>
@@ -203,57 +148,57 @@ export default function CustomerBillingPage() {
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="glass rounded-2xl p-6 border border-blue-400">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="glass rounded-2xl p-4 sm:p-6 border border-blue-400">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-white/60 text-sm">Total Invoices</p>
-                <p className="text-2xl font-bold text-white">{invoices.length}</p>
+                <p className="text-xl sm:text-2xl font-bold text-white">{invoices.length}</p>
               </div>
-              <FileText className="h-8 w-8 text-blue-400" />
+              <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-blue-400" />
             </div>
           </div>
           
-          <div className="glass rounded-2xl p-6 border border-blue-400">
+          <div className="glass rounded-2xl p-4 sm:p-6 border border-blue-400">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-white/60 text-sm">Pending</p>
-                <p className="text-2xl font-bold text-orange-400">{pendingInvoices.length}</p>
+                <p className="text-xl sm:text-2xl font-bold text-orange-200">{pendingInvoices.length}</p>
               </div>
-              <Clock className="h-8 w-8 text-orange-400" />
+              <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-orange-200" />
             </div>
           </div>
           
-          <div className="glass rounded-2xl p-6 border border-blue-400">
+          <div className="glass rounded-2xl p-4 sm:p-6 border border-blue-400">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-white/60 text-sm">Paid</p>
-                <p className="text-2xl font-bold text-green-400">{paidInvoices.length}</p>
+                <p className="text-xl sm:text-2xl font-bold text-green-200">{paidInvoices.length}</p>
               </div>
-              <CheckCircle className="h-8 w-8 text-green-400" />
+              <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-200" />
             </div>
           </div>
         </div>
 
         {/* Invoices Section */}
-        <div className="glass rounded-2xl p-6 border border-blue-400">
-          <h2 className="text-2xl font-bold text-white mb-6">Recent Invoices</h2>
+        <div className="glass rounded-2xl p-4 sm:p-6 border border-blue-400">
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Recent Invoices</h2>
           
           {invoices.length === 0 ? (
-            <div className="text-center py-12">
-              <Receipt className="h-16 w-16 text-blue-400 mx-auto mb-4" />
+            <div className="text-center py-8 sm:py-12">
+              <Receipt className="h-12 w-12 sm:h-16 sm:w-16 text-blue-400 mx-auto mb-4" />
               <p className="text-white/60">No invoices found</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {invoices.map((invoice) => (
-                <div key={invoice.id} className="glass rounded-2xl p-4 border border-blue-400/50 hover:glow-blue-sm transition-all">
-                  <div className="flex items-center justify-between">
+                <div key={invoice.id} className="glass rounded-2xl p-3 sm:p-4 border border-blue-400/50 hover:glow-blue-sm transition-all">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-0">
                     <div className="flex-1">
-                      <div className="flex items-center space-x-4">
-                        <Receipt className="h-5 w-5 text-blue-400" />
-                        <div>
-                          <p className="font-bold text-white">{invoice.invoiceNumber}</p>
+                      <div className="flex items-center space-x-3 sm:space-x-4">
+                        <Receipt className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400 flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <p className="font-bold text-white truncate">{invoice.invoiceNumber}</p>
                           <p className="text-sm text-white/60">
                             {invoice.issueDate ? new Date(invoice.issueDate).toLocaleDateString() : 'N/A'}
                           </p>
@@ -261,34 +206,36 @@ export default function CustomerBillingPage() {
                       </div>
                     </div>
                     
-                    <div className="text-center px-4">
-                      <p className="text-white/60 text-xs">Amount</p>
-                      <p className="font-bold text-white">${(invoice.total || invoice.amount || 0).toFixed(2)}</p>
-                    </div>
-                    
-                    <div className="text-center px-4">
-                      <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-                        invoice.status === 'paid' 
-                          ? 'bg-green-500/20 text-green-400'
-                          : invoice.status === 'overdue'
-                            ? 'bg-red-500/20 text-red-400'
-                            : 'bg-orange-500/20 text-orange-400'
-                      }`}>
-                        {invoice.status?.toUpperCase()}
+                    <div className="flex items-center justify-between sm:justify-center gap-4">
+                      <div className="text-center sm:px-4">
+                        <p className="text-white/60 text-xs">Amount</p>
+                        <p className="font-bold text-white">${(invoice.total || invoice.amount || 0).toFixed(2)}</p>
+                      </div>
+                      
+                      <div className="text-center sm:px-4">
+                        <div className={`px-2 sm:px-3 py-1 rounded-full text-xs font-bold ${
+                          invoice.status === 'paid' 
+                            ? 'bg-green-500/20 text-green-200'
+                            : invoice.status === 'overdue'
+                              ? 'bg-red-500/20 text-red-200'
+                              : 'bg-orange-500/20 text-orange-200'
+                        }`}>
+                          {invoice.status?.toUpperCase()}
+                        </div>
                       </div>
                     </div>
                     
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-2 sm:ml-4 justify-center sm:justify-start">
                       <Button
                         onClick={() => setSelectedInvoice(invoice)}
-                        className="btn-glass p-2 rounded-2xl"
+                        className="btn-glass p-2 rounded-2xl flex-shrink-0"
                         title="View Details"
                       >
                         <Eye className="h-4 w-4" />
                       </Button>
                       <Button
                         onClick={() => downloadInvoicePDF(invoice.id)}
-                        className="btn-glass p-2 rounded-2xl"
+                        className="btn-glass p-2 rounded-2xl flex-shrink-0"
                         title="Download Invoice"
                       >
                         <Download className="h-4 w-4" />
@@ -296,9 +243,10 @@ export default function CustomerBillingPage() {
                       {invoice.status !== 'paid' && (
                         <Button
                           onClick={() => handlePayInvoice(invoice)}
-                          className="btn-glow px-4 py-2 rounded-2xl text-sm"
+                          className="btn-glow px-3 sm:px-4 py-2 rounded-2xl text-sm"
                         >
-                          Pay Now
+                          <span className="hidden sm:inline">Pay Now</span>
+                          <span className="sm:hidden">Pay</span>
                         </Button>
                       )}
                     </div>
@@ -312,31 +260,31 @@ export default function CustomerBillingPage() {
         {/* Invoice Details Modal */}
         {selectedInvoice && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="glass rounded-2xl p-8 border border-blue-400 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">Invoice Details</h2>
+            <div className="glass rounded-2xl p-4 sm:p-6 lg:p-8 border border-blue-400 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-white">Invoice Details</h2>
                 <Button
                   onClick={() => setSelectedInvoice(null)}
-                  className="btn-glass p-2 rounded-2xl"
+                  className="btn-glass p-2 rounded-2xl flex-shrink-0"
                 >
                   ✕
                 </Button>
               </div>
               
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="text-white/60 text-sm">Invoice Number</label>
-                    <p className="text-white font-bold">{selectedInvoice.invoiceNumber}</p>
+                    <p className="text-white font-bold break-all">{selectedInvoice.invoiceNumber}</p>
                   </div>
                   <div>
                     <label className="text-white/60 text-sm">Status</label>
                     <p className={`font-bold ${
                       selectedInvoice.status === 'paid' 
-                        ? 'text-green-400' 
+                        ? 'text-green-200' 
                         : selectedInvoice.status === 'overdue'
-                          ? 'text-red-400'
-                          : 'text-orange-400'
+                          ? 'text-red-200'
+                          : 'text-orange-200'
                     }`}>
                       {selectedInvoice.status?.toUpperCase()}
                     </p>
@@ -353,34 +301,35 @@ export default function CustomerBillingPage() {
                 
                 <div className="border-t border-blue-400/30 pt-4">
                   <label className="text-white/60 text-sm">Amount</label>
-                  <p className="text-3xl font-bold text-white">${(selectedInvoice.total || selectedInvoice.amount || 0).toFixed(2)}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white">${(selectedInvoice.total || selectedInvoice.amount || 0).toFixed(2)}</p>
                 </div>
                 
                 {selectedInvoice.notes && (
                   <div>
                     <label className="text-white/60 text-sm">Notes</label>
-                    <p className="text-white">{selectedInvoice.notes}</p>
+                    <p className="text-white break-words">{selectedInvoice.notes}</p>
                   </div>
                 )}
               </div>
               
-              <div className="mt-8 flex justify-end space-x-4">
+              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-end gap-3 sm:space-x-4 sm:gap-0">
                 <Button
                   onClick={() => setSelectedInvoice(null)}
-                  className="btn-glass px-6 py-2 rounded-2xl"
+                  className="btn-glass px-4 sm:px-6 py-2 rounded-2xl order-last sm:order-first"
                 >
                   Close
                 </Button>
                 <Button
                   onClick={() => downloadInvoicePDF(selectedInvoice.id)}
-                  className="btn-glass px-6 py-2 rounded-2xl"
+                  className="btn-glass px-4 sm:px-6 py-2 rounded-2xl"
                 >
-                  Download PDF
+                  <span className="hidden sm:inline">Download PDF</span>
+                  <span className="sm:hidden">Download</span>
                 </Button>
                 {selectedInvoice.status !== 'paid' && (
                   <Button
                     onClick={() => handlePayInvoice(selectedInvoice)}
-                    className="btn-glow px-6 py-2 rounded-2xl"
+                    className="btn-glow px-4 sm:px-6 py-2 rounded-2xl"
                   >
                     Pay Now
                   </Button>

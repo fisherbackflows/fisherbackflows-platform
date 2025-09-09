@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useCustomerData } from '@/hooks/useCustomerData';
 import { useAutoSave } from '@/hooks/useAutoSave';
+import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
 
 export default function CustomerSchedulePage() {
   const { customer, loading, error } = useCustomerData();
@@ -194,93 +195,37 @@ export default function CustomerSchedulePage() {
       <div className="fixed inset-0 bg-grid opacity-10" />
       <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
 
-      {/* Header */}
-      <header className="glass border-b border-blue-400 sticky top-0 z-50 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-8">
-              <Link href="/" className="text-2xl font-bold text-white">
-                Fisher Backflows
-              </Link>
-              <nav className="hidden md:flex space-x-1">
-                <Link href="/portal/dashboard" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Dashboard
-                </Link>
-                <Link href="/portal/devices" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Devices
-                </Link>
-                <Link href="/portal/billing" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Billing
-                </Link>
-                <Link href="/portal/schedule" className="px-4 py-2 rounded-2xl glass-btn-primary text-white glow-blue-sm font-medium">
-                  Schedule
-                </Link>
-              </nav>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:block text-right">
-                <p className="font-semibold text-white">{customer?.name}</p>
-                <p className="text-sm text-white/80">Account: {customer?.accountNumber}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PortalNavigation userInfo={{
+        name: customer?.name,
+        email: customer?.email,
+        accountNumber: customer?.accountNumber
+      }} />
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8 relative z-10">
-
-      {/* Navigation Header */}
-      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/portal/dashboard">
-              <Button variant="ghost" className="text-blue-300 hover:text-white">
-                ← Back to Dashboard
-              </Button>
-            </Link>
-            <nav className="flex space-x-4">
-              <Link href="/portal/billing">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Billing</Button>
-              </Link>
-              <Link href="/portal/devices">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Devices</Button>
-              </Link>
-              <Link href="/portal/reports">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Reports</Button>
-              </Link>
-              <Link href="/portal/schedule">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Schedule</Button>
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 relative z-10">
 
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 text-white">Schedule Service</h1>
-          <p className="text-white/90 text-lg">Book appointments for your backflow testing needs</p>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 text-white">Schedule Service</h1>
+          <p className="text-white/90 text-base sm:text-lg">Book appointments for your backflow testing needs</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           {/* Booking Section */}
-          <div className="glass rounded-2xl p-6 border border-blue-400">
-            <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-white">Book New Appointment</h2>
-            {lastSavedTime && (
-              <div className="text-sm text-white/60 flex items-center">
-                <Save className="h-3 w-3 mr-1" />
-                Auto-saved {lastSavedTime.toLocaleTimeString()}
-              </div>
-            )}
-          </div>
+          <div className="glass rounded-2xl p-4 sm:p-6 border border-blue-400">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-white">Book New Appointment</h2>
+              {lastSavedTime && (
+                <div className="text-sm text-white/60 flex items-center">
+                  <Save className="h-3 w-3 mr-1" />
+                  Auto-saved {lastSavedTime.toLocaleTimeString()}
+                </div>
+              )}
+            </div>
             
             {/* Step 1: Select Device */}
             {bookingStep === 1 && (
               <div>
-                <h3 className="text-lg font-bold text-blue-400 mb-4">Step 1: Select Device</h3>
+                <h3 className="text-lg font-bold text-blue-200 mb-4">Step 1: Select Device</h3>
                 <div className="space-y-3">
                   {customer?.devices?.map((device) => (
                     <div
@@ -313,8 +258,8 @@ export default function CustomerSchedulePage() {
             {/* Step 2: Select Date */}
             {bookingStep === 2 && (
               <div>
-                <h3 className="text-lg font-bold text-blue-400 mb-4">Step 2: Select Date</h3>
-                <div className="grid grid-cols-3 gap-3">
+                <h3 className="text-lg font-bold text-blue-200 mb-4">Step 2: Select Date</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {availableDates.slice(0, 9).map((date) => (
                     <Button
                       key={date}
@@ -349,7 +294,7 @@ export default function CustomerSchedulePage() {
             {/* Step 3: Select Time */}
             {bookingStep === 3 && (
               <div>
-                <h3 className="text-lg font-bold text-blue-400 mb-4">Step 3: Select Time</h3>
+                <h3 className="text-lg font-bold text-blue-200 mb-4">Step 3: Select Time</h3>
                 {loadingTimes ? (
                   <div className="text-center py-8">
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -397,7 +342,7 @@ export default function CustomerSchedulePage() {
             {/* Step 4: Confirm */}
             {bookingStep === 4 && (
               <div>
-                <h3 className="text-lg font-bold text-blue-400 mb-4">Confirm Appointment</h3>
+                <h3 className="text-lg font-bold text-blue-200 mb-4">Confirm Appointment</h3>
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center space-x-3">
                     <Wrench className="h-5 w-5 text-blue-400" />
@@ -442,31 +387,31 @@ export default function CustomerSchedulePage() {
           </div>
           
           {/* Appointments List */}
-          <div className="glass rounded-2xl p-6 border border-blue-400">
-            <h2 className="text-2xl font-bold text-white mb-6">Your Appointments</h2>
+          <div className="glass rounded-2xl p-4 sm:p-6 border border-blue-400">
+            <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Your Appointments</h2>
             
             {/* Upcoming */}
             {upcomingAppointments.length > 0 && (
-              <div className="mb-6">
-                <h3 className="text-lg font-bold text-blue-400 mb-3">Upcoming</h3>
+              <div className="mb-4 sm:mb-6">
+                <h3 className="text-lg font-bold text-blue-200 mb-3">Upcoming</h3>
                 <div className="space-y-3">
                   {upcomingAppointments.map((apt) => (
-                    <div key={apt.id} className="p-4 rounded-xl border border-blue-400/50">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="font-bold text-white">{apt.service_type || 'Annual Test'}</p>
-                          <div className="flex items-center space-x-3 mt-1">
+                    <div key={apt.id} className="p-3 sm:p-4 rounded-xl border border-blue-400/50">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-white truncate">{apt.service_type || 'Annual Test'}</p>
+                          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 mt-1 gap-1">
                             <span className="text-sm text-white/60 flex items-center">
-                              <Calendar className="h-3 w-3 mr-1" />
-                              {new Date(apt.appointment_date || apt.date).toLocaleDateString()}
+                              <Calendar className="h-3 w-3 mr-1 flex-shrink-0" />
+                              <span className="truncate">{new Date(apt.appointment_date || apt.date).toLocaleDateString()}</span>
                             </span>
                             <span className="text-sm text-white/60 flex items-center">
-                              <Clock className="h-3 w-3 mr-1" />
-                              {apt.appointment_time || apt.time || 'TBD'}
+                              <Clock className="h-3 w-3 mr-1 flex-shrink-0" />
+                              <span className="truncate">{apt.appointment_time || apt.time || 'TBD'}</span>
                             </span>
                           </div>
                         </div>
-                        <div className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold">
+                        <div className="px-3 py-1 rounded-full bg-blue-500/20 text-blue-200 text-xs font-bold text-center sm:text-left flex-shrink-0">
                           SCHEDULED
                         </div>
                       </div>

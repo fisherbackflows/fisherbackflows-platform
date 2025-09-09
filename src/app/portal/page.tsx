@@ -17,12 +17,12 @@ export default function CustomerPortalLoginPage() {
     <div className="min-h-screen bg-black">
       {/* Header */}
       <header className="glass border-b border-blue-400 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex justify-between items-center">
-            <Link href="/">
-              <Logo width={160} height={128} />
+            <Link href="/" className="flex-shrink-0">
+              <Logo width={120} height={96} className="sm:w-[160px] sm:h-[128px]" />
             </Link>
-            <nav className="hidden md:flex space-x-1">
+            <nav className="hidden lg:flex space-x-1">
               <Link href="/">
                 <Button variant="ghost" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium">
                   Home
@@ -39,12 +39,12 @@ export default function CustomerPortalLoginPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6 glass">
+      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-4 sm:p-6 glass">
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Info */}
           <div className="hidden lg:block">
             <div className="mb-8">
-              <div className="inline-block bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-200 px-4 py-2 rounded-full text-blue-700 text-sm font-semibold mb-6">
+              <div className="inline-block bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-200 px-4 py-2 rounded-full text-blue-200 text-sm font-semibold mb-6">
                 <Shield className="h-4 w-4 mr-2 inline" />
                 Secure Customer Portal
               </div>

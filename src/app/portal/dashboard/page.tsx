@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 
 import { useCustomerData } from '@/hooks/useCustomerData';
+import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
 
 export default function CustomerPortalDashboard() {
   const { customer, loading, error } = useCustomerData();
@@ -233,57 +234,65 @@ export default function CustomerPortalDashboard() {
 
         {/* Status Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10">
-          {/* Device Status */}
-          <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-xl flex items-center justify-center">
-                <Shield className="h-6 w-6 text-emerald-300" />
+          {/* Device Status - Clickable */}
+          <Link href="/portal/devices" className="block">
+            <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200 cursor-pointer transform hover:scale-105">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-xl flex items-center justify-center">
+                  <Shield className="h-6 w-6 text-emerald-300" />
+                </div>
+                <span className="px-3 py-1 bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-200 text-xs font-semibold rounded-full">ACTIVE</span>
               </div>
-              <span className="px-3 py-1 bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-200 text-xs font-semibold rounded-full">ACTIVE</span>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">{customer.devices.length}</h3>
+              <p className="text-white/80 font-medium">Active Device</p>
+              <p className="text-white/80 text-sm mt-2">Last tested: Jan 15, 2024</p>
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">{customer.devices.length}</h3>
-            <p className="text-white/80 font-medium">Active Device</p>
-            <p className="text-white/80 text-sm mt-2">Last tested: Jan 15, 2024</p>
-          </div>
+          </Link>
 
-          {/* Next Test */}
-          <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-xl flex items-center justify-center">
-                <Calendar className="h-6 w-6 text-blue-300" />
+          {/* Next Test - Clickable */}
+          <Link href="/portal/schedule" className="block">
+            <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200 cursor-pointer transform hover:scale-105">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-xl flex items-center justify-center">
+                  <Calendar className="h-6 w-6 text-blue-300" />
+                </div>
+                <span className="px-3 py-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-200 text-xs font-semibold rounded-full">UPCOMING</span>
               </div>
-              <span className="px-3 py-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-200 text-xs font-semibold rounded-full">UPCOMING</span>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">45</h3>
+              <p className="text-white/80 font-medium">Days Until Test</p>
+              <p className="text-white/80 text-sm mt-2">Due: Jan 15, 2025</p>
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">45</h3>
-            <p className="text-white/80 font-medium">Days Until Test</p>
-            <p className="text-white/80 text-sm mt-2">Due: Jan 15, 2025</p>
-          </div>
+          </Link>
 
-          {/* Account Balance */}
-          <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm rounded-xl flex items-center justify-center">
-                <CreditCard className="h-6 w-6 text-green-300" />
+          {/* Account Balance - Clickable */}
+          <Link href="/portal/billing" className="block">
+            <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200 cursor-pointer transform hover:scale-105">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm rounded-xl flex items-center justify-center">
+                  <CreditCard className="h-6 w-6 text-green-300" />
+                </div>
+                <span className="px-3 py-1 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-200 text-xs font-semibold rounded-full">PAID</span>
               </div>
-              <span className="px-3 py-1 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-200 text-xs font-semibold rounded-full">PAID</span>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">${customer.balance.toFixed(2)}</h3>
+              <p className="text-white/80 font-medium">Account Balance</p>
+              <p className="text-white/80 text-sm mt-2">All payments current</p>
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">${customer.balance.toFixed(2)}</h3>
-            <p className="text-white/80 font-medium">Account Balance</p>
-            <p className="text-white/80 text-sm mt-2">All payments current</p>
-          </div>
+          </Link>
 
-          {/* Service Status */}
-          <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-xl flex items-center justify-center">
-                <Award className="h-6 w-6 text-amber-300" />
+          {/* Service Status - Clickable */}
+          <Link href="/portal/reports" className="block">
+            <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm hover:glow-blue transition-all duration-200 cursor-pointer transform hover:scale-105">
+              <div className="flex items-center justify-between mb-4">
+                <div className="w-12 h-12 bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-xl flex items-center justify-center">
+                  <Award className="h-6 w-6 text-amber-300" />
+                </div>
+                <span className="px-3 py-1 bg-amber-500/20 border border-amber-400 glow-blue-sm text-amber-200 text-xs font-semibold rounded-full">CERTIFIED</span>
               </div>
-              <span className="px-3 py-1 bg-amber-500/20 border border-amber-400 glow-blue-sm text-amber-200 text-xs font-semibold rounded-full">CERTIFIED</span>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">100%</h3>
+              <p className="text-white/80 font-medium">Compliance Rate</p>
+              <p className="text-white/80 text-sm mt-2">BAT certified testing</p>
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-1">100%</h3>
-            <p className="text-white/80 font-medium">Compliance Rate</p>
-            <p className="text-white/80 text-sm mt-2">BAT certified testing</p>
-          </div>
+          </Link>
         </div>
 
         {/* Quick Actions and Recent Activity */}

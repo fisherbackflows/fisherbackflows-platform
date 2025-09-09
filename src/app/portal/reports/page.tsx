@@ -17,6 +17,7 @@ import {
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useCustomerData } from '@/hooks/useCustomerData';
+import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
 
 export default function CustomerReportsPage() {
   const { customer, loading, error } = useCustomerData();
