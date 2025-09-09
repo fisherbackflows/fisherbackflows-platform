@@ -16,11 +16,18 @@ export async function GET(request: NextRequest) {
     let dbStatus = 'unknown'
     
     try {
-      // Test database connection directly with known working credentials
-      const testResponse = await fetch('https://jvhbqfueutvfepsjmztx.supabase.co/rest/v1/team_users?select=id&limit=1', {
+      // Test database connection using environment variables
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      
+      if (!supabaseUrl || !anonKey) {
+        throw new Error('Supabase environment variables not configured');
+      }
+      
+      const testResponse = await fetch(`${supabaseUrl}/rest/v1/team_users?select=id&limit=1`, {
         headers: {
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGJxZnVldXR2ZmVwc2ptenR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYyNzM0NzUsImV4cCI6MjA3MTg0OTQ3NX0.UuEuNrFU-JXWvoICUNCupz1MzLvWVrcIqRA-LwpI1Jo',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGJxZnVldXR2ZmVwc2ptenR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYyNzM0NzUsImV4cCI6MjA3MTg0OTQ3NX0.UuEuNrFU-JXWvoICUNCupz1MzLvWVrcIqRA-LwpI1Jo'
+          'apikey': anonKey,
+          'Authorization': `Bearer ${anonKey}`
         }
       });
       

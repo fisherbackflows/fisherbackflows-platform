@@ -24,7 +24,11 @@ export async function POST(request: NextRequest) {
     
     // Update database directly
     const supabaseUrl = 'https://jvhbqfueutvfepsjmztx.supabase.co';
-    const serviceRoleKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp2aGJxZnVldXR2ZmVwc2ptenR4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NjI3MzQ3NSwiZXhwIjoyMDcxODQ5NDc1fQ.UNDLGdqkRe26QyOzXltQ7y4KwcTCuuqxsgB-a1r3VrY';
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    
+    if (!serviceRoleKey) {
+      return NextResponse.json({ error: 'Service configuration error' }, { status: 500 });
+    }
     
     const response = await fetch(`${supabaseUrl}/rest/v1/customers?email=eq.${encodeURIComponent(email)}`, {
       method: 'PATCH', 
