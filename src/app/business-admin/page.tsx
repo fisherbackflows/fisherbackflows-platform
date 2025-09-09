@@ -166,7 +166,7 @@ export default function BusinessAdminPortal() {
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [leads, setLeads] = useState<Lead[]>([]);
   const [saasClients, setSaasClients] = useState<SaasClient[]>([]);
   const [metrics, setMetrics] = useState<BusinessMetrics | null>(null);
@@ -177,21 +177,33 @@ export default function BusinessAdminPortal() {
   // Check for existing session
   useEffect(() => {
     const checkSession = () => {
-      const savedSession = localStorage.getItem('fisher-admin-session');
-      if (savedSession) {
-        try {
-          const sessionData = JSON.parse(savedSession);
-          if (sessionData.expires > Date.now()) {
-            setSession(sessionData.session);
-            loadBusinessData();
-          } else {
+      try {
+        // Check if we're in the browser (not SSR)
+        if (typeof window === 'undefined') {
+          setLoading(false);
+          return;
+        }
+        
+        const savedSession = localStorage.getItem('fisher-admin-session');
+        if (savedSession) {
+          try {
+            const sessionData = JSON.parse(savedSession);
+            if (sessionData.expires > Date.now()) {
+              setSession(sessionData.session);
+              loadBusinessData();
+            } else {
+              localStorage.removeItem('fisher-admin-session');
+            }
+          } catch (parseError) {
+            console.error('Session parsing error:', parseError);
             localStorage.removeItem('fisher-admin-session');
           }
-        } catch (error) {
-          localStorage.removeItem('fisher-admin-session');
         }
+      } catch (storageError) {
+        console.error('Storage access error:', storageError);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     checkSession();
@@ -641,7 +653,7 @@ export default function BusinessAdminPortal() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
-        {activeTab === 'overview' && (
+        {activeTab === 'dashboard' && (
           <>
             <div className="space-y-2">
               <h2 className="text-4xl font-bold text-white">Business Intelligence Dashboard</h2>
