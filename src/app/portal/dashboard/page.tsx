@@ -340,13 +340,13 @@ export default function CustomerPortalDashboard() {
             <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm">
               <h2 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6">Your Backflow Device</h2>
               {customer.devices.map((device) => (
-                <div key={device.id} className="border border-blue-400 rounded-2xl p-6 glass">
-                  <div className="flex items-start justify-between mb-4">
+                <div key={device.id} className="border border-blue-400 rounded-xl sm:rounded-2xl p-4 sm:p-6 glass">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 space-y-2 sm:space-y-0">
                     <div>
-                      <h3 className="font-bold text-white text-lg">{device.location}</h3>
-                      <p className="text-white/90">{device.make} {device.model} - {device.size}</p>
+                      <h3 className="font-bold text-white text-base sm:text-lg">{device.location}</h3>
+                      <p className="text-white/90 text-sm sm:text-base">{device.make} {device.model} - {device.size}</p>
                     </div>
-                    <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                    <span className={`inline-block px-2 py-1 rounded-full text-xs sm:text-sm font-semibold ${
                       device.status === 'Passed' 
                         ? 'bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-200' 
                         : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-200'
@@ -355,35 +355,35 @@ export default function CustomerPortalDashboard() {
                     </span>
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-4">
                     <div>
-                      <p className="text-sm font-medium text-white/80">Serial Number</p>
-                      <p className="font-semibold text-white">{device.serialNumber}</p>
+                      <p className="text-xs sm:text-sm font-medium text-white/80">Serial Number</p>
+                      <p className="font-semibold text-white text-sm sm:text-base">{device.serialNumber}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white/80">Last Test</p>
-                      <p className="font-semibold text-white">{device.lastTestDate}</p>
+                      <p className="text-xs sm:text-sm font-medium text-white/80">Last Test</p>
+                      <p className="font-semibold text-white text-sm sm:text-base">{device.lastTestDate}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white/80">Next Test Due</p>
-                      <p className="font-semibold text-white">{device.nextTestDate}</p>
+                      <p className="text-xs sm:text-sm font-medium text-white/80">Next Test Due</p>
+                      <p className="font-semibold text-white text-sm sm:text-base">{device.nextTestDate}</p>
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white/80">Days Remaining</p>
-                      <p className="font-semibold text-blue-300">{device.daysUntilTest} days</p>
+                      <p className="text-xs sm:text-sm font-medium text-white/80">Days Remaining</p>
+                      <p className="font-semibold text-blue-300 text-sm sm:text-base">{device.daysUntilTest} days</p>
                     </div>
                   </div>
                   
-                  <div className="flex space-x-3">
-                    <Link href="/portal/schedule">
-                      <Button className="glass-btn-primary hover:glow-blue text-white">
+                  <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                    <Link href="/portal/schedule" className="w-full sm:w-auto">
+                      <Button className="w-full sm:w-auto glass-btn-primary hover:glow-blue text-white text-sm">
                         Schedule Test
                       </Button>
                     </Link>
-                    <Link href="/portal/reports">
-                      <Button variant="outline" className="border-blue-400 text-white/80 hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm">
-                        <Download className="h-4 w-4 mr-2" />
-                        Download Report
+                    <Link href="/portal/reports" className="w-full sm:w-auto">
+                      <Button variant="outline" className="w-full sm:w-auto border-blue-400 text-white/80 hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm text-sm">
+                        <Download className="h-3 w-3 mr-1" />
+                        Report
                       </Button>
                     </Link>
                   </div>
@@ -394,29 +394,33 @@ export default function CustomerPortalDashboard() {
             {/* Recent Test History */}
             <div className="glass border border-blue-400 rounded-xl p-4 sm:p-6 glow-blue-sm">
               <h2 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6">Recent Test History</h2>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {customer.recentTests.map((test) => (
-                  <div key={test.id} className="flex items-center justify-between p-4 glass rounded-2xl border border-blue-400">
-                    <div className="flex items-center space-x-4">
-                      <div className={`w-3 h-3 rounded-full ${test.result === 'Passed' ? 'bg-emerald-500/20 border border-emerald-400 glow-blue-sm' : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl'}`}></div>
-                      <div>
-                        <p className="font-semibold text-white">{test.testType}</p>
-                        <p className="text-sm text-white/90">{test.location}</p>
-                        <p className="text-sm text-white/80">{test.date}</p>
+                  <div key={test.id} className="glass rounded-xl border border-blue-400 p-3 sm:p-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                      {/* Test Info */}
+                      <div className="flex items-start space-x-3">
+                        <div className={`w-2 h-2 mt-1.5 rounded-full flex-shrink-0 ${test.result === 'Passed' ? 'bg-emerald-400' : 'bg-red-400'}`}></div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-white text-sm sm:text-base truncate">{test.testType}</p>
+                          <p className="text-xs sm:text-sm text-white/80">{test.location} • {test.date}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                        test.result === 'Passed' 
-                          ? 'bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-emerald-200' 
-                          : 'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-200'
-                      }`}>
-                        {test.result}
-                      </span>
-                      <Button variant="outline" size="sm" className="border-blue-400 text-white/80">
-                        <Download className="h-4 w-4 mr-1" />
-                        PDF
-                      </Button>
+                      
+                      {/* Actions */}
+                      <div className="flex items-center space-x-2 pl-5 sm:pl-0">
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                          test.result === 'Passed' 
+                            ? 'bg-emerald-500/20 text-emerald-200' 
+                            : 'bg-red-500/20 text-red-200'
+                        }`}>
+                          {test.result}
+                        </span>
+                        <Button variant="outline" size="sm" className="h-7 px-2 border-blue-400 text-white/80 text-xs">
+                          <Download className="h-3 w-3 mr-1" />
+                          PDF
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 ))}
