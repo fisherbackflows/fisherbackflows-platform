@@ -262,7 +262,8 @@ export default function HomePage() {
           </h1>
           
           <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed px-4">
-            Protecting Pierce County's water supply with expert backflow prevention services.{' '}
+            Protecting Pierce County's water supply with expert backflow prevention services.
+            <br />
             <strong className="text-white/90">Fast scheduling, same-week service, and full compliance guaranteed.</strong>
           </p>
           
