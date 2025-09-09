@@ -262,15 +262,20 @@ export default function BusinessAdminPortal() {
   const loadBusinessData = async () => {
     setLoading(true);
     try {
-      // Fetch real business data from our API
-      const response = await fetch('/api/business-admin/metrics');
-      const data = await response.json();
+      // Fetch comprehensive lead data from admin API
+      const leadsResponse = await fetch('/api/admin/leads?limit=1000');
+      const leadsData = await leadsResponse.json();
       
-      if (data.success) {
-        setMetrics(data.metrics);
+      // Also get business metrics for dashboard
+      const metricsResponse = await fetch('/api/business-admin/metrics');
+      const metricsData = await metricsResponse.json();
+      
+      if (leadsData.success && metricsData.success) {
+        // Set metrics from the business metrics API
+        setMetrics(metricsData.metrics);
         
-        // Convert real leads to the expected format
-        const formattedLeads: Lead[] = (data.leads || []).map((lead: any) => ({
+        // Use the comprehensive leads from admin API (1000+ leads)
+        const formattedLeads: Lead[] = (leadsData.leads || []).map((lead: any) => ({
           id: lead.id,
           first_name: lead.first_name || '',
           last_name: lead.last_name || '',
@@ -299,15 +304,18 @@ export default function BusinessAdminPortal() {
         // SaaS clients will be empty until we have real SaaS client data in the database
         setSaasClients([]);
         
-        console.log(`✅ Loaded real business data:`, {
-          dataSource: data.data_source,
+        console.log(`✅ Loaded comprehensive business data:`, {
+          dataSource: 'admin_api',
           totalLeads: formattedLeads.length,
-          totalRevenue: data.metrics?.revenue?.total_ytd,
-          rawCounts: data.metrics?.raw_counts
+          totalRevenue: metricsData.metrics?.revenue?.total_ytd,
+          leadCategories: {
+            backflow: leadsData.categories?.backflow || 0,
+            saas: leadsData.categories?.saas || 0
+          }
         });
         
       } else {
-        throw new Error(data.error || 'Failed to fetch business data');
+        throw new Error(leadsData.error || metricsData.error || 'Failed to fetch business data');
       }
       
     } catch (error) {
