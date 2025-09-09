@@ -655,9 +655,9 @@ export default function BusinessAdminPortal() {
       <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {activeTab === 'dashboard' && (
           <>
-            <div className="space-y-2">
-              <h2 className="text-4xl font-bold text-white">Business Intelligence Dashboard</h2>
-              <p className="text-white/70 text-lg">Complete overview of your backflow business and SaaS operations</p>
+            <div className="space-y-2 relative z-10">
+              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Business Intelligence Dashboard</h2>
+              <p className="text-white/80 text-lg drop-shadow-md">Complete overview of your backflow business and SaaS operations</p>
             </div>
             
             {/* Executive Summary Cards */}
@@ -907,9 +907,9 @@ export default function BusinessAdminPortal() {
 
         {activeTab === 'backflow-leads' && (
           <div className="space-y-6">
-            <div className="space-y-2">
-              <h2 className="text-4xl font-bold text-white">Backflow Leads Management</h2>
-              <p className="text-white/70 text-lg">Manage and track all backflow testing leads</p>
+            <div className="space-y-2 relative z-10">
+              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Backflow Leads Management</h2>
+              <p className="text-white/80 text-lg drop-shadow-md">Manage and track all backflow testing leads</p>
             </div>
             
             {/* Leads Summary Cards */}
@@ -1044,9 +1044,9 @@ export default function BusinessAdminPortal() {
         
         {activeTab === 'saas-clients' && (
           <div className="space-y-6">
-            <div className="space-y-2">
-              <h2 className="text-4xl font-bold text-white">SaaS Clients Management</h2>
-              <p className="text-white/70 text-lg">Manage SaaS platform subscriptions and clients</p>
+            <div className="space-y-2 relative z-10">
+              <h2 className="text-4xl font-bold text-white drop-shadow-lg">SaaS Clients Management</h2>
+              <p className="text-white/80 text-lg drop-shadow-md">Manage SaaS platform subscriptions and clients</p>
             </div>
             
             {/* SaaS Metrics Cards */}
@@ -1153,9 +1153,9 @@ export default function BusinessAdminPortal() {
         
         {activeTab === 'revenue' && (
           <div className="space-y-6">
-            <div className="space-y-2">
-              <h2 className="text-4xl font-bold text-white">Revenue Analytics</h2>
-              <p className="text-white/70 text-lg">Comprehensive financial performance analysis</p>
+            <div className="space-y-2 relative z-10">
+              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Revenue Analytics</h2>
+              <p className="text-white/80 text-lg drop-shadow-md">Comprehensive financial performance analysis</p>
             </div>
             
             {/* Revenue Metrics Cards */}
@@ -1254,9 +1254,9 @@ export default function BusinessAdminPortal() {
         
         {activeTab === 'pipeline' && (
           <div className="space-y-6">
-            <div className="space-y-2">
-              <h2 className="text-4xl font-bold text-white">Sales Pipeline</h2>
-              <p className="text-white/70 text-lg">Track sales funnel and conversion metrics</p>
+            <div className="space-y-2 relative z-10">
+              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Sales Pipeline</h2>
+              <p className="text-white/80 text-lg drop-shadow-md">Track sales funnel and conversion metrics</p>
             </div>
             
             {/* Pipeline Metrics */}
