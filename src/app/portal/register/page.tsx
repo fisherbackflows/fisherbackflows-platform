@@ -85,7 +85,7 @@ export default function CustomerRegistrationPage() {
         throw new Error(data.error || 'Registration failed');
       }
 
-      setSuccess('Account created successfully! Please check your email to verify your account.');
+      setSuccess('Account created successfully! You can now sign in with your email and password.');
       
       // Redirect to login after success
       setTimeout(() => {
@@ -480,7 +480,7 @@ export default function CustomerRegistrationPage() {
               
               <Link
                 href="/portal"
-                className="inline-flex items-center justify-center w-full border border-blue-200 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl text-blue-700 hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm hover:border-blue-300 py-3 rounded-2xl transition-colors duration-200 font-medium"
+                className="inline-flex items-center justify-center w-full border border-blue-200 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm hover:border-blue-300 py-3 rounded-2xl transition-colors duration-200 font-medium hover:text-white !text-white"
               >
                 Sign In to Your Account
               </Link>
