@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { createClientComponentClient } from '@/lib/supabase';
 import { 
   Mail, 
   Phone, 
@@ -51,6 +52,19 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
 
       if (!response.ok) {
         throw new Error(data.error || 'Login failed');
+      }
+
+      // Set the session in Supabase client
+      if (data.session) {
+        const supabase = createClientComponentClient();
+        const { error: sessionError } = await supabase.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token,
+        });
+        
+        if (sessionError) {
+          console.error('Failed to set session:', sessionError);
+        }
       }
 
       setSuccess('Login successful! Redirecting...');
