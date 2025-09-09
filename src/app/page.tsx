@@ -539,17 +539,23 @@ export default function HomePage() {
             <div className="text-center">
               <h4 className="text-xl font-bold mb-6 text-white">Contact Info</h4>
               <div className="space-y-4">
-                <div className="flex items-center justify-center space-x-3">
-                  <Phone className="h-5 w-5 text-blue-400" />
-                  <span className="text-white/90 text-lg">(253) 278-8692</span>
+                <div className="text-center">
+                  <div className="inline-flex items-center space-x-3">
+                    <Phone className="h-5 w-5 text-blue-400" />
+                    <span className="text-white/90 text-lg">(253) 278-8692</span>
+                  </div>
                 </div>
-                <div className="flex items-center justify-center space-x-3">
-                  <Mail className="h-5 w-5 text-emerald-400" />
-                  <span className="text-white/90 text-lg">service@fisherbackflows.com</span>
+                <div className="text-center">
+                  <div className="inline-flex items-center space-x-3">
+                    <Mail className="h-5 w-5 text-emerald-400" />
+                    <span className="text-white/90 text-lg">service@fisherbackflows.com</span>
+                  </div>
                 </div>
-                <div className="flex items-center justify-center space-x-3">
-                  <MapPin className="h-5 w-5 text-amber-400" />
-                  <span className="text-white/90 text-lg">Pierce County, WA</span>
+                <div className="text-center">
+                  <div className="inline-flex items-center space-x-3">
+                    <MapPin className="h-5 w-5 text-amber-400" />
+                    <span className="text-white/90 text-lg">Pierce County, WA</span>
+                  </div>
                 </div>
               </div>
             </div>
