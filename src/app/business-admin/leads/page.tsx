@@ -29,7 +29,16 @@ import {
   ChevronLeft,
   ChevronRight,
   RefreshCw,
-  AlertTriangle
+  AlertTriangle,
+  Zap,
+  Target,
+  TrendingUp,
+  BarChart3,
+  PieChart,
+  Briefcase,
+  Server,
+  FileText,
+  Download
 } from 'lucide-react';
 
 interface Lead {
@@ -37,15 +46,16 @@ interface Lead {
   first_name: string;
   last_name: string;
   company_name?: string;
+  title?: string;
   email?: string;
   phone: string;
-  address_line1?: string;
+  address?: string;
   city?: string;
   state?: string;
   zip_code?: string;
-  source?: string;
+  source: string;
   status: 'new' | 'contacted' | 'qualified' | 'converted' | 'lost';
-  estimated_value?: number;
+  estimated_value: number;
   notes?: string;
   assigned_to?: string;
   contacted_date?: string;
@@ -54,6 +64,45 @@ interface Lead {
   converted_customer_id?: string;
   created_at: string;
   updated_at: string;
+  lead_type: 'backflow' | 'saas';
+  priority_score: number;
+}
+
+interface LeadStats {
+  total_leads: number;
+  backflow: {
+    type: 'backflow';
+    total: number;
+    new: number;
+    contacted: number;
+    qualified: number;
+    converted: number;
+    lost: number;
+    average_value: number;
+    total_value: number;
+  };
+  saas: {
+    type: 'saas';
+    total: number;
+    new: number;
+    contacted: number;
+    qualified: number;
+    converted: number;
+    lost: number;
+    average_value: number;
+    total_value: number;
+  };
+  by_status: {
+    new: number;
+    contacted: number;
+    qualified: number;
+    converted: number;
+    lost: number;
+  };
+  by_source: Record<string, number>;
+  recent_activity: number;
+  conversion_rate: number;
+  pipeline_value: number;
 }
 
 const ITEMS_PER_PAGE = 20;
@@ -67,12 +116,12 @@ const STATUS_CONFIG = {
 };
 
 // Components
-const LeadCard = ({ lead, onClick, priorityScore }: { 
+const LeadCard = ({ lead, onClick }: { 
   lead: Lead; 
   onClick: () => void; 
-  priorityScore: number; 
 }) => {
   const StatusIcon = STATUS_CONFIG[lead.status].icon;
+  const LeadTypeIcon = lead.lead_type === 'saas' ? Server : Briefcase;
   
   return (
     <div
@@ -85,8 +134,9 @@ const LeadCard = ({ lead, onClick, priorityScore }: {
       <div className="flex items-start space-x-4">
         {/* Priority Indicator */}
         <div className={`w-1 h-12 rounded-full flex-shrink-0 ${
-          priorityScore >= 4 ? 'bg-red-500' :
-          priorityScore >= 2 ? 'bg-yellow-500' : 'bg-gray-500'
+          lead.priority_score >= 6 ? 'bg-red-500' :
+          lead.priority_score >= 4 ? 'bg-yellow-500' :
+          lead.priority_score >= 2 ? 'bg-blue-500' : 'bg-gray-500'
         }`} />
         
         {/* Main Content */}
@@ -102,11 +152,24 @@ const LeadCard = ({ lead, onClick, priorityScore }: {
                   <span className="truncate">{lead.company_name}</span>
                 </div>
               )}
+              {/* Lead Type Badge */}
+              <Badge className={`${lead.lead_type === 'saas' ? 'bg-purple-500/20 text-purple-300 border-purple-400' : 'bg-blue-500/20 text-blue-300 border-blue-400'} text-xs border flex-shrink-0`}>
+                <LeadTypeIcon className="h-3 w-3 mr-1" />
+                {lead.lead_type === 'saas' ? 'SaaS' : 'Backflow'}
+              </Badge>
             </div>
-            <Badge className={`${STATUS_CONFIG[lead.status].color} text-xs border flex-shrink-0`}>
-              <StatusIcon className="h-3 w-3 mr-1" />
-              {lead.status}
-            </Badge>
+            <div className="flex items-center space-x-2">
+              {lead.priority_score >= 6 && (
+                <Badge className="bg-red-500/20 text-red-300 border-red-400 text-xs border flex-shrink-0">
+                  <Zap className="h-3 w-3 mr-1" />
+                  High Priority
+                </Badge>
+              )}
+              <Badge className={`${STATUS_CONFIG[lead.status].color} text-xs border flex-shrink-0`}>
+                <StatusIcon className="h-3 w-3 mr-1" />
+                {lead.status}
+              </Badge>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-sm text-white/60 mb-2">
@@ -143,7 +206,7 @@ const LeadCard = ({ lead, onClick, priorityScore }: {
             </div>
             <div className="flex items-center space-x-3">
               <span className="text-white font-medium">
-                ${(lead.estimated_value || 0).toLocaleString()}
+                ${lead.estimated_value.toLocaleString()}
               </span>
               <Eye className="h-4 w-4 text-white/40 group-hover:text-blue-300 transition-colors" />
             </div>
@@ -235,11 +298,13 @@ const Pagination = ({
 export default function LeadsManagementPage() {
   const router = useRouter();
   const [leads, setLeads] = useState<Lead[]>([]);
+  const [stats, setStats] = useState<LeadStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [sourceFilter, setSourceFilter] = useState('all');
+  const [leadTypeFilter, setLeadTypeFilter] = useState('all');
   const [assignedFilter, setAssignedFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -248,7 +313,19 @@ export default function LeadsManagementPage() {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('/api/business-admin/leads', {
+      const params = new URLSearchParams({
+        limit: '50',
+        offset: ((currentPage - 1) * 50).toString(),
+        ...(statusFilter !== 'all' && { status: statusFilter }),
+        ...(sourceFilter !== 'all' && { source: sourceFilter }),
+        ...(leadTypeFilter !== 'all' && { type: leadTypeFilter }),
+        ...(assignedFilter !== 'all' && { assigned_to: assignedFilter }),
+        ...(searchTerm && { search: searchTerm }),
+        sortBy: 'priority_score',
+        sortOrder: 'desc'
+      });
+
+      const response = await fetch(`/api/admin/leads?${params}`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -259,43 +336,21 @@ export default function LeadsManagementPage() {
       }
       
       const data = await response.json();
-      if (!data.success || !data.leads) {
-        throw new Error('Invalid response format');
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to load leads');
       }
       
-      const formattedLeads: Lead[] = data.leads.map((lead: any) => ({
-        id: lead.id,
-        first_name: lead.first_name || '',
-        last_name: lead.last_name || '',
-        company_name: lead.company_name || '',
-        email: lead.email || '',
-        phone: lead.phone || '',
-        address_line1: lead.address || '',
-        city: lead.city || '',
-        state: lead.state || '',
-        zip_code: lead.zip_code || '',
-        source: lead.source || 'unknown',
-        status: lead.status || 'new',
-        estimated_value: lead.estimated_value || 0,
-        notes: lead.notes || '',
-        assigned_to: lead.assigned_to || 'Unassigned',
-        contacted_date: lead.contacted_date || '',
-        qualified_date: lead.qualified_date || '',
-        converted_date: lead.converted_date || '',
-        converted_customer_id: lead.converted_customer_id || '',
-        created_at: lead.created_at || new Date().toISOString(),
-        updated_at: lead.updated_at || new Date().toISOString()
-      }));
-      
-      setLeads(formattedLeads);
+      setLeads(data.leads || []);
+      setStats(data.stats);
     } catch (error) {
       console.error('Failed to load leads:', error);
       setError(error instanceof Error ? error.message : 'Failed to load leads');
       setLeads([]);
+      setStats(null);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [currentPage, statusFilter, sourceFilter, leadTypeFilter, assignedFilter, searchTerm]);
 
   const getPriorityScore = useCallback((lead: Lead) => {
     let score = 0;
@@ -306,51 +361,8 @@ export default function LeadsManagementPage() {
     return score;
   }, []);
 
-  const filteredLeads = useMemo(() => {
-    if (!leads.length) return [];
-    
-    const searchLower = searchTerm.toLowerCase().trim();
-    
-    const filtered = leads.filter(lead => {
-      const matchesSearch = !searchLower || 
-        lead.first_name.toLowerCase().includes(searchLower) ||
-        lead.last_name.toLowerCase().includes(searchLower) ||
-        lead.company_name?.toLowerCase().includes(searchLower) ||
-        lead.email?.toLowerCase().includes(searchLower) ||
-        lead.phone.includes(searchTerm);
-      
-      const matchesStatus = statusFilter === 'all' || lead.status === statusFilter;
-      const matchesSource = sourceFilter === 'all' || lead.source === sourceFilter;
-      const matchesAssigned = assignedFilter === 'all' || lead.assigned_to === assignedFilter;
-      
-      return matchesSearch && matchesStatus && matchesSource && matchesAssigned;
-    });
-
-    return filtered.sort((a, b) => {
-      const scoreDiff = getPriorityScore(b) - getPriorityScore(a);
-      if (scoreDiff !== 0) return scoreDiff;
-      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-    });
-  }, [leads, searchTerm, statusFilter, sourceFilter, assignedFilter, getPriorityScore]);
-
-  const paginatedLeads = useMemo(() => {
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filteredLeads.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  }, [filteredLeads, currentPage]);
-
-  const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE);
-
-  const leadStats = useMemo(() => ({
-    total: leads.length,
-    new: leads.filter(l => l.status === 'new').length,
-    contacted: leads.filter(l => l.status === 'contacted').length,
-    qualified: leads.filter(l => l.status === 'qualified').length,
-    converted: leads.filter(l => l.status === 'converted').length,
-    lost: leads.filter(l => l.status === 'lost').length
-  }), [leads]);
-
   const uniqueSources = useMemo(() => 
-    [...new Set(leads.map(l => l.source).filter(Boolean))].sort(), [leads]
+    stats ? Object.keys(stats.by_source).sort() : [], [stats]
   );
   
   const uniqueAssignees = useMemo(() => 
@@ -365,11 +377,12 @@ export default function LeadsManagementPage() {
     setSearchTerm('');
     setStatusFilter('all');
     setSourceFilter('all');
+    setLeadTypeFilter('all');
     setAssignedFilter('all');
     setCurrentPage(1);
   }, []);
 
-  const hasActiveFilters = searchTerm || statusFilter !== 'all' || sourceFilter !== 'all' || assignedFilter !== 'all';
+  const hasActiveFilters = searchTerm || statusFilter !== 'all' || sourceFilter !== 'all' || leadTypeFilter !== 'all' || assignedFilter !== 'all';
 
   // Effects
   useEffect(() => {
@@ -378,7 +391,7 @@ export default function LeadsManagementPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchTerm, statusFilter, sourceFilter, assignedFilter]);
+  }, [searchTerm, statusFilter, sourceFilter, leadTypeFilter, assignedFilter]);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -416,21 +429,121 @@ export default function LeadsManagementPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+        {/* Lead Category Overview */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <Card className="glass border-blue-400/30">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center">
+                <Briefcase className="h-5 w-5 mr-2" />
+                Backflow Leads ({stats?.backflow.total || 0})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-4 text-sm">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-300">{stats?.backflow.new || 0}</div>
+                  <div className="text-white/60">New</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-yellow-300">{stats?.backflow.contacted || 0}</div>
+                  <div className="text-white/60">Contacted</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-emerald-300">{stats?.backflow.converted || 0}</div>
+                  <div className="text-white/60">Converted</div>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <div className="flex justify-between items-center">
+                  <span className="text-white/70">Average Value:</span>
+                  <span className="text-white font-medium">${(stats?.backflow.average_value || 0).toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center mt-1">
+                  <span className="text-white/70">Total Value:</span>
+                  <span className="text-white font-medium">${(stats?.backflow.total_value || 0).toLocaleString()}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="glass border-purple-400/30">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center">
+                <Server className="h-5 w-5 mr-2" />
+                SaaS Leads ({stats?.saas.total || 0})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-4 text-sm">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-300">{stats?.saas.new || 0}</div>
+                  <div className="text-white/60">New</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-yellow-300">{stats?.saas.contacted || 0}</div>
+                  <div className="text-white/60">Contacted</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-emerald-300">{stats?.saas.converted || 0}</div>
+                  <div className="text-white/60">Converted</div>
+                </div>
+              </div>
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <div className="flex justify-between items-center">
+                  <span className="text-white/70">Average Value:</span>
+                  <span className="text-white font-medium">${(stats?.saas.average_value || 0).toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between items-center mt-1">
+                  <span className="text-white/70">Total Value:</span>
+                  <span className="text-white font-medium">${(stats?.saas.total_value || 0).toLocaleString()}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Statistics Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-          <StatsCard title="Total" value={leadStats.total} color="white" />
-          <StatsCard title="New" value={leadStats.new} color="blue" />
-          <StatsCard title="Contacted" value={leadStats.contacted} color="yellow" />
-          <StatsCard title="Qualified" value={leadStats.qualified} color="green" />
-          <StatsCard title="Converted" value={leadStats.converted} color="emerald" />
-          <StatsCard title="Lost" value={leadStats.lost} color="red" />
+          <StatsCard title="Total" value={stats?.total_leads || 0} color="white" />
+          <StatsCard title="New" value={stats?.by_status.new || 0} color="blue" />
+          <StatsCard title="Contacted" value={stats?.by_status.contacted || 0} color="yellow" />
+          <StatsCard title="Qualified" value={stats?.by_status.qualified || 0} color="green" />
+          <StatsCard title="Converted" value={stats?.by_status.converted || 0} color="emerald" />
+          <StatsCard title="Lost" value={stats?.by_status.lost || 0} color="red" />
+        </div>
+
+        {/* Additional Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Card className="glass border-emerald-400/30">
+            <CardContent className="p-4 text-center">
+              <Target className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-emerald-300">{(stats?.conversion_rate || 0).toFixed(1)}%</div>
+              <div className="text-white/70 text-sm">Conversion Rate</div>
+            </CardContent>
+          </Card>
+          
+          <Card className="glass border-yellow-400/30">
+            <CardContent className="p-4 text-center">
+              <TrendingUp className="h-8 w-8 text-yellow-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-yellow-300">${(stats?.pipeline_value || 0).toLocaleString()}</div>
+              <div className="text-white/70 text-sm">Pipeline Value</div>
+            </CardContent>
+          </Card>
+          
+          <Card className="glass border-blue-400/30">
+            <CardContent className="p-4 text-center">
+              <Clock className="h-8 w-8 text-blue-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-blue-300">{stats?.recent_activity || 0}</div>
+              <div className="text-white/70 text-sm">Recent (7 days)</div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Filters */}
         <Card className="glass border-blue-400/30">
           <CardContent className="p-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              <div className="flex items-center space-x-2 sm:col-span-2 lg:col-span-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+              <div className="flex items-center space-x-2 sm:col-span-2 xl:col-span-1">
                 <Search className="h-4 w-4 text-blue-400 flex-shrink-0" />
                 <Input
                   placeholder="Search leads..."
@@ -439,6 +552,17 @@ export default function LeadsManagementPage() {
                   className="glass border-blue-400/50 text-white"
                 />
               </div>
+
+              <Select value={leadTypeFilter} onValueChange={setLeadTypeFilter}>
+                <SelectTrigger className="glass border-blue-400/50 text-white">
+                  <SelectValue placeholder="All Types" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="backflow">Backflow Leads</SelectItem>
+                  <SelectItem value="saas">SaaS Leads</SelectItem>
+                </SelectContent>
+              </Select>
               
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="glass border-blue-400/50 text-white">
@@ -485,7 +609,7 @@ export default function LeadsManagementPage() {
               <div className="flex items-center justify-between text-white/70 text-sm">
                 <div className="flex items-center space-x-2">
                   <Filter className="h-4 w-4" />
-                  <span>{filteredLeads.length} of {leads.length}</span>
+                  <span>{leads.length} leads</span>
                 </div>
                 {hasActiveFilters && (
                   <Button 
@@ -508,14 +632,41 @@ export default function LeadsManagementPage() {
             <CardTitle className="text-white flex items-center justify-between">
               <div className="flex items-center">
                 <Users className="h-5 w-5 mr-2" />
-                Leads ({filteredLeads.length})
+                Leads ({leads.length})
+                {hasActiveFilters && (
+                  <Badge className="ml-2 bg-yellow-500/20 text-yellow-300 border-yellow-400">
+                    Filtered
+                  </Badge>
+                )}
               </div>
-              {totalPages > 1 && (
-                <span className="text-sm text-white/60 font-normal">
-                  Showing {((currentPage - 1) * ITEMS_PER_PAGE) + 1}-{Math.min(currentPage * ITEMS_PER_PAGE, filteredLeads.length)}
-                </span>
-              )}
+              <div className="flex items-center space-x-4">
+                {stats && (
+                  <div className="text-sm text-white/60">
+                    <span>{stats.backflow.total} Backflow • {stats.saas.total} SaaS</span>
+                  </div>
+                )}
+                <Button
+                  onClick={loadLeads}
+                  variant="outline"
+                  size="sm"
+                  className="glass border-blue-400/50"
+                  disabled={loading}
+                >
+                  <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                </Button>
+              </div>
             </CardTitle>
+            {hasActiveFilters && (
+              <CardDescription className="text-white/70">
+                Showing filtered results. <Button 
+                  onClick={resetFilters} 
+                  variant="link" 
+                  className="p-0 h-auto text-blue-400 hover:text-blue-300"
+                >
+                  Clear all filters
+                </Button> to see all leads.
+              </CardDescription>
+            )}
           </CardHeader>
           <CardContent>
             {error ? (
@@ -525,27 +676,18 @@ export default function LeadsManagementPage() {
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
                 <p className="text-white/70">Loading leads...</p>
               </div>
-            ) : filteredLeads.length === 0 ? (
+            ) : leads.length === 0 ? (
               <EmptyState hasFilters={hasActiveFilters} onReset={resetFilters} />
             ) : (
-              <>
-                <div className="space-y-3">
-                  {paginatedLeads.map((lead) => (
-                    <LeadCard
-                      key={lead.id}
-                      lead={lead}
-                      onClick={() => handleLeadClick(lead.id)}
-                      priorityScore={getPriorityScore(lead)}
-                    />
-                  ))}
-                </div>
-                
-                <Pagination 
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                />
-              </>
+              <div className="space-y-3">
+                {leads.map((lead) => (
+                  <LeadCard
+                    key={lead.id}
+                    lead={lead}
+                    onClick={() => handleLeadClick(lead.id)}
+                  />
+                ))}
+              </div>
             )}
           </CardContent>
         </Card>

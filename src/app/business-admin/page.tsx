@@ -40,7 +40,10 @@ import {
   LogIn,
   Database,
   FileText,
-  Briefcase
+  Briefcase,
+  Server,
+  Plus,
+  Star
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -908,134 +911,184 @@ export default function BusinessAdminPortal() {
         {activeTab === 'backflow-leads' && (
           <div className="space-y-6">
             <div className="space-y-2 relative z-10">
-              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Backflow Leads Management</h2>
-              <p className="text-white/80 text-lg drop-shadow-md">Manage and track all backflow testing leads</p>
+              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Lead Management</h2>
+              <p className="text-white/80 text-lg drop-shadow-md">Comprehensive lead tracking for both Backflow and SaaS opportunities</p>
             </div>
             
-            {/* Leads Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Lead Categories Overview */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="glass border-blue-400/30">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-white/70 text-sm font-medium">New Leads</p>
-                      <p className="text-3xl font-bold text-white">{metrics?.backflow_leads.new || 0}</p>
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center">
+                    <Briefcase className="h-5 w-5 mr-2" />
+                    Backflow Leads ({(metrics?.backflow_leads?.total || 0) - (metrics?.saas_clients?.total || 0)})
+                  </CardTitle>
+                  <CardDescription className="text-white/70">Traditional backflow testing leads</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-blue-300">{metrics?.backflow_leads.new || 0}</div>
+                      <div className="text-white/60 text-sm">New</div>
                     </div>
-                    <div className="p-3 rounded-2xl bg-black/40 text-blue-400">
-                      <UserPlus className="h-6 w-6" />
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-emerald-300">{metrics?.backflow_leads.converted || 0}</div>
+                      <div className="text-white/60 text-sm">Converted</div>
                     </div>
                   </div>
+                  <div className="mt-4 pt-4 border-t border-white/10">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-white/70">Pipeline Value:</span>
+                      <span className="text-white font-medium">${(metrics?.backflow_leads.pipeline_value || 0).toLocaleString()}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="glass border-purple-400/30">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center">
+                    <Server className="h-5 w-5 mr-2" />
+                    SaaS Leads ({metrics?.saas_clients?.total || 0})
+                  </CardTitle>
+                  <CardDescription className="text-white/70">Software platform subscription leads</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-purple-300">{metrics?.saas_clients?.prospects || 0}</div>
+                      <div className="text-white/60 text-sm">Prospects</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-emerald-300">${(metrics?.saas_clients?.mrr || 0).toLocaleString()}</div>
+                      <div className="text-white/60 text-sm">MRR</div>
+                    </div>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-white/10">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-white/70">Active Subscriptions:</span>
+                      <span className="text-white font-medium">{metrics?.saas_clients?.active || 0}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            {/* Status Overview */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Card className="glass border-blue-400/30">
+                <CardContent className="p-4 text-center">
+                  <UserPlus className="h-6 w-6 text-blue-400 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-white">{metrics?.backflow_leads.new || 0}</div>
+                  <div className="text-white/70 text-sm">New Leads</div>
                 </CardContent>
               </Card>
               
               <Card className="glass border-yellow-400/30">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-white/70 text-sm font-medium">Contacted</p>
-                      <p className="text-3xl font-bold text-white">{metrics?.backflow_leads.contacted || 0}</p>
-                    </div>
-                    <div className="p-3 rounded-2xl bg-black/40 text-yellow-400">
-                      <Phone className="h-6 w-6" />
-                    </div>
-                  </div>
+                <CardContent className="p-4 text-center">
+                  <Phone className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-white">{metrics?.backflow_leads.contacted || 0}</div>
+                  <div className="text-white/70 text-sm">Contacted</div>
                 </CardContent>
               </Card>
               
               <Card className="glass border-green-400/30">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-white/70 text-sm font-medium">Qualified</p>
-                      <p className="text-3xl font-bold text-white">{metrics?.backflow_leads.qualified || 0}</p>
-                    </div>
-                    <div className="p-3 rounded-2xl bg-black/40 text-green-400">
-                      <CheckCircle className="h-6 w-6" />
-                    </div>
-                  </div>
+                <CardContent className="p-4 text-center">
+                  <CheckCircle className="h-6 w-6 text-green-400 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-white">{metrics?.backflow_leads.qualified || 0}</div>
+                  <div className="text-white/70 text-sm">Qualified</div>
                 </CardContent>
               </Card>
               
               <Card className="glass border-emerald-400/30">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-white/70 text-sm font-medium">Converted</p>
-                      <p className="text-3xl font-bold text-white">{metrics?.backflow_leads.converted || 0}</p>
-                    </div>
-                    <div className="p-3 rounded-2xl bg-black/40 text-emerald-400">
-                      <DollarSign className="h-6 w-6" />
-                    </div>
-                  </div>
+                <CardContent className="p-4 text-center">
+                  <Star className="h-6 w-6 text-emerald-400 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-white">{metrics?.backflow_leads.converted || 0}</div>
+                  <div className="text-white/70 text-sm">Converted</div>
                 </CardContent>
               </Card>
             </div>
             
-            {/* Leads List */}
+            {/* Leads Actions */}
             <Card className="glass border-blue-400/30">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
-                  <CardTitle className="text-white">Recent Leads</CardTitle>
+                  <CardTitle className="text-white">Lead Management</CardTitle>
                   <CardDescription className="text-white/70">
-                    {leads.length > 0 ? `Showing 10 of ${leads.length} total leads` : 'No leads found - generate some test leads to see data here'}
+                    {leads.length > 0 ? `${leads.length} total leads in system` : 'No leads found - import or generate leads to get started'}
                   </CardDescription>
                 </div>
-                {leads.length > 0 && (
-                  <Link href="/business-admin/leads">
-                    <Button className="glass-btn-primary hover:glow-blue">
-                      <Users className="h-4 w-4 mr-2" />
-                      View All Leads ({leads.length})
+                <div className="flex items-center space-x-2">
+                  {leads.length > 0 && (
+                    <Link href="/business-admin/leads">
+                      <Button className="glass-btn-primary hover:glow-blue">
+                        <Users className="h-4 w-4 mr-2" />
+                        Manage All Leads ({leads.length})
+                      </Button>
+                    </Link>
+                  )}
+                  <Link href="/business-admin/lead-generator">
+                    <Button variant="outline" className="glass border-green-400/50 text-green-300 hover:bg-green-500/20">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Generate Leads
                     </Button>
                   </Link>
-                )}
+                </div>
               </CardHeader>
               <CardContent>
                 {leads.length === 0 ? (
                   <div className="text-center py-8 text-white/60">
                     <UserPlus className="h-16 w-16 mx-auto mb-4 opacity-50" />
                     <p className="text-lg">No leads available</p>
-                    <p className="text-sm">Leads will appear here when they exist in the database</p>
+                    <p className="text-sm">Use the lead generator or import leads to get started</p>
                   </div>
                 ) : (
-                  <>
-                    <div className="space-y-4">
-                      {leads.slice(0, 10).map((lead) => (
-                        <Link key={lead.id} href={`/business-admin/leads/${lead.id}`}>
-                          <div className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10 hover:border-blue-400/50 transition-colors cursor-pointer group">
-                            <div className="flex items-center space-x-4">
-                              <div className={`w-3 h-3 rounded-full ${
-                                lead.status === 'new' ? 'bg-blue-400' :
-                                lead.status === 'contacted' ? 'bg-yellow-400' :
-                                lead.status === 'qualified' ? 'bg-green-400' :
-                                lead.status === 'converted' ? 'bg-emerald-400' :
-                                'bg-gray-400'
-                              }`}></div>
-                              <div>
-                                <p className="font-medium text-white group-hover:text-blue-300 transition-colors">
-                                  {lead.first_name} {lead.last_name}
-                                </p>
-                                <p className="text-sm text-white/60">{lead.email}</p>
+                  <div className="space-y-4">
+                    {leads.slice(0, 5).map((lead) => (
+                      <Link key={lead.id} href={`/business-admin/leads/${lead.id}`}>
+                        <div className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10 hover:border-blue-400/50 transition-colors cursor-pointer group">
+                          <div className="flex items-center space-x-4">
+                            <div className={`w-3 h-3 rounded-full ${
+                              lead.status === 'new' ? 'bg-blue-400' :
+                              lead.status === 'contacted' ? 'bg-yellow-400' :
+                              lead.status === 'qualified' ? 'bg-green-400' :
+                              lead.status === 'converted' ? 'bg-emerald-400' :
+                              'bg-gray-400'
+                            }`}></div>
+                            <div>
+                              <p className="font-medium text-white group-hover:text-blue-300 transition-colors">
+                                {lead.first_name} {lead.last_name}
+                              </p>
+                              <div className="flex items-center space-x-2 text-sm text-white/60">
+                                <span>{lead.email || lead.phone}</span>
+                                <Badge className={`text-xs ${
+                                  lead.source?.includes('saas') ? 
+                                  'bg-purple-500/20 text-purple-300 border-purple-400' : 
+                                  'bg-blue-500/20 text-blue-300 border-blue-400'
+                                }`}>
+                                  {lead.source?.includes('saas') ? 'SaaS' : 'Backflow'}
+                                </Badge>
                               </div>
                             </div>
-                            <div className="text-right">
-                              <p className="text-white font-medium">${lead.estimated_value?.toLocaleString() || '0'}</p>
-                              <p className="text-sm text-white/60 capitalize">{lead.status}</p>
-                            </div>
                           </div>
-                        </Link>
-                      ))}
-                    </div>
-                    {leads.length > 10 && (
+                          <div className="text-right">
+                            <p className="text-white font-medium">${lead.estimated_value?.toLocaleString() || '0'}</p>
+                            <p className="text-sm text-white/60 capitalize">{lead.status}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                    {leads.length > 5 && (
                       <div className="mt-4 text-center">
                         <Link href="/business-admin/leads">
                           <Button variant="outline" className="glass border-blue-400/50 text-white hover:bg-blue-500/20">
-                            View {leads.length - 10} More Leads
-                            <ArrowRight className="h-4 w-4 ml-2" />
+                            View All {leads.length} Leads
+                            <ExternalLink className="h-4 w-4 ml-2" />
                           </Button>
                         </Link>
                       </div>
                     )}
-                  </>
+                  </div>
                 )}
               </CardContent>
             </Card>
