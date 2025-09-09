@@ -24,6 +24,7 @@ import {
   RefreshCw,
   Settings,
   ChevronDown,
+  ChevronLeft,
   ChevronRight,
   ExternalLink,
   Edit,
@@ -69,8 +70,10 @@ interface Lead {
   first_name: string;
   last_name: string;
   company_name?: string;
+  title?: string;
   email?: string;
   phone: string;
+  address?: string;
   address_line1?: string;
   city?: string;
   state?: string;
@@ -86,6 +89,8 @@ interface Lead {
   converted_customer_id?: string;
   created_at: string;
   updated_at: string;
+  lead_type?: 'backflow' | 'saas';
+  priority_score?: number;
 }
 
 interface SaasClient {
@@ -175,7 +180,15 @@ export default function BusinessAdminPortal() {
   const [metrics, setMetrics] = useState<BusinessMetrics | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [sourceFilter, setSourceFilter] = useState('all');
+  const [leadTypeFilter, setLeadTypeFilter] = useState('all');
+  const [assignedFilter, setAssignedFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
   const router = useRouter();
+
+  // Pagination constants
+  const ITEMS_PER_PAGE = 20;
 
   // Check for existing session
   useEffect(() => {
@@ -243,7 +256,7 @@ export default function BusinessAdminPortal() {
     localStorage.removeItem('fisher-admin-session');
     setSession(null);
     setLoginForm({ email: '', password: '' });
-    setActiveTab('overview');
+    setActiveTab('dashboard');
   };
 
   const loadBusinessData = async () => {
@@ -592,6 +605,60 @@ export default function BusinessAdminPortal() {
     return matchesSearch && matchesStatus;
   });
 
+  // Enhanced filtering for comprehensive leads view
+  const enhancedFilteredLeads = leads.filter(lead => {
+    const matchesSearch = searchTerm === '' || 
+      lead.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.company_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.phone.includes(searchTerm);
+    
+    const matchesStatus = statusFilter === 'all' || lead.status === statusFilter;
+    const matchesSource = sourceFilter === 'all' || lead.source === sourceFilter;
+    const matchesType = leadTypeFilter === 'all' || 
+      (leadTypeFilter === 'backflow' && (!lead.lead_type || lead.lead_type === 'backflow')) ||
+      (leadTypeFilter === 'saas' && lead.lead_type === 'saas');
+    const matchesAssigned = assignedFilter === 'all' || lead.assigned_to === assignedFilter;
+    
+    return matchesSearch && matchesStatus && matchesSource && matchesType && matchesAssigned;
+  });
+
+  // Pagination for leads
+  const totalPages = Math.ceil(enhancedFilteredLeads.length / ITEMS_PER_PAGE);
+  const paginatedLeads = enhancedFilteredLeads.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  // Get unique values for filters
+  const uniqueSources = [...new Set(leads.map(lead => lead.source).filter(Boolean))].sort();
+  const uniqueAssignees = [...new Set(leads.map(lead => lead.assigned_to).filter(Boolean))].sort();
+
+  // Reset filters function
+  const resetFilters = () => {
+    setSearchTerm('');
+    setStatusFilter('all');
+    setSourceFilter('all');
+    setLeadTypeFilter('all');
+    setAssignedFilter('all');
+    setCurrentPage(1);
+  };
+
+  const hasActiveFilters = searchTerm || statusFilter !== 'all' || sourceFilter !== 'all' || 
+    leadTypeFilter !== 'all' || assignedFilter !== 'all';
+
+  // Handle page changes
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  // Handle lead click
+  const handleLeadClick = (leadId: string) => {
+    setSelectedLeadId(leadId);
+    // Could open a modal or navigate to detail view
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Background */}
@@ -628,19 +695,17 @@ export default function BusinessAdminPortal() {
           </div>
           
           {/* Navigation Tabs */}
-          <nav className="flex space-x-1 mt-6">
+          <nav className="flex space-x-1 mt-6 overflow-x-auto">
             {[
-              { id: 'overview', label: 'Business Overview', icon: BarChart3 },
-              { id: 'backflow-leads', label: 'Backflow Leads', icon: UserPlus },
-              { id: 'saas-clients', label: 'SaaS Clients', icon: Building2 },
-              { id: 'revenue', label: 'Revenue Analytics', icon: DollarSign },
-              { id: 'pipeline', label: 'Sales Pipeline', icon: TrendingUp },
-              { id: 'reports', label: 'Export & Reports', icon: FileText }
+              { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
+              { id: 'all-leads', label: 'All Leads', icon: Users },
+              { id: 'revenue', label: 'Revenue & Analytics', icon: DollarSign },
+              { id: 'reports', label: 'Reports & Export', icon: FileText }
             ].map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                className={`flex items-center px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'bg-blue-500/30 text-white border border-blue-400/50'
                     : 'text-white/70 hover:text-white hover:bg-white/10'
@@ -908,32 +973,36 @@ export default function BusinessAdminPortal() {
           </>
         )}
 
-        {activeTab === 'backflow-leads' && (
+        {activeTab === 'all-leads' && (
           <div className="space-y-6">
             <div className="space-y-2 relative z-10">
-              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Lead Management</h2>
-              <p className="text-white/80 text-lg drop-shadow-md">Comprehensive lead tracking for both Backflow and SaaS opportunities</p>
+              <h2 className="text-4xl font-bold text-white drop-shadow-lg">All Leads Management</h2>
+              <p className="text-white/80 text-lg drop-shadow-md">Comprehensive view of all backflow and SaaS leads with advanced filtering</p>
             </div>
             
-            {/* Lead Categories Overview */}
+            {/* Lead Category Overview */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="glass border-blue-400/30">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center">
                     <Briefcase className="h-5 w-5 mr-2" />
-                    Backflow Leads ({(metrics?.backflow_leads?.total || 0) - (metrics?.saas_clients?.total || 0)})
+                    Backflow Leads ({leads.filter(l => !l.lead_type || l.lead_type === 'backflow').length})
                   </CardTitle>
                   <CardDescription className="text-white/70">Traditional backflow testing leads</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4 text-sm">
                     <div className="text-center">
                       <div className="text-2xl font-bold text-blue-300">{metrics?.backflow_leads.new || 0}</div>
-                      <div className="text-white/60 text-sm">New</div>
+                      <div className="text-white/60">New</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-yellow-300">{metrics?.backflow_leads.contacted || 0}</div>
+                      <div className="text-white/60">Contacted</div>
                     </div>
                     <div className="text-center">
                       <div className="text-2xl font-bold text-emerald-300">{metrics?.backflow_leads.converted || 0}</div>
-                      <div className="text-white/60 text-sm">Converted</div>
+                      <div className="text-white/60">Converted</div>
                     </div>
                   </div>
                   <div className="mt-4 pt-4 border-t border-white/10">
@@ -949,143 +1018,342 @@ export default function BusinessAdminPortal() {
                 <CardHeader>
                   <CardTitle className="text-white flex items-center">
                     <Server className="h-5 w-5 mr-2" />
-                    SaaS Leads ({metrics?.saas_clients?.total || 0})
+                    SaaS Leads ({leads.filter(l => l.lead_type === 'saas').length})
                   </CardTitle>
                   <CardDescription className="text-white/70">Software platform subscription leads</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4 text-sm">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-300">{metrics?.saas_clients?.prospects || 0}</div>
-                      <div className="text-white/60 text-sm">Prospects</div>
+                      <div className="text-2xl font-bold text-purple-300">{leads.filter(l => l.lead_type === 'saas' && l.status === 'new').length}</div>
+                      <div className="text-white/60">New</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-emerald-300">${(metrics?.saas_clients?.mrr || 0).toLocaleString()}</div>
-                      <div className="text-white/60 text-sm">MRR</div>
+                      <div className="text-2xl font-bold text-yellow-300">{leads.filter(l => l.lead_type === 'saas' && l.status === 'contacted').length}</div>
+                      <div className="text-white/60">Contacted</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold text-emerald-300">{leads.filter(l => l.lead_type === 'saas' && l.status === 'converted').length}</div>
+                      <div className="text-white/60">Converted</div>
                     </div>
                   </div>
                   <div className="mt-4 pt-4 border-t border-white/10">
                     <div className="flex justify-between text-sm">
-                      <span className="text-white/70">Active Subscriptions:</span>
-                      <span className="text-white font-medium">{metrics?.saas_clients?.active || 0}</span>
+                      <span className="text-white/70">Avg Deal Size:</span>
+                      <span className="text-white font-medium">${(leads.filter(l => l.lead_type === 'saas').reduce((acc, l) => acc + (l.estimated_value || 0), 0) / Math.max(leads.filter(l => l.lead_type === 'saas').length, 1)).toLocaleString()}</span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
-            
+
             {/* Status Overview */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+              <Card className="glass border-white/30">
+                <CardContent className="p-4 text-center">
+                  <Users className="h-6 w-6 text-white mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-white">{leads.length}</div>
+                  <div className="text-white/70 text-sm">Total Leads</div>
+                </CardContent>
+              </Card>
               <Card className="glass border-blue-400/30">
                 <CardContent className="p-4 text-center">
                   <UserPlus className="h-6 w-6 text-blue-400 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-white">{metrics?.backflow_leads.new || 0}</div>
-                  <div className="text-white/70 text-sm">New Leads</div>
+                  <div className="text-2xl font-bold text-white">{leads.filter(l => l.status === 'new').length}</div>
+                  <div className="text-white/70 text-sm">New</div>
                 </CardContent>
               </Card>
-              
               <Card className="glass border-yellow-400/30">
                 <CardContent className="p-4 text-center">
                   <Phone className="h-6 w-6 text-yellow-400 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-white">{metrics?.backflow_leads.contacted || 0}</div>
+                  <div className="text-2xl font-bold text-white">{leads.filter(l => l.status === 'contacted').length}</div>
                   <div className="text-white/70 text-sm">Contacted</div>
                 </CardContent>
               </Card>
-              
               <Card className="glass border-green-400/30">
                 <CardContent className="p-4 text-center">
                   <CheckCircle className="h-6 w-6 text-green-400 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-white">{metrics?.backflow_leads.qualified || 0}</div>
+                  <div className="text-2xl font-bold text-white">{leads.filter(l => l.status === 'qualified').length}</div>
                   <div className="text-white/70 text-sm">Qualified</div>
                 </CardContent>
               </Card>
-              
               <Card className="glass border-emerald-400/30">
                 <CardContent className="p-4 text-center">
                   <Star className="h-6 w-6 text-emerald-400 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-white">{metrics?.backflow_leads.converted || 0}</div>
+                  <div className="text-2xl font-bold text-white">{leads.filter(l => l.status === 'converted').length}</div>
                   <div className="text-white/70 text-sm">Converted</div>
                 </CardContent>
               </Card>
             </div>
-            
-            {/* Leads Actions */}
+
+            {/* Filters */}
             <Card className="glass border-blue-400/30">
-              <CardHeader className="flex flex-row items-center justify-between">
-                <div>
-                  <CardTitle className="text-white">Lead Management</CardTitle>
-                  <CardDescription className="text-white/70">
-                    {leads.length > 0 ? `${leads.length} total leads in system` : 'No leads found - import or generate leads to get started'}
-                  </CardDescription>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {leads.length > 0 && (
-                    <Link href="/business-admin/leads">
-                      <Button className="glass-btn-primary hover:glow-blue">
-                        <Users className="h-4 w-4 mr-2" />
-                        Manage All Leads ({leads.length})
+              <CardContent className="p-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+                  <div className="flex items-center space-x-2 sm:col-span-2 xl:col-span-1">
+                    <Search className="h-4 w-4 text-blue-400 flex-shrink-0" />
+                    <Input
+                      placeholder="Search leads..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="glass border-blue-400/50 text-white"
+                    />
+                  </div>
+
+                  <Select value={leadTypeFilter} onValueChange={setLeadTypeFilter}>
+                    <SelectTrigger className="glass border-blue-400/50 text-white">
+                      <SelectValue placeholder="All Types" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Types</SelectItem>
+                      <SelectItem value="backflow">Backflow Leads</SelectItem>
+                      <SelectItem value="saas">SaaS Leads</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="glass border-blue-400/50 text-white">
+                      <SelectValue placeholder="All Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="new">New</SelectItem>
+                      <SelectItem value="contacted">Contacted</SelectItem>
+                      <SelectItem value="qualified">Qualified</SelectItem>
+                      <SelectItem value="converted">Converted</SelectItem>
+                      <SelectItem value="lost">Lost</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select value={sourceFilter} onValueChange={setSourceFilter}>
+                    <SelectTrigger className="glass border-blue-400/50 text-white">
+                      <SelectValue placeholder="All Sources" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Sources</SelectItem>
+                      {uniqueSources.map(source => (
+                        <SelectItem key={source} value={source}>
+                          {source || 'Unknown'}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select value={assignedFilter} onValueChange={setAssignedFilter}>
+                    <SelectTrigger className="glass border-blue-400/50 text-white">
+                      <SelectValue placeholder="All Assigned" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Assigned</SelectItem>
+                      {uniqueAssignees.map(assignee => (
+                        <SelectItem key={assignee} value={assignee}>
+                          {assignee || 'Unassigned'}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2 text-white/70 text-sm">
+                      <Filter className="h-4 w-4" />
+                      <span>{enhancedFilteredLeads.length} leads</span>
+                    </div>
+                    {hasActiveFilters && (
+                      <Button 
+                        onClick={resetFilters} 
+                        variant="ghost" 
+                        size="sm"
+                        className="text-blue-400 hover:text-blue-300 p-1 h-auto"
+                      >
+                        Clear
                       </Button>
-                    </Link>
-                  )}
-                  <Link href="/business-admin/lead-generator">
-                    <Button variant="outline" className="glass border-green-400/50 text-green-300 hover:bg-green-500/20">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Generate Leads
-                    </Button>
-                  </Link>
+                    )}
+                  </div>
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center space-x-4">
+                <Button onClick={handleExportLeads} className="glass-btn-primary">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export All Leads
+                </Button>
+                <Button onClick={loadBusinessData} variant="outline" className="glass border-blue-400/50" disabled={loading}>
+                  <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                  Refresh Data
+                </Button>
+              </div>
+              <div className="text-white/60 text-sm">
+                Showing {paginatedLeads.length} of {enhancedFilteredLeads.length} leads
+                {hasActiveFilters && ' (filtered)'}
+              </div>
+            </div>
+
+            {/* Leads List */}
+            <Card className="glass border-blue-400/30">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Users className="h-5 w-5 mr-2" />
+                    All Leads ({enhancedFilteredLeads.length})
+                    {hasActiveFilters && (
+                      <Badge className="ml-2 bg-yellow-500/20 text-yellow-300 border-yellow-400">
+                        Filtered
+                      </Badge>
+                    )}
+                  </div>
+                </CardTitle>
+                {hasActiveFilters && (
+                  <CardDescription className="text-white/70">
+                    Showing filtered results. <Button 
+                      onClick={resetFilters} 
+                      variant="link" 
+                      className="p-0 h-auto text-blue-400 hover:text-blue-300"
+                    >
+                      Clear all filters
+                    </Button> to see all leads.
+                  </CardDescription>
+                )}
               </CardHeader>
               <CardContent>
-                {leads.length === 0 ? (
-                  <div className="text-center py-8 text-white/60">
-                    <UserPlus className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                    <p className="text-lg">No leads available</p>
-                    <p className="text-sm">Use the lead generator or import leads to get started</p>
+                {loading ? (
+                  <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4" />
+                    <p className="text-white/70">Loading leads...</p>
+                  </div>
+                ) : enhancedFilteredLeads.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Users className="h-16 w-16 text-white/30 mx-auto mb-4" />
+                    <h3 className="text-white/70 text-lg mb-2">No leads found</h3>
+                    <p className="text-white/50 mb-4">
+                      {hasActiveFilters ? 'Try adjusting your filters' : 'Start by importing leads or create new ones'}
+                    </p>
+                    {hasActiveFilters && (
+                      <Button onClick={resetFilters} variant="outline" size="sm" className="glass border-blue-400/50">
+                        Clear Filters
+                      </Button>
+                    )}
                   </div>
                 ) : (
-                  <div className="space-y-4">
-                    {leads.slice(0, 5).map((lead) => (
-                      <Link key={lead.id} href={`/business-admin/leads/${lead.id}`}>
-                        <div className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10 hover:border-blue-400/50 transition-colors cursor-pointer group">
-                          <div className="flex items-center space-x-4">
-                            <div className={`w-3 h-3 rounded-full ${
-                              lead.status === 'new' ? 'bg-blue-400' :
-                              lead.status === 'contacted' ? 'bg-yellow-400' :
-                              lead.status === 'qualified' ? 'bg-green-400' :
-                              lead.status === 'converted' ? 'bg-emerald-400' :
-                              'bg-gray-400'
-                            }`}></div>
-                            <div>
-                              <p className="font-medium text-white group-hover:text-blue-300 transition-colors">
-                                {lead.first_name} {lead.last_name}
-                              </p>
-                              <div className="flex items-center space-x-2 text-sm text-white/60">
-                                <span>{lead.email || lead.phone}</span>
-                                <Badge className={`text-xs ${
-                                  lead.source?.includes('saas') ? 
-                                  'bg-purple-500/20 text-purple-300 border-purple-400' : 
-                                  'bg-blue-500/20 text-blue-300 border-blue-400'
-                                }`}>
-                                  {lead.source?.includes('saas') ? 'SaaS' : 'Backflow'}
+                  <div className="space-y-3">
+                    {paginatedLeads.map((lead) => (
+                      <div
+                        key={lead.id}
+                        className="glass rounded-lg p-4 border border-white/10 hover:border-blue-400/50 transition-all cursor-pointer group"
+                        onClick={() => handleLeadClick(lead.id)}
+                      >
+                        <div className="flex items-start space-x-4">
+                          {/* Priority Indicator */}
+                          <div className={`w-1 h-12 rounded-full flex-shrink-0 ${
+                            (lead.priority_score || 0) >= 6 ? 'bg-red-500' :
+                            (lead.priority_score || 0) >= 4 ? 'bg-yellow-500' :
+                            (lead.priority_score || 0) >= 2 ? 'bg-blue-500' : 'bg-gray-500'
+                          }`} />
+                          
+                          {/* Main Content */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center space-x-3">
+                                <h3 className="text-white font-medium group-hover:text-blue-300 transition-colors truncate">
+                                  {lead.first_name} {lead.last_name}
+                                </h3>
+                                {lead.company_name && (
+                                  <div className="flex items-center space-x-1 text-white/60 text-sm">
+                                    <Building2 className="h-3 w-3 flex-shrink-0" />
+                                    <span className="truncate">{lead.company_name}</span>
+                                  </div>
+                                )}
+                                {/* Lead Type Badge */}
+                                <Badge className={`${(lead.lead_type === 'saas') ? 'bg-purple-500/20 text-purple-300 border-purple-400' : 'bg-blue-500/20 text-blue-300 border-blue-400'} text-xs border flex-shrink-0`}>
+                                  {lead.lead_type === 'saas' ? 'SaaS' : 'Backflow'}
+                                </Badge>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                {(lead.priority_score || 0) >= 6 && (
+                                  <Badge className="bg-red-500/20 text-red-300 border-red-400 text-xs border flex-shrink-0">
+                                    High Priority
+                                  </Badge>
+                                )}
+                                <Badge className={`${getStatusColor(lead.status)} text-xs border flex-shrink-0`}>
+                                  {lead.status}
                                 </Badge>
                               </div>
                             </div>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-white font-medium">${lead.estimated_value?.toLocaleString() || '0'}</p>
-                            <p className="text-sm text-white/60 capitalize">{lead.status}</p>
+                            
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-sm text-white/60 mb-2">
+                              {lead.email && (
+                                <div className="flex items-center space-x-1 min-w-0">
+                                  <Mail className="h-3 w-3 flex-shrink-0" />
+                                  <span className="truncate">{lead.email}</span>
+                                </div>
+                              )}
+                              <div className="flex items-center space-x-1">
+                                <Phone className="h-3 w-3 flex-shrink-0" />
+                                <span>{lead.phone}</span>
+                              </div>
+                              {lead.city && lead.state && (
+                                <div className="flex items-center space-x-1 min-w-0">
+                                  <MapPin className="h-3 w-3 flex-shrink-0" />
+                                  <span className="truncate">{lead.city}, {lead.state}</span>
+                                </div>
+                              )}
+                              <div className="flex items-center space-x-1">
+                                <Calendar className="h-3 w-3 flex-shrink-0" />
+                                <span>{new Date(lead.created_at).toLocaleDateString()}</span>
+                              </div>
+                            </div>
+                            
+                            {lead.notes && (
+                              <p className="text-white/50 text-sm line-clamp-2 mb-2">{lead.notes}</p>
+                            )}
+                            
+                            <div className="flex items-center justify-between">
+                              <div className="text-xs text-white/50">
+                                {lead.source && <span className="mr-3">Source: {lead.source}</span>}
+                                {lead.assigned_to && <span>Assigned: {lead.assigned_to}</span>}
+                              </div>
+                              <div className="flex items-center space-x-3">
+                                <span className="text-white font-medium">
+                                  ${(lead.estimated_value || 0).toLocaleString()}
+                                </span>
+                                <Button size="sm" variant="ghost" className="p-1 h-auto text-blue-400 hover:text-blue-300">
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     ))}
-                    {leads.length > 5 && (
-                      <div className="mt-4 text-center">
-                        <Link href="/business-admin/leads">
-                          <Button variant="outline" className="glass border-blue-400/50 text-white hover:bg-blue-500/20">
-                            View All {leads.length} Leads
-                            <ExternalLink className="h-4 w-4 ml-2" />
+
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                      <div className="flex items-center justify-between mt-6 px-4">
+                        <p className="text-white/60 text-sm">
+                          Page {currentPage} of {totalPages} • Showing {paginatedLeads.length} of {enhancedFilteredLeads.length} leads
+                        </p>
+                        <div className="flex items-center space-x-2">
+                          <Button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage <= 1}
+                            variant="outline"
+                            size="sm"
+                            className="glass border-blue-400/50"
+                          >
+                            <ChevronLeft className="h-4 w-4" />
                           </Button>
-                        </Link>
+                          <Button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage >= totalPages}
+                            variant="outline"
+                            size="sm"
+                            className="glass border-blue-400/50"
+                          >
+                            <ChevronRight className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -1094,121 +1362,12 @@ export default function BusinessAdminPortal() {
             </Card>
           </div>
         )}
-        
-        {activeTab === 'saas-clients' && (
-          <div className="space-y-6">
-            <div className="space-y-2 relative z-10">
-              <h2 className="text-4xl font-bold text-white drop-shadow-lg">SaaS Clients Management</h2>
-              <p className="text-white/80 text-lg drop-shadow-md">Manage SaaS platform subscriptions and clients</p>
-            </div>
-            
-            {/* SaaS Metrics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <Card className="glass border-purple-400/30">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-white/70 text-sm font-medium">Total Clients</p>
-                      <p className="text-3xl font-bold text-white">{metrics?.saas_clients.total || 0}</p>
-                    </div>
-                    <div className="p-3 rounded-2xl bg-black/40 text-purple-400">
-                      <Building2 className="h-6 w-6" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="glass border-emerald-400/30">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-white/70 text-sm font-medium">Monthly Recurring Revenue</p>
-                      <p className="text-3xl font-bold text-white">${(metrics?.saas_clients.mrr || 0).toLocaleString()}</p>
-                    </div>
-                    <div className="p-3 rounded-2xl bg-black/40 text-emerald-400">
-                      <DollarSign className="h-6 w-6" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="glass border-blue-400/30">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-white/70 text-sm font-medium">Active Subscriptions</p>
-                      <p className="text-3xl font-bold text-white">{metrics?.saas_clients.active || 0}</p>
-                    </div>
-                    <div className="p-3 rounded-2xl bg-black/40 text-blue-400">
-                      <CheckCircle className="h-6 w-6" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card className="glass border-yellow-400/30">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-2">
-                      <p className="text-white/70 text-sm font-medium">Trial Users</p>
-                      <p className="text-3xl font-bold text-white">{metrics?.saas_clients.trials || 0}</p>
-                    </div>
-                    <div className="p-3 rounded-2xl bg-black/40 text-yellow-400">
-                      <Clock className="h-6 w-6" />
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            {/* SaaS Clients List */}
-            <Card className="glass border-purple-400/30">
-              <CardHeader>
-                <CardTitle className="text-white">SaaS Client Directory</CardTitle>
-                <CardDescription className="text-white/70">
-                  {saasClients.length > 0 ? `${saasClients.length} SaaS clients` : 'No SaaS clients found'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {saasClients.length === 0 ? (
-                  <div className="text-center py-8 text-white/60">
-                    <Building2 className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                    <p className="text-lg">No SaaS clients available</p>
-                    <p className="text-sm">SaaS client subscriptions will appear here when added to the database</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {saasClients.map((client) => (
-                      <div key={client.id} className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10">
-                        <div className="flex items-center space-x-4">
-                          <div className={`w-3 h-3 rounded-full ${
-                            client.account_status === 'active' ? 'bg-emerald-400' :
-                            client.account_status === 'trial' ? 'bg-yellow-400' :
-                            'bg-gray-400'
-                          }`}></div>
-                          <div>
-                            <p className="font-medium text-white">{client.company_name}</p>
-                            <p className="text-sm text-white/60">{client.contact_first_name} {client.contact_last_name}</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-white font-medium">${client.monthly_revenue}/mo</p>
-                          <p className="text-sm text-white/60 capitalize">{client.subscription_plan}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        )}
-        
+
         {activeTab === 'revenue' && (
           <div className="space-y-6">
             <div className="space-y-2 relative z-10">
-              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Revenue Analytics</h2>
-              <p className="text-white/80 text-lg drop-shadow-md">Comprehensive financial performance analysis</p>
+              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Revenue & Analytics</h2>
+              <p className="text-white/80 text-lg drop-shadow-md">Comprehensive financial performance and sales pipeline analysis</p>
             </div>
             
             {/* Revenue Metrics Cards */}
@@ -1268,7 +1427,7 @@ export default function BusinessAdminPortal() {
                       <p className="text-3xl font-bold text-white">${(metrics?.revenue.this_month || 0).toLocaleString()}</p>
                     </div>
                     <div className="p-3 rounded-2xl bg-black/40 text-yellow-400">
-                      <CalendarIcon className="h-6 w-6" />
+                      <Calendar className="h-6 w-6" />
                     </div>
                   </div>
                 </CardContent>
@@ -1302,17 +1461,8 @@ export default function BusinessAdminPortal() {
                 </CardContent>
               </Card>
             </div>
-          </div>
-        )}
-        
-        {activeTab === 'pipeline' && (
-          <div className="space-y-6">
-            <div className="space-y-2 relative z-10">
-              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Sales Pipeline</h2>
-              <p className="text-white/80 text-lg drop-shadow-md">Track sales funnel and conversion metrics</p>
-            </div>
-            
-            {/* Pipeline Metrics */}
+
+            {/* Pipeline Analytics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card className="glass border-blue-400/30">
                 <CardContent className="p-6">
@@ -1370,110 +1520,344 @@ export default function BusinessAdminPortal() {
                 </CardContent>
               </Card>
             </div>
-            
-            {/* Pipeline Visualization */}
-            <Card className="glass border-blue-400/30">
-              <CardHeader>
-                <CardTitle className="text-white">Sales Funnel</CardTitle>
-                <CardDescription className="text-white/70">Lead progression through the sales process</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {[
-                    { stage: 'New Leads', count: metrics?.backflow_leads.new || 0, color: 'bg-blue-500', width: '100%' },
-                    { stage: 'Contacted', count: metrics?.backflow_leads.contacted || 0, color: 'bg-yellow-500', width: '75%' },
-                    { stage: 'Qualified', count: metrics?.backflow_leads.qualified || 0, color: 'bg-green-500', width: '50%' },
-                    { stage: 'Converted', count: metrics?.backflow_leads.converted || 0, color: 'bg-emerald-500', width: '25%' }
-                  ].map((stage) => (
-                    <div key={stage.stage} className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-white/70 font-medium">{stage.stage}</span>
-                        <span className="text-white font-bold">{stage.count}</span>
+
+            {/* Revenue Breakdown and Sales Funnel */}
+            <div className="grid lg:grid-cols-2 gap-8">
+              <Card className="glass border-blue-400/30">
+                <CardHeader>
+                  <CardTitle className="text-white">Revenue Sources</CardTitle>
+                  <CardDescription className="text-white/70">Year-to-date revenue breakdown</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-white/70">Backflow Services</span>
+                        <span className="text-white font-semibold">${metrics?.revenue.backflow_revenue.toLocaleString()}</span>
                       </div>
                       <div className="w-full bg-white/10 rounded-full h-3">
                         <div 
-                          className={`${stage.color} h-3 rounded-full transition-all duration-500`}
-                          style={{ width: stage.width }}
+                          className="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full" 
+                          style={{ width: `${((metrics?.revenue.backflow_revenue || 0) / (metrics?.revenue.total_ytd || 1)) * 100}%` }}
                         ></div>
                       </div>
+                      <p className="text-xs text-white/50 mt-1">
+                        {(((metrics?.revenue.backflow_revenue || 0) / (metrics?.revenue.total_ytd || 1)) * 100).toFixed(1)}% of total
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-white/70">SaaS Subscriptions</span>
+                        <span className="text-white font-semibold">${metrics?.revenue.saas_revenue.toLocaleString()}</span>
+                      </div>
+                      <div className="w-full bg-white/10 rounded-full h-3">
+                        <div 
+                          className="bg-gradient-to-r from-purple-500 to-pink-500 h-3 rounded-full" 
+                          style={{ width: `${((metrics?.revenue.saas_revenue || 0) / (metrics?.revenue.total_ytd || 1)) * 100}%` }}
+                        ></div>
+                      </div>
+                      <p className="text-xs text-white/50 mt-1">
+                        {(((metrics?.revenue.saas_revenue || 0) / (metrics?.revenue.total_ytd || 1)) * 100).toFixed(1)}% of total
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="glass border-blue-400/30">
+                <CardHeader>
+                  <CardTitle className="text-white">Sales Funnel</CardTitle>
+                  <CardDescription className="text-white/70">Lead progression through the sales process</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { stage: 'New Leads', count: metrics?.backflow_leads.new || 0, color: 'bg-blue-500', width: '100%' },
+                      { stage: 'Contacted', count: metrics?.backflow_leads.contacted || 0, color: 'bg-yellow-500', width: '75%' },
+                      { stage: 'Qualified', count: metrics?.backflow_leads.qualified || 0, color: 'bg-green-500', width: '50%' },
+                      { stage: 'Converted', count: metrics?.backflow_leads.converted || 0, color: 'bg-emerald-500', width: '25%' }
+                    ].map((stage) => (
+                      <div key={stage.stage} className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-white/70 font-medium">{stage.stage}</span>
+                          <span className="text-white font-bold">{stage.count}</span>
+                        </div>
+                        <div className="w-full bg-white/10 rounded-full h-3">
+                          <div 
+                            className={`${stage.color} h-3 rounded-full transition-all duration-500`}
+                            style={{ width: stage.width }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         )}
 
         {activeTab === 'reports' && (
           <div className="space-y-6">
-            <h2 className="text-3xl font-bold text-white">Export & Reports</h2>
+            <div className="space-y-2 relative z-10">
+              <h2 className="text-4xl font-bold text-white drop-shadow-lg">Reports & Export</h2>
+              <p className="text-white/80 text-lg drop-shadow-md">Generate comprehensive business reports and export data</p>
+            </div>
+
+            {/* Export Summary */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="glass border-blue-400/30">
+                <CardContent className="p-4 text-center">
+                  <Users className="h-8 w-8 text-blue-400 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-white">{leads.length}</div>
+                  <div className="text-white/70 text-sm">Total Leads Available</div>
+                </CardContent>
+              </Card>
+              <Card className="glass border-purple-400/30">
+                <CardContent className="p-4 text-center">
+                  <Building2 className="h-8 w-8 text-purple-400 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-white">{saasClients.length}</div>
+                  <div className="text-white/70 text-sm">SaaS Clients</div>
+                </CardContent>
+              </Card>
+              <Card className="glass border-emerald-400/30">
+                <CardContent className="p-4 text-center">
+                  <DollarSign className="h-8 w-8 text-emerald-400 mx-auto mb-2" />
+                  <div className="text-2xl font-bold text-white">${(metrics?.revenue.total_ytd || 0).toLocaleString()}</div>
+                  <div className="text-white/70 text-sm">YTD Revenue</div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Export Categories */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card className="glass border-blue-400/30 hover:scale-105 transition-all duration-200 cursor-pointer">
+              {/* Leads Export */}
+              <Card className="glass border-blue-400/30 hover:border-blue-300/70 transition-all duration-200">
                 <CardContent className="p-6 text-center">
                   <Download className="h-12 w-12 text-blue-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-white mb-2">Complete Lead Export</h3>
-                  <p className="text-white/70 text-sm mb-4">Export all backflow leads with full details</p>
+                  <h3 className="text-lg font-semibold text-white mb-2">All Leads Export</h3>
+                  <p className="text-white/70 text-sm mb-4">Export all {leads.length} leads with complete details, filtering options, and contact information</p>
                   <Button className="glass-btn-primary w-full" onClick={handleExportLeads}>
-                    Export Leads CSV
+                    <Download className="h-4 w-4 mr-2" />
+                    Export {leads.length} Leads
                   </Button>
                 </CardContent>
               </Card>
 
-              <Card className="glass border-blue-400/30 hover:scale-105 transition-all duration-200 cursor-pointer">
+              {/* Filtered Leads Export */}
+              <Card className="glass border-green-400/30 hover:border-green-300/70 transition-all duration-200">
+                <CardContent className="p-6 text-center">
+                  <Filter className="h-12 w-12 text-green-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-white mb-2">Filtered Leads Export</h3>
+                  <p className="text-white/70 text-sm mb-4">Export currently filtered leads with applied search and status filters</p>
+                  <Button 
+                    className="glass-btn-primary w-full" 
+                    onClick={() => {
+                      const filteredData = enhancedFilteredLeads.map(lead => ({
+                        name: `${lead.first_name} ${lead.last_name}`.trim() || lead.company_name,
+                        email: lead.email,
+                        phone: lead.phone,
+                        address: lead.address_line1 || lead.address,
+                        status: lead.status,
+                        estimated_value: lead.estimated_value,
+                        source: lead.source,
+                        created_at: lead.created_at
+                      }));
+                      dataExportService.exportCustomers(filteredData, { format: 'csv' });
+                    }}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Export {enhancedFilteredLeads.length} Filtered
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* SaaS Clients Export */}
+              <Card className="glass border-purple-400/30 hover:border-purple-300/70 transition-all duration-200">
                 <CardContent className="p-6 text-center">
                   <Building2 className="h-12 w-12 text-purple-400 mx-auto mb-4" />
                   <h3 className="text-lg font-semibold text-white mb-2">SaaS Client Report</h3>
-                  <p className="text-white/70 text-sm mb-4">Detailed SaaS client and subscription data</p>
+                  <p className="text-white/70 text-sm mb-4">Export SaaS client data including subscription details and revenue</p>
                   <Button className="glass-btn-primary w-full" onClick={handleExportSaasData}>
+                    <Download className="h-4 w-4 mr-2" />
                     Export SaaS Data
                   </Button>
                 </CardContent>
               </Card>
 
-              <Card className="glass border-blue-400/30 hover:scale-105 transition-all duration-200 cursor-pointer">
+              {/* Revenue Analytics */}
+              <Card className="glass border-emerald-400/30 hover:border-emerald-300/70 transition-all duration-200">
                 <CardContent className="p-6 text-center">
                   <BarChart3 className="h-12 w-12 text-emerald-400 mx-auto mb-4" />
                   <h3 className="text-lg font-semibold text-white mb-2">Revenue Analysis</h3>
-                  <p className="text-white/70 text-sm mb-4">Comprehensive financial performance report</p>
+                  <p className="text-white/70 text-sm mb-4">Comprehensive financial performance report with YTD metrics</p>
                   <Button className="glass-btn-primary w-full" onClick={handleExportRevenue}>
+                    <Download className="h-4 w-4 mr-2" />
                     Export Revenue Report
                   </Button>
                 </CardContent>
               </Card>
 
-              <Card className="glass border-blue-400/30 hover:scale-105 transition-all duration-200 cursor-pointer">
-                <CardContent className="p-6 text-center">
-                  <Database className="h-12 w-12 text-orange-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-white mb-2">Complete Business Backup</h3>
-                  <p className="text-white/70 text-sm mb-4">Full database export of all business data</p>
-                  <Button className="glass-btn-primary w-full" onClick={handleGenerateBackup}>
-                    Generate Backup
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="glass border-blue-400/30 hover:scale-105 transition-all duration-200 cursor-pointer">
+              {/* Pipeline Analysis */}
+              <Card className="glass border-cyan-400/30 hover:border-cyan-300/70 transition-all duration-200">
                 <CardContent className="p-6 text-center">
                   <Target className="h-12 w-12 text-cyan-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-white mb-2">Pipeline Analysis</h3>
-                  <p className="text-white/70 text-sm mb-4">Sales funnel and conversion analytics</p>
+                  <h3 className="text-lg font-semibold text-white mb-2">Sales Pipeline</h3>
+                  <p className="text-white/70 text-sm mb-4">Detailed sales funnel analysis and conversion metrics</p>
                   <Button className="glass-btn-primary w-full" onClick={handleExportPipelineData}>
+                    <Download className="h-4 w-4 mr-2" />
                     Export Pipeline Data
                   </Button>
                 </CardContent>
               </Card>
 
-              <Card className="glass border-blue-400/30 hover:scale-105 transition-all duration-200 cursor-pointer">
+              {/* Executive Report */}
+              <Card className="glass border-pink-400/30 hover:border-pink-300/70 transition-all duration-200">
                 <CardContent className="p-6 text-center">
                   <Activity className="h-12 w-12 text-pink-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-white mb-2">Performance Dashboard</h3>
-                  <p className="text-white/70 text-sm mb-4">Executive summary and KPI report</p>
+                  <h3 className="text-lg font-semibold text-white mb-2">Executive Summary</h3>
+                  <p className="text-white/70 text-sm mb-4">High-level business performance and KPI summary report</p>
                   <Button className="glass-btn-primary w-full" onClick={handleGenerateExecutiveReport}>
-                    Generate Executive Report
+                    <FileText className="h-4 w-4 mr-2" />
+                    Generate PDF Report
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Business Backup */}
+              <Card className="glass border-orange-400/30 hover:border-orange-300/70 transition-all duration-200">
+                <CardContent className="p-6 text-center">
+                  <Database className="h-12 w-12 text-orange-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-white mb-2">Complete Backup</h3>
+                  <p className="text-white/70 text-sm mb-4">Full JSON export of all business data for backup purposes</p>
+                  <Button className="glass-btn-primary w-full" onClick={handleGenerateBackup}>
+                    <Database className="h-4 w-4 mr-2" />
+                    Generate Backup
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* High Priority Leads */}
+              <Card className="glass border-red-400/30 hover:border-red-300/70 transition-all duration-200">
+                <CardContent className="p-6 text-center">
+                  <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-white mb-2">High Priority Leads</h3>
+                  <p className="text-white/70 text-sm mb-4">Export leads marked as high priority for immediate follow-up</p>
+                  <Button 
+                    className="glass-btn-primary w-full" 
+                    onClick={() => {
+                      const highPriorityLeads = leads
+                        .filter(lead => (lead.priority_score || 0) >= 6)
+                        .map(lead => ({
+                          name: `${lead.first_name} ${lead.last_name}`.trim() || lead.company_name,
+                          email: lead.email,
+                          phone: lead.phone,
+                          address: lead.address_line1 || lead.address,
+                          status: lead.status,
+                          estimated_value: lead.estimated_value,
+                          priority_score: lead.priority_score,
+                          source: lead.source,
+                          created_at: lead.created_at
+                        }));
+                      dataExportService.exportCustomers(highPriorityLeads, { format: 'csv' });
+                    }}
+                  >
+                    <AlertCircle className="h-4 w-4 mr-2" />
+                    Export High Priority
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Recent Activity */}
+              <Card className="glass border-yellow-400/30 hover:border-yellow-300/70 transition-all duration-200">
+                <CardContent className="p-6 text-center">
+                  <Clock className="h-12 w-12 text-yellow-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-white mb-2">Recent Activity</h3>
+                  <p className="text-white/70 text-sm mb-4">Export leads created in the last 30 days with activity tracking</p>
+                  <Button 
+                    className="glass-btn-primary w-full" 
+                    onClick={() => {
+                      const thirtyDaysAgo = new Date();
+                      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                      const recentLeads = leads
+                        .filter(lead => new Date(lead.created_at) >= thirtyDaysAgo)
+                        .map(lead => ({
+                          name: `${lead.first_name} ${lead.last_name}`.trim() || lead.company_name,
+                          email: lead.email,
+                          phone: lead.phone,
+                          address: lead.address_line1 || lead.address,
+                          status: lead.status,
+                          estimated_value: lead.estimated_value,
+                          source: lead.source,
+                          days_old: Math.floor((Date.now() - new Date(lead.created_at).getTime()) / (1000 * 60 * 60 * 24)),
+                          created_at: lead.created_at
+                        }));
+                      dataExportService.exportCustomers(recentLeads, { format: 'csv' });
+                    }}
+                  >
+                    <Clock className="h-4 w-4 mr-2" />
+                    Export Recent Activity
                   </Button>
                 </CardContent>
               </Card>
             </div>
+
+            {/* Quick Actions */}
+            <Card className="glass border-blue-400/30">
+              <CardHeader>
+                <CardTitle className="text-white">Quick Export Actions</CardTitle>
+                <CardDescription className="text-white/70">One-click exports for common business needs</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Button 
+                    onClick={() => {
+                      const newLeads = leads.filter(l => l.status === 'new').map(lead => ({
+                        name: `${lead.first_name} ${lead.last_name}`.trim(),
+                        email: lead.email,
+                        phone: lead.phone,
+                        estimated_value: lead.estimated_value,
+                        source: lead.source,
+                        created_at: lead.created_at
+                      }));
+                      dataExportService.exportCustomers(newLeads, { format: 'csv' });
+                    }}
+                    variant="outline" 
+                    className="glass border-blue-400/50 text-white hover:bg-blue-500/20"
+                  >
+                    <UserPlus className="h-4 w-4 mr-2" />
+                    Export New Leads ({leads.filter(l => l.status === 'new').length})
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      const convertedLeads = leads.filter(l => l.status === 'converted').map(lead => ({
+                        name: `${lead.first_name} ${lead.last_name}`.trim(),
+                        email: lead.email,
+                        phone: lead.phone,
+                        estimated_value: lead.estimated_value,
+                        converted_date: lead.converted_date,
+                        source: lead.source
+                      }));
+                      dataExportService.exportCustomers(convertedLeads, { format: 'csv' });
+                    }}
+                    variant="outline" 
+                    className="glass border-emerald-400/50 text-emerald-300 hover:bg-emerald-500/20"
+                  >
+                    <Star className="h-4 w-4 mr-2" />
+                    Export Converted ({leads.filter(l => l.status === 'converted').length})
+                  </Button>
+                  <Button 
+                    onClick={loadBusinessData}
+                    variant="outline" 
+                    className="glass border-purple-400/50 text-purple-300 hover:bg-purple-500/20"
+                    disabled={loading}
+                  >
+                    <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                    Refresh All Data
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         )}
       </main>
