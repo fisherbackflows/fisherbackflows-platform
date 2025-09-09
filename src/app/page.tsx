@@ -148,13 +148,13 @@ export default function HomePage() {
               <div className="w-px h-8 bg-white/20 mx-3"></div>
               <Link href="/portal" className="px-4 py-2 rounded-2xl glass-btn-primary hover:glow-blue text-white transition-all duration-200 font-semibold">
                 <User className="inline h-4 w-4 mr-1" />
-                Portal
+                Customer Portal
               </Link>
-              <Link href="/team-portal" className="px-4 py-2 rounded-2xl bg-white/10 hover:bg-white/20 text-white transition-all duration-200 font-semibold">
-                Team
+              <Link href="/team-portal" className="px-4 py-2 rounded-2xl bg-emerald-500/20 border border-emerald-400 glow-blue-sm hover:bg-emerald-500/30 text-white transition-all duration-200 font-semibold">
+                Team Portal
               </Link>
-              <Link href="/business-admin" className="px-2 py-1 rounded-xl bg-black/20 hover:bg-black/40 text-white/60 hover:text-white/80 transition-all duration-200 text-xs font-medium">
-                Admin
+              <Link href="/business-admin" className="px-4 py-2 rounded-2xl bg-amber-500/20 border border-amber-400 glow-blue-sm hover:bg-amber-500/30 text-white transition-all duration-200 font-semibold">
+                Admin Portal
               </Link>
             </nav>
 
@@ -210,17 +210,17 @@ export default function HomePage() {
                 </Link>
                 <Link 
                   href="/team-portal" 
-                  className="block px-4 py-3 rounded-2xl bg-white/10 text-white text-center font-semibold transition-all duration-200"
+                  className="block px-4 py-3 rounded-2xl bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-white text-center font-semibold transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Team Login
+                  Team Portal
                 </Link>
                 <Link 
                   href="/business-admin" 
-                  className="block px-4 py-2 rounded-2xl bg-black/20 text-white/60 text-center text-sm font-medium transition-all duration-200"
+                  className="block px-4 py-3 rounded-2xl bg-amber-500/20 border border-amber-400 glow-blue-sm text-white text-center font-semibold transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Business Admin
+                  Admin Portal
                 </Link>
                 
                 <div className="border-t border-blue-400/30 pt-3 mt-3">
