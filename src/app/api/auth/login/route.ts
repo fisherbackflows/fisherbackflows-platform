@@ -147,7 +147,7 @@ export async function POST(request: NextRequest) {
             expires_at: authData.session?.expires_at,
             expires_in: authData.session?.expires_in
           },
-          redirect: '/portal'
+          redirect: '/portal/dashboard'
         });
       }
       
@@ -214,7 +214,7 @@ export async function POST(request: NextRequest) {
         expires_at: authData.session?.expires_at,
         expires_in: authData.session?.expires_in
       },
-      redirect: '/portal'
+      redirect: '/portal/dashboard'
     });
     
   } catch (error) {

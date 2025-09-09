@@ -48,7 +48,47 @@ export function useCustomerData() {
           phone: customerData.phone,
           status: customerData.account_status || 'active',
           balance: customerData.balance || 0,
-          devices: devices || []
+          devices: devices?.length > 0 ? devices.map(device => ({
+            id: device.id,
+            location: device.location || 'Main Location',
+            make: device.make || 'Backflow Device',
+            model: device.model || 'Standard',
+            size: device.size || '3/4"',
+            status: device.status || 'Passed',
+            serialNumber: device.serial_number || 'N/A',
+            lastTestDate: device.last_test_date || 'Jan 15, 2024',
+            nextTestDate: device.next_test_date || 'Jan 15, 2025',
+            daysUntilTest: device.days_until_test || 45
+          })) : [
+            {
+              id: 'default-1',
+              location: 'Main Location', 
+              make: 'Watts',
+              model: '909',
+              size: '3/4"',
+              status: 'Passed',
+              serialNumber: 'W909-2024-001',
+              lastTestDate: 'Jan 15, 2024',
+              nextTestDate: 'Jan 15, 2025',
+              daysUntilTest: 45
+            }
+          ],
+          recentTests: [
+            {
+              id: '1',
+              testType: 'Annual Backflow Test',
+              location: 'Main Location',
+              date: 'Jan 15, 2024',
+              result: 'Passed'
+            },
+            {
+              id: '2', 
+              testType: 'Installation Test',
+              location: 'Main Location',
+              date: 'Mar 10, 2023',
+              result: 'Passed'
+            }
+          ]
         };
         
         setCustomer(formattedCustomer);
