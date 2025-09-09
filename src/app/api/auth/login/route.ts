@@ -31,6 +31,8 @@ export async function POST(request: NextRequest) {
       );
     }
     const { email, password, identifier, type } = body;
+    
+    console.log('[LOGIN] Received fields:', { email: !!email, password: !!password, identifier: !!identifier, type });
 
     // Demo login path for tests and demo environments
     if (type === 'demo' || identifier === 'demo') {
@@ -47,7 +49,11 @@ export async function POST(request: NextRequest) {
       });
     }
     
-    if (!email || !password) {
+    // Handle both email and identifier fields (form sends identifier)
+    const loginEmail = email || identifier;
+    console.log('[LOGIN] Using email:', loginEmail);
+    
+    if (!loginEmail || !password) {
       return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
     }
     
@@ -62,7 +68,7 @@ export async function POST(request: NextRequest) {
 
     // Step 1: Authenticate with service client (bypasses anon key issues)
     const { data: authData, error: authError } = await serviceClient.auth.signInWithPassword({
-      email,
+      email: loginEmail,
       password,
     });
 
