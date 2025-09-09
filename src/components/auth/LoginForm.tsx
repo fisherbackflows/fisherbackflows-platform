@@ -265,7 +265,7 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
         
         <Button
           type="button"
-          className="w-full border border-blue-300 bg-blue-200 text-white hover:bg-blue-300 hover:text-white py-3 rounded-lg transition-all"
+          className="w-full border border-blue-400 bg-blue-600 text-white hover:bg-blue-700 hover:text-white py-3 rounded-lg transition-all"
           onClick={() => window.location.href = '/portal/register'}
         >
           Create New Account
