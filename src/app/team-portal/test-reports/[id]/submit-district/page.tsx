@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
+import { Button } from '@/components/ui/button';
 import { Send, CheckCircle, AlertCircle, ArrowLeft, Building2, Clock, Mail } from 'lucide-react';
 
 interface WaterDistrict {
@@ -149,19 +151,26 @@ export default function SubmitDistrictPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black p-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
-          <button
-            onClick={() => router.back()}
-            className="glass rounded-xl p-3 border border-blue-400 hover:border-blue-300 transition-colors group"
-          >
-            <ArrowLeft className="h-5 w-5 text-blue-300 group-hover:text-white" />
-          </button>
-          <div>
-            <h1 className="text-3xl font-bold text-white">Submit to Water District</h1>
-            <p className="text-gray-400">Test Report #{testReportId.slice(-8).toUpperCase()}</p>
+    <div className="min-h-screen bg-black">
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost" 
+              size="sm"
+              onClick={() => router.back()}
+              className="text-white/80 hover:text-white"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Button>
+            <div>
+              <h1 className="text-2xl font-bold text-white">Submit to Water District</h1>
+              <p className="text-white/60">Test Report #{testReportId.slice(-8).toUpperCase()}</p>
+            </div>
           </div>
         </div>
 

@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { 
   Upload,
@@ -211,22 +212,16 @@ export default function DataManagementPage() {
   const selectedDataTypeInfo = dataTypes.find(dt => dt.value === selectedDataType);
 
   return (
-    <div className="min-h-screen bg-black p-4">
-      {/* Navigation Bar */}
-      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <Link href="/team-portal/dashboard">
-            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
-              ← Back to Dashboard
-            </Button>
-          </Link>
-        </div>
-      </div>
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-white mb-2">Data Management</h1>
-          <p className="text-gray-400">Import and export data for bulk operations</p>
+    <div className="min-h-screen bg-black">
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-white mb-2">Data Management</h1>
+            <p className="text-white/60">Import and export data for bulk operations</p>
+          </div>
         </div>
 
         {/* Messages */}

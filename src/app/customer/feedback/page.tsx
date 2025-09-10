@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import FeedbackForm from '@/components/customer/FeedbackForm';
 import { CustomerFeedback } from '@/lib/feedback';
 
@@ -30,10 +31,9 @@ export default function FeedbackPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="fixed inset-0 bg-grid opacity-10" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-purple-500/5" />
-
-      <div className="max-w-4xl mx-auto px-4 py-8 relative z-10">
+      <PortalNavigation userInfo={{ name: 'Customer', email: '' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <FeedbackForm
           customerId="customer-123" // This would come from auth context
           appointmentId={undefined} // Optional - can be passed via URL params

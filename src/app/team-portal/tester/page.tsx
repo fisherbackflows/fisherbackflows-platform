@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
-import StandardHeader from '@/components/ui/StandardHeader';
-import Logo from '@/components/ui/Logo';
 import { 
   FileText,
   Calendar,
@@ -188,31 +187,34 @@ export default function TesterDashboard() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-      {/* Navigation Bar */}
-      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <Link href="/team-portal/dashboard">
-            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
-              ← Back to Dashboard
-            </Button>
-          </Link>
+      <div className="min-h-screen bg-black">
+        <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400" />
         </div>
-      </div>
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400" />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Background Effects */}
-      <div className="fixed inset-0 bg-grid opacity-20" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
+      <TeamPortalNavigation userInfo={{ 
+        name: `${user.first_name} ${user.last_name}`, 
+        email: user.email || '',
+        role: 'Tester',
+        licenseNumber: user.license_number
+      }} />
       
-      <StandardHeader variant="portal">
-        <div className="flex justify-between items-center">
-          <Logo width={200} height={160} priority />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <User className="h-8 w-8 text-blue-300" />
+            <div>
+              <h1 className="text-3xl font-bold text-white">Tester Dashboard</h1>
+              <p className="text-white/60">Field technician interface</p>
+            </div>
+          </div>
           <div className="flex items-center gap-4">
             <div className="glass rounded-2xl px-3 py-2">
               <div className="flex items-center space-x-2 text-sm">
@@ -225,24 +227,15 @@ export default function TesterDashboard() {
                 </span>
               </div>
             </div>
-            <div className="glass rounded-2xl px-3 py-2">
-              <span className="text-white/80 text-sm">
-                {user.first_name} - Tester #{user.license_number}
-              </span>
-            </div>
             <Button
               onClick={handleLogout}
-              className="btn-glass px-4 py-2 rounded-2xl hover-glow flex items-center"
+              className="glass-btn-primary hover:glow-blue"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
             </Button>
           </div>
         </div>
-      </StandardHeader>
-
-      <div className="pt-24 pb-16 px-4">
-        <div className="max-w-4xl mx-auto">
           {/* Current Appointment */}
           {currentAppointment && (
             <div className="glass-yellow rounded-xl p-6 mb-8 glow-yellow-sm">
@@ -395,7 +388,6 @@ export default function TesterDashboard() {
               ))}
             </div>
           </section>
-        </div>
       </div>
     </div>
   );

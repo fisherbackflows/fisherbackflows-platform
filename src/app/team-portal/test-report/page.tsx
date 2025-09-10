@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect, Suspense } from 'react';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { 
   ArrowLeft,
@@ -259,86 +260,28 @@ function TestReportContent() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Fisher Backflows Header */}
-      <header className="relative z-50 glass border-b border-blue-400 sticky top-0 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="relative">
-                <Image
-                  src="/fisher-backflows-logo.png"
-                  alt="Fisher Backflows LLC"
-                  width={180}
-                  height={144}
-                  priority
-                  className="drop-glow-blue-sm"
-                />
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm0 rounded-full"></div>
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <Button className="glass hover:glass text-white/80 border border-blue-400" size="sm" asChild>
+              <Link href="/team-portal/dashboard">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
               </Link>
-            </div>
-            
-            <nav className="hidden md:flex space-x-1">
-              <Link 
-                href="/#services" 
-                className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium"
-              >
-                Services
-              </Link>
-              <Link 
-                href="/#about" 
-                className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium"
-              >
-                About
-              </Link>
-              <Link 
-                href="/#contact" 
-                className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium"
-              >
-                Contact
-              </Link>
-              <div className="w-px h-8 bg-black/40 backdrop-blur-xl mx-2"></div>
-              
-              <Link 
-                href="/team-portal/dashboard" 
-                className="px-6 py-2.5 rounded-2xl glass-btn-primary hover:glow-blue text-white transition-all duration-200 font-semibold glow-blue-sm"
-              >
-                Team Dashboard
-              </Link>
-              
-              {/* Back to Test Report */}
-              <Button className="glass hover:glass text-white/80 border border-blue-400" size="sm" asChild>
-                <Link href="/team-portal">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Link>
-              </Button>
-            </nav>
-            
-            {/* Mobile menu button */}
-            <button className="md:hidden p-2 rounded-lg glass border border-blue-400">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        {/* Page Title Section */}
-        <div className="border-t border-blue-400/20 bg-black/20">
-          <div className="max-w-7xl mx-auto px-6 py-3">
-            <div className="flex items-center space-x-4">
-              <div>
-                <h1 className="text-xl font-bold text-white">Test Report</h1>
-                <p className="text-sm text-white/90">
-                  {formData.customerName || 'New Test Report'}
-                </p>
-              </div>
+            </Button>
+            <div>
+              <h1 className="text-3xl font-bold text-white">Test Report</h1>
+              <p className="text-white/60">
+                {formData.customerName || 'New Test Report'}
+              </p>
             </div>
           </div>
         </div>
-      </header>
 
-      <form onSubmit={handleSubmit} className="p-4 pb-20 max-w-4xl mx-auto">
+        <form onSubmit={handleSubmit} className="pb-20">
         {/* Customer & Device Info - KEEP EXPANDED */}
         <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6 mb-4">
           <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
@@ -713,8 +656,9 @@ function TestReportContent() {
             <Send className="h-3 w-3 mr-1" />
             {saving ? 'Sending...' : 'Send to District'}
           </Button>
-        </div>
-      </form>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
@@ -722,10 +666,15 @@ function TestReportContent() {
 export default function TestReportPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="text-white/90 mt-4">Loading...</p>
+      <div className="min-h-screen bg-black">
+        <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+              <p className="text-white/90 mt-4">Loading...</p>
+            </div>
+          </div>
         </div>
       </div>
     }>

@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { AdminNavigation } from '@/components/navigation/UnifiedNavigation';
 import FeedbackDashboard from '@/components/admin/FeedbackDashboard';
 import { CustomerFeedback } from '@/lib/feedback';
 
@@ -30,16 +29,7 @@ export default function AdminFeedbackPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Navigation Bar */}
-      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <Link href="/admin/dashboard">
-            <Button variant="ghost" className="text-blue-300 hover:text-white">
-              ← Back to Dashboard
-            </Button>
-          </Link>
-        </div>
-      </div>
+      <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
       
       {loading ? (
         <div className="flex items-center justify-center min-h-[50vh]">

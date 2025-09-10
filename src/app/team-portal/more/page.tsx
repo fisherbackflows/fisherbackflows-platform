@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { 
   Settings,
@@ -140,20 +141,13 @@ export default function MorePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-      {/* Navigation Bar */}
-      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <Link href="/team-portal/dashboard">
-            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
-              ← Back to Dashboard
-            </Button>
-          </Link>
-        </div>
-      </div>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-white/80">Loading...</p>
+      <div className="min-h-screen bg-black">
+        <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-white/80">Loading...</p>
+          </div>
         </div>
       </div>
     );
@@ -161,23 +155,28 @@ export default function MorePage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="bg-black/40 backdrop-blur-xl text-white">
-        <div className="px-4 py-6">
-          <div className="flex items-center space-x-3 mb-4">
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
             <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full p-2">
               <Smartphone className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-xl font-bold">Fisher Backflows</h1>
-              <p className="text-blue-200 text-sm">Business Management</p>
+              <h1 className="text-3xl font-bold text-white">More Tools</h1>
+              <p className="text-white/60">Additional features and settings</p>
             </div>
           </div>
+        </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 gap-3">
+        {/* Quick Stats */}
+        <div className="glass rounded-2xl glow-blue-sm p-6 mb-6">
+          <h2 className="text-lg font-semibold mb-4">Quick Stats</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {stats.map((stat, index) => (
-              <div key={index} className="glass/10 rounded-2xl p-3">
+              <div key={index} className="glass rounded-2xl p-4">
                 <div className="text-sm text-white/80">{stat.label}</div>
                 <div className="flex items-center space-x-2">
                   <div className="text-lg font-bold">{stat.value}</div>
@@ -193,9 +192,6 @@ export default function MorePage() {
             ))}
           </div>
         </div>
-      </header>
-
-      <div className="p-4 pb-20">
         {/* Business Features */}
         <section className="mb-6">
           <h2 className="text-lg font-semibold text-white/80 mb-4">Business</h2>
@@ -374,36 +370,6 @@ export default function MorePage() {
           </div>
         </section>
       </div>
-
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 glass border-t border-blue-500/50">
-        <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
-            <div className="h-6 w-6 bg-black/30 backdrop-blur-lg rounded"></div>
-            <span className="text-xs">Home</span>
-          </Link>
-          <Link href="/team-portal/customers" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
-            <Users className="h-6 w-6" />
-            <span className="text-xs">Customers</span>
-          </Link>
-          <Link href="/team-portal/test-report" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
-            <Plus className="h-6 w-6" />
-            <span className="text-xs">Test</span>
-          </Link>
-          <Link href="/team-portal/schedule" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
-            <Calendar className="h-6 w-6" />
-            <span className="text-xs">Schedule</span>
-          </Link>
-          <Link href="/team-portal/more" className="flex flex-col items-center py-2 px-1 text-blue-300 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl">
-            <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
-              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
-              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
-            </div>
-            <span className="text-xs font-medium">More</span>
-          </Link>
-        </div>
-      </nav>
     </div>
   );
 }

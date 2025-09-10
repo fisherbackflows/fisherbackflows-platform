@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import Logo from '@/components/ui/Logo';
 import { ArrowLeft, Lock, User, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 
 export default function TeamPortalLoginPage() {
   const router = useRouter();
@@ -77,33 +78,7 @@ export default function TeamPortalLoginPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="glass border-b border-blue-400 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/" className="flex items-center space-x-3">
-              <Logo width={160} height={128} />
-              <div>
-                <h1 className="text-lg font-bold text-white">Fisher Backflows</h1>
-                <p className="text-xs text-white/90">Team Portal Login</p>
-              </div>
-            </Link>
-            <nav className="hidden md:flex space-x-1">
-              <Link href="/">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:glass transition-all duration-200 font-medium">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Home
-                </Button>
-              </Link>
-              <Link href="/portal">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:glass transition-all duration-200 font-medium">
-                  Customer Portal
-                </Button>
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
 
       {/* Main Content */}
       <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6">

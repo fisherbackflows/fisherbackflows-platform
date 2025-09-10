@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { AdminNavigation } from '@/components/navigation/UnifiedNavigation';
 import { 
   Lock, 
   Unlock, 
@@ -89,18 +89,9 @@ export default function UnlockAccountsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black py-12">
-      {/* Navigation Bar */}
-      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <Link href="/admin/dashboard">
-            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
-              ← Back to Dashboard
-            </Button>
-          </Link>
-        </div>
-      </div>
-      <div className="max-w-2xl mx-auto px-4">
+    <div className="min-h-screen bg-black">
+      <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="glass rounded-xl glow-blue border border-blue-400 p-8">
           <div className="flex items-center mb-6">
             <div className="p-3 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm rounded-2xl mr-4">

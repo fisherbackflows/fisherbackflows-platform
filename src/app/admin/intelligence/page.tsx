@@ -9,6 +9,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { AdminNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -369,51 +370,50 @@ export default function BusinessIntelligencePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 flex items-center justify-center">
-        <div className="text-center">
-          <BrainIcon className="h-16 w-16 text-blue-400 animate-pulse mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-white mb-2">Loading AI Insights...</h2>
-          <p className="text-blue-200">Analyzing business data and generating predictions</p>
+      <div className="min-h-screen bg-black">
+        <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <BrainIcon className="h-16 w-16 text-blue-400 animate-pulse mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-white mb-2">Loading AI Insights...</h2>
+            <p className="text-blue-200">Analyzing business data and generating predictions</p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-4xl font-bold text-white mb-2">
-                Business Intelligence
-              </h1>
-              <p className="text-blue-200 text-lg">
-                AI-powered insights driving growth and optimization
-              </p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button 
-                variant="outline" 
-                onClick={() => loadDashboardData()}
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-              >
-                <ActivityIcon className="h-4 w-4 mr-2" />
-                Refresh Data
-              </Button>
-              <select 
-                value={selectedTimeframe}
-                onChange={(e) => setSelectedTimeframe(e.target.value)}
-                className="bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white"
-              >
-                <option value="week">This Week</option>
-                <option value="month">This Month</option>
-                <option value="quarter">This Quarter</option>
-                <option value="year">This Year</option>
-              </select>
-            </div>
-          </div>
+    <div className="min-h-screen bg-black text-white">
+      <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="space-y-2 mb-8">
+          <h1 className="text-3xl font-bold text-white">Business Intelligence</h1>
+          <p className="text-white/70">AI-powered insights driving growth and optimization</p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <Button 
+            variant="outline" 
+            onClick={() => loadDashboardData()}
+            className="glass border-blue-400/50"
+          >
+            <ActivityIcon className="h-4 w-4 mr-2" />
+            Refresh Data
+          </Button>
+          <select 
+            value={selectedTimeframe}
+            onChange={(e) => setSelectedTimeframe(e.target.value)}
+            className="glass border border-blue-400/50 rounded-lg px-3 py-2 text-white bg-black/50"
+          >
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="quarter">This Quarter</option>
+            <option value="year">This Year</option>
+          </select>
         </div>
 
         {/* KPI Grid */}
@@ -696,9 +696,4 @@ export default function BusinessIntelligencePage() {
       </div>
     </div>
   );
-}
-
-// Missing closing braces for JSX structure
-}
-}
 }

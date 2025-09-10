@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { 
   Database,
@@ -407,9 +408,9 @@ export default function CustomerDatabasePage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="glass glow-blue-sm border-b">
-        <div className="px-4 py-4">
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="px-4 sm:px-6 py-6 sm:py-8">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold text-white/80 flex items-center">
               <Database className="h-6 w-6 mr-2" />

@@ -122,13 +122,11 @@ export default function TeamPortalDashboard() {
     return (
       <div className="min-h-screen bg-black">
         <TeamPortalNavigation userInfo={userInfo} />
-        <main className="p-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-center py-20">
-              <LoadingSpinner size="lg" />
-            </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <LoadingSpinner size="lg" />
           </div>
-        </main>
+        </div>
       </div>
     );
   }
@@ -137,20 +135,18 @@ export default function TeamPortalDashboard() {
     return (
       <div className="min-h-screen bg-black">
         <TeamPortalNavigation userInfo={userInfo} />
-        <main className="p-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-center py-20">
-              <div className="text-center">
-                <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-white mb-2">Unable to Load Dashboard</h2>
-                <p className="text-white/90 mb-6">{error}</p>
-                <Button onClick={() => window.location.reload()} className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl">
-                  Refresh Page
-                </Button>
-              </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          <div className="flex items-center justify-center min-h-[50vh]">
+            <div className="text-center">
+              <AlertTriangle className="h-16 w-16 text-red-500 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-white mb-2">Unable to Load Dashboard</h2>
+              <p className="text-white/90 mb-6">{error}</p>
+              <Button onClick={() => window.location.reload()} className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl">
+                Refresh Page
+              </Button>
             </div>
           </div>
-        </main>
+        </div>
       </div>
     );
   }
@@ -161,8 +157,8 @@ export default function TeamPortalDashboard() {
     <div className="min-h-screen bg-black">
       <TeamPortalNavigation userInfo={userInfo} />
       
-      <main className="p-6">
-        <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div className="space-y-8">
           {/* Professional Header */}
           <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -413,7 +409,7 @@ export default function TeamPortalDashboard() {
             </div>
           )}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

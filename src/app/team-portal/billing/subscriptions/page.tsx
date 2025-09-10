@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { 
   CreditCard,
@@ -180,8 +181,10 @@ export default function SubscriptionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black p-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-black">
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>

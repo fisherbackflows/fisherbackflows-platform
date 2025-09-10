@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { 
   Bell,
@@ -314,20 +315,13 @@ Fisher Backflows`,
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-      {/* Navigation Bar */}
-      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <Link href="/team-portal/dashboard">
-            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
-              ← Back to Dashboard
-            </Button>
-          </Link>
-        </div>
-      </div>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-white/80">Loading reminder system...</p>
+      <div className="min-h-screen bg-black">
+        <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+        <div className="flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-white/80">Loading reminder system...</p>
+          </div>
         </div>
       </div>
     );
@@ -335,43 +329,51 @@ Fisher Backflows`,
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="glass glow-blue-sm border-b">
-        <div className="px-4 py-4">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-white/80 flex items-center">
-              <Bell className="h-6 w-6 mr-2" />
-              Automated Reminders
-            </h1>
-            <Button size="sm" asChild>
-              <Link href="/app/reminders/new">
-                <Plus className="h-4 w-4 mr-2" />
-                New Rule
-              </Link>
-            </Button>
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <Bell className="h-8 w-8 text-blue-300" />
+            <div>
+              <h1 className="text-3xl font-bold text-white">Automated Reminders</h1>
+              <p className="text-white/60">Manage customer notification rules</p>
+            </div>
           </div>
+          <Button size="sm" asChild>
+            <Link href="/team-portal/reminders/new">
+              <Plus className="h-4 w-4 mr-2" />
+              New Rule
+            </Link>
+          </Button>
+        </div>
 
-          {/* Stats Overview */}
-          <div className="grid grid-cols-4 gap-3 mb-4">
-            <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl p-3 text-center">
+        {/* Stats Overview */}
+        <div className="glass rounded-2xl glow-blue-sm p-6 mb-6">
+          <h2 className="text-lg font-semibold mb-4">System Stats</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl p-4 text-center">
               <div className="text-xl font-bold text-blue-700">{rules.filter(r => r.active).length}</div>
-              <div className="text-xs text-blue-300">Active Rules</div>
+              <div className="text-sm text-blue-300">Active Rules</div>
             </div>
-            <div className="bg-yellow-50 rounded-2xl p-3 text-center">
+            <div className="bg-yellow-50 rounded-2xl p-4 text-center">
               <div className="text-xl font-bold text-yellow-700">{stats.scheduled}</div>
-              <div className="text-xs text-yellow-600">Scheduled</div>
+              <div className="text-sm text-yellow-600">Scheduled</div>
             </div>
-            <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl rounded-2xl p-3 text-center">
+            <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl rounded-2xl p-4 text-center">
               <div className="text-xl font-bold text-green-700">{stats.sent}</div>
-              <div className="text-xs text-green-300">Sent Today</div>
+              <div className="text-sm text-green-300">Sent Today</div>
             </div>
-            <div className="bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl rounded-2xl p-3 text-center">
+            <div className="bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl rounded-2xl p-4 text-center">
               <div className="text-xl font-bold text-red-700">{stats.failed}</div>
-              <div className="text-xs text-red-300">Failed</div>
+              <div className="text-sm text-red-300">Failed</div>
             </div>
           </div>
+        </div>
 
-          {/* Tab Navigation */}
+        {/* Tab Navigation */}
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-6">
           <div className="flex space-x-1 bg-black/30 backdrop-blur-lg p-1 rounded-2xl">
             {[
               { key: 'rules', label: 'Automation Rules', icon: Settings },
@@ -396,9 +398,6 @@ Fisher Backflows`,
             })}
           </div>
         </div>
-      </header>
-
-      <div className="p-4">
         {/* Automation Rules Tab */}
         {activeTab === 'rules' && (
           <div className="space-y-4">
@@ -635,36 +634,6 @@ Fisher Backflows`,
           </div>
         )}
       </div>
-
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 glass border-t border-blue-500/50">
-        <div className="grid grid-cols-5">
-          <Link href="/app" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
-            <div className="h-6 w-6 bg-black/30 backdrop-blur-lg rounded"></div>
-            <span className="text-xs">Home</span>
-          </Link>
-          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
-            <Users className="h-6 w-6" />
-            <span className="text-xs">Customers</span>
-          </Link>
-          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
-            <Plus className="h-6 w-4" />
-            <span className="text-xs">Test</span>
-          </Link>
-          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
-            <Calendar className="h-6 w-6" />
-            <span className="text-xs">Schedule</span>
-          </Link>
-          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-blue-300 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl">
-            <div className="flex space-x-1">
-              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
-              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
-              <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
-            </div>
-            <span className="text-xs font-medium">More</span>
-          </Link>
-        </div>
-      </nav>
     </div>
   );
 }

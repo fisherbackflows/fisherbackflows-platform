@@ -148,21 +148,8 @@ export default function InvoicesPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-black">
-        <TeamPortalNavigation userInfo={null} />
-        <main className="p-6">
-
-      {/* Navigation Header */}
-      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/team-portal/dashboard">
-              <Button variant="ghost" className="text-blue-300 hover:text-white">
-                ← Team Dashboard
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+        <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-center py-20">
@@ -179,10 +166,10 @@ export default function InvoicesPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      <TeamPortalNavigation userInfo={null} />
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
       
-      <main className="p-6">
-        <div className="max-w-7xl mx-auto space-y-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div className="space-y-8">
           {/* Professional Header */}
           <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -400,7 +387,7 @@ export default function InvoicesPage() {
             )}
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

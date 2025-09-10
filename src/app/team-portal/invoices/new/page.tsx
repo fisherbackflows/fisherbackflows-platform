@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { SmartBackButton } from '@/components/ui/SmartBreadcrumb';
 import { useKeyboardShortcuts, createFormShortcuts } from '@/hooks/useKeyboardShortcuts';
@@ -263,19 +264,11 @@ export default function NewInvoicePage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Navigation Bar */}
-      <div className="glass border-b border-blue-400 glow-blue-sm mb-6 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <Link href="/team-portal/dashboard">
-            <Button variant="ghost" className="text-blue-300 hover:text-white" onClick={() => window.history.back()}>
-              ← Back to Dashboard
-            </Button>
-          </Link>
-        </div>
-      </div>
-      {/* Header */}
-      <header className="glass glow-blue-sm border-b sticky top-0 z-10">
-        <div className="px-4 py-4">
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-4">
             <Button variant="outline" size="sm" asChild>
               <Link href="/team-portal/invoices">
@@ -283,14 +276,13 @@ export default function NewInvoicePage() {
               </Link>
             </Button>
             <div>
-              <h1 className="text-xl font-bold text-white/80">New Invoice</h1>
-              <p className="text-sm text-white/80">Create a new invoice for services</p>
+              <h1 className="text-3xl font-bold text-white">New Invoice</h1>
+              <p className="text-white/60">Create a new invoice for services</p>
             </div>
           </div>
         </div>
-      </header>
 
-      <form className="p-4 pb-32">
+        <form className="pb-32">
         {/* Customer Information */}
         <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
           <h2 className="text-lg font-semibold text-white/80 mb-4 flex items-center">
@@ -569,40 +561,41 @@ export default function NewInvoicePage() {
               />
             </div>
           </div>
-        </div>
-      </form>
+          </div>
+        </form>
 
-      {/* Fixed Action Buttons */}
-      <div className="fixed bottom-0 left-0 right-0 glass border-t border-blue-500/50 p-4">
-        <div className="flex space-x-3">
+        {/* Fixed Action Buttons */}
+        <div className="fixed bottom-0 left-0 right-0 glass border-t border-blue-500/50 p-4">
+          <div className="flex space-x-3">
+            <Button 
+              type="button"
+              onClick={(e) => handleSubmit(e, 'save')}
+              disabled={saving || !formData.customerId || formData.services.length === 0}
+              className="flex-1"
+              variant="outline"
+            >
+              <Save className="h-4 w-4 mr-2" />
+              {saving ? 'Saving...' : 'Save Draft'}
+            </Button>
+            <Button 
+              type="button"
+              onClick={(e) => handleSubmit(e, 'send')}
+              disabled={saving || !formData.customerId || formData.services.length === 0}
+              className="flex-1"
+            >
+              <Send className="h-4 w-4 mr-2" />
+              {saving ? 'Sending...' : 'Save & Send'}
+            </Button>
+          </div>
           <Button 
-            type="button"
-            onClick={(e) => handleSubmit(e, 'save')}
-            disabled={saving || !formData.customerId || formData.services.length === 0}
-            className="flex-1"
-            variant="outline"
+            type="button" 
+            variant="ghost" 
+            className="w-full mt-2" 
+            onClick={() => router.back()}
           >
-            <Save className="h-4 w-4 mr-2" />
-            {saving ? 'Saving...' : 'Save Draft'}
-          </Button>
-          <Button 
-            type="button"
-            onClick={(e) => handleSubmit(e, 'send')}
-            disabled={saving || !formData.customerId || formData.services.length === 0}
-            className="flex-1"
-          >
-            <Send className="h-4 w-4 mr-2" />
-            {saving ? 'Sending...' : 'Save & Send'}
+            Cancel
           </Button>
         </div>
-        <Button 
-          type="button" 
-          variant="ghost" 
-          className="w-full mt-2" 
-          onClick={() => router.back()}
-        >
-          Cancel
-        </Button>
       </div>
     </div>
   );

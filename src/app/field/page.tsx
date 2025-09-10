@@ -1,39 +1,14 @@
 import Link from 'next/link'
-import Logo from '@/components/ui/Logo'
-import { User, ClipboardList, ArrowLeft, Wrench, BarChart3, MapPin } from 'lucide-react'
+import { FieldNavigation } from '@/components/navigation/UnifiedNavigation'
+import { User, ClipboardList, Wrench, BarChart3, MapPin } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 export default function FieldPortal() {
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="glass border-b border-blue-400 sticky top-0 z-50 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-8">
-              <Link href="/" className="flex items-center space-x-3">
-                <Logo width={160} height={128} />
-                <div>
-                  <h1 className="text-lg font-bold text-white">Fisher Backflows</h1>
-                  <p className="text-xs text-white/90">Field Portal</p>
-                </div>
-              </Link>
-              <nav className="hidden md:flex space-x-1">
-                <Link href="/" className="px-4 py-2 rounded-2xl text-white/80 hover:text-white hover:glass font-medium transition-colors">
-                  <ArrowLeft className="h-4 w-4 mr-2 inline" />
-                  Home
-                </Link>
-              </nav>
-            </div>
-            <div className="text-sm text-white/90">
-              Field Operations
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-6 py-12">
+      <FieldNavigation />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <div className="inline-flex p-6 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm rounded-2xl mb-8">
@@ -139,7 +114,7 @@ export default function FieldPortal() {
             </p>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

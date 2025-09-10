@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { 
   ArrowLeft,
@@ -135,22 +136,21 @@ export default function EditInvoicePage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <div className="glass glow-blue-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-4">
-            <Link href={`/app/invoices/${invoiceId}`}>
-              <Button variant="ghost" size="sm">
+            <Link href={`/team-portal/invoices/${invoiceId}`}>
+              <Button variant="ghost" size="sm" className="text-white/80 hover:text-white">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
               </Button>
             </Link>
-            <h1 className="text-2xl font-bold text-white/80">Edit Invoice</h1>
+            <h1 className="text-2xl font-bold text-white">Edit Invoice</h1>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="glass rounded-2xl glow-blue-sm">
           <div className="p-8">
             <form onSubmit={handleSubmit} className="space-y-8">

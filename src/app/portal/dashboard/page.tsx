@@ -19,9 +19,7 @@ import {
   Shield,
   Award,
   Home,
-  LogOut,
-  Menu,
-  X
+  LogOut
 } from 'lucide-react';
 
 import { useCustomerData } from '@/hooks/useCustomerData';
@@ -29,7 +27,6 @@ import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
 
 export default function CustomerPortalDashboard() {
   const { customer, loading, error } = useCustomerData();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   if (loading) {
     return (
@@ -69,139 +66,17 @@ export default function CustomerPortalDashboard() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Mobile-Responsive Header */}
-      <header className="glass border-b border-blue-400 sticky top-0 z-50 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
-          <div className="flex justify-between items-center">
-            {/* Logo */}
-            <Link href="/" className="text-xl sm:text-2xl font-bold text-white flex-shrink-0">
-              Fisher Backflows
-            </Link>
-            
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex space-x-1">
-              <Link href="/portal/dashboard" className="px-3 py-2 rounded-xl glass-btn-primary text-white glow-blue-sm font-medium text-sm">
-                Dashboard
-              </Link>
-              <Link href="/portal/schedule" className="px-3 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm">
-                Schedule
-              </Link>
-              <Link href="/portal/billing" className="px-3 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm">
-                Billing
-              </Link>
-              <Link href="/portal/devices" className="px-3 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm">
-                Devices
-              </Link>
-              <Link href="/portal/reports" className="px-3 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm">
-                Reports
-              </Link>
-            </nav>
-            
-            {/* Desktop User Info & Actions */}
-            <div className="hidden lg:flex items-center space-x-3">
-              <div className="text-right">
-                <p className="font-semibold text-white text-sm">{customer.name}</p>
-                <p className="text-xs text-white/80">Account: {customer.accountNumber}</p>
-              </div>
-              <div className="flex space-x-1">
-                <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
-                  <Bell className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
-                  <Settings className="h-4 w-4" />
-                </Button>
-                <Link href="/">
-                  <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
-                    <LogOut className="h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            
-            {/* Mobile Menu Button */}
-            <div className="flex items-center space-x-2 lg:hidden">
-              <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
-                <Bell className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-white/80 hover:text-white/80"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              >
-                {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
-            </div>
-          </div>
-          
-          {/* Mobile Menu Dropdown */}
-          {mobileMenuOpen && (
-            <div className="lg:hidden mt-4 pb-4 border-t border-blue-400/30 pt-4">
-              {/* Mobile User Info */}
-              <div className="mb-4 text-center">
-                <p className="font-semibold text-white text-sm">{customer.name}</p>
-                <p className="text-xs text-white/80">Account: {customer.accountNumber}</p>
-              </div>
-              
-              {/* Mobile Navigation */}
-              <nav className="space-y-2">
-                <Link 
-                  href="/portal/dashboard" 
-                  className="block px-4 py-2 rounded-xl glass-btn-primary text-white glow-blue-sm font-medium text-sm text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Dashboard
-                </Link>
-                <Link 
-                  href="/portal/schedule" 
-                  className="block px-4 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Schedule
-                </Link>
-                <Link 
-                  href="/portal/billing" 
-                  className="block px-4 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Billing
-                </Link>
-                <Link 
-                  href="/portal/devices" 
-                  className="block px-4 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Devices
-                </Link>
-                <Link 
-                  href="/portal/reports" 
-                  className="block px-4 py-2 rounded-xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium text-sm text-center"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Reports
-                </Link>
-                
-                {/* Mobile Actions */}
-                <div className="flex justify-center space-x-4 pt-4 border-t border-blue-400/30 mt-4">
-                  <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
-                    <Settings className="h-4 w-4 mr-2" />
-                    Settings
-                  </Button>
-                  <Link href="/">
-                    <Button variant="ghost" size="sm" className="text-white/80 hover:text-white/80">
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Logout
-                    </Button>
-                  </Link>
-                </div>
-              </nav>
-            </div>
-          )}
-        </div>
-      </header>
+      <div className="fixed inset-0 bg-grid opacity-10" />
+      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
+
+      <PortalNavigation userInfo={{
+        name: customer?.name,
+        email: customer?.email,
+        accountNumber: customer?.accountNumber
+      }} />
 
       {/* Main Dashboard Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 relative z-10">
 
         {/* Welcome Section */}
         <div className="mb-8 sm:mb-10">

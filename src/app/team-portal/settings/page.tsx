@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { 
   ArrowLeft,
@@ -69,42 +70,20 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-black">
-
-      {/* Navigation Header */}
-      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/team-portal/dashboard">
-              <Button variant="ghost" className="text-blue-300 hover:text-white">
-                ← Team Dashboard
-              </Button>
-            </Link>
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-white">Settings</h1>
+            <p className="text-white/60">Configure your application preferences</p>
           </div>
+          <Button onClick={handleSave} className="glass-btn-primary hover:glow-blue">
+            <Save className="h-4 w-4 mr-2" />
+            Save Changes
+          </Button>
         </div>
-      </header>
-
-      {/* Header */}
-      <div className="glass glow-blue-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link href="/app/more">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Button>
-              </Link>
-              <h1 className="text-2xl font-bold text-white">Settings</h1>
-            </div>
-            <Button onClick={handleSave} className="glass-btn-primary hover:glow-blue">
-              <Save className="h-4 w-4 mr-2" />
-              Save Changes
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="space-y-6">
           {/* Business Information */}
           <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
@@ -348,7 +327,6 @@ export default function SettingsPage() {
               </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { 
   FileText,
@@ -308,11 +309,15 @@ export default function DistrictReportsPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="glass glow-blue-sm border-b">
-        <div className="px-4 py-4">
-          <div className="flex justify-between items-center mb-4">
-            <h1 className="text-2xl font-bold text-white/80">District Reports</h1>
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-bold text-white">District Reports</h1>
+            <p className="text-white/60">Manage and submit reports to water districts</p>
+          </div>
             <div className="flex space-x-2">
               <Button 
                 variant="outline" 
@@ -350,9 +355,6 @@ export default function DistrictReportsPage() {
             </div>
           </div>
         </div>
-      </header>
-
-      <div className="p-4">
         {/* Filters */}
         <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
           <div className="flex flex-col space-y-3">
@@ -592,6 +594,7 @@ export default function DistrictReportsPage() {
           </Link>
         </div>
       </nav>
+      </div>
     </div>
   );
 }

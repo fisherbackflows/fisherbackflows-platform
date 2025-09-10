@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import AdminProtection from '@/components/auth/AdminProtection';
+import { AdminNavigation } from '@/components/navigation/UnifiedNavigation';
 import { 
   Users, 
   TrendingUp, 
@@ -37,7 +38,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import Link from 'next/link';
 
 interface Lead {
   id: string;
@@ -407,10 +407,13 @@ export default function BusinessIntelligencePage() {
   if (loading) {
     return (
       <AdminProtection requiredRole="admin">
-        <div className="min-h-screen bg-black flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-3 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-lg font-medium text-white/80">Loading Business Intelligence...</p>
+        <div className="min-h-screen bg-black">
+          <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-3 border-blue-600 mx-auto mb-4"></div>
+              <p className="text-lg font-medium text-white/80">Loading Business Intelligence...</p>
+            </div>
           </div>
         </div>
       </AdminProtection>
@@ -420,63 +423,41 @@ export default function BusinessIntelligencePage() {
   return (
     <AdminProtection requiredRole="admin">
       <div className="min-h-screen bg-black text-white">
-        {/* Background */}
-        <div className="absolute inset-0 glass pointer-events-none"></div>
+        <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
         
-        {/* Header */}
-        <header className="sticky top-0 z-50 glass border-b border-blue-400/50">
-          <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-4">
-                <Link href="/admin/dashboard" className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center hover:scale-105 transition-transform">
-                  <BarChart3 className="h-5 w-5 text-white" />
-                </Link>
-                <div>
-                  <h1 className="text-xl font-bold text-white">Business Intelligence</h1>
-                  <p className="text-sm text-white/60">Lead Tracking & SaaS Client Management</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-4">
-                <Button variant="outline" size="sm" className="glass border-blue-400/50">
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  Refresh Data
-                </Button>
-                <div className="text-right">
-                  <p className="font-medium text-white">Fisher Admin</p>
-                  <p className="text-xs text-white/60">fisherbackflows@gmail.com</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Navigation Tabs */}
-            <nav className="flex space-x-1 mt-6">
-              {[
-                { id: 'overview', label: 'Overview', icon: BarChart3 },
-                { id: 'backflow-leads', label: 'Backflow Leads', icon: UserPlus },
-                { id: 'saas-clients', label: 'SaaS Clients', icon: Building2 },
-                { id: 'revenue', label: 'Revenue Analytics', icon: DollarSign },
-                { id: 'pipeline', label: 'Sales Pipeline', icon: TrendingUp }
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
-                    activeTab === tab.id
-                      ? 'bg-blue-500/30 text-white border border-blue-400/50'
-                      : 'text-white/70 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  <tab.icon className="h-4 w-4 mr-2" />
-                  {tab.label}
-                </button>
-              ))}
-            </nav>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          {/* Page Header */}
+          <div className="space-y-2 mb-8">
+            <h1 className="text-3xl font-bold text-white">Business Intelligence</h1>
+            <p className="text-white/70">Lead Tracking & SaaS Client Management</p>
           </div>
-        </header>
 
-        {/* Main Content */}
-        <main className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+          {/* Navigation Tabs */}
+          <nav className="flex space-x-1 mb-8 overflow-x-auto">
+            {[
+              { id: 'overview', label: 'Overview', icon: BarChart3 },
+              { id: 'backflow-leads', label: 'Backflow Leads', icon: UserPlus },
+              { id: 'saas-clients', label: 'SaaS Clients', icon: Building2 },
+              { id: 'revenue', label: 'Revenue Analytics', icon: DollarSign },
+              { id: 'pipeline', label: 'Sales Pipeline', icon: TrendingUp }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? 'bg-blue-500/30 text-white border border-blue-400/50'
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                }`}
+              >
+                <tab.icon className="h-4 w-4 mr-2" />
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* Main Content */}
+          <main className="space-y-8">
           {activeTab === 'overview' && (
             <>
               <div className="space-y-2">
@@ -1017,7 +998,8 @@ export default function BusinessIntelligencePage() {
               </div>
             </div>
           )}
-        </main>
+          </main>
+        </div>
       </div>
     </AdminProtection>
   );

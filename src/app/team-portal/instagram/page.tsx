@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import StandardHeader from '@/components/ui/StandardHeader';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import Logo from '@/components/ui/Logo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -681,28 +681,9 @@ export default function InstagramDashboard() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Background Effects */}
-      <div className="fixed inset-0 bg-grid opacity-20" />
-      <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
       
-      <StandardHeader variant="portal">
-        <div className="flex justify-between items-center">
-          <Logo width={200} height={160} priority />
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              onClick={() => router.push('/team-portal/dashboard')}
-              className="btn-glass px-4 py-2 rounded-2xl hover-glow flex items-center"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
-            </Button>
-          </div>
-        </div>
-      </StandardHeader>
-
-      <div className="pt-24 pb-16 px-4">
-        <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
           {/* Page Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold mb-2 flex items-center">
@@ -747,7 +728,6 @@ export default function InstagramDashboard() {
           {activeTab === 'content' && renderContent()}
           {activeTab === 'analytics' && renderAnalytics()}
         </div>
-      </div>
     </div>
   );
 }

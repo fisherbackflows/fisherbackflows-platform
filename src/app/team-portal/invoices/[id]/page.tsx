@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { 
   ArrowLeft,
@@ -141,48 +142,45 @@ export default function InvoiceDetailPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <div className="glass glow-blue-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link href="/app/invoices">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-2xl font-bold text-white/80">{invoice.number}</h1>
-                <div className="flex items-center mt-1">
-                  {getStatusIcon(invoice.status)}
-                  <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}>
-                    {invoice.status.toUpperCase()}
-                  </span>
-                </div>
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <Link href="/team-portal/invoices">
+              <Button variant="ghost" size="sm" className="text-white/80 hover:text-white">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-2xl font-bold text-white">{invoice.number}</h1>
+              <div className="flex items-center mt-1">
+                {getStatusIcon(invoice.status)}
+                <span className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}>
+                  {invoice.status.toUpperCase()}
+                </span>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <Button variant="outline">
-                <Download className="h-4 w-4 mr-2" />
-                Download PDF
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button variant="outline" className="text-white/80 border-white/20 hover:bg-white/10">
+              <Download className="h-4 w-4 mr-2" />
+              Download PDF
+            </Button>
+            <Button variant="outline" className="text-white/80 border-white/20 hover:bg-white/10">
+              <Send className="h-4 w-4 mr-2" />
+              Send Email
+            </Button>
+            <Link href={`/team-portal/invoices/${invoiceId}/edit`}>
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
               </Button>
-              <Button variant="outline">
-                <Send className="h-4 w-4 mr-2" />
-                Send Email
-              </Button>
-              <Link href={`/app/invoices/${invoiceId}/edit`}>
-                <Button>
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit
-                </Button>
-              </Link>
-            </div>
+            </Link>
           </div>
         </div>
-      </div>
-
-      <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="glass rounded-2xl glow-blue-sm">
           {/* Invoice Header */}
           <div className="p-8 border-b">

@@ -176,36 +176,21 @@ export default function SchedulePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-black">
-        <TeamPortalNavigation userInfo={userInfo} />
-        <main className="p-6">
-
-      {/* Navigation Header */}
-      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/team-portal/dashboard">
-              <Button variant="ghost" className="text-blue-300 hover:text-white">
-                ← Team Dashboard
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </header>
-
-          <div className="max-w-7xl mx-auto flex items-center justify-center py-20">
+        <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          <div className="flex items-center justify-center min-h-[50vh]">
             <LoadingSpinner size="lg" color="blue" text="Loading schedule..." />
           </div>
-        </main>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-black">
-      <TeamPortalNavigation userInfo={userInfo} />
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
       
-      <main className="p-6">
-        <div className="max-w-7xl mx-auto">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
           {/* Page Header */}
           <header className="glass glow-blue-sm border-b border-blue-400 rounded-2xl p-6 mb-6">
             <div className="flex justify-between items-center">
@@ -453,8 +438,7 @@ export default function SchedulePage() {
             </div>
           )}
           </div>
-        </div>
-      </main>
+      </div>
     </div>
   );
 }
