@@ -122,69 +122,13 @@ export default function CustomerReportsPage() {
       <div className="fixed inset-0 bg-grid opacity-10" />
       <div className="fixed inset-0 bg-gradient-to-br from-blue-600/80/5 via-transparent to-blue-500/80/5" />
 
-      {/* Header */}
-      <header className="glass border-b border-blue-400 sticky top-0 z-50 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-8">
-              <Link href="/" className="text-2xl font-bold text-white">
-                Fisher Backflows
-              </Link>
-              <nav className="hidden md:flex space-x-1">
-                <Link href="/portal/dashboard" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Dashboard
-                </Link>
-                <Link href="/portal/devices" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Devices
-                </Link>
-                <Link href="/portal/billing" className="px-4 py-2 rounded-2xl text-white/90 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all font-medium">
-                  Billing
-                </Link>
-                <Link href="/portal/reports" className="px-4 py-2 rounded-2xl glass-btn-primary text-white glow-blue-sm font-medium">
-                  Reports
-                </Link>
-              </nav>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="hidden md:block text-right">
-                <p className="font-semibold text-white">{customer?.name}</p>
-                <p className="text-sm text-white/80">Account: {customer?.accountNumber}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PortalNavigation userInfo={{
+        name: customer?.name,
+        email: customer?.email,
+        accountNumber: customer?.accountNumber
+      }} />
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8 relative z-10">
-
-      {/* Navigation Header */}
-      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <Link href="/portal/dashboard">
-              <Button variant="ghost" className="text-blue-300 hover:text-white">
-                ← Back to Dashboard
-              </Button>
-            </Link>
-            <nav className="flex space-x-4">
-              <Link href="/portal/billing">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Billing</Button>
-              </Link>
-              <Link href="/portal/devices">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Devices</Button>
-              </Link>
-              <Link href="/portal/reports">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Reports</Button>
-              </Link>
-              <Link href="/portal/schedule">
-                <Button variant="ghost" className="text-blue-300 hover:text-white">Schedule</Button>
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 relative z-10">
 
         {/* Page Header */}
         <div className="mb-8">
