@@ -5,26 +5,22 @@ import {
   Calendar,
   Clock,
   MapPin,
-  Phone,
   CheckCircle,
-  AlertCircle,
-  User,
   Wrench,
   Save
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { useCustomerData } from '@/hooks/useCustomerData';
 import { useAutoSave } from '@/hooks/useAutoSave';
 import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 export default function CustomerSchedulePage() {
   const { customer, loading, error } = useCustomerData();
+  const supabase = createClientComponentClient();
   const [appointments, setAppointments] = useState([]);
-  const [availableDates, setAvailableDates] = useState([]);
-  const [availableTimes, setAvailableTimes] = useState([]);
+  const [availableSlots, setAvailableSlots] = useState([]);
   const [loadingAppointments, setLoadingAppointments] = useState(true);
-  const [loadingTimes, setLoadingTimes] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDevice, setSelectedDevice] = useState(null);
@@ -43,7 +39,7 @@ export default function CustomerSchedulePage() {
   useEffect(() => {
     if (customer?.id) {
       loadAppointments();
-      loadAvailableDates();
+      generateAvailableSlots();
     }
   }, [customer]);
 
@@ -70,48 +66,62 @@ export default function CustomerSchedulePage() {
     }
   }
 
-  async function loadAvailableDates() {
-    try {
-      const token = localStorage.getItem('portal_token');
+  function generateAvailableSlots() {
+    const slots = [];
+    const today = new Date();
+    
+    for (let d = 0; d < 30; d++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + d);
+      const dayOfWeek = date.getDay();
       
-      const response = await fetch('/api/appointments/available-dates', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
+      // Determine zone based on day of week
+      let zone = '';
+      let isAvailable = false;
       
-      if (response.ok) {
-        const data = await response.json();
-        setAvailableDates(data.dates || []);
+      // Monday-Tuesday (1-2): North Puyallup
+      // Wednesday-Friday (3-5): South Puyallup  
+      // Saturday-Sunday (0,6): North Puyallup
+      if (dayOfWeek === 0 || dayOfWeek === 6 || dayOfWeek === 1 || dayOfWeek === 2) {
+        zone = 'North Puyallup';
+        isAvailable = true;
+      } else if (dayOfWeek >= 3 && dayOfWeek <= 5) {
+        zone = 'South Puyallup';
+        isAvailable = true;
       }
-    } catch (error) {
-      console.error('Failed to load available dates:', error);
+      
+      if (isAvailable) {
+        // Weekend hours: 7am-7pm
+        // Weekday hours: 5pm-10pm
+        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+        const startHour = isWeekend ? 7 : 17;
+        const endHour = isWeekend ? 19 : 22;
+        
+        for (let hour = startHour; hour < endHour; hour++) {
+          slots.push({
+            date: date.toISOString().split('T')[0],
+            time: `${hour.toString().padStart(2, '0')}:00`,
+            zone: zone,
+            available: true
+          });
+        }
+      }
     }
+    
+    setAvailableSlots(slots);
   }
 
-  async function loadAvailableTimes(date) {
-    try {
-      setLoadingTimes(true);
-      const token = localStorage.getItem('portal_token');
-      
-      const response = await fetch(`/api/appointments/available-times?date=${date}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setAvailableTimes(data.availableSlots || []);
-      }
-    } catch (error) {
-      console.error('Failed to load available times:', error);
-      setAvailableTimes([]);
-    } finally {
-      setLoadingTimes(false);
-    }
+  function getSlotsForDate(date) {
+    const dateStr = date.toISOString().split('T')[0];
+    return availableSlots.filter(slot => slot.date === dateStr);
+  }
+
+  function getAvailableDates() {
+    const dates = new Set();
+    availableSlots.forEach(slot => {
+      dates.add(slot.date);
+    });
+    return Array.from(dates).sort();
   }
 
   async function bookAppointment() {
@@ -121,38 +131,42 @@ export default function CustomerSchedulePage() {
     }
 
     try {
-      const token = localStorage.getItem('portal_token');
+      // Find the selected slot
+      const slot = availableSlots.find(s => 
+        s.date === selectedDate && s.time === selectedTime
+      );
       
-      const response = await fetch('/api/appointments/book', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          customerId: customer.id,
-          deviceId: selectedDevice.id,
-          date: selectedDate,
-          time: selectedTime,
-          serviceType: 'Annual Test',
-          notes: `Scheduled via customer portal for ${selectedDevice.location}`
-        })
-      });
-      
-      if (response.ok) {
-        clearSaved(); // Clear auto-saved progress
-        alert('Appointment booked successfully!');
-        loadAppointments();
-        setBookingStep(1);
-        setSelectedDate(null);
-        setSelectedTime(null);
-        setSelectedDevice(null);
-      } else {
-        alert('Failed to book appointment. Please try again.');
+      if (!slot) {
+        alert('Invalid time slot selected');
+        return;
       }
+      
+      // Create appointment
+      const { data: appointment, error: appointmentError } = await supabase
+        .from('appointments')
+        .insert({
+          customer_id: customer.id,
+          device_id: selectedDevice.id,
+          scheduled_date: selectedDate,
+          scheduled_time: selectedTime,
+          status: 'scheduled',
+          notes: `Scheduled for ${slot.zone} zone - ${selectedDevice.location || selectedDevice.device_type}`
+        })
+        .select()
+        .single();
+      
+      if (appointmentError) throw appointmentError;
+      
+      clearSaved(); // Clear auto-saved progress
+      alert('Appointment booked successfully!');
+      loadAppointments();
+      setBookingStep(1);
+      setSelectedDate(null);
+      setSelectedTime(null);
+      setSelectedDevice(null);
     } catch (error) {
       console.error('Failed to book appointment:', error);
-      alert('An error occurred. Please try again.');
+      alert('Failed to book appointment. Please try again.');
     }
   }
 
@@ -259,28 +273,48 @@ export default function CustomerSchedulePage() {
             {bookingStep === 2 && (
               <div>
                 <h3 className="text-lg font-bold text-blue-200 mb-4">Step 2: Select Date</h3>
+                
+                {/* Zone Info */}
+                <div className="mb-4 p-3 rounded-lg bg-blue-500/10 border border-blue-400/30">
+                  <p className="text-sm text-blue-200 mb-2">Service Zones:</p>
+                  <div className="text-xs text-white/60 mb-1">
+                    <span className="font-bold">North Puyallup:</span> Sat, Sun, Mon, Tue
+                  </div>
+                  <div className="text-xs text-white/60">
+                    <span className="font-bold">South Puyallup:</span> Wed, Thu, Fri
+                  </div>
+                  <div className="text-xs text-white/60 mt-2">
+                    <span className="font-bold">Hours:</span> Weekdays 5pm-10pm, Weekends 7am-7pm
+                  </div>
+                </div>
+                
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {availableDates.slice(0, 9).map((date) => (
-                    <Button
-                      key={date}
-                      onClick={() => {
-                        setSelectedDate(date);
-                        loadAvailableTimes(date);
-                        setBookingStep(3);
-                      }}
-                      className={`p-3 rounded-xl ${
-                        selectedDate === date
-                          ? 'glass-btn-primary glow-blue-sm'
-                          : 'btn-glass'
-                      }`}
-                    >
-                      <div className="text-center">
-                        <p className="text-xs">{new Date(date).toLocaleDateString('en-US', { weekday: 'short' })}</p>
-                        <p className="font-bold">{new Date(date).getDate()}</p>
-                        <p className="text-xs">{new Date(date).toLocaleDateString('en-US', { month: 'short' })}</p>
-                      </div>
-                    </Button>
-                  ))}
+                  {getAvailableDates().slice(0, 12).map((date) => {
+                    const daySlots = getSlotsForDate(new Date(date));
+                    const zone = daySlots[0]?.zone || '';
+                    const dateObj = new Date(date);
+                    return (
+                      <Button
+                        key={date}
+                        onClick={() => {
+                          setSelectedDate(date);
+                          setBookingStep(3);
+                        }}
+                        className={`p-3 rounded-xl ${
+                          selectedDate === date
+                            ? 'glass-btn-primary glow-blue-sm'
+                            : 'btn-glass'
+                        }`}
+                      >
+                        <div className="text-center">
+                          <p className="text-xs">{dateObj.toLocaleDateString('en-US', { weekday: 'short' })}</p>
+                          <p className="font-bold">{dateObj.getDate()}</p>
+                          <p className="text-xs">{dateObj.toLocaleDateString('en-US', { month: 'short' })}</p>
+                          {zone && <p className="text-xs text-blue-300 mt-1">{zone.split(' ')[0]}</p>}
+                        </div>
+                      </Button>
+                    );
+                  })}
                 </div>
                 <Button
                   onClick={() => setBookingStep(1)}
@@ -295,33 +329,41 @@ export default function CustomerSchedulePage() {
             {bookingStep === 3 && (
               <div>
                 <h3 className="text-lg font-bold text-blue-200 mb-4">Step 3: Select Time</h3>
-                {loadingTimes ? (
-                  <div className="text-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="text-white/80">Loading available times...</p>
-                  </div>
-                ) : (
+                {selectedDate && (
                   <>
+                    {getSlotsForDate(new Date(selectedDate)).length > 0 && (
+                      <div className="mb-3 flex items-center text-sm text-blue-200">
+                        <MapPin className="h-4 w-4 mr-1" />
+                        Zone: {getSlotsForDate(new Date(selectedDate))[0].zone}
+                      </div>
+                    )}
                     <div className="grid grid-cols-2 gap-3">
-                      {availableTimes.map((timeSlot) => (
-                        <Button
-                          key={timeSlot.time}
-                          onClick={() => {
-                            setSelectedTime(timeSlot.label);
-                            setBookingStep(4);
-                          }}
-                          className={`p-3 rounded-xl ${
-                            selectedTime === timeSlot.label
-                              ? 'glass-btn-primary glow-blue-sm'
-                              : 'btn-glass'
-                          }`}
-                        >
-                          <Clock className="h-4 w-4 mr-2" />
-                          {timeSlot.label}
-                        </Button>
-                      ))}
+                      {getSlotsForDate(new Date(selectedDate)).map((slot, idx) => {
+                        const hour = parseInt(slot.time.split(':')[0]);
+                        const displayTime = hour > 12 ? 
+                          `${hour - 12}:00 PM` : 
+                          hour === 12 ? '12:00 PM' : 
+                          `${hour}:00 AM`;
+                        return (
+                          <Button
+                            key={idx}
+                            onClick={() => {
+                              setSelectedTime(slot.time);
+                              setBookingStep(4);
+                            }}
+                            className={`p-3 rounded-xl ${
+                              selectedTime === slot.time
+                                ? 'glass-btn-primary glow-blue-sm'
+                                : 'btn-glass'
+                            }`}
+                          >
+                            <Clock className="h-4 w-4 mr-2" />
+                            {displayTime}
+                          </Button>
+                        );
+                      })}
                     </div>
-                    {availableTimes.length === 0 && (
+                    {getSlotsForDate(new Date(selectedDate)).length === 0 && (
                       <div className="text-center py-8">
                         <Clock className="h-12 w-12 text-blue-400/50 mx-auto mb-4" />
                         <p className="text-white/60 mb-2">No available times for this date</p>
@@ -356,7 +398,9 @@ export default function CustomerSchedulePage() {
                     <div>
                       <p className="text-sm text-white/60">Date</p>
                       <p className="font-bold text-white">
-                        {selectedDate ? new Date(selectedDate).toLocaleDateString() : 'N/A'}
+                        {selectedDate ? new Date(selectedDate).toLocaleDateString('en-US', { 
+                          weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' 
+                        }) : 'N/A'}
                       </p>
                     </div>
                   </div>
@@ -364,7 +408,27 @@ export default function CustomerSchedulePage() {
                     <Clock className="h-5 w-5 text-blue-400" />
                     <div>
                       <p className="text-sm text-white/60">Time</p>
-                      <p className="font-bold text-white">{selectedTime}</p>
+                      <p className="font-bold text-white">
+                        {selectedTime ? (() => {
+                          const hour = parseInt(selectedTime.split(':')[0]);
+                          return hour > 12 ? `${hour - 12}:00 PM` : 
+                                 hour === 12 ? '12:00 PM' : `${hour}:00 AM`;
+                        })() : 'N/A'}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <MapPin className="h-5 w-5 text-blue-400" />
+                    <div>
+                      <p className="text-sm text-white/60">Service Zone</p>
+                      <p className="font-bold text-white">
+                        {selectedDate && selectedTime ? (() => {
+                          const slot = availableSlots.find(s => 
+                            s.date === selectedDate && s.time === selectedTime
+                          );
+                          return slot?.zone || 'N/A';
+                        })() : 'N/A'}
+                      </p>
                     </div>
                   </div>
                 </div>
