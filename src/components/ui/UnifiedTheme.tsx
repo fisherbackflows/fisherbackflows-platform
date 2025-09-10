@@ -183,16 +183,16 @@ export function UnifiedNavItem({ href, icon: Icon, label, isActive = false, onCl
     </div>
   );
 
-  if (onClick) {
-    return (
-      <button onClick={onClick} className="w-full text-left">
-        {content}
-      </button>
-    );
-  }
+  // Handle both navigation and onClick (for mobile menu closing)
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      onClick();
+    }
+    // Let the Link handle navigation naturally
+  };
 
   return (
-    <Link href={href}>
+    <Link href={href} onClick={handleClick}>
       {content}
     </Link>
   );
