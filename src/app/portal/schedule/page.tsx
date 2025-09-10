@@ -14,6 +14,7 @@ import { useCustomerData } from '@/hooks/useCustomerData';
 import { useAutoSave } from '@/hooks/useAutoSave';
 import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function CustomerSchedulePage() {
   const { customer, loading, error } = useCustomerData();
@@ -126,47 +127,76 @@ export default function CustomerSchedulePage() {
 
   async function bookAppointment() {
     if (!selectedDate || !selectedTime || !selectedDevice) {
-      alert('Please select a date, time, and device');
+      toast.error('Please select a date, time, and device');
       return;
     }
 
+    const bookingToast = toast.loading('Booking your appointment...');
+
     try {
-      // Find the selected slot
+      // Find the selected slot to get zone info
       const slot = availableSlots.find(s => 
         s.date === selectedDate && s.time === selectedTime
       );
       
       if (!slot) {
-        alert('Invalid time slot selected');
+        toast.error('Invalid time slot selected', { id: bookingToast });
         return;
       }
       
-      // Create appointment
-      const { data: appointment, error: appointmentError } = await supabase
-        .from('appointments')
-        .insert({
-          customer_id: customer.id,
-          device_id: selectedDevice.id,
-          scheduled_date: selectedDate,
-          scheduled_time: selectedTime,
-          status: 'scheduled',
-          notes: `Scheduled for ${slot.zone} zone - ${selectedDevice.location || selectedDevice.device_type}`
+      // Use secure booking API
+      const response = await fetch('/api/appointments/book-secure', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          customerId: customer.id,
+          deviceId: selectedDevice.id,
+          date: selectedDate,
+          time: selectedTime,
+          zone: slot.zone,
+          notes: `Device: ${selectedDevice.location || selectedDevice.device_type}`
         })
-        .select()
-        .single();
+      });
       
-      if (appointmentError) throw appointmentError;
+      const result = await response.json();
+      
+      if (!response.ok) {
+        if (response.status === 409) {
+          // Conflict - show alternatives
+          toast.error(result.error, { id: bookingToast });
+          if (result.suggestedAlternatives?.length > 0) {
+            toast('Try these available times:', {
+              duration: 8000,
+              icon: '💡',
+            });
+          }
+        } else if (response.status === 429) {
+          toast.error('Too many booking attempts. Please wait a moment and try again.', { id: bookingToast });
+        } else {
+          toast.error(result.error || 'Failed to book appointment', { id: bookingToast });
+        }
+        return;
+      }
       
       clearSaved(); // Clear auto-saved progress
-      alert('Appointment booked successfully!');
+      toast.success(result.message || 'Appointment booked successfully!', { 
+        id: bookingToast,
+        duration: 6000 
+      });
+      
       loadAppointments();
       setBookingStep(1);
       setSelectedDate(null);
       setSelectedTime(null);
       setSelectedDevice(null);
+      
     } catch (error) {
       console.error('Failed to book appointment:', error);
-      alert('Failed to book appointment. Please try again.');
+      toast.error('Network error. Please check your connection and try again.', {
+        id: bookingToast
+      });
     }
   }
 
@@ -516,6 +546,31 @@ export default function CustomerSchedulePage() {
           </div>
         </div>
       </main>
+      <Toaster 
+        position="top-center"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: 'rgba(15, 23, 42, 0.95)',
+            color: '#fff',
+            border: '1px solid rgba(59, 130, 246, 0.3)',
+            borderRadius: '12px',
+            backdropFilter: 'blur(10px)'
+          },
+          success: {
+            iconTheme: {
+              primary: '#10b981',
+              secondary: '#fff'
+            }
+          },
+          error: {
+            iconTheme: {
+              primary: '#ef4444',
+              secondary: '#fff'
+            }
+          }
+        }}
+      />
     </div>
   );
 }
