@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 import { sendEmail, emailTemplates } from '@/lib/email';
-import { AvailabilityCache } from '@/lib/cache';
+import { cache, CacheKeys } from '@/lib/cache';
 
 export async function POST(request: NextRequest) {
   try {
@@ -207,7 +207,9 @@ export async function POST(request: NextRequest) {
     }
     
     // Invalidate cache after successful booking
-    AvailabilityCache.invalidateAvailability(date);
+    // Invalidate cache for this date
+    cache.delete(CacheKeys.availableTimes(date));
+    cache.delete(CacheKeys.availableDates());
     
     const successMessage = assignedTechnicianId 
       ? `Appointment booked successfully with technician ${assignedTechnicianName} and confirmation email sent`

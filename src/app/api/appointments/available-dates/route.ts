@@ -1,11 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
-import { AvailabilityCache, CacheTTL, CacheKeys } from '@/lib/cache';
+import { cache, CacheTTL, CacheKeys } from '@/lib/cache';
 
 export async function GET(request: NextRequest) {
   try {
-    // Use caching for available dates
-    const result = await AvailabilityCache.cacheAvailableDates(async () => {
+    // Try cache first
+    const cacheKey = CacheKeys.availableDates();
+    const cached = cache.get(cacheKey);
+    if (cached) {
+      return NextResponse.json({ ...cached, cached: true });
+    }
+
+    // Fetch fresh data
+    const result = await (async () => {
       const supabase = supabaseAdmin || createRouteHandlerClient(request);
       
       // Get current date and calculate next 30 days
@@ -60,13 +67,11 @@ export async function GET(request: NextRequest) {
         cached: false,
         timestamp: new Date().toISOString()
       };
-    });
+    })();
 
-    // Add cache hit indicator
-    const response = {
-      ...result,
-      cached: result.cached !== false // Will be undefined from cache, false from fresh fetch
-    };
+    // Cache the result
+    cache.set(cacheKey, result, CacheTTL.MEDIUM);
+    const response = { ...result, cached: false };
 
     return NextResponse.json(response);
     

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { z } from 'zod';
-import { AvailabilityCache } from '@/lib/cache';
+import { cache, CacheKeys } from '@/lib/cache';
 
 const RescheduleSchema = z.object({
   appointmentId: z.string().uuid(),
@@ -273,8 +273,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Invalidate cache for both old and new dates
-    AvailabilityCache.invalidateAvailability(appointment.scheduled_date);
-    AvailabilityCache.invalidateAvailability(validatedData.newDate);
+    // Invalidate cache for both dates
+    cache.delete(CacheKeys.availableTimes(appointment.scheduled_date));
+    cache.delete(CacheKeys.availableTimes(validatedData.newDate));
+    cache.delete(CacheKeys.availableDates());
 
     return NextResponse.json({
       success: true,

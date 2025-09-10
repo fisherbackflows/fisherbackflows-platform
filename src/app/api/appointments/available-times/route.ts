@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
-import { AvailabilityCache, CacheTTL } from '@/lib/cache';
+import { cache, CacheTTL, CacheKeys } from '@/lib/cache';
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,8 +14,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Use caching for available times with shorter TTL for more real-time accuracy
-    const result = await AvailabilityCache.cacheAvailableTimes(date, async () => {
+    // Try cache first
+    const cacheKey = CacheKeys.availableTimes(date);
+    const cached = cache.get(cacheKey);
+    if (cached) {
+      return NextResponse.json({ ...cached, cached: true });
+    }
+
+    // Fetch fresh data
+    const result = await (async () => {
       const supabase = supabaseAdmin || createRouteHandlerClient(request);
       
       // Get existing appointments for the specified date
@@ -78,15 +85,12 @@ export async function GET(request: NextRequest) {
         cached: false,
         timestamp: new Date().toISOString()
       };
-    });
+    })();
 
-    // Add cache hit indicator
-    const response = {
-      ...result,
-      cached: result.cached !== false
-    };
-
-    return NextResponse.json(response);
+    // Cache the result
+    cache.set(cacheKey, result, CacheTTL.SHORT);
+    
+    return NextResponse.json({ ...result, cached: false });
     
   } catch (error) {
     console.error('Available times API error:', error);
