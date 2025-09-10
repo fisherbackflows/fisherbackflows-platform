@@ -1,7 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { AdminNavigation } from '@/components/navigation/UnifiedNavigation';
 
 import React, { useState, useEffect } from 'react';
 import { 
@@ -154,20 +153,10 @@ export default function HealthMonitoringPage() {
   };
 
   return (
-    <UnifiedLayout variant="wide" background="gradient">
-      {/* Header */}
-      <div className="mb-8">
-
-      {/* Navigation Header */}
-      <header className="glass border-b border-blue-400 glow-blue-sm mb-6">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <Link href="/admin/dashboard">
-            <Button variant="ghost" className="text-blue-300 hover:text-white">
-              ← Admin Dashboard
-            </Button>
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-black">
+      <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <div className="mb-8">
 
         <UnifiedFlex variant="between">
           <div>
@@ -382,6 +371,7 @@ export default function HealthMonitoringPage() {
           </div>
         </UnifiedGrid>
       </UnifiedCard>
-    </UnifiedLayout>
+      </div>
+    </div>
   );
 }
