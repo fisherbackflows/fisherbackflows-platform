@@ -36,6 +36,7 @@ import { Button } from '@/components/ui/button'
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { AdminNavigation } from '@/components/navigation/UnifiedNavigation'
 
 interface AnalyticsData {
   monthlyRevenue: Array<{ month: string; revenue: number; tests: number }>
@@ -155,7 +156,8 @@ export default function AnalyticsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-black">
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
               <LoadingSpinner size="lg" />
@@ -170,22 +172,19 @@ export default function AnalyticsPage() {
   if (!data) {
     return (
       <div className="min-h-screen bg-black">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Professional Header */}
-          <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-8 mb-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <Link href="/admin/dashboard">
-                  <Button className="glass hover:glass text-white/80 p-2 rounded-2xl">
-                    <ArrowLeft className="h-5 w-5" />
-                  </Button>
-                </Link>
-                <div>
-                  <h1 className="text-3xl font-bold text-white">Business Analytics</h1>
-                  <p className="text-white/90 mt-2">
-                    Advanced insights and performance metrics
-                  </p>
-                </div>
+        <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          {/* Page Header */}
+          <div className="mb-8">
+            <div className="flex items-center space-x-4">
+              <Link href="/admin/dashboard">
+                <Button className="glass hover:glass text-white/80 p-2 rounded-2xl">
+                  <ArrowLeft className="h-5 w-5" />
+                </Button>
+              </Link>
+              <div>
+                <h1 className="text-3xl font-bold text-white">Business Analytics</h1>
+                <p className="text-white/90 mt-2">Advanced insights and performance metrics</p>
               </div>
             </div>
           </div>
@@ -200,12 +199,12 @@ export default function AnalyticsPage() {
               </p>
               <div className="flex flex-wrap gap-3 justify-center">
                 <Link href="/admin/dashboard">
-                  <Button className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl" onClick={() => window.history.back()}>
+                  <Button className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl">
                     Back to Dashboard
                   </Button>
                 </Link>
                 <Link href="/team-portal/customers/new">
-                  <Button className="glass-btn-primary hover:glow-blue bg-emerald-500/20 border border-emerald-400 glow-blue-sm0/30 border-emerald-400 text-white px-6 py-3 rounded-2xl">
+                  <Button className="glass-btn-primary hover:glow-blue bg-emerald-500/20 border border-emerald-400 text-white px-6 py-3 rounded-2xl">
                     Add First Customer
                   </Button>
                 </Link>
@@ -219,9 +218,11 @@ export default function AnalyticsPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Professional Header */}
-        <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-8 mb-8">
+      <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="flex items-center space-x-4">
               <Link href="/admin/dashboard">
@@ -231,13 +232,11 @@ export default function AnalyticsPage() {
               </Link>
               <div>
                 <h1 className="text-3xl font-bold text-white">Business Analytics</h1>
-                <p className="text-white/90 mt-2">
-                  Advanced insights and performance metrics
-                </p>
+                <p className="text-white/90 mt-2">Advanced insights and performance metrics</p>
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
+            <div className="flex flex-wrap items-center gap-4">
               <select
                 value={dateRange}
                 onChange={(e) => setDateRange(e.target.value)}
