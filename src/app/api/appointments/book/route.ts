@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
 import { sendEmail, emailTemplates } from '@/lib/email';
+import { AvailabilityCache } from '@/lib/cache';
 
 export async function POST(request: NextRequest) {
   try {
@@ -204,6 +205,9 @@ export async function POST(request: NextRequest) {
         console.error('⚠️ Failed to fetch customer for email:', customerError);
       }
     }
+    
+    // Invalidate cache after successful booking
+    AvailabilityCache.invalidateAvailability(date);
     
     const successMessage = assignedTechnicianId 
       ? `Appointment booked successfully with technician ${assignedTechnicianName} and confirmation email sent`

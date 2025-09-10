@@ -206,7 +206,19 @@ function AdminDashboard() {
           </div>
         {/* Quick Actions */}
         <div className="mb-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <Button
+              onClick={() => window.location.href = '/admin/bookings'}
+              variant="outline"
+              className="h-auto p-6 flex-col space-y-3 border-orange-200 hover:bg-gradient-to-r from-orange-600/80 to-orange-500/80 backdrop-blur-xl hover:border-orange-300 transition-all duration-200"
+            >
+              <Calendar className="h-8 w-8 text-orange-300" />
+              <div className="text-center">
+                <div className="font-semibold text-white">Bookings</div>
+                <div className="text-sm text-white/90">Manage appointments</div>
+              </div>
+            </Button>
+
             <Button
               onClick={() => window.location.href = '/admin/analytics'}
               variant="outline"
