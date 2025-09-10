@@ -26,7 +26,7 @@ import { Button } from '@/components/ui/button';
 import { NotificationManagerComponent } from '@/components/NotificationManager';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Link from 'next/link';
-import Logo from '@/components/ui/Logo';
+import { AdminNavigation } from '@/components/navigation/UnifiedNavigation';
 
 interface SystemMetrics {
   automation: {
@@ -177,65 +177,33 @@ function AdminDashboard() {
   return (
     <AdminProtection requiredRole="admin">
       <div className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="glass border-b border-blue-400 sticky top-0 z-50 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex items-center space-x-8">
-              <Link href="/" className="flex items-center space-x-3">
-                <Logo width={160} height={128} />
-                <div>
-                  <h1 className="text-lg font-bold text-white">Fisher Backflows</h1>
-                  <p className="text-xs text-white/90">Admin Portal</p>
-                </div>
-              </Link>
-              <nav className="hidden md:flex space-x-1">
-                <Link href="/admin/dashboard" className="px-4 py-2 rounded-2xl glass-btn-primary text-white glow-blue-sm font-medium">
-                  <Home className="h-4 w-4 mr-2 inline" />
-                  Dashboard
-                </Link>
-                <Link href="/admin/analytics" className="px-4 py-2 rounded-2xl text-white/80 hover:text-white hover:glass font-medium transition-colors">
-                  <TrendingUp className="h-4 w-4 mr-2 inline" />
-                  Analytics
-                </Link>
-                <Link href="/admin/data-management" className="px-4 py-2 rounded-2xl text-white/80 hover:text-white hover:glass font-medium transition-colors">
-                  <Database className="h-4 w-4 mr-2 inline" />
-                  Data Export
-                </Link>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <NotificationManagerComponent />
-              <div className="text-sm text-white/90 glass px-3 py-2 rounded-2xl border">
-                Last updated: {lastRefresh.toLocaleTimeString()}
+        <AdminNavigation userInfo={{ name: 'Admin', role: 'admin' }} />
+        
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          {/* Page Header */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-4xl font-bold text-white mb-2">System Control Center</h1>
+                <p className="text-white/90 text-xl">Real business data and operational insights for Fisher Backflows</p>
               </div>
-              <Button
-                onClick={fetchMetrics}
-                variant="outline"
-                size="sm"
-                className="border-blue-400 text-white/80 hover:glass"
-              >
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Refresh
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <Link href="/admin/settings">
-                  <Settings className="h-4 w-4" />
-                </Link>
-              </Button>
+              <div className="flex items-center space-x-4">
+                <NotificationManagerComponent />
+                <div className="text-sm text-white/90 glass px-3 py-2 rounded-2xl border">
+                  Last updated: {lastRefresh.toLocaleTimeString()}
+                </div>
+                <Button
+                  onClick={fetchMetrics}
+                  variant="outline"
+                  size="sm"
+                  className="border-blue-400 text-white/80 hover:glass"
+                >
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Refresh
+                </Button>
+              </div>
             </div>
           </div>
-
-          <div>
-            <h2 className="text-4xl font-bold text-white mb-2">System Control Center</h2>
-            <p className="text-white/90 text-xl">
-              Real business data and operational insights for Fisher Backflows
-            </p>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Quick Actions */}
         <div className="mb-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
