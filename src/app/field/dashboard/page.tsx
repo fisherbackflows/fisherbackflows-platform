@@ -23,6 +23,7 @@ import { useFieldTechUpdates } from '@/hooks/useRealtime';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Link from 'next/link';
 import Logo from '@/components/ui/Logo';
+import { FieldNavigation } from '@/components/navigation/UnifiedNavigation';
 
 interface Appointment {
   id: string;
@@ -221,67 +222,42 @@ export default function FieldDashboard() {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Header */}
-      <header className="glass border-b border-blue-400 sticky top-0 z-50 glow-blue-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-8">
-              <Link href="/" className="flex items-center space-x-3">
-                <Logo width={160} height={128} />
-                <div>
-                  <h1 className="text-lg font-bold text-white">Fisher Backflows</h1>
-                  <p className="text-xs text-white/90">Field Dashboard</p>
-                </div>
-              </Link>
-              <nav className="hidden md:flex space-x-1">
-                <Link href="/field" className="px-4 py-2 rounded-2xl text-white/80 hover:text-white hover:glass font-medium transition-colors">
-                  <Home className="h-4 w-4 mr-2 inline" />
-                  Field Portal
-                </Link>
-                <Link href="/field/dashboard" className="px-4 py-2 rounded-2xl glass-btn-primary text-white glow-blue-sm font-medium">
-                  <Calendar className="h-4 w-4 mr-2 inline" />
-                  Dashboard
-                </Link>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-sm text-white/90 glass px-3 py-2 rounded-2xl border flex items-center space-x-2">
-                <Wrench className="h-4 w-4 text-green-300" />
-                <span>Welcome, {techUser?.name || 'Technician'}</span>
-              </div>
-              <div className={`text-sm px-3 py-2 rounded-2xl border flex items-center space-x-2 ${
-                connections.appointments 
-                  ? 'glass border-green-400 text-green-300 glow-blue-sm' 
-                  : 'glass border-red-400 text-red-300 glow-blue-sm'
-              }`}>
-                {connections.appointments ? (
-                  <>
-                    <Wifi className="h-4 w-4" />
-                    <span>Live Updates</span>
-                  </>
-                ) : (
-                  <>
-                    <WifiOff className="h-4 w-4" />
-                    <span>Offline Mode</span>
-                  </>
-                )}
-              </div>
-              <Button
-                onClick={handleSignOut}
-                variant="outline"
-                size="sm"
-                className="border-red-300 text-red-700 hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl"
-              >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign Out
-              </Button>
-            </div>
+      <FieldNavigation userInfo={{ name: techUser?.name || 'Technician', role: 'technician' }} />
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Status Bar */}
+        <div className="mb-6 flex flex-wrap items-center justify-center gap-4">
+          <div className="text-sm text-white/90 glass px-3 py-2 rounded-2xl border flex items-center space-x-2">
+            <Wrench className="h-4 w-4 text-green-300" />
+            <span>Welcome, {techUser?.name || 'Technician'}</span>
           </div>
+          <div className={`text-sm px-3 py-2 rounded-2xl border flex items-center space-x-2 ${
+            connections.appointments 
+              ? 'glass border-green-400 text-green-300 glow-blue-sm' 
+              : 'glass border-red-400 text-red-300 glow-blue-sm'
+          }`}>
+            {connections.appointments ? (
+              <>
+                <Wifi className="h-4 w-4" />
+                <span>Live Updates</span>
+              </>
+            ) : (
+              <>
+                <WifiOff className="h-4 w-4" />
+                <span>Offline Mode</span>
+              </>
+            )}
+          </div>
+          <Button
+            onClick={handleSignOut}
+            variant="outline"
+            size="sm"
+            className="border-red-300 text-red-700 hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl"
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign Out
+          </Button>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-10">
           <div className="text-center mb-8">
