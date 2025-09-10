@@ -335,8 +335,8 @@ export default function DistrictReportsPage() {
             </div>
           </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-4 gap-2">
+        {/* Quick Stats */}
+        <div className="grid grid-cols-4 gap-2">
             <div className="bg-yellow-50 rounded-2xl p-3 text-center">
               <div className="text-lg font-bold text-yellow-700">{statusCounts.pending}</div>
               <div className="text-xs text-yellow-600">Pending</div>
@@ -355,6 +355,7 @@ export default function DistrictReportsPage() {
             </div>
           </div>
         </div>
+
         {/* Filters */}
         <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
           <div className="flex flex-col space-y-3">
@@ -563,7 +564,6 @@ export default function DistrictReportsPage() {
             ))}
           </div>
         </div>
-      </div>
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 glass border-t border-blue-500/50">
@@ -594,7 +594,6 @@ export default function DistrictReportsPage() {
           </Link>
         </div>
       </nav>
-      </div>
     </div>
   );
 }

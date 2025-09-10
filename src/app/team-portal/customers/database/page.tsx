@@ -411,6 +411,7 @@ export default function CustomerDatabasePage() {
       <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
       
       <div className="px-4 sm:px-6 py-6 sm:py-8">
+        <header>
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold text-white/80 flex items-center">
               <Database className="h-6 w-6 mr-2" />
@@ -471,8 +472,8 @@ export default function CustomerDatabasePage() {
               <div className="text-xs text-white/80">Industrial</div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
+      </div>
 
       <div className="p-4">
         {/* Search and Filters */}

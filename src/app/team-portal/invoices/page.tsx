@@ -159,7 +159,7 @@ export default function InvoicesPage() {
               </div>
             </div>
           </div>
-        </main>
+        </div>
       </div>
     );
   }

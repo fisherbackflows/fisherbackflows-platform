@@ -210,6 +210,7 @@ export default function BusinessIntelligencePage() {
         color: 'text-indigo-600'
       }
     ];
+    }
   };
 
   const loadCustomerHealthData = async (): Promise<CustomerHealthData[]> => {
@@ -263,6 +264,7 @@ export default function BusinessIntelligencePage() {
         recommendations: ['Proactive maintenance scheduling', 'Communication enhancement']
       }
     ];
+    }
   };
 
   const loadRevenueForecasting = async (): Promise<RevenueData[]> => {
@@ -696,4 +698,5 @@ export default function BusinessIntelligencePage() {
       </div>
     </div>
   );
+}
 }

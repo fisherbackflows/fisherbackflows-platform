@@ -103,6 +103,7 @@ export default function BackupPage() {
       <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <header>
           <div className="flex items-center space-x-4">
             <Link href="/app/more">
               <Button variant="ghost" size="sm">
@@ -112,7 +113,7 @@ export default function BackupPage() {
             </Link>
             <h1 className="text-2xl font-bold text-white/80">Backup & Restore</h1>
           </div>
-        </div>
+        </header>
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
