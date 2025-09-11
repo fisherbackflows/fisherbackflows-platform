@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import LoginForm from '@/components/auth/LoginForm';
 import Logo from '@/components/ui/Logo';
 import { Button } from '@/components/ui/button';
+import { useCustomerPortalBranding } from '@/hooks/useCompanyBranding';
 import { 
   Shield,
   CheckCircle,
@@ -13,23 +15,67 @@ import {
 } from 'lucide-react';
 
 export default function CustomerPortalLoginPage() {
+  const { branding, isLoading } = useCustomerPortalBranding();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
+          <p className="mt-4 text-white/80">Loading portal...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const backgroundStyle = branding?.background_color 
+    ? { backgroundColor: branding.background_color }
+    : {};
+
   return (
-    <div className="min-h-screen bg-black">
+    <div 
+      className="min-h-screen"
+      style={{
+        background: branding?.background_color 
+          ? branding.background_color 
+          : 'linear-gradient(135deg, #0f172a 0%, #164e63 100%)'
+      }}
+    >
       {/* Header */}
-      <header className="glass border-b border-blue-400 glow-blue-sm">
+      <header className="custom-glass-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex justify-between items-center">
-            <Link href="/" className="flex-shrink-0">
-              <Logo width={120} height={96} className="sm:w-[160px] sm:h-[128px]" />
+            <Link href="/" className="flex items-center space-x-3">
+              {branding?.logo_url ? (
+                <div className="relative w-12 h-12">
+                  <Image
+                    src={branding.logo_url}
+                    alt={`${branding.company_name} Logo`}
+                    width={48}
+                    height={48}
+                    className="rounded-lg"
+                  />
+                </div>
+              ) : (
+                <Logo width={48} height={48} className="" />
+              )}
+              <div>
+                <h1 className="text-lg font-bold custom-text">
+                  {branding?.company_name || 'Backflow Buddy'}
+                </h1>
+                <p className="text-xs custom-text-muted">
+                  {branding?.portal_title || 'Customer Portal'}
+                </p>
+              </div>
             </Link>
             <nav className="hidden lg:flex space-x-1">
               <Link href="/">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-2xl custom-text-muted hover:custom-text hover:custom-glass transition-all duration-200 font-medium">
                   Home
                 </Button>
               </Link>
               <Link href="/team-portal">
-                <Button variant="ghost" className="px-5 py-2.5 rounded-2xl text-white/80 hover:text-white hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/10 hover:glow-blue-sm transition-all duration-200 font-medium">
+                <Button variant="ghost" className="px-5 py-2.5 rounded-2xl custom-text-muted hover:custom-text hover:custom-glass transition-all duration-200 font-medium">
                   Business Login
                 </Button>
               </Link>
@@ -39,24 +85,27 @@ export default function CustomerPortalLoginPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-4 sm:p-6 glass">
+      <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-4 sm:p-6 custom-glass">
         <div className="w-full max-w-6xl grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Side - Info */}
           <div className="hidden lg:block">
             <div className="mb-8">
-              <div className="inline-block bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-200 px-4 py-2 rounded-full text-blue-200 text-sm font-semibold mb-6">
-                <Shield className="h-4 w-4 mr-2 inline" />
+              <div 
+                className="inline-block backdrop-blur-xl custom-border px-4 py-2 rounded-full text-sm font-semibold mb-6"
+                style={{ backgroundColor: branding?.primary_color + '20' }}
+              >
+                <Shield className="h-4 w-4 mr-2 inline custom-primary" />
                 Secure Customer Portal
               </div>
-              <h1 className="text-4xl font-bold mb-6 text-white">
-                <span>Welcome to Your</span><br />
-                <span className="glass bg-clip-text text-transparent">Customer Portal</span>
+              <h1 className="text-4xl font-bold mb-6 custom-text">
+                <span>Welcome to</span><br />
+                <span className="custom-primary">{branding?.company_name || 'Your'} Portal</span>
               </h1>
             </div>
             
-            <p className="text-xl text-white/90 mb-8 leading-relaxed">
-              Manage your backflow testing services, pay bills, schedule appointments, 
-              and access all your test records in one secure place.
+            <p className="text-xl custom-text mb-8 leading-relaxed">
+              {branding?.portal_description || 
+                'Manage your backflow testing services, pay bills, schedule appointments, and access all your test records in one secure place.'}
             </p>
 
             {/* Features Grid */}
@@ -132,23 +181,32 @@ export default function CustomerPortalLoginPage() {
             </div>
 
             {/* Contact Info */}
-            <div className="mt-8 text-center text-white/80 text-sm">
+            <div className="mt-8 text-center custom-text-muted text-sm">
               <p>Need help accessing your account?</p>
               <p className="mt-2">
-                Call us at{' '}
-                <a 
-                  href="tel:2532788692" 
-                  className="text-blue-300 hover:text-blue-700 transition-colors font-semibold"
-                >
-                  (253) 278-8692
-                </a>
-                {' '}or email{' '}
-                <a 
-                  href="mailto:service@fisherbackflows.com" 
-                  className="text-blue-300 hover:text-blue-700 transition-colors font-semibold"
-                >
-                  service@fisherbackflows.com
-                </a>
+                {branding?.contact_phone && (
+                  <>
+                    Call us at{' '}
+                    <a 
+                      href={`tel:${branding.contact_phone.replace(/\D/g, '')}`}
+                      className="custom-primary hover:custom-secondary transition-colors font-semibold"
+                    >
+                      {branding.contact_phone}
+                    </a>
+                  </>
+                )}
+                {branding?.contact_phone && branding?.contact_email && ' or '}
+                {branding?.contact_email && (
+                  <>
+                    email{' '}
+                    <a 
+                      href={`mailto:${branding.contact_email}`}
+                      className="custom-primary hover:custom-secondary transition-colors font-semibold"
+                    >
+                      {branding.contact_email}
+                    </a>
+                  </>
+                )}
               </p>
             </div>
           </div>
