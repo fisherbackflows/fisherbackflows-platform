@@ -118,19 +118,14 @@ export default function HomePage() {
             {/* Logo and Company Title */}
             <Link href="/" className="flex items-center space-x-3">
               <div className="relative">
-                <Image
-                  src="/fisher-backflows-logo.png"
-                  alt="Fisher Backflows LLC"
-                  width={40}
-                  height={32}
-                  priority
-                  className="drop-glow-blue-sm"
-                />
+                <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-xl">BB</span>
+                </div>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm0 rounded-full"></div>
               </div>
               <div>
-                <h1 className="text-lg font-bold text-white">Fisher Backflows</h1>
-                <p className="text-xs text-white/60">Professional Services</p>
+                <h1 className="text-lg font-bold text-white">Backflow Buddy</h1>
+                <p className="text-xs text-white/60">SaaS Platform for Backflow Testing</p>
               </div>
             </Link>
             
@@ -146,15 +141,12 @@ export default function HomePage() {
                 Contact
               </a>
               <div className="w-px h-8 bg-white/20 mx-3"></div>
-              <Link href="/portal" className="px-4 py-2 rounded-2xl glass-btn-primary hover:glow-blue text-white transition-all duration-200 font-semibold">
+              <Link href="/signup" className="px-4 py-2 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white transition-all duration-200 font-semibold">
+                Start Free Trial
+              </Link>
+              <Link href="/team-portal" className="px-4 py-2 rounded-2xl glass-btn-primary hover:glow-blue text-white transition-all duration-200 font-semibold">
                 <User className="inline h-4 w-4 mr-1" />
-                Customer Portal
-              </Link>
-              <Link href="/team-portal" className="px-4 py-2 rounded-2xl bg-emerald-500/20 border border-emerald-400 glow-blue-sm hover:bg-emerald-500/30 text-white transition-all duration-200 font-semibold">
-                Team Portal
-              </Link>
-              <Link href="/business-admin" className="px-4 py-2 rounded-2xl bg-amber-500/20 border border-amber-400 glow-blue-sm hover:bg-amber-500/30 text-white transition-all duration-200 font-semibold">
-                Admin Portal
+                Sign In
               </Link>
             </nav>
 
@@ -255,18 +247,18 @@ export default function HomePage() {
           </div>
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white">
-            Professional Backflow<br className="hidden sm:block" />
+            The Complete Platform for<br className="hidden sm:block" />
             <span className="block sm:inline">
-              <span className="bg-gradient-to-r from-blue-600/80 via-blue-700 to-emerald-600 bg-clip-text text-transparent">Testing & Certification</span>
+              <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">Backflow Testing Companies</span>
             </span>
           </h1>
           
           <div className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed px-4">
             <p className="text-center mb-6">
-              Protecting Pierce County's water supply with expert backflow prevention services.
+              Streamline your backflow testing business with automated scheduling, digital reports, and instant compliance submissions.
             </p>
             <p className="text-center">
-              <strong className="text-white/90">Fast scheduling, same-week service, and full compliance guaranteed.</strong>
+              <strong className="text-white/90">Start your 14-day free trial. No credit card required.</strong>
             </p>
           </div>
           

@@ -8,12 +8,8 @@ const PROTECTED_ROUTES = [
   '/admin',
   '/api/admin',
   '/field',
-  '/api/field',
-  '/portal/dashboard', // Only dashboard needs auth, not the login page
-  '/portal/billing',
-  '/portal/devices',
-  '/portal/schedule',
-  '/portal/reports'
+  '/api/field'
+  // Customer portal routes removed - they use Supabase auth, not team sessions
 ];
 
 // Routes that should remain public (no authentication required)
