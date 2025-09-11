@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { triggerWebhook, WEBHOOK_EVENTS } from '@/lib/webhooks'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -102,6 +103,19 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch customers' }, { status: 500 })
     }
 
+    // Log API usage
+    await supabase
+      .from('api_usage_logs')
+      .insert({
+        api_key_id: auth.apiKey.id,
+        company_id: auth.company.id,
+        endpoint: '/customers',
+        method: 'GET',
+        status_code: 200,
+        ip_address: request.headers.get('x-forwarded-for') || 'unknown',
+        user_agent: request.headers.get('user-agent') || 'unknown'
+      })
+
     return NextResponse.json({
       data: customers || [],
       pagination: {
@@ -189,6 +203,11 @@ export async function POST(request: NextRequest) {
       // Implement email sending logic
     }
 
+    // Trigger webhook for customer creation
+    await triggerWebhook(auth.company.id, WEBHOOK_EVENTS.CUSTOMER_CREATED, {
+      customer: customer
+    })
+
     // Log API usage
     await supabase
       .from('api_usage_logs')
@@ -197,6 +216,7 @@ export async function POST(request: NextRequest) {
         company_id: auth.company.id,
         endpoint: '/customers',
         method: 'POST',
+        status_code: 201,
         ip_address: request.headers.get('x-forwarded-for') || 'unknown',
         user_agent: request.headers.get('user-agent') || 'unknown'
       })
