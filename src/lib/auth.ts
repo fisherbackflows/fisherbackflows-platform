@@ -6,6 +6,7 @@
 import { createClientComponentClient, createServerComponentClient, createRouteHandlerClient, supabaseAdmin } from './supabase';
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 // Global types for mock sessions
 declare global {
@@ -300,4 +301,45 @@ export async function signOutTech() {
 export async function isAuthenticatedTech() {
   const user = await auth.getUser();
   return user && user.role === 'technician';
+}
+
+// JWT secret for customer portal tokens
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+
+// Generate customer JWT token
+export function generateCustomerToken(customerId: string, companyId: string, email: string) {
+  return jwt.sign(
+    { 
+      customer_id: customerId,
+      company_id: companyId,
+      email,
+      type: 'customer_portal'
+    },
+    JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+}
+
+// Verify customer JWT token and return customer data
+export async function verifyCustomerToken(token: string): Promise<{
+  customer_id: string;
+  company_id: string;
+  email: string;
+} | null> {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    
+    if (decoded.type !== 'customer_portal') {
+      return null;
+    }
+    
+    return {
+      customer_id: decoded.customer_id,
+      company_id: decoded.company_id,
+      email: decoded.email
+    };
+  } catch (error) {
+    console.error('JWT verification failed:', error);
+    return null;
+  }
 }

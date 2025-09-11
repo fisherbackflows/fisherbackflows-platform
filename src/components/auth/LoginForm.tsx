@@ -18,9 +18,10 @@ interface LoginFormProps {
   onSuccess?: (user: unknown) => void;
   onError?: (error: string) => void;
   redirectTo?: string;
+  companySlug?: string;
 }
 
-export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }: LoginFormProps) {
+export default function LoginForm({ onSuccess, onError, redirectTo = '/portal', companySlug }: LoginFormProps) {
   const [formData, setFormData] = useState({
     identifier: '', // email or phone
     password: '',
@@ -38,13 +39,19 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
     setSuccess('');
 
     try {
-      const response = await fetch('/api/auth/login', {
+      // Use company-specific login endpoint if companySlug is provided
+      const loginEndpoint = companySlug 
+        ? `/api/portal/company/${companySlug}/login`
+        : '/api/auth/login';
+      
+      const response = await fetch(loginEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           identifier: formData.identifier,
           password: formData.password,
-          type: formData.loginType
+          type: formData.loginType,
+          ...(companySlug && { companySlug })
         })
       });
 
@@ -54,8 +61,11 @@ export default function LoginForm({ onSuccess, onError, redirectTo = '/portal' }
         throw new Error(data.error || 'Login failed');
       }
 
-      // Set the session in Supabase client
-      if (data.session) {
+      // For company portal, store JWT token
+      if (companySlug && data.token) {
+        localStorage.setItem('customerToken', data.token);
+      } else if (data.session) {
+        // Set the session in Supabase client for regular portal
         const supabase = createClientComponentClient();
         const { error: sessionError } = await supabase.auth.setSession({
           access_token: data.session.access_token,

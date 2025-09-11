@@ -210,4 +210,4 @@ function updatePageBranding(branding: CompanyBranding) {
   }
 }
 
-export { CompanyBranding, BrandingTheme }
+export type { CompanyBranding, BrandingTheme }

@@ -3,6 +3,7 @@
 import { ReactNode } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
 import { useCustomerPortalBranding } from '@/hooks/useCompanyBranding'
 import { User, Settings, LogOut, Home } from 'lucide-react'
 
@@ -17,6 +18,8 @@ export default function BrandedPortalLayout({
   currentPath = '', 
   showNavigation = true 
 }: BrandedPortalLayoutProps) {
+  const params = useParams()
+  const companySlug = params?.slug as string
   const { branding, theme, isLoading } = useCustomerPortalBranding()
 
   if (isLoading) {
@@ -49,7 +52,7 @@ export default function BrandedPortalLayout({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             {/* Logo and Company Name */}
-            <Link href="/portal" className="flex items-center space-x-3">
+            <Link href={companySlug ? `/portal/company/${companySlug}/dashboard` : "/portal"} className="flex items-center space-x-3">
               {branding?.logo_url ? (
                 <div className="relative w-10 h-10">
                   <Image
@@ -82,7 +85,7 @@ export default function BrandedPortalLayout({
             {showNavigation && (
               <nav className="hidden md:flex items-center space-x-1">
                 <Link 
-                  href="/portal/dashboard"
+                  href={companySlug ? `/portal/company/${companySlug}/dashboard` : "/portal/dashboard"}
                   className={`px-4 py-2 rounded-2xl transition-all duration-200 font-medium ${
                     currentPath.includes('/dashboard')
                       ? 'custom-bg-primary text-white'
@@ -92,7 +95,7 @@ export default function BrandedPortalLayout({
                   Dashboard
                 </Link>
                 <Link 
-                  href="/portal/appointments"
+                  href={companySlug ? `/portal/company/${companySlug}/appointments` : "/portal/appointments"}
                   className={`px-4 py-2 rounded-2xl transition-all duration-200 font-medium ${
                     currentPath.includes('/appointments')
                       ? 'custom-bg-primary text-white'
@@ -102,7 +105,7 @@ export default function BrandedPortalLayout({
                   Appointments
                 </Link>
                 <Link 
-                  href="/portal/devices"
+                  href={companySlug ? `/portal/company/${companySlug}/devices` : "/portal/devices"}
                   className={`px-4 py-2 rounded-2xl transition-all duration-200 font-medium ${
                     currentPath.includes('/devices')
                       ? 'custom-bg-primary text-white'
@@ -112,7 +115,7 @@ export default function BrandedPortalLayout({
                   Devices
                 </Link>
                 <Link 
-                  href="/portal/billing"
+                  href={companySlug ? `/portal/company/${companySlug}/billing` : "/portal/billing"}
                   className={`px-4 py-2 rounded-2xl transition-all duration-200 font-medium ${
                     currentPath.includes('/billing')
                       ? 'custom-bg-primary text-white'
@@ -122,7 +125,7 @@ export default function BrandedPortalLayout({
                   Billing
                 </Link>
                 <Link 
-                  href="/portal/reports"
+                  href={companySlug ? `/portal/company/${companySlug}/reports` : "/portal/reports"}
                   className={`px-4 py-2 rounded-2xl transition-all duration-200 font-medium ${
                     currentPath.includes('/reports')
                       ? 'custom-bg-primary text-white'
@@ -137,19 +140,28 @@ export default function BrandedPortalLayout({
             {/* User Menu */}
             <div className="flex items-center space-x-2">
               <Link
-                href="/portal/settings"
+                href={companySlug ? `/portal/company/${companySlug}/settings` : "/portal/settings"}
                 className="p-2 custom-glass hover:custom-bg-primary rounded-lg transition-all"
                 title="Settings"
               >
                 <Settings className="h-5 w-5 custom-text" />
               </Link>
-              <Link
-                href="/portal/logout"
+              <button
+                onClick={() => {
+                  if (companySlug) {
+                    // For company portals, clear JWT token and redirect to company login
+                    localStorage.removeItem('customerToken')
+                    window.location.href = `/portal/company/${companySlug}`
+                  } else {
+                    // For regular portal, use standard logout
+                    window.location.href = '/portal/logout'
+                  }
+                }}
                 className="p-2 custom-glass hover:bg-red-500/20 rounded-lg transition-all"
                 title="Logout"
               >
                 <LogOut className="h-5 w-5 custom-text" />
-              </Link>
+              </button>
             </div>
           </div>
         </div>
