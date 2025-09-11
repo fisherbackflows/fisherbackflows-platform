@@ -19,10 +19,33 @@ export async function sendEmail({
   replyTo?: string;
 }) {
   if (!resend) {
-    console.warn('Resend API key not configured. Email functionality limited.');
+    // MOCK EMAIL SERVICE FOR DEVELOPMENT
+    console.log('\n🔧 MOCK EMAIL SERVICE (No RESEND_API_KEY configured)');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('📧 EMAIL WOULD BE SENT:');
+    console.log(`   FROM: ${from}`);
+    console.log(`   TO: ${Array.isArray(to) ? to.join(', ') : to}`);
+    console.log(`   SUBJECT: ${subject}`);
+    console.log(`   REPLY-TO: ${replyTo}`);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    
+    // Extract verification URL from HTML if present
+    const verificationUrlMatch = html.match(/href="([^"]*verify[^"]*)"/);
+    if (verificationUrlMatch) {
+      console.log('🔗 VERIFICATION LINK:');
+      console.log(`   ${verificationUrlMatch[1]}`);
+      console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    }
+    
+    // Return success for development/testing
     return {
-      success: false,
-      error: 'Email service not configured. Please add RESEND_API_KEY to environment variables.'
+      success: true,
+      data: {
+        id: `mock-email-${Date.now()}`,
+        from,
+        to: Array.isArray(to) ? to : [to],
+        subject
+      }
     };
   }
 

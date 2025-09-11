@@ -139,12 +139,12 @@ export async function POST(request: NextRequest) {
     const { createClient } = await import('@supabase/supabase-js');
     const serviceClient = createClient(supabaseUrl!, serviceKey!);
 
-    // Create auth user directly with admin client (skip email verification)
-    console.log('[REGISTRATION] Creating user with auto-confirmed email');
+    // Create auth user with email verification required
+    console.log('[REGISTRATION] Creating user with email verification required');
     const { data: adminData, error: adminError } = await serviceClient.auth.admin.createUser({
       email: validation.data!.email,
       password: validation.data!.password,
-      email_confirm: true, // Auto-confirm - no email verification needed
+      email_confirm: false, // Require email verification
       user_metadata: {
         first_name: validation.data!.firstName,
         last_name: validation.data!.lastName,
@@ -196,9 +196,48 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: msg, code }, { status: 500 });
     }
 
+    // SMS VERIFICATION: Send SMS code to verify phone number
+    let smsSent = false;
+    let smsCode = '';
+    
+    try {
+      const { generateSMSCode, storeSMSCodeFile } = await import('@/lib/sms-verification-file');
+      const { sendVerificationSMS, formatPhoneForSMS, isValidPhoneNumber } = await import('@/lib/sms-service');
+      
+      // Format and validate phone number
+      const formattedPhone = formatPhoneForSMS(validation.data!.phone);
+      if (!isValidPhoneNumber(formattedPhone)) {
+        return NextResponse.json({ 
+          error: 'Invalid phone number format',
+          code: 'INVALID_PHONE'
+        }, { status: 400 });
+      }
+      
+      // Generate SMS verification code
+      smsCode = generateSMSCode();
+      
+      // Store SMS code in file
+      await storeSMSCodeFile(customer.id, formattedPhone, smsCode, request);
+      
+      // Send SMS verification code
+      const smsResult = await sendVerificationSMS(formattedPhone, smsCode);
+      smsSent = smsResult.success;
+      
+      if (!smsResult.success) {
+        console.warn('SMS verification failed to send:', smsResult.error);
+      } else {
+        console.log(`📱 SMS verification code sent to ${formattedPhone}`);
+      }
+      
+    } catch (smsError) {
+      console.error('Failed to send SMS verification:', smsError);
+    }
+
     result = {
       success: true,
-      message: 'Account created successfully! You can now sign in with your email and password.',
+      message: smsSent 
+        ? 'Account created successfully! Please check your phone for a verification code.'
+        : 'Account created successfully! SMS verification could not be sent. Please contact support.',
       user: {
         id: customer.id,
         authUserId: authUserId!,
@@ -207,9 +246,11 @@ export async function POST(request: NextRequest) {
         lastName: validation.data!.lastName,
         email: validation.data!.email,
         phone: validation.data!.phone,
-        status: 'active',
-        emailSent: false,
+        status: 'pending_verification',
+        smsSent,
+        verificationMethod: 'sms'
       },
+      requiresVerification: true,
     } as const;
     
     // Step 4: Record successful attempt and return success

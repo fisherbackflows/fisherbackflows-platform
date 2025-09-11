@@ -80,109 +80,56 @@ export async function POST(request: NextRequest) {
     // Step 2: Check if email is confirmed
     if (!authData.user.email_confirmed_at) {
       return NextResponse.json({ 
-        error: 'Please verify your email address before signing in. Check your inbox for a verification email.' 
+        error: 'Please verify your email address before signing in. Check your inbox for a verification email.',
+        code: 'EMAIL_NOT_VERIFIED',
+        email: authData.user.email
       }, { status: 403 });
     }
 
-    // Step 3: Get customer data using service client by email lookup
-    console.log('[EMERGENCY LOGIN] Looking up customer by email:', authData.user.email);
+    // Step 3: Get customer data by auth_user_id (proper linking)
+    console.log('[LOGIN] Looking up customer by auth_user_id:', authData.user.id);
     const { data: customerData, error: customerError } = await serviceClient
       .from('customers')
       .select('*')
-      .eq('email', authData.user.email)
-      .maybeSingle();
+      .eq('auth_user_id', authData.user.id)
+      .single();
 
-    if (customerError) {
+    if (customerError || !customerData) {
       console.error('Customer lookup failed:', customerError);
-      console.error('Auth user ID:', authData.user.id);
       
-      // If it's a PGRST116 error (multiple rows), try to handle it gracefully
-      if (customerError.code === 'PGRST116') {
-        console.error('Multiple customer records found for email:', authData.user.email);
-        // Try to get all records and use the most recent one
-        const { data: allCustomers, error: allCustomersError } = await serviceClient
-          .from('customers')
-          .select('*')
-          .eq('email', authData.user.email)
-          .order('created_at', { ascending: false })
-          .limit(1);
-        
-        if (allCustomersError || !allCustomers || allCustomers.length === 0) {
-          console.error('Fallback customer lookup failed:', allCustomersError);
-          return NextResponse.json({ 
-            error: 'Customer account lookup failed. Please contact support.' 
-          }, { status: 500 });
-        }
-        
-        // Use the most recent customer record
-        const fallbackCustomer = allCustomers[0];
-        console.log('Using fallback customer record:', fallbackCustomer.id);
-        
-        // Continue with the fallback customer
-        if (fallbackCustomer.account_status !== 'active') {
-          return NextResponse.json({ 
-            error: 'Account not active. Please contact support if you believe this is an error.' 
-          }, { status: 403 });
-        }
-        
-        // Return successful login response with fallback customer
-        return NextResponse.json({
-          success: true,
-          message: 'Login successful',
-          user: {
-            id: fallbackCustomer.id,
-            authUserId: authData.user.id,
-            email: fallbackCustomer.email,
-            name: `${fallbackCustomer.first_name} ${fallbackCustomer.last_name}`,
-            firstName: fallbackCustomer.first_name,
-            lastName: fallbackCustomer.last_name,
-            accountNumber: fallbackCustomer.account_number,
-            phone: fallbackCustomer.phone,
-            role: 'customer',
-            status: fallbackCustomer.account_status
-          },
-          session: {
-            access_token: authData.session?.access_token,
-            refresh_token: authData.session?.refresh_token,
-            expires_at: authData.session?.expires_at,
-            expires_in: authData.session?.expires_in
-          },
-          redirect: '/portal/dashboard'
-        });
-      }
-      
-      return NextResponse.json({ 
-        error: 'Customer account not found. Please contact support.' 
-      }, { status: 404 });
-    }
-
-    if (!customerData) {
-      console.warn('No customer data found for email:', authData.user.email, '— attempting self-heal creation');
-      // Attempt to create a minimal customer record linked to this auth user
-      const meta: any = authData.user.user_metadata || {};
-      const firstName = meta.first_name || meta.firstName || 'Customer';
-      const lastName = meta.last_name || meta.lastName || 'Account';
-      const { data: created, error: createErr } = await serviceClient
+      // If no customer found, check if account was created before auth_user_id linking
+      console.log('Attempting fallback lookup by email:', authData.user.email);
+      const { data: emailCustomer, error: emailError } = await serviceClient
         .from('customers')
-        .insert({
-          account_number: `FB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
-          name: `${firstName} ${lastName}`,
-          email: authData.user.email,
-          phone: 'Not provided',
-          address: 'Not provided',
-          status: 'Active',
-        })
         .select('*')
+        .eq('email', authData.user.email)
+        .is('auth_user_id', null)
         .single();
-
-      if (createErr || !created) {
-        console.error('Self-heal customer creation failed:', createErr);
+      
+      if (emailError || !emailCustomer) {
         return NextResponse.json({ 
-          error: 'Customer account not found. Please contact support.' 
+          error: 'No customer account found. Please contact support or register a new account.',
+          code: 'CUSTOMER_NOT_FOUND'
         }, { status: 404 });
       }
-
-      customerData = created;
+      
+      // Link the existing customer to this auth user
+      console.log('Linking existing customer to auth user:', emailCustomer.id);
+      const { error: linkError } = await serviceClient
+        .from('customers')
+        .update({ auth_user_id: authData.user.id })
+        .eq('id', emailCustomer.id);
+      
+      if (linkError) {
+        console.error('Failed to link customer to auth user:', linkError);
+        return NextResponse.json({ 
+          error: 'Account linking failed. Please contact support.',
+          code: 'LINKING_FAILED'
+        }, { status: 500 });
+      }
+      
+      // Use the linked customer data
+      customerData = { ...emailCustomer, auth_user_id: authData.user.id };
     }
 
     // Step 4: Check account status
@@ -200,13 +147,13 @@ export async function POST(request: NextRequest) {
         id: customerData.id,
         authUserId: authData.user.id,
         email: customerData.email,
-        name: customerData.name || authData.user.email || 'Customer',
-        firstName: (customerData.name || '').split(' ')[0] || 'Customer',
-        lastName: (customerData.name || '').split(' ').slice(1).join(' ') || '',
+        firstName: customerData.first_name,
+        lastName: customerData.last_name,
+        name: `${customerData.first_name} ${customerData.last_name}`,
         accountNumber: customerData.account_number,
         phone: customerData.phone,
         role: 'customer',
-        status: customerData.status || 'Active'
+        status: customerData.account_status
       },
       session: {
         access_token: authData.session?.access_token,

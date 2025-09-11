@@ -39,6 +39,16 @@ export const RATE_LIMIT_CONFIGS = {
     windowMs: 60 * 60 * 1000, // 1 hour
     blockDurationMs: 24 * 60 * 60 * 1000, // 24 hours
   },
+  AUTH_VERIFY: {
+    maxAttempts: 5,
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    blockDurationMs: 15 * 60 * 1000, // 15 minutes
+  },
+  SMS_RESEND: {
+    maxAttempts: 3,
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    blockDurationMs: 30 * 60 * 1000, // 30 minutes
+  },
 } as const;
 
 export function checkRateLimit(
