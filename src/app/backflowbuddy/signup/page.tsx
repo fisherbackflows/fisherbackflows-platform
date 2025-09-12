@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
@@ -554,7 +554,9 @@ function SignupForm() {
 export default function BackflowBuddySignup() {
   return (
     <Elements stripe={stripePromise}>
-      <SignupForm />
+      <Suspense fallback={<div className="flex justify-center items-center min-h-screen"><div className="text-lg">Loading...</div></div>}>
+        <SignupForm />
+      </Suspense>
     </Elements>
   )
 }
