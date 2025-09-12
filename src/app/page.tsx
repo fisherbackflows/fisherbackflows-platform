@@ -117,15 +117,16 @@ export default function HomePage() {
           <div className="flex justify-between items-center">
             {/* Logo and Company Title */}
             <Link href="/" className="flex items-center space-x-3">
-              <div className="relative">
-                <div className="w-10 h-10 glass border border-blue-400 rounded-2xl flex items-center justify-center glow-blue-sm">
-                  <span className="text-white font-bold text-xl">TP</span>
-                </div>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm0 rounded-full"></div>
-              </div>
+              <Image
+                src="/fisher-backflows-logo.png"
+                alt="Fisher Backflows LLC"
+                width={40}
+                height={40}
+                className="brightness-110 contrast-105 rounded-lg"
+              />
               <div>
-                <h1 className="text-lg font-bold text-white">Tester Portal</h1>
-                <p className="text-xs text-white/60">SaaS Platform for Backflow Testing</p>
+                <h1 className="text-lg font-bold text-white">Fisher Backflows</h1>
+                <p className="text-xs text-white/60">Professional Backflow Testing</p>
               </div>
             </Link>
             
