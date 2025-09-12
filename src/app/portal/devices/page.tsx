@@ -9,16 +9,22 @@ import {
   AlertTriangle, 
   Clock,
   ArrowLeft,
-  Settings
+  Settings,
+  Upload,
+  FileText,
+  X
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useCustomerData } from '@/hooks/useCustomerData';
 import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
+import DistrictNoticeUpload from '@/components/upload/DistrictNoticeUpload';
 
 export default function CustomerDevicesPage() {
   const { customer, loading, error } = useCustomerData();
   const [selectedDevice, setSelectedDevice] = useState(null);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploadingDevice, setUploadingDevice] = useState(null);
 
   if (loading) {
     return (
@@ -130,23 +136,37 @@ export default function CustomerDevicesPage() {
                 )}
               </div>
 
-              <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-blue-400/30">
-                <div className="text-center">
-                  <p className="text-white/60 text-xs">Status</p>
-                  <p className={`text-sm font-bold ${
-                    device.device_status === 'active' 
-                      ? 'text-green-200' 
-                      : 'text-yellow-200'
-                  }`}>
-                    {device.device_status === 'active' ? 'Active' : 'Needs Service'}
-                  </p>
+              <div className="pt-3 sm:pt-4 border-t border-blue-400/30 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-center">
+                    <p className="text-white/60 text-xs">Status</p>
+                    <p className={`text-sm font-bold ${
+                      device.device_status === 'active' 
+                        ? 'text-green-200' 
+                        : 'text-yellow-200'
+                    }`}>
+                      {device.device_status === 'active' ? 'Active' : 'Needs Service'}
+                    </p>
+                  </div>
+                  <Button
+                    onClick={() => setSelectedDevice(device)}
+                    className="btn-glass px-3 sm:px-4 py-2 rounded-2xl text-sm"
+                  >
+                    <span className="hidden sm:inline">View Details</span>
+                    <span className="sm:hidden">Details</span>
+                  </Button>
                 </div>
+                
+                {/* Upload District Notice Button */}
                 <Button
-                  onClick={() => setSelectedDevice(device)}
-                  className="btn-glass px-3 sm:px-4 py-2 rounded-2xl text-sm"
+                  onClick={() => {
+                    setUploadingDevice(device);
+                    setShowUploadModal(true);
+                  }}
+                  className="w-full py-2 bg-cyan-600/20 border border-cyan-400/30 text-cyan-300 hover:bg-cyan-600/30 hover:text-white rounded-2xl text-sm transition-all flex items-center justify-center space-x-2"
                 >
-                  <span className="hidden sm:inline">View Details</span>
-                  <span className="sm:hidden">Details</span>
+                  <Upload className="h-4 w-4" />
+                  <span>Upload District Notice</span>
                 </Button>
               </div>
             </div>
@@ -224,6 +244,61 @@ export default function CustomerDevicesPage() {
                     <span className="sm:hidden">Schedule</span>
                   </Button>
                 </Link>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Upload District Notice Modal */}
+        {showUploadModal && uploadingDevice && (
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+            <div className="glass rounded-2xl p-6 border border-cyan-400 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-white">Upload District Notice</h2>
+                  <p className="text-white/80 text-sm mt-1">
+                    {uploadingDevice.manufacturer || 'Unknown'} {uploadingDevice.model || ''} • {uploadingDevice.location_description || uploadingDevice.location || 'No location'}
+                  </p>
+                </div>
+                <Button
+                  onClick={() => {
+                    setShowUploadModal(false);
+                    setUploadingDevice(null);
+                  }}
+                  className="btn-glass p-2 rounded-full"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+
+              <DistrictNoticeUpload
+                deviceId={uploadingDevice.id}
+                customerId={customer?.id}
+                onUploadSuccess={(data) => {
+                  console.log('Upload successful:', data);
+                  // Optionally refresh device data or show success message
+                  setTimeout(() => {
+                    setShowUploadModal(false);
+                    setUploadingDevice(null);
+                  }, 2000);
+                }}
+                onUploadError={(error) => {
+                  console.error('Upload error:', error);
+                  // Error handling is already built into the component
+                }}
+                showPreview={true}
+              />
+
+              <div className="mt-6 flex justify-end">
+                <Button
+                  onClick={() => {
+                    setShowUploadModal(false);
+                    setUploadingDevice(null);
+                  }}
+                  className="btn-glass px-6 py-2 rounded-2xl"
+                >
+                  Close
+                </Button>
               </div>
             </div>
           </div>
