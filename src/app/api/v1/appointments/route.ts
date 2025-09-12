@@ -7,14 +7,13 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-// API key authentication middleware
+// API key authentication
 async function authenticateApiKey(request: NextRequest) {
   const apiKey = request.headers.get('x-api-key')
   if (!apiKey) {
     return { error: 'API key required', status: 401 }
   }
 
-  // Verify API key and get associated company
   const { data: apiKeyRecord, error } = await supabase
     .from('api_keys')
     .select(`
@@ -48,7 +47,7 @@ async function authenticateApiKey(request: NextRequest) {
   }
 }
 
-// GET /api/v1/customers - List customers
+// GET /api/v1/appointments - List appointments
 export async function GET(request: NextRequest) {
   try {
     const auth = await authenticateApiKey(request)
@@ -59,48 +58,64 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
     const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 100)
-    const search = searchParams.get('search')
     const status = searchParams.get('status')
+    const customer_id = searchParams.get('customer_id')
+    const date_from = searchParams.get('date_from')
+    const date_to = searchParams.get('date_to')
 
     let query = supabase
-      .from('customers')
+      .from('appointments')
       .select(`
         id,
-        email,
-        first_name,
-        last_name,
-        phone,
-        address,
-        city,
-        state,
-        zip_code,
-        is_active,
-        email_verified,
-        next_test_date,
+        customer_id,
+        scheduled_date,
+        time_slot,
+        service_type,
+        status,
+        technician_id,
+        notes,
         created_at,
-        updated_at
+        updated_at,
+        customers (
+          id,
+          first_name,
+          last_name,
+          email,
+          phone,
+          address,
+          city,
+          state
+        )
       `, { count: 'exact' })
       .eq('company_id', auth.company.id)
-      .order('created_at', { ascending: false })
+      .order('scheduled_date', { ascending: false })
 
     // Apply filters
-    if (search) {
-      query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,email.ilike.%${search}%`)
+    if (status) {
+      query = query.eq('status', status)
     }
     
-    if (status) {
-      query = query.eq('is_active', status === 'active')
+    if (customer_id) {
+      query = query.eq('customer_id', customer_id)
+    }
+
+    if (date_from) {
+      query = query.gte('scheduled_date', date_from)
+    }
+
+    if (date_to) {
+      query = query.lte('scheduled_date', date_to)
     }
 
     // Apply pagination
     const offset = (page - 1) * limit
     query = query.range(offset, offset + limit - 1)
 
-    const { data: customers, error, count } = await query
+    const { data: appointments, error, count } = await query
 
     if (error) {
       console.error('Database error:', error)
-      return NextResponse.json({ error: 'Failed to fetch customers' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to fetch appointments' }, { status: 500 })
     }
 
     // Log API usage
@@ -109,7 +124,7 @@ export async function GET(request: NextRequest) {
       .insert({
         api_key_id: auth.apiKey.id,
         company_id: auth.company.id,
-        endpoint: '/customers',
+        endpoint: '/appointments',
         method: 'GET',
         status_code: 200,
         ip_address: request.headers.get('x-forwarded-for') || 'unknown',
@@ -117,7 +132,7 @@ export async function GET(request: NextRequest) {
       })
 
     return NextResponse.json({
-      data: customers || [],
+      data: appointments || [],
       pagination: {
         page,
         limit,
@@ -132,7 +147,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/v1/customers - Create customer
+// POST /api/v1/appointments - Create appointment
 export async function POST(request: NextRequest) {
   try {
     const auth = await authenticateApiKey(request)
@@ -142,86 +157,76 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
     const {
-      email,
-      first_name,
-      last_name,
-      phone,
-      address,
-      city,
-      state,
-      zip_code,
-      send_welcome_email = true
+      customer_id,
+      scheduled_date,
+      time_slot,
+      service_type,
+      technician_id,
+      notes
     } = body
 
     // Validate required fields
-    if (!email || !first_name || !last_name) {
+    if (!customer_id || !scheduled_date || !service_type) {
       return NextResponse.json({ 
-        error: 'Missing required fields: email, first_name, last_name' 
+        error: 'Missing required fields: customer_id, scheduled_date, service_type' 
       }, { status: 400 })
     }
 
-    // Check if customer already exists
-    const { data: existingCustomer } = await supabase
+    // Verify customer belongs to this company
+    const { data: customer } = await supabase
       .from('customers')
       .select('id')
+      .eq('id', customer_id)
       .eq('company_id', auth.company.id)
-      .eq('email', email.toLowerCase())
       .single()
 
-    if (existingCustomer) {
+    if (!customer) {
       return NextResponse.json({ 
-        error: 'Customer with this email already exists' 
-      }, { status: 409 })
+        error: 'Customer not found or does not belong to your company' 
+      }, { status: 404 })
     }
 
-    // Create customer
-    const { data: customer, error } = await supabase
-      .from('customers')
+    // Create appointment
+    const { data: appointment, error } = await supabase
+      .from('appointments')
       .insert({
         company_id: auth.company.id,
-        email: email.toLowerCase(),
-        first_name,
-        last_name,
-        phone,
-        address,
-        city,
-        state,
-        zip_code,
-        is_active: true,
-        email_verified: false
+        customer_id,
+        scheduled_date,
+        time_slot: time_slot || 'TBD',
+        service_type,
+        technician_id: technician_id || null,
+        notes: notes || null,
+        status: 'scheduled'
       })
-      .select()
+      .select(`
+        id,
+        customer_id,
+        scheduled_date,
+        time_slot,
+        service_type,
+        status,
+        technician_id,
+        notes,
+        created_at,
+        customers (
+          id,
+          first_name,
+          last_name,
+          email,
+          phone
+        )
+      `)
       .single()
 
     if (error) {
       console.error('Database error:', error)
-      return NextResponse.json({ error: 'Failed to create customer' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to create appointment' }, { status: 500 })
     }
 
-    // Send welcome email if requested
-    if (send_welcome_email) {
-      try {
-        await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/email/send`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: email,
-            template: 'customer_welcome',
-            data: {
-              customer_name: `${first_name} ${last_name}`,
-              company_name: auth.company.name,
-              portal_url: `${process.env.NEXT_PUBLIC_APP_URL}/portal`
-            }
-          })
-        })
-      } catch (error) {
-        console.error('Failed to send welcome email:', error)
-      }
-    }
-
-    // Trigger webhook for customer creation
-    await triggerWebhook(auth.company.id, WEBHOOK_EVENTS.CUSTOMER_CREATED, {
-      customer: customer
+    // Trigger webhook for appointment creation
+    await triggerWebhook(auth.company.id, WEBHOOK_EVENTS.APPOINTMENT_SCHEDULED, {
+      appointment: appointment
     })
 
     // Log API usage
@@ -230,7 +235,7 @@ export async function POST(request: NextRequest) {
       .insert({
         api_key_id: auth.apiKey.id,
         company_id: auth.company.id,
-        endpoint: '/customers',
+        endpoint: '/appointments',
         method: 'POST',
         status_code: 201,
         ip_address: request.headers.get('x-forwarded-for') || 'unknown',
@@ -238,8 +243,8 @@ export async function POST(request: NextRequest) {
       })
 
     return NextResponse.json({
-      data: customer,
-      message: 'Customer created successfully'
+      data: appointment,
+      message: 'Appointment created successfully'
     }, { status: 201 })
 
   } catch (error) {

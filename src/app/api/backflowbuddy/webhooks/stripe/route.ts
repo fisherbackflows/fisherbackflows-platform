@@ -291,7 +291,21 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
         }
       })
 
-    // TODO: Send payment failed notification email
+    // Send payment failed notification email
+    await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/email/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: company.email,
+        template: 'payment_failed',
+        data: {
+          company_name: company.name,
+          amount: (invoice.amount_due / 100).toFixed(2),
+          invoice_url: invoice.hosted_invoice_url,
+          dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL}/backflowbuddy/dashboard`
+        }
+      })
+    }).catch(error => console.error('Failed to send payment failed email:', error))
 
     console.log(`Payment failed for company ${companyId}: $${invoice.amount_due / 100}`)
 
@@ -334,7 +348,21 @@ async function handleTrialWillEnd(subscription: Stripe.Subscription) {
         }
       })
 
-    // TODO: Send trial ending notification email
+    // Send trial ending notification email
+    await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/email/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: company.email,
+        template: 'trial_ending',
+        data: {
+          company_name: company.name,
+          trial_end_date: new Date(subscription.trial_end! * 1000).toLocaleDateString(),
+          dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL}/backflowbuddy/dashboard`,
+          billing_url: `${process.env.NEXT_PUBLIC_APP_URL}/backflowbuddy/billing`
+        }
+      })
+    }).catch(error => console.error('Failed to send trial ending email:', error))
 
     console.log(`Trial will end for company ${companyId}: ${company.name}`)
 

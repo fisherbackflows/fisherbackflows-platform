@@ -2,6 +2,18 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@/lib/supabase'
 import type { Customer } from '@/lib/types'
 
+async function calculateCustomerBalance(customerId: string): Promise<number> {
+  const supabase = createRouteHandlerClient()
+  
+  const { data: invoices } = await supabase
+    .from('invoices')
+    .select('amount, status')
+    .eq('customer_id', customerId)
+    .in('status', ['pending', 'overdue'])
+
+  return invoices?.reduce((total, invoice) => total + invoice.amount, 0) || 0
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { identifier, type } = await request.json()
@@ -73,7 +85,7 @@ export async function POST(request: NextRequest) {
       phone: customerData.phone,
       address: `${customerData.address_line1}, ${customerData.city}, ${customerData.state} ${customerData.zip_code}`,
       accountNumber: customerData.account_number,
-      balance: 0, // TODO: Calculate from unpaid invoices
+      balance: await calculateCustomerBalance(customerData.id),
       status: customerData.account_status || 'Active'
     }
     

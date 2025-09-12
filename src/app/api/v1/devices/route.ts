@@ -1,20 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { triggerWebhook, WEBHOOK_EVENTS } from '@/lib/webhooks'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-// API key authentication middleware
+// API key authentication
 async function authenticateApiKey(request: NextRequest) {
   const apiKey = request.headers.get('x-api-key')
   if (!apiKey) {
     return { error: 'API key required', status: 401 }
   }
 
-  // Verify API key and get associated company
   const { data: apiKeyRecord, error } = await supabase
     .from('api_keys')
     .select(`
@@ -48,7 +46,7 @@ async function authenticateApiKey(request: NextRequest) {
   }
 }
 
-// GET /api/v1/customers - List customers
+// GET /api/v1/devices - List devices
 export async function GET(request: NextRequest) {
   try {
     const auth = await authenticateApiKey(request)
@@ -59,48 +57,62 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
     const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 100)
-    const search = searchParams.get('search')
+    const customer_id = searchParams.get('customer_id')
+    const device_type = searchParams.get('device_type')
     const status = searchParams.get('status')
 
     let query = supabase
-      .from('customers')
+      .from('devices')
       .select(`
         id,
-        email,
-        first_name,
-        last_name,
-        phone,
-        address,
-        city,
-        state,
-        zip_code,
-        is_active,
-        email_verified,
-        next_test_date,
+        customer_id,
+        location,
+        device_type,
+        manufacturer,
+        model,
+        serial_number,
+        installation_date,
+        last_test_date,
+        next_test_due,
+        status,
+        compliance_status,
         created_at,
-        updated_at
+        updated_at,
+        customers (
+          id,
+          first_name,
+          last_name,
+          email,
+          address,
+          city,
+          state
+        )
       `, { count: 'exact' })
       .eq('company_id', auth.company.id)
       .order('created_at', { ascending: false })
 
     // Apply filters
-    if (search) {
-      query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,email.ilike.%${search}%`)
+    if (customer_id) {
+      query = query.eq('customer_id', customer_id)
     }
     
+    if (device_type) {
+      query = query.eq('device_type', device_type)
+    }
+
     if (status) {
-      query = query.eq('is_active', status === 'active')
+      query = query.eq('status', status)
     }
 
     // Apply pagination
     const offset = (page - 1) * limit
     query = query.range(offset, offset + limit - 1)
 
-    const { data: customers, error, count } = await query
+    const { data: devices, error, count } = await query
 
     if (error) {
       console.error('Database error:', error)
-      return NextResponse.json({ error: 'Failed to fetch customers' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to fetch devices' }, { status: 500 })
     }
 
     // Log API usage
@@ -109,7 +121,7 @@ export async function GET(request: NextRequest) {
       .insert({
         api_key_id: auth.apiKey.id,
         company_id: auth.company.id,
-        endpoint: '/customers',
+        endpoint: '/devices',
         method: 'GET',
         status_code: 200,
         ip_address: request.headers.get('x-forwarded-for') || 'unknown',
@@ -117,7 +129,7 @@ export async function GET(request: NextRequest) {
       })
 
     return NextResponse.json({
-      data: customers || [],
+      data: devices || [],
       pagination: {
         page,
         limit,
@@ -132,7 +144,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/v1/customers - Create customer
+// POST /api/v1/devices - Create device
 export async function POST(request: NextRequest) {
   try {
     const auth = await authenticateApiKey(request)
@@ -142,87 +154,76 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
     const {
-      email,
-      first_name,
-      last_name,
-      phone,
-      address,
-      city,
-      state,
-      zip_code,
-      send_welcome_email = true
+      customer_id,
+      location,
+      device_type,
+      manufacturer,
+      model,
+      serial_number,
+      installation_date
     } = body
 
     // Validate required fields
-    if (!email || !first_name || !last_name) {
+    if (!customer_id || !location || !device_type) {
       return NextResponse.json({ 
-        error: 'Missing required fields: email, first_name, last_name' 
+        error: 'Missing required fields: customer_id, location, device_type' 
       }, { status: 400 })
     }
 
-    // Check if customer already exists
-    const { data: existingCustomer } = await supabase
+    // Verify customer belongs to this company
+    const { data: customer } = await supabase
       .from('customers')
       .select('id')
+      .eq('id', customer_id)
       .eq('company_id', auth.company.id)
-      .eq('email', email.toLowerCase())
       .single()
 
-    if (existingCustomer) {
+    if (!customer) {
       return NextResponse.json({ 
-        error: 'Customer with this email already exists' 
-      }, { status: 409 })
+        error: 'Customer not found or does not belong to your company' 
+      }, { status: 404 })
     }
 
-    // Create customer
-    const { data: customer, error } = await supabase
-      .from('customers')
+    // Create device
+    const { data: device, error } = await supabase
+      .from('devices')
       .insert({
         company_id: auth.company.id,
-        email: email.toLowerCase(),
-        first_name,
-        last_name,
-        phone,
-        address,
-        city,
-        state,
-        zip_code,
-        is_active: true,
-        email_verified: false
+        customer_id,
+        location,
+        device_type,
+        manufacturer: manufacturer || null,
+        model: model || null,
+        serial_number: serial_number || null,
+        installation_date: installation_date || null,
+        status: 'active',
+        compliance_status: 'pending'
       })
-      .select()
+      .select(`
+        id,
+        customer_id,
+        location,
+        device_type,
+        manufacturer,
+        model,
+        serial_number,
+        installation_date,
+        status,
+        compliance_status,
+        created_at,
+        customers (
+          id,
+          first_name,
+          last_name,
+          email
+        )
+      `)
       .single()
 
     if (error) {
       console.error('Database error:', error)
-      return NextResponse.json({ error: 'Failed to create customer' }, { status: 500 })
+      return NextResponse.json({ error: 'Failed to create device' }, { status: 500 })
     }
-
-    // Send welcome email if requested
-    if (send_welcome_email) {
-      try {
-        await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/email/send`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: email,
-            template: 'customer_welcome',
-            data: {
-              customer_name: `${first_name} ${last_name}`,
-              company_name: auth.company.name,
-              portal_url: `${process.env.NEXT_PUBLIC_APP_URL}/portal`
-            }
-          })
-        })
-      } catch (error) {
-        console.error('Failed to send welcome email:', error)
-      }
-    }
-
-    // Trigger webhook for customer creation
-    await triggerWebhook(auth.company.id, WEBHOOK_EVENTS.CUSTOMER_CREATED, {
-      customer: customer
-    })
 
     // Log API usage
     await supabase
@@ -230,7 +231,7 @@ export async function POST(request: NextRequest) {
       .insert({
         api_key_id: auth.apiKey.id,
         company_id: auth.company.id,
-        endpoint: '/customers',
+        endpoint: '/devices',
         method: 'POST',
         status_code: 201,
         ip_address: request.headers.get('x-forwarded-for') || 'unknown',
@@ -238,8 +239,8 @@ export async function POST(request: NextRequest) {
       })
 
     return NextResponse.json({
-      data: customer,
-      message: 'Customer created successfully'
+      data: device,
+      message: 'Device created successfully'
     }, { status: 201 })
 
   } catch (error) {

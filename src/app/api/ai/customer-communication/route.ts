@@ -257,10 +257,22 @@ async function sendCommunication(
     sent_at: new Date().toISOString()
   });
 
-  // TODO: Integrate with actual email service
-  // const result = await emailService.send(emailData);
-  
-  console.log('Email would be sent:', emailData);
+  // Integrate with actual email service
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/email/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: customer.email,
+        subject: communication.subject,
+        html: emailData.html,
+        from: emailData.from
+      })
+    })
+  } catch (error) {
+    console.error('Failed to send email via service:', error)
+    console.log('Email fallback - would be sent:', emailData)
+  }
 }
 
 function formatCommunicationAsHTML(communication: any): string {

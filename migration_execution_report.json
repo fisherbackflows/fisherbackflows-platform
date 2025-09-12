@@ -1,0 +1,150 @@
+{
+  "timestamp": "2025-09-12T03:27:00.045Z",
+  "database_url": "https://jvhbqfueutvfepsjmztx.supabase.co",
+  "migration_file": "20250111_api_system_setup_modified.sql",
+  "methods_attempted": [
+    {
+      "method": "supabase_rpc",
+      "attempted": true,
+      "success": false,
+      "error": "No working RPC SQL execution method found",
+      "details": [
+        "❌ RPC method 'exec_sql': Could not find the function public.exec_sql(sql) in the schema cache",
+        "❌ RPC method 'execute_sql': Could not find the function public.execute_sql(sql) in the schema cache",
+        "❌ RPC method 'sql': Could not find the function public.sql(sql) in the schema cache",
+        "❌ RPC method 'query': Could not find the function public.query(sql) in the schema cache"
+      ]
+    },
+    {
+      "method": "rest_api",
+      "attempted": true,
+      "success": false,
+      "error": "No working REST API SQL endpoint found",
+      "details": [
+        "/rest/v1/rpc/sql: HTTP 404",
+        "/rest/v1/rpc/exec_sql: HTTP 404",
+        "/rest/v1/rpc/execute_sql: HTTP 404",
+        "/sql: HTTP 404",
+        "/rpc/sql: HTTP 404"
+      ]
+    },
+    {
+      "method": "individual_creation",
+      "attempted": true,
+      "success": false,
+      "error": "Individual creation not implemented - requires Management API access",
+      "details": [
+        "Individual table creation would require Supabase Management API",
+        "This requires additional API keys and permissions"
+      ],
+      "tables_created": [],
+      "tables_failed": []
+    }
+  ],
+  "final_status": "manual_execution_required",
+  "tables_to_create": [
+    "companies",
+    "api_keys",
+    "api_usage_logs",
+    "webhook_endpoints",
+    "webhook_deliveries",
+    "api_rate_limits"
+  ],
+  "functions_to_create": [
+    "get_current_company_id()",
+    "generate_api_key()",
+    "hash_api_key(TEXT)",
+    "get_api_key_preview(TEXT)",
+    "check_rate_limit(UUID, INTEGER)",
+    "queue_webhook_delivery(UUID, TEXT, JSONB)",
+    "update_updated_at_column()"
+  ],
+  "pre_migration_state": {
+    "timestamp": "2025-09-12T03:27:00.048Z",
+    "tables": {
+      "companies": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'public.companies' in the schema cache\"}"
+      },
+      "api_keys": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'public.appointments'\",\"message\":\"Could not find the table 'public.api_keys' in the schema cache\"}"
+      },
+      "api_usage_logs": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'public.audit_logs'\",\"message\":\"Could not find the table 'public.api_usage_logs' in the schema cache\"}"
+      },
+      "webhook_endpoints": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'public.test_reports'\",\"message\":\"Could not find the table 'public.webhook_endpoints' in the schema cache\"}"
+      },
+      "webhook_deliveries": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'public.water_districts'\",\"message\":\"Could not find the table 'public.webhook_deliveries' in the schema cache\"}"
+      },
+      "api_rate_limits": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'public.appointments'\",\"message\":\"Could not find the table 'public.api_rate_limits' in the schema cache\"}"
+      }
+    },
+    "functions": {},
+    "connection_status": "connected"
+  },
+  "post_migration_state": {
+    "timestamp": "2025-09-12T03:27:02.031Z",
+    "tables": {
+      "companies": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'public.companies' in the schema cache\"}"
+      },
+      "api_keys": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'public.appointments'\",\"message\":\"Could not find the table 'public.api_keys' in the schema cache\"}"
+      },
+      "api_usage_logs": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'public.audit_logs'\",\"message\":\"Could not find the table 'public.api_usage_logs' in the schema cache\"}"
+      },
+      "webhook_endpoints": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'public.test_reports'\",\"message\":\"Could not find the table 'public.webhook_endpoints' in the schema cache\"}"
+      },
+      "webhook_deliveries": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'public.water_districts'\",\"message\":\"Could not find the table 'public.webhook_deliveries' in the schema cache\"}"
+      },
+      "api_rate_limits": {
+        "exists": false,
+        "status": 404,
+        "error": "{\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'public.appointments'\",\"message\":\"Could not find the table 'public.api_rate_limits' in the schema cache\"}"
+      }
+    },
+    "functions": {},
+    "connection_status": "connected"
+  },
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "action": "Manual Execution Required",
+      "details": "Execute migration manually using Supabase Dashboard SQL Editor",
+      "steps": [
+        "Go to https://supabase.com/dashboard/project/jvhbqfueutvfepsjmztx",
+        "Navigate to SQL Editor",
+        "Paste the migration SQL from 20250111_api_system_setup_modified.sql",
+        "Execute the query"
+      ]
+    }
+  ],
+  "migration_size_chars": 12101
+}

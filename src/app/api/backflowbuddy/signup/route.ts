@@ -259,7 +259,22 @@ export async function POST(request: NextRequest) {
         }
       })
 
-    // TODO: Send welcome email with login credentials and API key
+    // Send welcome email with login credentials and API key
+    await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/email/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: email,
+        template: 'backflowbuddy_welcome',
+        data: {
+          company_name: company_name,
+          api_key: apiKey,
+          dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL}/backflowbuddy/dashboard`,
+          docs_url: `${process.env.NEXT_PUBLIC_APP_URL}/backflowbuddy/docs`,
+          trial_ends: trialEndsAt.toLocaleDateString()
+        }
+      })
+    }).catch(error => console.error('Failed to send welcome email:', error))
 
     return NextResponse.json({
       data: {
