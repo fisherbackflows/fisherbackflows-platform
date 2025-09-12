@@ -142,7 +142,7 @@ export default function MapPage() {
 
   return (
     <UnifiedLayout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900">
+      <div className="min-h-screen bg-black">
         <div className="container mx-auto px-4 py-6 space-y-6">
           {/* Header */}
           <div className="bg-black/30 backdrop-blur-md border border-blue-500/30 rounded-xl p-6">

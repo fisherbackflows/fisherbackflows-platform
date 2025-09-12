@@ -33,9 +33,9 @@ export default function CompanyPortalPage() {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto"></div>
           <p className="mt-4 text-white/80">Loading {slug} portal...</p>
         </div>
       </div>
@@ -45,7 +45,7 @@ export default function CompanyPortalPage() {
   // Show company not found error
   if (companyNotFound || !branding) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-black flex items-center justify-center p-6">
         <div className="max-w-md mx-auto text-center">
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-8 border border-red-400/30">
             <AlertTriangle className="h-16 w-16 text-red-400 mx-auto mb-4" />
@@ -56,7 +56,7 @@ export default function CompanyPortalPage() {
             <div className="space-y-3">
               <Link 
                 href="https://tester-portal.com"
-                className="block w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+                className="block w-full px-6 py-3 glass-btn-primary glow-blue text-white rounded-lg font-semibold hover:glow-blue transition-all"
               >
                 Go to Tester Portal
               </Link>

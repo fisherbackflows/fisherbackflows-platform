@@ -5,13 +5,14 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LucideIcon } from 'lucide-react';
 
-// Unified color palette
+// Unified glassmorphism theme matching team portal login
 export const THEME = {
   colors: {
     background: 'bg-black',
-    surface: 'bg-gray-900/50',
-    surfaceGlass: 'bg-gray-900/30 backdrop-blur-sm',
-    border: 'border-gray-500/20',
+    surface: 'bg-black/40 backdrop-blur-xl',
+    surfaceGlass: 'glass',
+    border: 'border-blue-400',
+    borderSoft: 'border-blue-500/50',
     text: {
       primary: 'text-white',
       secondary: 'text-white/80',
@@ -19,16 +20,18 @@ export const THEME = {
       disabled: 'text-white/40'
     },
     accent: {
-      primary: 'text-blue-400 bg-blue-700/20 border-blue-500/30',
-      hover: 'hover:bg-blue-700/30',
-      success: 'text-green-400 bg-green-700/20 border-green-500/30',
-      warning: 'text-amber-400 bg-amber-600/20 border-amber-500/30',
-      danger: 'text-red-400 bg-red-600/20 border-red-500/30'
-    }
+      primary: 'text-blue-300 hover:text-blue-400',
+      hover: 'hover:bg-blue-500/20',
+      success: 'text-green-400 bg-green-500/20 border-green-400',
+      warning: 'text-amber-400 bg-amber-500/20 border-amber-400',
+      danger: 'text-red-400 bg-red-500/20 border-red-400'
+    },
+    input: 'bg-white/90 text-black placeholder-gray-500',
+    glow: 'glow-blue'
   },
   gradients: {
-    background: 'bg-gradient-to-br from-blue-500/5 via-transparent to-blue-500/5',
-    accent: 'bg-gradient-to-r from-blue-600 to-blue-500',
+    background: 'bg-gradient-to-br from-black to-gray-900',
+    accent: 'bg-gradient-to-r from-blue-600/80 to-blue-500/80',
     success: 'bg-gradient-to-r from-green-600 to-green-500'
   }
 };
@@ -61,7 +64,7 @@ export const LIGHT_THEME = {
   }
 };
 
-// Base layout component
+// Base layout component matching team portal theme
 interface UnifiedPageLayoutProps {
   children: React.ReactNode;
   className?: string;
@@ -69,11 +72,57 @@ interface UnifiedPageLayoutProps {
 
 export function UnifiedPageLayout({ children, className = '' }: UnifiedPageLayoutProps) {
   return (
-    <div className={`min-h-screen ${THEME.colors.background} ${THEME.colors.text.primary} ${className}`}>
-      {/* Background gradient */}
-      <div className={`fixed inset-0 ${THEME.gradients.background}`} />
+    <div className={`min-h-screen ${THEME.colors.background} ${className}`}>
       {children}
     </div>
+  );
+}
+
+// Glassmorphism container component
+interface GlassContainerProps {
+  children: React.ReactNode;
+  className?: string;
+  glow?: boolean;
+  padding?: 'sm' | 'md' | 'lg' | 'xl';
+}
+
+export function GlassContainer({ children, className = '', glow = true, padding = 'lg' }: GlassContainerProps) {
+  const paddingClasses = {
+    sm: 'p-4',
+    md: 'p-6', 
+    lg: 'p-8',
+    xl: 'p-12'
+  };
+
+  return (
+    <div className={`glass border border-blue-400 rounded-2xl ${glow ? 'glow-blue' : ''} ${paddingClasses[padding]} ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+// Page content wrapper matching team portal layout
+interface ContentSectionProps {
+  children: React.ReactNode;
+  className?: string;
+  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+}
+
+export function ContentSection({ children, className = '', maxWidth = 'md' }: ContentSectionProps) {
+  const maxWidthClasses = {
+    sm: 'max-w-md',
+    md: 'max-w-lg', 
+    lg: 'max-w-2xl',
+    xl: 'max-w-4xl',
+    full: 'max-w-full'
+  };
+
+  return (
+    <main className={`flex items-center justify-center min-h-[calc(100vh-100px)] p-6 ${className}`}>
+      <div className={`w-full ${maxWidthClasses[maxWidth]}`}>
+        {children}
+      </div>
+    </main>
   );
 }
 

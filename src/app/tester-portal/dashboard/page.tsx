@@ -164,9 +164,9 @@ export default function TesterPortalDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto"></div>
           <p className="mt-4 text-white/80">Loading dashboard...</p>
         </div>
       </div>
@@ -174,22 +174,22 @@ export default function TesterPortalDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="border-b border-cyan-400/20 bg-black/20 backdrop-blur-sm">
+      <header className="glass border-b border-blue-400 glow-blue-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-500 flex items-center justify-center">
+                <div className="w-8 h-8 glass border border-blue-400 rounded-2xl flex items-center justify-center glow-blue-sm">
                   <span className="text-white font-bold text-sm">F</span>
                 </div>
                 <span className="text-white font-semibold">Fisher Backflows</span>
               </Link>
-              <div className="hidden sm:block w-px h-6 bg-cyan-400/30"></div>
+              <div className="hidden sm:block w-px h-6 bg-blue-400/30"></div>
               <div className="flex items-center space-x-2">
-                <Code className="h-5 w-5 text-cyan-400" />
-                <span className="text-cyan-400 font-semibold">Tester Portal</span>
+                <Code className="h-5 w-5 text-blue-300" />
+                <span className="text-blue-300 font-semibold">Tester Portal</span>
                 {permissions?.isOwner && (
                   <span className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-bold">
                     OWNER
@@ -201,13 +201,13 @@ export default function TesterPortalDashboard() {
             <div className="flex items-center space-x-4">
               <Link
                 href="/tester-portal/docs"
-                className="text-cyan-400 hover:text-white transition-colors"
+                className="text-blue-300 hover:text-white transition-colors"
               >
                 API Docs
               </Link>
               <Link
                 href="/portal"
-                className="text-cyan-400 hover:text-white transition-colors"
+                className="text-blue-300 hover:text-white transition-colors"
               >
                 Customer Portal
               </Link>
@@ -218,11 +218,11 @@ export default function TesterPortalDashboard() {
 
       <div className="flex">
         {/* Sidebar Navigation */}
-        <nav className="w-64 bg-black/20 backdrop-blur-sm border-r border-cyan-400/20 h-screen sticky top-0 overflow-y-auto">
+        <nav className="w-64 glass border-r border-blue-400 h-screen sticky top-0 overflow-y-auto">
           <div className="p-6">
             {navigationSections.map((section) => (
               <div key={section.title} className="mb-6">
-                <h3 className="text-xs font-semibold text-cyan-300 uppercase tracking-wider mb-3">
+                <h3 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-3">
                   {section.title}
                 </h3>
                 <ul className="space-y-1">
@@ -237,8 +237,8 @@ export default function TesterPortalDashboard() {
                             href={item.path}
                             className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
                               activeSection === item.id
-                                ? 'bg-cyan-600 text-white'
-                                : 'text-cyan-200 hover:text-white hover:bg-white/10'
+                                ? 'glass-btn-primary glow-blue text-white'
+                                : 'text-white/80 hover:text-white hover:bg-blue-600/20'
                             }`}
                             onClick={() => setActiveSection(item.id)}
                           >
@@ -248,7 +248,7 @@ export default function TesterPortalDashboard() {
                         ) : (
                           <div className="flex items-center space-x-3 px-3 py-2 rounded-lg opacity-50 cursor-not-allowed">
                             <Icon className="h-4 w-4" />
-                            <span className="text-sm font-medium text-cyan-300">{item.label}</span>
+                            <span className="text-sm font-medium text-blue-300">{item.label}</span>
                             <div className="ml-auto">
                               <span className="bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded text-xs">
                                 PRO
@@ -273,9 +273,9 @@ export default function TesterPortalDashboard() {
               <div className="mb-8">
                 <h1 className="text-3xl font-bold text-white mb-2">
                   Welcome to Tester Portal
-                  {permissions?.isOwner && <span className="text-cyan-400"> (Owner Access)</span>}
+                  {permissions?.isOwner && <span className="text-blue-300"> (Owner Access)</span>}
                 </h1>
-                <p className="text-cyan-200">
+                <p className="text-white/80">
                   {permissions?.isOwner 
                     ? 'You have full access to all features and can manage the entire platform.'
                     : 'Manage your backflow testing business with our comprehensive tools.'}
@@ -284,18 +284,18 @@ export default function TesterPortalDashboard() {
 
               {/* Quick Stats */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+                <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-                      <BarChart3 className="h-6 w-6 text-cyan-400" />
+                    <div className="w-12 h-12 rounded-lg bg-blue-500/20 border border-blue-400 glow-blue-sm flex items-center justify-center">
+                      <BarChart3 className="h-6 w-6 text-blue-300" />
                     </div>
                   </div>
                   <h3 className="text-lg font-semibold text-white mb-1">API Calls</h3>
-                  <p className="text-2xl font-bold text-cyan-400">{usage?.total_calls_today || 0}</p>
-                  <p className="text-sm text-cyan-300 mt-1">Today</p>
+                  <p className="text-2xl font-bold text-blue-300">{usage?.total_calls_today || 0}</p>
+                  <p className="text-sm text-blue-300 mt-1">Today</p>
                 </div>
 
-                <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+                <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center">
                       <Users className="h-6 w-6 text-green-400" />
@@ -306,7 +306,7 @@ export default function TesterPortalDashboard() {
                   <p className="text-sm text-green-300 mt-1">Active</p>
                 </div>
 
-                <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+                <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-12 h-12 rounded-lg bg-blue-500/20 flex items-center justify-center">
                       <Calendar className="h-6 w-6 text-blue-400" />
@@ -317,7 +317,7 @@ export default function TesterPortalDashboard() {
                   <p className="text-sm text-blue-300 mt-1">Scheduled</p>
                 </div>
 
-                <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+                <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div className="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
                       <Key className="h-6 w-6 text-purple-400" />
@@ -330,7 +330,7 @@ export default function TesterPortalDashboard() {
               </div>
 
               {/* Features Access Status */}
-              <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+              <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-6">
                 <h3 className="text-xl font-semibold text-white mb-6">Feature Access</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
@@ -358,7 +358,7 @@ export default function TesterPortalDashboard() {
                   <div className="mt-6 text-center">
                     <Link
                       href="/tester-portal/upgrade"
-                      className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+                      className="glass-btn-primary glow-blue text-white px-6 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
                     >
                       Upgrade to Pro Features
                     </Link>

@@ -172,7 +172,7 @@ function SignupForm() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center p-6">
+      <div className="min-h-screen bg-black flex items-center justify-center p-6">
         <div className="max-w-md mx-auto text-center">
           <div className="bg-white/5 backdrop-blur-sm border border-green-400/30 rounded-xl p-8">
             <CheckCircle className="h-16 w-16 text-green-400 mx-auto mb-4" />
@@ -183,7 +183,7 @@ function SignupForm() {
             <div className="space-y-3">
               <a 
                 href="/tester-portal/dashboard"
-                className="block w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+                className="block w-full px-6 py-3 glass-btn-primary glow-blue text-white rounded-lg font-semibold hover:glow-blue transition-all"
               >
                 Go to Dashboard
               </a>
@@ -201,29 +201,29 @@ function SignupForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="border-b border-cyan-400/20 bg-black/20 backdrop-blur-sm">
+      <header className="border-b border-blue-400/20 bg-black/20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Code className="h-8 w-8 text-cyan-400" />
+              <Code className="h-8 w-8 text-blue-300" />
               <div>
                 <h1 className="text-2xl font-bold text-white">Tester Portal API</h1>
-                <p className="text-cyan-400">Get Started</p>
+                <p className="text-blue-300">Get Started</p>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
               <a
                 href="/tester-portal"
-                className="text-cyan-400 hover:text-white transition-colors"
+                className="text-blue-300 hover:text-white transition-colors"
               >
                 Back to Home
               </a>
               <a
                 href="/tester-portal/docs"
-                className="text-cyan-400 hover:text-white transition-colors"
+                className="text-blue-300 hover:text-white transition-colors"
               >
                 Documentation
               </a>
@@ -237,13 +237,13 @@ function SignupForm() {
         <div className="flex justify-center mb-12">
           <div className="flex items-center space-x-4">
             <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-              step >= 1 ? 'bg-cyan-600 text-white' : 'bg-white/20 text-cyan-300'
+              step >= 1 ? 'glass-btn-primary glow-blue text-white' : 'bg-white/20 text-blue-300'
             }`}>
               1
             </div>
-            <div className={`w-12 h-0.5 ${step >= 2 ? 'bg-cyan-600' : 'bg-white/20'}`}></div>
+            <div className={`w-12 h-0.5 ${step >= 2 ? 'glass-btn-primary glow-blue' : 'bg-white/20'}`}></div>
             <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-              step >= 2 ? 'bg-cyan-600 text-white' : 'bg-white/20 text-cyan-300'
+              step >= 2 ? 'glass-btn-primary glow-blue text-white' : 'bg-white/20 text-blue-300'
             }`}>
               2
             </div>
@@ -255,7 +255,7 @@ function SignupForm() {
             {/* Plan Selection */}
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-4">Choose Your Plan</h2>
-              <p className="text-cyan-200">Start with a 14-day free trial. No credit card required for trial.</p>
+              <p className="text-white/80">Start with a 14-day free trial. No credit card required for trial.</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-8">
@@ -264,14 +264,14 @@ function SignupForm() {
                   key={plan.id}
                   className={`relative bg-white/5 backdrop-blur-sm border rounded-xl p-6 cursor-pointer transition-all ${
                     selectedPlan === plan.id 
-                      ? 'border-cyan-400 ring-2 ring-cyan-400/50' 
-                      : 'border-cyan-400/20 hover:border-cyan-400/40'
+                      ? 'border-blue-400 ring-2 ring-cyan-400/50' 
+                      : 'border-blue-400/20 hover:border-blue-400/40'
                   }`}
                   onClick={() => setSelectedPlan(plan.id)}
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                      <span className="glass-btn-primary glow-blue text-white px-4 py-1 rounded-full text-sm font-semibold">
                         Most Popular
                       </span>
                     </div>
@@ -279,26 +279,26 @@ function SignupForm() {
                   
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                    <div className="text-4xl font-bold text-cyan-400 mb-2">
-                      ${plan.price}<span className="text-lg text-cyan-300">/mo</span>
+                    <div className="text-4xl font-bold text-blue-300 mb-2">
+                      ${plan.price}<span className="text-lg text-blue-300">/mo</span>
                     </div>
-                    <p className="text-cyan-200">{plan.description}</p>
+                    <p className="text-white/80">{plan.description}</p>
                   </div>
 
                   <div className="space-y-3 mb-6">
-                    <div className="text-sm text-cyan-300">
+                    <div className="text-sm text-blue-300">
                       <strong>Includes:</strong>
                     </div>
                     {plan.features.map((feature, index) => (
-                      <div key={index} className="flex items-center text-cyan-200">
+                      <div key={index} className="flex items-center text-white/80">
                         <CheckCircle className="h-4 w-4 mr-3 text-green-400 flex-shrink-0" />
                         {feature}
                       </div>
                     ))}
                   </div>
 
-                  <div className="border-t border-cyan-400/20 pt-4">
-                    <div className="text-sm text-cyan-300 space-y-1">
+                  <div className="border-t border-blue-400/20 pt-4">
+                    <div className="text-sm text-blue-300 space-y-1">
                       <div>Up to {plan.limits.customers.toLocaleString()} customers</div>
                       <div>{plan.limits.api_calls.toLocaleString()} API calls/month</div>
                     </div>
@@ -306,7 +306,7 @@ function SignupForm() {
 
                   {selectedPlan === plan.id && (
                     <div className="absolute top-4 right-4">
-                      <div className="w-6 h-6 bg-cyan-600 rounded-full flex items-center justify-center">
+                      <div className="w-6 h-6 glass-btn-primary glow-blue rounded-full flex items-center justify-center">
                         <CheckCircle className="h-4 w-4 text-white" />
                       </div>
                     </div>
@@ -316,7 +316,7 @@ function SignupForm() {
             </div>
 
             {/* Company Information Form */}
-            <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-8 max-w-2xl mx-auto">
+            <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-8 max-w-2xl mx-auto">
               <h3 className="text-2xl font-bold text-white mb-6">Company Information</h3>
               
               <form className="space-y-6">
@@ -326,13 +326,13 @@ function SignupForm() {
                       Company Name *
                     </label>
                     <div className="relative">
-                      <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-cyan-300" />
+                      <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-blue-300" />
                       <input
                         type="text"
                         name="company_name"
                         value={formData.company_name}
                         onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-3 bg-white/10 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
+                        className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-blue-400"
                         placeholder="Your Company Name"
                         required
                       />
@@ -348,7 +348,7 @@ function SignupForm() {
                       name="website"
                       value={formData.website}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-3 bg-white/10 border border-blue-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-blue-400"
                       placeholder="https://yourcompany.com"
                     />
                   </div>
@@ -360,13 +360,13 @@ function SignupForm() {
                       First Name *
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-cyan-300" />
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-blue-300" />
                       <input
                         type="text"
                         name="first_name"
                         value={formData.first_name}
                         onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-3 bg-white/10 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
+                        className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-blue-400"
                         placeholder="John"
                         required
                       />
@@ -382,7 +382,7 @@ function SignupForm() {
                       name="last_name"
                       value={formData.last_name}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-3 bg-white/10 border border-blue-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-blue-400"
                       placeholder="Doe"
                       required
                     />
@@ -395,13 +395,13 @@ function SignupForm() {
                       Email Address *
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-cyan-300" />
+                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-blue-300" />
                       <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full pl-10 pr-4 py-3 bg-white/10 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
+                        className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-blue-400"
                         placeholder="john@company.com"
                         required
                       />
@@ -417,7 +417,7 @@ function SignupForm() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-3 bg-white/10 border border-blue-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-blue-400"
                       placeholder="(555) 123-4567"
                     />
                   </div>
@@ -431,7 +431,7 @@ function SignupForm() {
                     name="how_did_you_hear"
                     value={formData.how_did_you_hear}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/10 border border-cyan-400/30 rounded-lg text-white focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-3 bg-white/10 border border-blue-400/30 rounded-lg text-white focus:outline-none focus:border-blue-400"
                   >
                     <option value="">Select an option</option>
                     <option value="google">Google Search</option>
@@ -446,7 +446,7 @@ function SignupForm() {
                   type="button"
                   onClick={handleNextStep}
                   disabled={!validateStep1()}
-                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full glass-btn-primary glow-blue text-white py-3 rounded-lg font-semibold hover:glow-blue transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Continue to Payment
                 </button>
@@ -459,24 +459,24 @@ function SignupForm() {
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold text-white mb-4">Payment Information</h2>
-              <p className="text-cyan-200">
+              <p className="text-white/80">
                 Start your 14-day free trial. You won't be charged until the trial ends.
               </p>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-8">
+            <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-8">
               {/* Selected Plan Summary */}
-              <div className="mb-8 p-4 bg-cyan-600/20 border border-cyan-400/30 rounded-lg">
+              <div className="mb-8 p-4 glass-btn-primary glow-blue/20 border border-blue-400/30 rounded-lg">
                 <div className="flex justify-between items-center">
                   <div>
                     <h4 className="text-lg font-semibold text-white">
                       {plans.find(p => p.id === selectedPlan)?.name} Plan
                     </h4>
-                    <p className="text-cyan-300">14-day free trial, then ${plans.find(p => p.id === selectedPlan)?.price}/month</p>
+                    <p className="text-blue-300">14-day free trial, then ${plans.find(p => p.id === selectedPlan)?.price}/month</p>
                   </div>
                   <button
                     onClick={() => setStep(1)}
-                    className="text-cyan-400 hover:text-cyan-300 text-sm underline"
+                    className="text-blue-300 hover:text-blue-300 text-sm underline"
                   >
                     Change Plan
                   </button>
@@ -488,7 +488,7 @@ function SignupForm() {
                   <label className="block text-sm font-medium text-white mb-2">
                     Payment Method
                   </label>
-                  <div className="p-4 bg-white/10 border border-cyan-400/30 rounded-lg">
+                  <div className="p-4 bg-white/10 border border-blue-400/30 rounded-lg">
                     <CardElement
                       options={{
                         style: {
@@ -514,7 +514,7 @@ function SignupForm() {
 
                 <div className="flex items-start space-x-3">
                   <Shield className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
-                  <p className="text-cyan-300 text-sm">
+                  <p className="text-blue-300 text-sm">
                     Your payment information is secure and encrypted. You can cancel anytime during your trial.
                   </p>
                 </div>
@@ -530,7 +530,7 @@ function SignupForm() {
                   <button
                     type="submit"
                     disabled={!stripe || loading}
-                    className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                    className="flex-1 glass-btn-primary glow-blue text-white py-3 rounded-lg font-semibold hover:glow-blue transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                   >
                     {loading ? (
                       <>

@@ -174,25 +174,25 @@ export default function SchedulePage() {
 
   if (!hasAccess('scheduling') && !permissions?.isOwner) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8">
           <div className="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mx-auto mb-6">
             <Calendar className="h-8 w-8 text-yellow-400" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-4">Schedule Management</h2>
-          <p className="text-cyan-200 mb-6">
+          <p className="text-white/80 mb-6">
             This feature requires a scheduling subscription to manage appointments and view your schedule.
           </p>
           <div className="space-y-3">
             <Link
               href="/tester-portal/upgrade"
-              className="block bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+              className="block glass-btn-primary glow-blue text-white px-6 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
             >
               Upgrade to Access
             </Link>
             <Link
               href="/tester-portal/dashboard"
-              className="block text-cyan-400 hover:text-white transition-colors"
+              className="block text-blue-300 hover:text-white transition-colors"
             >
               Back to Dashboard
             </Link>
@@ -204,9 +204,9 @@ export default function SchedulePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto"></div>
           <p className="mt-4 text-white/80">Loading schedule...</p>
         </div>
       </div>
@@ -216,14 +216,14 @@ export default function SchedulePage() {
   const dayAppointments = getAppointmentsForDate(selectedDate)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="border-b border-cyan-400/20 bg-black/20 backdrop-blur-sm">
+      <div className="border-b border-blue-400/20 bg-black/20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white flex items-center">
-                <Calendar className="h-8 w-8 text-cyan-400 mr-3" />
+                <Calendar className="h-8 w-8 text-blue-300 mr-3" />
                 Schedule Management
                 {permissions?.isOwner && (
                   <span className="ml-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
@@ -231,11 +231,11 @@ export default function SchedulePage() {
                   </span>
                 )}
               </h1>
-              <p className="text-cyan-200 mt-2">Manage appointments and scheduling</p>
+              <p className="text-white/80 mt-2">Manage appointments and scheduling</p>
             </div>
             <Link
               href="/tester-portal/schedule/new"
-              className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+              className="glass-btn-primary glow-blue text-white px-6 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
             >
               <Plus className="h-5 w-5 inline mr-2" />
               New Appointment
@@ -246,27 +246,27 @@ export default function SchedulePage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Date Navigation */}
-        <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 mb-8">
+        <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => navigateDate('prev')}
-                className="p-2 bg-cyan-500/20 hover:bg-cyan-500/30 rounded-lg transition-colors"
+                className="p-2 bg-blue-500/20 border border-blue-400 glow-blue-sm hover:glow-blue/30 rounded-lg transition-colors"
               >
-                <ChevronLeft className="h-5 w-5 text-cyan-400" />
+                <ChevronLeft className="h-5 w-5 text-blue-300" />
               </button>
               <div className="text-xl font-bold text-white min-w-[200px] text-center">
                 {getDateTitle()}
               </div>
               <button
                 onClick={() => navigateDate('next')}
-                className="p-2 bg-cyan-500/20 hover:bg-cyan-500/30 rounded-lg transition-colors"
+                className="p-2 bg-blue-500/20 border border-blue-400 glow-blue-sm hover:glow-blue/30 rounded-lg transition-colors"
               >
-                <ChevronRight className="h-5 w-5 text-cyan-400" />
+                <ChevronRight className="h-5 w-5 text-blue-300" />
               </button>
               <button
                 onClick={() => setSelectedDate(new Date())}
-                className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+                className="px-4 py-2 glass-btn-primary glow-blue text-white rounded-lg font-semibold hover:glow-blue transition-all"
               >
                 Today
               </button>
@@ -275,7 +275,7 @@ export default function SchedulePage() {
         </div>
 
         {/* Filter Tabs */}
-        <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 mb-8">
+        <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 mb-8">
           <h3 className="text-lg font-semibold text-white mb-4">Filter Appointments</h3>
           <div className="flex flex-wrap gap-3">
             {[
@@ -290,8 +290,8 @@ export default function SchedulePage() {
                 onClick={() => setStatusFilter(filter.key)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                   statusFilter === filter.key
-                    ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white'
-                    : 'bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30'
+                    ? 'glass-btn-primary glow-blue text-white'
+                    : 'bg-blue-500/20 border border-blue-400 glow-blue-sm text-blue-300 hover:glow-blue/30'
                 }`}
               >
                 {filter.label} ({filter.count})
@@ -304,14 +304,14 @@ export default function SchedulePage() {
         <div className="space-y-6">
           {dayAppointments.length > 0 ? (
             dayAppointments.map((appointment) => (
-              <div key={appointment.id} className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 hover:bg-black/50 transition-all">
+              <div key={appointment.id} className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 hover:bg-black/50 transition-all">
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex items-center space-x-4">
-                    <div className="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl px-4 py-3 text-center">
+                    <div className="glass-btn-primary glow-blue rounded-xl px-4 py-3 text-center">
                       <div className="text-white font-bold text-xl">
                         {formatTime(appointment.time)}
                       </div>
-                      <div className="text-cyan-200 text-sm">
+                      <div className="text-white/80 text-sm">
                         {formatDuration(appointment.duration)}
                       </div>
                     </div>
@@ -335,7 +335,7 @@ export default function SchedulePage() {
                     <div className="text-2xl font-bold text-green-400">
                       ${appointment.estimatedCost}
                     </div>
-                    <div className="text-sm text-cyan-300">
+                    <div className="text-sm text-blue-300">
                       Estimated
                     </div>
                   </div>
@@ -353,7 +353,7 @@ export default function SchedulePage() {
                         </div>
                         <div>
                           <p className="font-semibold text-white">{appointment.address}</p>
-                          <p className="text-cyan-200 text-sm">{appointment.city}</p>
+                          <p className="text-white/80 text-sm">{appointment.city}</p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-3">
@@ -361,10 +361,10 @@ export default function SchedulePage() {
                           <Phone className="h-5 w-5 text-green-400" />
                         </div>
                         <div>
-                          <a href={`tel:${appointment.customerPhone}`} className="font-semibold text-white hover:text-cyan-400 transition-colors">
+                          <a href={`tel:${appointment.customerPhone}`} className="font-semibold text-white hover:text-blue-300 transition-colors">
                             {appointment.customerPhone}
                           </a>
-                          <p className="text-cyan-200 text-sm">Customer Phone</p>
+                          <p className="text-white/80 text-sm">Customer Phone</p>
                         </div>
                       </div>
                     </div>
@@ -375,7 +375,7 @@ export default function SchedulePage() {
                       <div className="text-2xl font-bold text-white">
                         {appointment.deviceCount}
                       </div>
-                      <div className="text-sm text-cyan-300">
+                      <div className="text-sm text-blue-300">
                         Device{appointment.deviceCount !== 1 ? 's' : ''}
                       </div>
                     </div>
@@ -384,7 +384,7 @@ export default function SchedulePage() {
                       <div className="text-lg font-semibold text-white">
                         {formatDuration(appointment.duration)}
                       </div>
-                      <div className="text-sm text-cyan-300">
+                      <div className="text-sm text-blue-300">
                         Duration
                       </div>
                     </div>
@@ -398,7 +398,7 @@ export default function SchedulePage() {
                   )}
 
                   {/* Actions */}
-                  <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-cyan-400/20">
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-blue-400/20">
                     <div className="flex flex-wrap gap-2">
                       {appointment.status === 'scheduled' && (
                         <button
@@ -412,7 +412,7 @@ export default function SchedulePage() {
                       {appointment.status === 'confirmed' && (
                         <button
                           onClick={() => updateAppointmentStatus(appointment.id, 'in-progress')}
-                          className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-4 py-2 rounded-lg font-semibold hover:from-blue-600 hover:to-cyan-600 transition-all"
+                          className="glass-btn-primary glow-blue text-white px-4 py-2 rounded-xl font-semibold transition-all"
                         >
                           <Clock className="h-4 w-4 inline mr-2" />
                           Start Service
@@ -432,7 +432,7 @@ export default function SchedulePage() {
                     <div className="flex gap-2 sm:ml-auto">
                       <a
                         href={`tel:${appointment.customerPhone}`}
-                        className="bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-500/30 transition-all"
+                        className="bg-blue-500/20 border border-blue-400 glow-blue-sm text-blue-300 px-4 py-2 rounded-lg font-semibold hover:glow-blue/30 transition-all"
                       >
                         <Phone className="h-4 w-4 inline mr-2" />
                         Call
@@ -450,17 +450,17 @@ export default function SchedulePage() {
               </div>
             ))
           ) : (
-            <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-12 text-center">
-              <Calendar className="h-16 w-16 text-cyan-400 mx-auto mb-6" />
+            <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-12 text-center">
+              <Calendar className="h-16 w-16 text-blue-300 mx-auto mb-6" />
               <h3 className="text-2xl font-bold text-white mb-4">
                 No appointments found
               </h3>
-              <p className="text-cyan-200 text-lg mb-6">
+              <p className="text-white/80 text-lg mb-6">
                 {statusFilter === 'all' ? 'No appointments scheduled' : `No ${statusFilter} appointments`} for {getDateTitle().toLowerCase()}
               </p>
               <Link
                 href="/tester-portal/schedule/new"
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+                className="glass-btn-primary glow-blue text-white px-8 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
               >
                 <Plus className="h-5 w-5 inline mr-2" />
                 Schedule New Appointment

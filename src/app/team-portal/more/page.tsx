@@ -118,7 +118,7 @@ export default function MorePage() {
       description: 'Cloud data backup',
       icon: <Cloud className="h-6 w-6" />,
       href: '/team-portal/backup',
-      color: 'bg-cyan-500'
+      color: 'glass-btn-primary glow-blue'
     }
   ];
 

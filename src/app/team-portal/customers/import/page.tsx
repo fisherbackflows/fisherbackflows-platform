@@ -169,11 +169,11 @@ jane.smith@example.com,Jane,Smith,(555) 234-5678,,456 Oak Ave,Tacoma,WA,98402,re
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 p-6">
+    <div className="min-h-screen bg-black p-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <Link href="/team-portal/customers" className="inline-flex items-center text-cyan-300 hover:text-cyan-200 mb-4">
+          <Link href="/team-portal/customers" className="inline-flex items-center text-blue-300 hover:text-white/80 mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Customers
           </Link>
@@ -186,7 +186,7 @@ jane.smith@example.com,Jane,Smith,(555) 234-5678,,456 Oak Ave,Tacoma,WA,98402,re
           {/* Step 1: Download Template */}
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-6">
             <div className="flex items-start space-x-4">
-              <div className="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-8 h-8 glass-btn-primary glow-blue rounded-full flex items-center justify-center text-white font-bold">
                 1
               </div>
               <div className="flex-1">
@@ -196,7 +196,7 @@ jane.smith@example.com,Jane,Smith,(555) 234-5678,,456 Oak Ave,Tacoma,WA,98402,re
                 </p>
                 <button
                   onClick={downloadTemplate}
-                  className="inline-flex items-center px-4 py-2 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition-colors"
+                  className="inline-flex items-center px-4 py-2 glass-btn-primary glow-blue hover:glow-blue text-white rounded-lg transition-colors"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Download Template
@@ -208,7 +208,7 @@ jane.smith@example.com,Jane,Smith,(555) 234-5678,,456 Oak Ave,Tacoma,WA,98402,re
           {/* Step 2: Upload File */}
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-6">
             <div className="flex items-start space-x-4">
-              <div className="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-8 h-8 glass-btn-primary glow-blue rounded-full flex items-center justify-center text-white font-bold">
                 2
               </div>
               <div className="flex-1">
@@ -217,7 +217,7 @@ jane.smith@example.com,Jane,Smith,(555) 234-5678,,456 Oak Ave,Tacoma,WA,98402,re
                   Select your customer CSV file with the required fields
                 </p>
                 
-                <div className="border-2 border-dashed border-cyan-400/50 rounded-lg p-8 text-center">
+                <div className="border-2 border-dashed border-blue-400/50 rounded-lg p-8 text-center">
                   <input
                     type="file"
                     accept=".csv"
@@ -229,7 +229,7 @@ jane.smith@example.com,Jane,Smith,(555) 234-5678,,456 Oak Ave,Tacoma,WA,98402,re
                     htmlFor="csv-upload"
                     className="cursor-pointer inline-flex flex-col items-center"
                   >
-                    <Upload className="w-12 h-12 text-cyan-400 mb-3" />
+                    <Upload className="w-12 h-12 text-blue-300 mb-3" />
                     <span className="text-white font-medium">
                       {file ? file.name : 'Click to upload CSV file'}
                     </span>
@@ -241,8 +241,8 @@ jane.smith@example.com,Jane,Smith,(555) 234-5678,,456 Oak Ave,Tacoma,WA,98402,re
 
                 {/* File Info */}
                 {file && (
-                  <div className="mt-4 p-3 bg-cyan-500/20 rounded-lg">
-                    <p className="text-cyan-300 text-sm">
+                  <div className="mt-4 p-3 bg-blue-500/20 border border-blue-400 glow-blue-sm rounded-lg">
+                    <p className="text-blue-300 text-sm">
                       Selected: {file.name} ({(file.size / 1024).toFixed(2)} KB)
                     </p>
                   </div>
@@ -301,7 +301,7 @@ jane.smith@example.com,Jane,Smith,(555) 234-5678,,456 Oak Ave,Tacoma,WA,98402,re
           {/* Step 3: Import */}
           <div className="bg-white/10 backdrop-blur-md rounded-xl p-6">
             <div className="flex items-start space-x-4">
-              <div className="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-8 h-8 glass-btn-primary glow-blue rounded-full flex items-center justify-center text-white font-bold">
                 3
               </div>
               <div className="flex-1">
@@ -313,7 +313,7 @@ jane.smith@example.com,Jane,Smith,(555) 234-5678,,456 Oak Ave,Tacoma,WA,98402,re
                 <button
                   onClick={handleImport}
                   disabled={!file || errors.length > 0 || importing || parsing}
-                  className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="px-6 py-2 glass-btn-primary glow-blue hover:glow-blue text-white rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   {importing ? 'Importing...' : 'Start Import'}
                 </button>

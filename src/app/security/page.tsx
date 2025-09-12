@@ -68,13 +68,13 @@ export default function SecurityPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-black/20 backdrop-blur-md border-b border-cyan-400/30">
+      <header className="bg-black/20 backdrop-blur-md border-b border-blue-400/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">BB</span>
               </div>
               <div>
@@ -84,7 +84,7 @@ export default function SecurityPage() {
             </Link>
             <Link
               href="/signup"
-              className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+              className="px-4 py-2 glass-btn-primary glow-blue text-white rounded-lg font-semibold hover:glow-blue transition-all"
             >
               Start Free Trial
             </Link>
@@ -101,7 +101,7 @@ export default function SecurityPage() {
           </div>
           
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            Your Data Is <span className="text-cyan-400">100% Isolated</span>
+            Your Data Is <span className="text-blue-300">100% Isolated</span>
           </h1>
           
           <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
@@ -127,8 +127,8 @@ export default function SecurityPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {securityFeatures.map((feature, index) => (
-              <div key={index} className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
-                <div className="w-12 h-12 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 rounded-lg flex items-center justify-center mb-4">
+              <div key={index} className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-blue-400/30">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500/20 to-blue-500/20 rounded-lg flex items-center justify-center mb-4">
                   {feature.icon}
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
@@ -171,10 +171,10 @@ export default function SecurityPage() {
       {/* Zero Trust Architecture */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-2xl p-8 border border-cyan-400/30">
+          <div className="bg-gradient-to-r from-blue-500/10 to-blue-500/10 rounded-2xl p-8 border border-blue-400/30">
             <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 bg-cyan-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                <AlertTriangle className="h-6 w-6 text-cyan-400" />
+              <div className="w-12 h-12 bg-blue-500/20 border border-blue-400 glow-blue-sm rounded-lg flex items-center justify-center flex-shrink-0">
+                <AlertTriangle className="h-6 w-6 text-blue-300" />
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-white mb-4">Zero Trust Architecture</h3>
@@ -250,7 +250,7 @@ export default function SecurityPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/signup"
-              className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all text-lg"
+              className="px-8 py-4 glass-btn-primary glow-blue text-white rounded-lg font-semibold hover:glow-blue transition-all text-lg"
             >
               Start 14-Day Free Trial
             </Link>

@@ -29,11 +29,11 @@ export default function BackflowBuddyDocs() {
   const CodeBlock = ({ code, language = 'javascript', id }: { code: string, language?: string, id: string }) => (
     <div className="relative">
       <div className="bg-black/40 rounded-lg p-4 font-mono text-sm overflow-x-auto">
-        <pre className="text-cyan-300">{code}</pre>
+        <pre className="text-blue-300">{code}</pre>
       </div>
       <button
         onClick={() => copyToClipboard(code, id)}
-        className="absolute top-2 right-2 p-2 bg-cyan-600 text-white rounded hover:bg-cyan-700 transition-colors"
+        className="absolute top-2 right-2 p-2 glass-btn-primary glow-blue text-white rounded hover:glow-blue transition-colors"
       >
         {copiedCode === id ? <CheckCircle className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
       </button>
@@ -52,23 +52,23 @@ export default function BackflowBuddyDocs() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="border-b border-cyan-400/20 bg-black/20 backdrop-blur-sm">
+      <header className="border-b border-blue-400/20 bg-black/20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <Code className="h-8 w-8 text-cyan-400" />
+              <Code className="h-8 w-8 text-blue-300" />
               <div>
                 <h1 className="text-2xl font-bold text-white">Tester Portal API</h1>
-                <p className="text-cyan-400">Developer Documentation</p>
+                <p className="text-blue-300">Developer Documentation</p>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
               <a
                 href="/tester-portal/dashboard"
-                className="text-cyan-400 hover:text-white transition-colors"
+                className="text-blue-300 hover:text-white transition-colors"
               >
                 Dashboard
               </a>
@@ -76,7 +76,7 @@ export default function BackflowBuddyDocs() {
                 href="https://github.com/fisherbackflows/backflow-buddy-api"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center space-x-2 bg-cyan-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-cyan-700 transition-colors"
+                className="flex items-center space-x-2 glass-btn-primary glow-blue text-white px-4 py-2 rounded-lg font-semibold hover:glow-blue transition-colors"
               >
                 <span>GitHub</span>
                 <ExternalLink className="h-4 w-4" />
@@ -97,8 +97,8 @@ export default function BackflowBuddyDocs() {
                   onClick={() => setActiveSection(id)}
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all ${
                     activeSection === id
-                      ? 'bg-cyan-600 text-white'
-                      : 'text-cyan-300 hover:text-white hover:bg-white/10'
+                      ? 'glass-btn-primary glow-blue text-white'
+                      : 'text-blue-300 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   <Icon className="h-5 w-5" />
@@ -110,14 +110,14 @@ export default function BackflowBuddyDocs() {
 
           {/* Content */}
           <div className="lg:col-span-3">
-            <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-8">
+            <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-8">
               
               {/* Getting Started */}
               {activeSection === 'getting-started' && (
                 <div className="space-y-8">
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-4">Getting Started</h2>
-                    <p className="text-cyan-200 text-lg mb-6">
+                    <p className="text-white/80 text-lg mb-6">
                       Welcome to the Tester Portal API! This RESTful API allows you to integrate 
                       professional backflow testing management into your existing applications.
                     </p>
@@ -133,7 +133,7 @@ export default function BackflowBuddyDocs() {
 
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Quick Example</h3>
-                    <p className="text-cyan-200 mb-4">
+                    <p className="text-white/80 mb-4">
                       Here's a simple example to get you started with fetching customers:
                     </p>
                     <CodeBlock 
@@ -153,7 +153,7 @@ console.log(data.data); // Array of customers`}
 
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Response Format</h3>
-                    <p className="text-cyan-200 mb-4">
+                    <p className="text-white/80 mb-4">
                       All API responses follow a consistent format:
                     </p>
                     <CodeBlock 
@@ -173,7 +173,7 @@ console.log(data.data); // Array of customers`}
 
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Error Handling</h3>
-                    <p className="text-cyan-200 mb-4">
+                    <p className="text-white/80 mb-4">
                       Errors are returned with appropriate HTTP status codes and descriptive messages:
                     </p>
                     <CodeBlock 
@@ -196,17 +196,17 @@ console.log(data.data); // Array of customers`}
                 <div className="space-y-8">
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-4">Authentication</h2>
-                    <p className="text-cyan-200 text-lg mb-6">
+                    <p className="text-white/80 text-lg mb-6">
                       The Tester Portal API uses API keys for authentication. Include your API key 
-                      in the <code className="bg-black/30 px-2 py-1 rounded text-cyan-400">X-API-Key</code> header 
+                      in the <code className="bg-black/30 px-2 py-1 rounded text-blue-300">X-API-Key</code> header 
                       with every request.
                     </p>
                   </div>
 
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Getting Your API Key</h3>
-                    <ol className="list-decimal list-inside text-cyan-200 space-y-2 mb-6">
-                      <li>Log in to your <a href="/tester-portal/dashboard" className="text-cyan-400 hover:text-cyan-300">Tester Portal Dashboard</a></li>
+                    <ol className="list-decimal list-inside text-white/80 space-y-2 mb-6">
+                      <li>Log in to your <a href="/tester-portal/dashboard" className="text-blue-300 hover:text-blue-300">Tester Portal Dashboard</a></li>
                       <li>Navigate to the "API Keys" section</li>
                       <li>Click "Create Key" and give it a descriptive name</li>
                       <li>Copy your API key immediately (it won't be shown again)</li>
@@ -243,10 +243,10 @@ $response = curl_exec($ch);`}
 
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Rate Limits</h3>
-                    <p className="text-cyan-200 mb-4">
+                    <p className="text-white/80 mb-4">
                       API keys have rate limits to ensure service quality:
                     </p>
-                    <ul className="list-disc list-inside text-cyan-200 space-y-2">
+                    <ul className="list-disc list-inside text-white/80 space-y-2">
                       <li><strong>Starter Plan:</strong> 1,000 requests per hour</li>
                       <li><strong>Professional Plan:</strong> 5,000 requests per hour</li>
                       <li><strong>Enterprise Plan:</strong> Unlimited requests</li>
@@ -260,7 +260,7 @@ $response = curl_exec($ch);`}
                 <div className="space-y-8">
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-4">Customers API</h2>
-                    <p className="text-cyan-200 text-lg mb-6">
+                    <p className="text-white/80 text-lg mb-6">
                       Manage your customer database with full CRUD operations.
                     </p>
                   </div>
@@ -373,31 +373,31 @@ console.log(data.data); // Updated customer object`}
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Query Parameters</h3>
                     <div className="overflow-x-auto">
-                      <table className="w-full text-left border border-cyan-400/20">
-                        <thead className="bg-cyan-600/20">
+                      <table className="w-full text-left border border-blue-400/20">
+                        <thead className="glass-btn-primary glow-blue/20">
                           <tr>
                             <th className="px-4 py-2 text-white font-semibold">Parameter</th>
                             <th className="px-4 py-2 text-white font-semibold">Type</th>
                             <th className="px-4 py-2 text-white font-semibold">Description</th>
                           </tr>
                         </thead>
-                        <tbody className="text-cyan-200">
-                          <tr className="border-t border-cyan-400/20">
+                        <tbody className="text-white/80">
+                          <tr className="border-t border-blue-400/20">
                             <td className="px-4 py-2 font-mono">page</td>
                             <td className="px-4 py-2">integer</td>
                             <td className="px-4 py-2">Page number (default: 1)</td>
                           </tr>
-                          <tr className="border-t border-cyan-400/20">
+                          <tr className="border-t border-blue-400/20">
                             <td className="px-4 py-2 font-mono">limit</td>
                             <td className="px-4 py-2">integer</td>
                             <td className="px-4 py-2">Items per page (default: 50, max: 100)</td>
                           </tr>
-                          <tr className="border-t border-cyan-400/20">
+                          <tr className="border-t border-blue-400/20">
                             <td className="px-4 py-2 font-mono">search</td>
                             <td className="px-4 py-2">string</td>
                             <td className="px-4 py-2">Search in name or email</td>
                           </tr>
-                          <tr className="border-t border-cyan-400/20">
+                          <tr className="border-t border-blue-400/20">
                             <td className="px-4 py-2 font-mono">status</td>
                             <td className="px-4 py-2">string</td>
                             <td className="px-4 py-2">Filter by status: 'active' or 'inactive'</td>
@@ -414,7 +414,7 @@ console.log(data.data); // Updated customer object`}
                 <div className="space-y-8">
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-4">Appointments API</h2>
-                    <p className="text-cyan-200 text-lg mb-6">
+                    <p className="text-white/80 text-lg mb-6">
                       Manage appointment scheduling, updates, and cancellations.
                     </p>
                   </div>
@@ -497,7 +497,7 @@ console.log(data.data); // Created appointment`}
                 <div className="space-y-8">
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-4">Devices API</h2>
-                    <p className="text-cyan-200 text-lg mb-6">
+                    <p className="text-white/80 text-lg mb-6">
                       Manage backflow prevention devices and their testing history.
                     </p>
                   </div>
@@ -546,20 +546,20 @@ const response = await fetch('https://fisherbackflows.com/api/v1/devices?custome
                 <div className="space-y-8">
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-4">Webhooks</h2>
-                    <p className="text-cyan-200 text-lg mb-6">
+                    <p className="text-white/80 text-lg mb-6">
                       Receive real-time notifications when events occur in your account.
                     </p>
                   </div>
 
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Available Events</h3>
-                    <ul className="list-disc list-inside text-cyan-200 space-y-2 mb-6">
-                      <li><code className="bg-black/30 px-2 py-1 rounded text-cyan-400">customer.created</code> - New customer added</li>
-                      <li><code className="bg-black/30 px-2 py-1 rounded text-cyan-400">customer.updated</code> - Customer information changed</li>
-                      <li><code className="bg-black/30 px-2 py-1 rounded text-cyan-400">appointment.scheduled</code> - New appointment created</li>
-                      <li><code className="bg-black/30 px-2 py-1 rounded text-cyan-400">appointment.completed</code> - Appointment marked as completed</li>
-                      <li><code className="bg-black/30 px-2 py-1 rounded text-cyan-400">test.completed</code> - Device test completed</li>
-                      <li><code className="bg-black/30 px-2 py-1 rounded text-cyan-400">invoice.created</code> - New invoice generated</li>
+                    <ul className="list-disc list-inside text-white/80 space-y-2 mb-6">
+                      <li><code className="bg-black/30 px-2 py-1 rounded text-blue-300">customer.created</code> - New customer added</li>
+                      <li><code className="bg-black/30 px-2 py-1 rounded text-blue-300">customer.updated</code> - Customer information changed</li>
+                      <li><code className="bg-black/30 px-2 py-1 rounded text-blue-300">appointment.scheduled</code> - New appointment created</li>
+                      <li><code className="bg-black/30 px-2 py-1 rounded text-blue-300">appointment.completed</code> - Appointment marked as completed</li>
+                      <li><code className="bg-black/30 px-2 py-1 rounded text-blue-300">test.completed</code> - Device test completed</li>
+                      <li><code className="bg-black/30 px-2 py-1 rounded text-blue-300">invoice.created</code> - New invoice generated</li>
                     </ul>
                   </div>
 
@@ -586,8 +586,8 @@ const response = await fetch('https://fisherbackflows.com/api/v1/devices?custome
 
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Verifying Webhooks</h3>
-                    <p className="text-cyan-200 mb-4">
-                      Verify webhook authenticity using the signature in the <code className="bg-black/30 px-2 py-1 rounded text-cyan-400">X-Signature</code> header:
+                    <p className="text-white/80 mb-4">
+                      Verify webhook authenticity using the signature in the <code className="bg-black/30 px-2 py-1 rounded text-blue-300">X-Signature</code> header:
                     </p>
                     <CodeBlock 
                       code={`// Node.js webhook verification

@@ -144,7 +144,7 @@ export default function PortalDashboard() {
       <main className="relative z-10 max-w-7xl mx-auto px-6 py-12">
         {/* Welcome Section */}
         <div className="mb-12">
-          <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-600/30 shadow-2xl">
+          <div className="bg-gradient-to-r from-black/40 to-black/40 backdrop-blur-xl rounded-3xl p-8 border border-blue-400 shadow-2xl">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-4xl font-bold mb-2">
@@ -223,7 +223,7 @@ export default function PortalDashboard() {
           {/* Left Column - Quick Actions & Device Info */}
           <div className="lg:col-span-2 space-y-8">
             {/* Quick Actions */}
-            <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-xl rounded-2xl p-8 border border-slate-600/30 shadow-xl">
+            <div className="bg-gradient-to-r from-black/40 to-black/40 backdrop-blur-xl rounded-2xl p-8 border border-blue-400 shadow-xl">
               <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
                 <Zap className="h-6 w-6 text-emerald-400 mr-3" />
                 Quick Actions
@@ -264,13 +264,13 @@ export default function PortalDashboard() {
             </div>
 
             {/* Device Information */}
-            <div className="bg-gradient-to-r from-slate-800/50 to-slate-700/50 backdrop-blur-xl rounded-2xl p-8 border border-slate-600/30 shadow-xl">
+            <div className="bg-gradient-to-r from-black/40 to-black/40 backdrop-blur-xl rounded-2xl p-8 border border-blue-400 shadow-xl">
               <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
                 <Shield className="h-6 w-6 text-blue-400 mr-3" />
                 Your Backflow Device
               </h2>
               {customer.devices.map((device) => (
-                <div key={device.id} className="bg-gradient-to-br from-slate-700/30 to-slate-800/30 rounded-xl p-6 border border-slate-600/20">
+                <div key={device.id} className="glass border border-blue-400 rounded-2xl p-6 glow-blue">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="text-xl font-bold text-white mb-1">{device.make} {device.model}</h3>
@@ -319,7 +319,7 @@ export default function PortalDashboard() {
           {/* Right Column - Upcoming & Recent */}
           <div className="space-y-8">
             {/* Upcoming Appointments */}
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-700/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-600/30 shadow-xl">
+            <div className="bg-gradient-to-br from-black/40 to-black/40 backdrop-blur-xl rounded-2xl p-6 border border-blue-400 shadow-xl">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center">
                 <Clock className="h-5 w-5 text-emerald-400 mr-2" />
                 Upcoming Appointments
@@ -352,7 +352,7 @@ export default function PortalDashboard() {
             </div>
 
             {/* Recent Reports */}
-            <div className="bg-gradient-to-br from-slate-800/50 to-slate-700/50 backdrop-blur-xl rounded-2xl p-6 border border-slate-600/30 shadow-xl">
+            <div className="bg-gradient-to-br from-black/40 to-black/40 backdrop-blur-xl rounded-2xl p-6 border border-blue-400 shadow-xl">
               <h3 className="text-xl font-bold text-white mb-4 flex items-center">
                 <FileText className="h-5 w-5 text-blue-400 mr-2" />
                 Recent Reports

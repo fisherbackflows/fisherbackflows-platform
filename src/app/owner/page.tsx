@@ -78,7 +78,7 @@ export default function OwnerDashboard() {
   // Always render the dashboard; if there was an error, show a subtle note
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-sky-900 to-slate-900">
+    <div className="min-h-screen bg-black">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold text-white mb-8">Owner Dashboard</h1>
         {error && (

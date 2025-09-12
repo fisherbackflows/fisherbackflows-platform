@@ -103,7 +103,7 @@ export default function HomePage() {
     { icon: <FileText className="h-6 w-6" />, text: "Digital test reports provided", color: "text-amber-400" },
     { icon: <Shield className="h-6 w-6" />, text: "We file with your water district", color: "text-purple-400" },
     { icon: <Zap className="h-6 w-6" />, text: "Annual reminder service", color: "text-pink-400" },
-    { icon: <MapPin className="h-6 w-6" />, text: "Serving all of Pierce County", color: "text-cyan-400" }
+    { icon: <MapPin className="h-6 w-6" />, text: "Serving all of Pierce County", color: "text-blue-400" }
   ];
 
   return (
@@ -118,7 +118,7 @@ export default function HomePage() {
             {/* Logo and Company Title */}
             <Link href="/" className="flex items-center space-x-3">
               <div className="relative">
-                <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 glass border border-blue-400 rounded-2xl flex items-center justify-center glow-blue-sm">
                   <span className="text-white font-bold text-xl">TP</span>
                 </div>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm0 rounded-full"></div>
@@ -141,7 +141,7 @@ export default function HomePage() {
                 Contact
               </a>
               <div className="w-px h-8 bg-white/20 mx-3"></div>
-              <Link href="/signup" className="px-4 py-2 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white transition-all duration-200 font-semibold">
+              <Link href="/signup" className="px-4 py-2 rounded-2xl glass-btn-primary glow-blue hover:glow-blue-lg text-white transition-all duration-200 font-semibold">
                 Start Free Trial
               </Link>
               <Link href="/team-portal" className="px-4 py-2 rounded-2xl glass-btn-primary hover:glow-blue text-white transition-all duration-200 font-semibold">
@@ -249,7 +249,7 @@ export default function HomePage() {
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white">
             The Complete Platform for<br className="hidden sm:block" />
             <span className="block sm:inline">
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-blue-600 bg-clip-text text-transparent">Backflow Testing Companies</span>
+              <span className="bg-gradient-to-r from-blue-300 via-blue-400 to-blue-500 bg-clip-text text-transparent">Backflow Testing Companies</span>
             </span>
           </h1>
           

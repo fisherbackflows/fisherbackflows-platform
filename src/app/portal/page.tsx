@@ -12,9 +12,9 @@ export default function CustomerPortalPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+    <div className="min-h-screen bg-black flex items-center justify-center">
       <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto glow-blue"></div>
         <p className="mt-4 text-white/80">Redirecting to company directory...</p>
       </div>
     </div>

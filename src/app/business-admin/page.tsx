@@ -796,19 +796,19 @@ export default function BusinessAdminPortal() {
                 </CardContent>
               </Card>
 
-              <Card className="glass border-cyan-400/30">
+              <Card className="glass border-blue-400/30">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="space-y-2">
                       <p className="text-white/70 text-sm font-medium">Pipeline Value</p>
                       <p className="text-3xl font-bold text-white">${(metrics?.backflow_leads.pipeline_value || 0).toLocaleString()}</p>
                       <div className="flex items-center space-x-2">
-                        <Badge className="bg-cyan-500/20 text-cyan-300 border-0 text-xs">
+                        <Badge className="bg-blue-500/20 border border-blue-400 glow-blue-sm text-blue-300 border-0 text-xs">
                           Active opportunities
                         </Badge>
                       </div>
                     </div>
-                    <div className="p-3 rounded-2xl bg-black/40 text-cyan-400">
+                    <div className="p-3 rounded-2xl bg-black/40 text-blue-300">
                       <Target className="h-6 w-6" />
                     </div>
                   </div>
@@ -860,7 +860,7 @@ export default function BusinessAdminPortal() {
                       </div>
                       <div className="w-full bg-white/10 rounded-full h-3">
                         <div 
-                          className="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full" 
+                          className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 h-3 rounded-full" 
                           style={{ width: `${((metrics?.revenue.backflow_revenue || 0) / (metrics?.revenue.total_ytd || 1)) * 100}%` }}
                         ></div>
                       </div>
@@ -1455,14 +1455,14 @@ export default function BusinessAdminPortal() {
                 </CardContent>
               </Card>
               
-              <Card className="glass border-cyan-400/30">
+              <Card className="glass border-blue-400/30">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="space-y-2">
                       <p className="text-white/70 text-sm font-medium">Projected Annual</p>
                       <p className="text-3xl font-bold text-white">${(metrics?.revenue.projected_annual || 0).toLocaleString()}</p>
                     </div>
-                    <div className="p-3 rounded-2xl bg-black/40 text-cyan-400">
+                    <div className="p-3 rounded-2xl bg-black/40 text-blue-300">
                       <TrendingUp className="h-6 w-6" />
                     </div>
                   </div>
@@ -1545,7 +1545,7 @@ export default function BusinessAdminPortal() {
                       </div>
                       <div className="w-full bg-white/10 rounded-full h-3">
                         <div 
-                          className="bg-gradient-to-r from-blue-500 to-cyan-500 h-3 rounded-full" 
+                          className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 h-3 rounded-full" 
                           style={{ width: `${((metrics?.revenue.backflow_revenue || 0) / (metrics?.revenue.total_ytd || 1)) * 100}%` }}
                         ></div>
                       </div>
@@ -1707,9 +1707,9 @@ export default function BusinessAdminPortal() {
               </Card>
 
               {/* Pipeline Analysis */}
-              <Card className="glass border-cyan-400/30 hover:border-cyan-300/70 transition-all duration-200">
+              <Card className="glass border-blue-400/30 hover:border-blue-400 transition-all duration-200">
                 <CardContent className="p-6 text-center">
-                  <Target className="h-12 w-12 text-cyan-400 mx-auto mb-4" />
+                  <Target className="h-12 w-12 text-blue-300 mx-auto mb-4" />
                   <h3 className="text-lg font-semibold text-white mb-2">Sales Pipeline</h3>
                   <p className="text-white/70 text-sm mb-4">Detailed sales funnel analysis and conversion metrics</p>
                   <Button className="glass-btn-primary w-full" onClick={handleExportPipelineData}>

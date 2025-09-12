@@ -149,25 +149,25 @@ export default function InvoicesPage() {
 
   if (!hasAccess('billing') && !permissions?.isOwner) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8">
           <div className="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mx-auto mb-6">
             <DollarSign className="h-8 w-8 text-yellow-400" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-4">Invoice Management</h2>
-          <p className="text-cyan-200 mb-6">
+          <p className="text-white/80 mb-6">
             This feature requires a billing subscription to create and manage invoices.
           </p>
           <div className="space-y-3">
             <Link
               href="/tester-portal/upgrade"
-              className="block bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+              className="block glass-btn-primary glow-blue text-white px-6 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
             >
               Upgrade to Access
             </Link>
             <Link
               href="/tester-portal/dashboard"
-              className="block text-cyan-400 hover:text-white transition-colors"
+              className="block text-blue-300 hover:text-white transition-colors"
             >
               Back to Dashboard
             </Link>
@@ -179,9 +179,9 @@ export default function InvoicesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto"></div>
           <p className="mt-4 text-white/80">Loading invoices...</p>
         </div>
       </div>
@@ -189,14 +189,14 @@ export default function InvoicesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="border-b border-cyan-400/20 bg-black/20 backdrop-blur-sm">
+      <div className="border-b border-blue-400/20 bg-black/20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white flex items-center">
-                <DollarSign className="h-8 w-8 text-cyan-400 mr-3" />
+                <DollarSign className="h-8 w-8 text-blue-300 mr-3" />
                 Invoice Management
                 {permissions?.isOwner && (
                   <span className="ml-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
@@ -204,11 +204,11 @@ export default function InvoicesPage() {
                   </span>
                 )}
               </h1>
-              <p className="text-cyan-200 mt-2">Track and manage all your invoices and payments</p>
+              <p className="text-white/80 mt-2">Track and manage all your invoices and payments</p>
             </div>
             <Link
               href="/tester-portal/invoices/new"
-              className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+              className="glass-btn-primary glow-blue text-white px-6 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
             >
               <Plus className="h-5 w-5 inline mr-2" />
               New Invoice
@@ -220,35 +220,35 @@ export default function InvoicesPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Financial Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 text-center">
+          <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 text-center">
             <div className="text-2xl font-bold text-green-400">{formatCurrency(totals.paid)}</div>
-            <div className="text-sm text-cyan-300 mt-1">Paid This Month</div>
+            <div className="text-sm text-blue-300 mt-1">Paid This Month</div>
           </div>
-          <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 text-center">
+          <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 text-center">
             <div className="text-2xl font-bold text-blue-400">{formatCurrency(totals.outstanding)}</div>
-            <div className="text-sm text-cyan-300 mt-1">Outstanding</div>
+            <div className="text-sm text-blue-300 mt-1">Outstanding</div>
           </div>
-          <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 text-center">
+          <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 text-center">
             <div className="text-2xl font-bold text-red-400">{formatCurrency(totals.overdue)}</div>
-            <div className="text-sm text-cyan-300 mt-1">Overdue</div>
+            <div className="text-sm text-blue-300 mt-1">Overdue</div>
           </div>
-          <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 text-center">
+          <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 text-center">
             <div className="text-2xl font-bold text-white">{formatCurrency(totals.total)}</div>
-            <div className="text-sm text-cyan-300 mt-1">Total Revenue</div>
+            <div className="text-sm text-blue-300 mt-1">Total Revenue</div>
           </div>
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 mb-8">
+        <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 mb-8">
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-white mb-2">Search Invoices</label>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-cyan-400 h-5 w-5" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-300 h-5 w-5" />
                 <input
                   type="text"
                   placeholder="Search by invoice number, customer, or email..."
-                  className="w-full pl-12 pr-4 py-3 bg-black/20 border border-cyan-400/30 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400 transition-all text-white placeholder-cyan-300"
+                  className="w-full pl-12 pr-4 py-3 bg-black/20 border border-blue-400/30 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all text-white placeholder-cyan-300"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -271,8 +271,8 @@ export default function InvoicesPage() {
                     onClick={() => setStatusFilter(filter.key)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       statusFilter === filter.key
-                        ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white'
-                        : 'bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30'
+                        ? 'glass-btn-primary glow-blue text-white'
+                        : 'bg-blue-500/20 border border-blue-400 glow-blue-sm text-blue-300 hover:glow-blue/30'
                     }`}
                   >
                     {filter.label} ({filter.count})
@@ -289,7 +289,7 @@ export default function InvoicesPage() {
             filteredInvoices.map((invoice) => {
               const StatusIcon = statusConfig[invoice.status].icon;
               return (
-                <div key={invoice.id} className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 hover:bg-black/50 transition-all">
+                <div key={invoice.id} className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 hover:bg-black/50 transition-all">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-2">
@@ -301,13 +301,13 @@ export default function InvoicesPage() {
                           {statusConfig[invoice.status].label}
                         </span>
                       </div>
-                      <p className="text-cyan-200 font-medium">{invoice.customerName}</p>
+                      <p className="text-white/80 font-medium">{invoice.customerName}</p>
                     </div>
                     <div className="text-right">
                       <div className="text-3xl font-bold text-green-400">
                         {formatCurrency(invoice.total)}
                       </div>
-                      <div className="text-sm text-cyan-300 font-medium">
+                      <div className="text-sm text-blue-300 font-medium">
                         Due {formatDate(invoice.dueDate)}
                       </div>
                     </div>
@@ -316,13 +316,13 @@ export default function InvoicesPage() {
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-cyan-300 font-medium">Issued:</span>
+                        <span className="text-blue-300 font-medium">Issued:</span>
                         <span className="text-white font-semibold">{formatDate(invoice.issueDate)}</span>
                       </div>
                       
                       {invoice.paidDate && (
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-cyan-300 font-medium">Paid:</span>
+                          <span className="text-blue-300 font-medium">Paid:</span>
                           <span className="font-semibold text-green-400">
                             {formatDate(invoice.paidDate)} ({invoice.paymentMethod})
                           </span>
@@ -330,8 +330,8 @@ export default function InvoicesPage() {
                       )}
                     </div>
 
-                    <div className="bg-black/20 border border-cyan-400/20 rounded-lg p-4">
-                      <h4 className="text-sm font-medium text-cyan-300 mb-3">Services</h4>
+                    <div className="bg-black/20 border border-blue-400/20 rounded-lg p-4">
+                      <h4 className="text-sm font-medium text-blue-300 mb-3">Services</h4>
                       <div className="space-y-2">
                         {invoice.services.map((service, index) => (
                           <div key={index} className="flex justify-between items-center text-sm">
@@ -343,10 +343,10 @@ export default function InvoicesPage() {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center justify-between pt-4 border-t border-cyan-400/20">
+                    <div className="flex items-center justify-between pt-4 border-t border-blue-400/20">
                       <div className="flex space-x-3">
                         <Link href={`/tester-portal/invoices/${invoice.id}`}>
-                          <button className="bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-500/30 transition-all">
+                          <button className="bg-blue-500/20 border border-blue-400 glow-blue-sm text-blue-300 px-4 py-2 rounded-lg font-semibold hover:glow-blue/30 transition-all">
                             <Eye className="h-4 w-4 inline mr-2" />
                             View
                           </button>
@@ -379,10 +379,10 @@ export default function InvoicesPage() {
               );
             })
           ) : (
-            <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-12 text-center">
-              <DollarSign className="h-16 w-16 text-cyan-400 mx-auto mb-6" />
+            <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-12 text-center">
+              <DollarSign className="h-16 w-16 text-blue-300 mx-auto mb-6" />
               <h3 className="text-2xl font-bold text-white mb-4">No invoices found</h3>
-              <p className="text-cyan-200 text-lg mb-6">
+              <p className="text-white/80 text-lg mb-6">
                 {searchTerm || statusFilter !== 'all' 
                   ? "Try adjusting your search or filters to find the invoices you're looking for." 
                   : "Get started by creating your first invoice after completing a backflow test."
@@ -392,12 +392,12 @@ export default function InvoicesPage() {
                 <div className="space-y-4">
                   <Link
                     href="/tester-portal/invoices/new"
-                    className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all inline-block"
+                    className="glass-btn-primary glow-blue text-white px-8 py-3 rounded-lg font-semibold hover:glow-blue transition-all inline-block"
                   >
                     <PlusCircle className="h-5 w-5 inline mr-2" />
                     Create Your First Invoice
                   </Link>
-                  <p className="text-sm text-cyan-300">
+                  <p className="text-sm text-blue-300">
                     Or <Link href="/tester-portal/reports" className="text-blue-400 hover:text-blue-300 font-medium">complete a test first</Link>
                   </p>
                 </div>

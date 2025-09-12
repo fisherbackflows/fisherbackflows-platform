@@ -136,9 +136,9 @@ export default function BrandingSettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="h-12 w-12 animate-spin text-cyan-400 mx-auto mb-4" />
+          <RefreshCw className="h-12 w-12 animate-spin text-blue-300 mx-auto mb-4" />
           <p className="text-white/80">Loading branding settings...</p>
         </div>
       </div>
@@ -147,13 +147,13 @@ export default function BrandingSettingsPage() {
 
   if (!settings) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center text-white">
           <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
           <p>Failed to load branding settings</p>
           <button
             onClick={fetchBrandingSettings}
-            className="mt-4 px-4 py-2 bg-cyan-500 hover:bg-cyan-600 rounded-lg"
+            className="mt-4 px-4 py-2 glass-btn-primary glow-blue hover:glow-blue rounded-lg"
           >
             Retry
           </button>
@@ -163,9 +163,9 @@ export default function BrandingSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <header className="bg-black/20 backdrop-blur-md border-b border-cyan-400/30">
+      <header className="bg-black/20 backdrop-blur-md border-b border-blue-400/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -177,7 +177,7 @@ export default function BrandingSettingsPage() {
               </Link>
               <div>
                 <h1 className="text-2xl font-bold text-white">Brand Customization</h1>
-                <p className="text-cyan-300 text-sm">Customize how your customer portal looks</p>
+                <p className="text-blue-300 text-sm">Customize how your customer portal looks</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
@@ -186,7 +186,7 @@ export default function BrandingSettingsPage() {
                   onClick={() => setPreviewMode('desktop')}
                   className={`px-3 py-2 rounded-md transition-colors ${
                     previewMode === 'desktop'
-                      ? 'bg-cyan-500 text-white'
+                      ? 'glass-btn-primary glow-blue text-white'
                       : 'text-white/70 hover:text-white'
                   }`}
                 >
@@ -196,7 +196,7 @@ export default function BrandingSettingsPage() {
                   onClick={() => setPreviewMode('mobile')}
                   className={`px-3 py-2 rounded-md transition-colors ${
                     previewMode === 'mobile'
-                      ? 'bg-cyan-500 text-white'
+                      ? 'glass-btn-primary glow-blue text-white'
                       : 'text-white/70 hover:text-white'
                   }`}
                 >
@@ -212,7 +212,7 @@ export default function BrandingSettingsPage() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="px-6 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-lg font-semibold transition-all disabled:opacity-50"
+                className="px-6 py-2 glass-btn-primary glow-blue hover:glow-blue text-white rounded-lg font-semibold transition-all disabled:opacity-50"
               >
                 {saving ? (
                   <>
@@ -255,9 +255,9 @@ export default function BrandingSettingsPage() {
           {/* Settings Panel */}
           <div className="space-y-6">
             {/* Basic Information */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-blue-400/30">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                <Globe className="h-5 w-5 mr-2 text-cyan-400" />
+                <Globe className="h-5 w-5 mr-2 text-blue-300" />
                 Company Information
               </h3>
               <div className="space-y-4">
@@ -267,7 +267,7 @@ export default function BrandingSettingsPage() {
                     type="text"
                     value={settings.company_name}
                     onChange={(e) => updateSetting('company_name', e.target.value)}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                   />
                 </div>
                 
@@ -277,7 +277,7 @@ export default function BrandingSettingsPage() {
                     type="text"
                     value={settings.portal_title}
                     onChange={(e) => updateSetting('portal_title', e.target.value)}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     placeholder="Customer Portal"
                   />
                 </div>
@@ -288,7 +288,7 @@ export default function BrandingSettingsPage() {
                     value={settings.portal_description}
                     onChange={(e) => updateSetting('portal_description', e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     placeholder="Manage your backflow testing services online"
                   />
                 </div>
@@ -296,9 +296,9 @@ export default function BrandingSettingsPage() {
             </div>
 
             {/* Logo Upload */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-blue-400/30">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                <Upload className="h-5 w-5 mr-2 text-cyan-400" />
+                <Upload className="h-5 w-5 mr-2 text-blue-300" />
                 Company Logo
               </h3>
               <div className="space-y-4">
@@ -308,7 +308,7 @@ export default function BrandingSettingsPage() {
                     type="url"
                     value={settings.logo_url || ''}
                     onChange={(e) => updateSetting('logo_url', e.target.value)}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     placeholder="https://your-domain.com/logo.png"
                   />
                   <p className="text-white/60 text-sm mt-1">
@@ -319,9 +319,9 @@ export default function BrandingSettingsPage() {
             </div>
 
             {/* Colors */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-blue-400/30">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                <Palette className="h-5 w-5 mr-2 text-cyan-400" />
+                <Palette className="h-5 w-5 mr-2 text-blue-300" />
                 Brand Colors
               </h3>
               <div className="grid grid-cols-2 gap-4">
@@ -338,7 +338,7 @@ export default function BrandingSettingsPage() {
                       type="text"
                       value={settings.primary_color}
                       onChange={(e) => updateSetting('primary_color', e.target.value)}
-                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
+                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-blue-400"
                     />
                   </div>
                 </div>
@@ -356,7 +356,7 @@ export default function BrandingSettingsPage() {
                       type="text"
                       value={settings.secondary_color}
                       onChange={(e) => updateSetting('secondary_color', e.target.value)}
-                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
+                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-blue-400"
                     />
                   </div>
                 </div>
@@ -374,7 +374,7 @@ export default function BrandingSettingsPage() {
                       type="text"
                       value={settings.accent_color}
                       onChange={(e) => updateSetting('accent_color', e.target.value)}
-                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
+                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-blue-400"
                     />
                   </div>
                 </div>
@@ -392,7 +392,7 @@ export default function BrandingSettingsPage() {
                       type="text"
                       value={settings.background_color}
                       onChange={(e) => updateSetting('background_color', e.target.value)}
-                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
+                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-blue-400"
                     />
                   </div>
                 </div>
@@ -400,7 +400,7 @@ export default function BrandingSettingsPage() {
             </div>
 
             {/* Contact Information */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-blue-400/30">
               <h3 className="text-xl font-semibold text-white mb-4">Contact Information</h3>
               <div className="space-y-4">
                 <div>
@@ -409,7 +409,7 @@ export default function BrandingSettingsPage() {
                     type="email"
                     value={settings.contact_email}
                     onChange={(e) => updateSetting('contact_email', e.target.value)}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     placeholder="support@yourcompany.com"
                   />
                 </div>
@@ -420,7 +420,7 @@ export default function BrandingSettingsPage() {
                     type="tel"
                     value={settings.contact_phone || ''}
                     onChange={(e) => updateSetting('contact_phone', e.target.value)}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     placeholder="(555) 123-4567"
                   />
                 </div>
@@ -428,7 +428,7 @@ export default function BrandingSettingsPage() {
             </div>
 
             {/* Advanced Options */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-blue-400/30">
               <h3 className="text-xl font-semibold text-white mb-4">Advanced Options</h3>
               <div className="space-y-4">
                 <div>
@@ -437,7 +437,7 @@ export default function BrandingSettingsPage() {
                       type="checkbox"
                       checked={settings.hide_backflow_buddy_branding}
                       onChange={(e) => updateSetting('hide_backflow_buddy_branding', e.target.checked)}
-                      className="w-4 h-4 text-cyan-500 bg-white/20 border-white/30 rounded focus:ring-cyan-400"
+                      className="w-4 h-4 text-blue-400 bg-white/20 border-white/30 rounded focus:ring-blue-400"
                     />
                     <span className="text-white/80">Hide "Powered by Tester Portal" footer</span>
                   </label>
@@ -451,9 +451,9 @@ export default function BrandingSettingsPage() {
 
           {/* Preview Panel */}
           <div className="space-y-6">
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-blue-400/30">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
-                <Eye className="h-5 w-5 mr-2 text-cyan-400" />
+                <Eye className="h-5 w-5 mr-2 text-blue-300" />
                 Live Preview
               </h3>
               

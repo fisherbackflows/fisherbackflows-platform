@@ -101,4 +101,24 @@
   .pulse-glow {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
+
+  /* Button variants */
+  .glass-btn-primary {
+    @apply bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-400/50 text-white font-semibold hover:from-blue-500 hover:to-blue-400 transition-all duration-300;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+  }
+
+  /* Smaller glow effects */
+  .glow-blue-sm {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+  }
+
+  .focus\:glow-blue-sm:focus {
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+  }
+
+  /* Icon container */
+  .glass-icon {
+    @apply bg-black/40 backdrop-blur-xl border border-blue-400/50 rounded-2xl p-4;
+  }
 }

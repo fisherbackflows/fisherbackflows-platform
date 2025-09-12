@@ -91,25 +91,25 @@ export default function CustomersPage() {
 
   if (!hasAccess('customer-management') && !permissions?.isOwner) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8">
           <div className="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mx-auto mb-6">
             <Users className="h-8 w-8 text-yellow-400" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-4">Customer Management</h2>
-          <p className="text-cyan-200 mb-6">
+          <p className="text-white/80 mb-6">
             This feature requires a Customer Management subscription to access advanced customer tools and data.
           </p>
           <div className="space-y-3">
             <Link
               href="/tester-portal/upgrade"
-              className="block bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+              className="block glass-btn-primary glow-blue text-white px-6 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
             >
               Upgrade to Access
             </Link>
             <Link
               href="/tester-portal/dashboard"
-              className="block text-cyan-400 hover:text-white transition-colors"
+              className="block text-blue-300 hover:text-white transition-colors"
             >
               Back to Dashboard
             </Link>
@@ -121,9 +121,9 @@ export default function CustomersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto"></div>
           <p className="mt-4 text-white/80">Loading customers...</p>
         </div>
       </div>
@@ -131,14 +131,14 @@ export default function CustomersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="border-b border-cyan-400/20 bg-black/20 backdrop-blur-sm">
+      <div className="border-b border-blue-400/20 bg-black/20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white flex items-center">
-                <Users className="h-8 w-8 text-cyan-400 mr-3" />
+                <Users className="h-8 w-8 text-blue-300 mr-3" />
                 Customer Management
                 {permissions?.isOwner && (
                   <span className="ml-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
@@ -146,7 +146,7 @@ export default function CustomersPage() {
                   </span>
                 )}
               </h1>
-              <p className="text-cyan-200 mt-1">
+              <p className="text-white/80 mt-1">
                 Manage your customer database and relationships
               </p>
             </div>
@@ -154,14 +154,14 @@ export default function CustomersPage() {
             <div className="flex items-center space-x-4">
               <Link
                 href="/tester-portal/customers/import"
-                className="flex items-center space-x-2 bg-cyan-600/80 text-white px-4 py-2 rounded-lg font-medium hover:bg-cyan-600 transition-colors"
+                className="flex items-center space-x-2 glass-btn-primary glow-blue/80 text-white px-4 py-2 rounded-lg font-medium hover:glow-blue transition-colors"
               >
                 <Plus className="h-4 w-4" />
                 <span>Import</span>
               </Link>
               <Link
                 href="/tester-portal/customers/new"
-                className="flex items-center space-x-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+                className="flex items-center space-x-2 glass-btn-primary glow-blue text-white px-4 py-2 rounded-lg font-semibold hover:glow-blue transition-all"
               >
                 <Plus className="h-4 w-4" />
                 <span>Add Customer</span>
@@ -175,22 +175,22 @@ export default function CustomersPage() {
         {/* Filters */}
         <div className="mb-8 flex flex-col sm:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-cyan-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-blue-300" />
             <input
               type="text"
               placeholder="Search customers by name, email, phone, or company..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white/10 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400 focus:bg-white/20"
+              className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-blue-400 focus:bg-white/20"
             />
           </div>
           
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-cyan-400" />
+            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-blue-300" />
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="pl-10 pr-8 py-3 bg-white/10 border border-cyan-400/30 rounded-lg text-white focus:outline-none focus:border-cyan-400 focus:bg-white/20"
+              className="pl-10 pr-8 py-3 bg-white/10 border border-blue-400/30 rounded-lg text-white focus:outline-none focus:border-blue-400 focus:bg-white/20"
             >
               <option value="all">All Statuses</option>
               <option value="active">Active</option>
@@ -202,17 +202,17 @@ export default function CustomersPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+          <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-cyan-300">Total Customers</h3>
-              <Users className="h-5 w-5 text-cyan-400" />
+              <h3 className="text-sm font-medium text-blue-300">Total Customers</h3>
+              <Users className="h-5 w-5 text-blue-300" />
             </div>
             <p className="text-2xl font-bold text-white">{customers.length}</p>
           </div>
           
-          <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+          <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-cyan-300">Active</h3>
+              <h3 className="text-sm font-medium text-blue-300">Active</h3>
               <div className="w-3 h-3 rounded-full bg-green-400"></div>
             </div>
             <p className="text-2xl font-bold text-green-400">
@@ -220,9 +220,9 @@ export default function CustomersPage() {
             </p>
           </div>
           
-          <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+          <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-cyan-300">This Month</h3>
+              <h3 className="text-sm font-medium text-blue-300">This Month</h3>
               <Calendar className="h-5 w-5 text-blue-400" />
             </div>
             <p className="text-2xl font-bold text-blue-400">
@@ -234,27 +234,27 @@ export default function CustomersPage() {
             </p>
           </div>
           
-          <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+          <div className="glass border border-blue-400 glow-blue-sm rounded-xl p-6">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-cyan-300">Filtered Results</h3>
-              <Search className="h-5 w-5 text-cyan-400" />
+              <h3 className="text-sm font-medium text-blue-300">Filtered Results</h3>
+              <Search className="h-5 w-5 text-blue-300" />
             </div>
-            <p className="text-2xl font-bold text-cyan-400">{filteredCustomers.length}</p>
+            <p className="text-2xl font-bold text-blue-300">{filteredCustomers.length}</p>
           </div>
         </div>
 
         {/* Customer Table */}
-        <div className="bg-white/5 backdrop-blur-sm border border-cyan-400/20 rounded-xl overflow-hidden">
+        <div className="glass border border-blue-400 glow-blue-sm rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-cyan-600/20 border-b border-cyan-400/20">
+              <thead className="glass-btn-primary glow-blue/20 border-b border-blue-400/20">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-cyan-300">Customer</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-cyan-300">Contact</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-cyan-300">Location</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-cyan-300">Status</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold text-cyan-300">Account</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold text-cyan-300">Actions</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-blue-300">Customer</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-blue-300">Contact</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-blue-300">Location</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-blue-300">Status</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-blue-300">Account</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-blue-300">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-cyan-400/10">
@@ -266,27 +266,27 @@ export default function CustomersPage() {
                           {customer.first_name} {customer.last_name}
                         </div>
                         {customer.company_name && (
-                          <div className="text-sm text-cyan-300">{customer.company_name}</div>
+                          <div className="text-sm text-blue-300">{customer.company_name}</div>
                         )}
                       </div>
                     </td>
                     
                     <td className="px-6 py-4">
                       <div className="space-y-1">
-                        <div className="flex items-center text-sm text-cyan-200">
-                          <Mail className="h-4 w-4 mr-2 text-cyan-400" />
+                        <div className="flex items-center text-sm text-white/80">
+                          <Mail className="h-4 w-4 mr-2 text-blue-300" />
                           {customer.email}
                         </div>
-                        <div className="flex items-center text-sm text-cyan-200">
-                          <Phone className="h-4 w-4 mr-2 text-cyan-400" />
+                        <div className="flex items-center text-sm text-white/80">
+                          <Phone className="h-4 w-4 mr-2 text-blue-300" />
                           {customer.phone}
                         </div>
                       </div>
                     </td>
                     
                     <td className="px-6 py-4">
-                      <div className="flex items-start text-sm text-cyan-200">
-                        <MapPin className="h-4 w-4 mr-2 text-cyan-400 mt-0.5 flex-shrink-0" />
+                      <div className="flex items-start text-sm text-white/80">
+                        <MapPin className="h-4 w-4 mr-2 text-blue-300 mt-0.5 flex-shrink-0" />
                         <div>
                           <div>{customer.address_line1}</div>
                           <div>{customer.city}, {customer.state} {customer.zip_code}</div>
@@ -307,10 +307,10 @@ export default function CustomersPage() {
                     </td>
                     
                     <td className="px-6 py-4">
-                      <div className="text-sm text-cyan-200">
+                      <div className="text-sm text-white/80">
                         {customer.account_number || 'No account #'}
                       </div>
-                      <div className="text-xs text-cyan-300 mt-1">
+                      <div className="text-xs text-blue-300 mt-1">
                         Added {new Date(customer.created_at).toLocaleDateString()}
                       </div>
                     </td>
@@ -319,7 +319,7 @@ export default function CustomersPage() {
                       <div className="flex items-center justify-center space-x-2">
                         <Link
                           href={`/tester-portal/customers/${customer.id}`}
-                          className="p-2 text-cyan-400 hover:text-white hover:bg-cyan-500/20 rounded-lg transition-colors"
+                          className="p-2 text-blue-300 hover:text-white hover:bg-blue-500/20 border border-blue-400 glow-blue-sm rounded-lg transition-colors"
                           title="View Details"
                         >
                           <Eye className="h-4 w-4" />
@@ -347,11 +347,11 @@ export default function CustomersPage() {
           
           {filteredCustomers.length === 0 && (
             <div className="text-center py-12">
-              <Users className="h-12 w-12 text-cyan-400/50 mx-auto mb-4" />
+              <Users className="h-12 w-12 text-blue-300/50 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">
                 {searchTerm || filterStatus !== 'all' ? 'No customers match your search' : 'No customers yet'}
               </h3>
-              <p className="text-cyan-300 mb-6">
+              <p className="text-blue-300 mb-6">
                 {searchTerm || filterStatus !== 'all' 
                   ? 'Try adjusting your search terms or filters'
                   : 'Add your first customer to get started'
@@ -360,7 +360,7 @@ export default function CustomersPage() {
               {(!searchTerm && filterStatus === 'all') && (
                 <Link
                   href="/tester-portal/customers/new"
-                  className="inline-flex items-center space-x-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+                  className="inline-flex items-center space-x-2 glass-btn-primary glow-blue text-white px-6 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
                 >
                   <Plus className="h-5 w-5" />
                   <span>Add First Customer</span>

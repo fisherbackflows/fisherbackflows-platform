@@ -109,7 +109,7 @@ export default function CompanyDashboardPage() {
       <BrandedPortalLayout showNavigation={false}>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto"></div>
             <p className="mt-4 text-white/80">Loading your dashboard...</p>
           </div>
         </div>

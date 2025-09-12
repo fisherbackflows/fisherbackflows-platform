@@ -187,25 +187,25 @@ export default function RemindersPage() {
 
   if (!hasAccess('communications') && !permissions?.isOwner) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center max-w-md mx-auto p-8">
           <div className="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mx-auto mb-6">
             <Bell className="h-8 w-8 text-yellow-400" />
           </div>
           <h2 className="text-2xl font-bold text-white mb-4">Automated Reminders</h2>
-          <p className="text-cyan-200 mb-6">
+          <p className="text-white/80 mb-6">
             This feature requires a communications subscription to create and manage automated customer reminders.
           </p>
           <div className="space-y-3">
             <Link
               href="/tester-portal/upgrade"
-              className="block bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+              className="block glass-btn-primary glow-blue text-white px-6 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
             >
               Upgrade to Access
             </Link>
             <Link
               href="/tester-portal/dashboard"
-              className="block text-cyan-400 hover:text-white transition-colors"
+              className="block text-blue-300 hover:text-white transition-colors"
             >
               Back to Dashboard
             </Link>
@@ -217,9 +217,9 @@ export default function RemindersPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400 mx-auto"></div>
           <p className="mt-4 text-white/80">Loading reminder system...</p>
         </div>
       </div>
@@ -229,14 +229,14 @@ export default function RemindersPage() {
   const stats = getReminderStats()
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
+    <div className="min-h-screen bg-black">
       {/* Header */}
-      <div className="border-b border-cyan-400/20 bg-black/20 backdrop-blur-sm">
+      <div className="border-b border-blue-400/20 bg-black/20 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-white flex items-center">
-                <Bell className="h-8 w-8 text-cyan-400 mr-3" />
+                <Bell className="h-8 w-8 text-blue-300 mr-3" />
                 Automated Reminders
                 {permissions?.isOwner && (
                   <span className="ml-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
@@ -244,11 +244,11 @@ export default function RemindersPage() {
                   </span>
                 )}
               </h1>
-              <p className="text-cyan-200 mt-2">Manage customer notification rules and scheduled reminders</p>
+              <p className="text-white/80 mt-2">Manage customer notification rules and scheduled reminders</p>
             </div>
             <Link
               href="/tester-portal/reminders/new"
-              className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+              className="glass-btn-primary glow-blue text-white px-6 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
             >
               <Plus className="h-5 w-5 inline mr-2" />
               New Rule
@@ -259,12 +259,12 @@ export default function RemindersPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Overview */}
-        <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 mb-8">
+        <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 mb-8">
           <h2 className="text-xl font-semibold text-white mb-6">System Statistics</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-cyan-400/30 rounded-xl p-6 text-center">
-              <div className="text-3xl font-bold text-cyan-400">{rules.filter(r => r.active).length}</div>
-              <div className="text-sm text-cyan-300 mt-1">Active Rules</div>
+            <div className="bg-gradient-to-r from-blue-500/20 to-blue-500/20 border border-blue-400/30 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-blue-300">{rules.filter(r => r.active).length}</div>
+              <div className="text-sm text-blue-300 mt-1">Active Rules</div>
             </div>
             <div className="bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border border-yellow-400/30 rounded-xl p-6 text-center">
               <div className="text-3xl font-bold text-yellow-400">{stats.scheduled}</div>
@@ -282,7 +282,7 @@ export default function RemindersPage() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 mb-8">
+        <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6 mb-8">
           <div className="flex space-x-2 bg-black/20 p-2 rounded-lg">
             {[
               { key: 'rules', label: 'Automation Rules', icon: Settings },
@@ -296,8 +296,8 @@ export default function RemindersPage() {
                   onClick={() => setActiveTab(tab.key as any)}
                   className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-lg text-sm font-medium transition-all ${
                     activeTab === tab.key
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white'
-                      : 'text-cyan-300 hover:text-white hover:bg-cyan-500/20'
+                      ? 'glass-btn-primary glow-blue text-white'
+                      : 'text-blue-300 hover:text-white hover:bg-blue-500/20 border border-blue-400 glow-blue-sm'
                   }`}
                 >
                   <Icon className="h-5 w-5" />
@@ -312,7 +312,7 @@ export default function RemindersPage() {
         {activeTab === 'rules' && (
           <div className="space-y-6">
             {rules.map((rule) => (
-              <div key={rule.id} className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+              <div key={rule.id} className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6">
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
@@ -325,17 +325,17 @@ export default function RemindersPage() {
                         {rule.active ? 'ACTIVE' : 'INACTIVE'}
                       </span>
                       {rule.autoSchedule && (
-                        <span className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-blue-500 to-cyan-500 text-white">
+                        <span className="px-3 py-1 rounded-full text-sm font-medium glass-btn-primary glow-blue text-white">
                           AUTO-SCHEDULE
                         </span>
                       )}
                     </div>
-                    <p className="text-cyan-200">{rule.description}</p>
+                    <p className="text-white/80">{rule.description}</p>
                   </div>
                   <div className="flex space-x-3">
                     <button
                       onClick={() => toggleRuleStatus(rule.id)}
-                      className="bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-500/30 transition-all"
+                      className="bg-blue-500/20 border border-blue-400 glow-blue-sm text-blue-300 px-4 py-2 rounded-lg font-semibold hover:glow-blue/30 transition-all"
                     >
                       {rule.active ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
                     </button>
@@ -351,26 +351,26 @@ export default function RemindersPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
                   <div>
-                    <div className="text-sm text-cyan-300 mb-1">Trigger</div>
+                    <div className="text-sm text-blue-300 mb-1">Trigger</div>
                     <div className="text-white font-medium">
                       {rule.triggerValue} days {rule.triggerType.includes('before') ? 'before' : 'after'} due
                     </div>
                   </div>
                   <div>
-                    <div className="text-sm text-cyan-300 mb-1">Contact Method</div>
+                    <div className="text-sm text-blue-300 mb-1">Contact Method</div>
                     <div className="text-white font-medium capitalize">{rule.contactMethod.replace('_', ' ')}</div>
                   </div>
                   <div>
-                    <div className="text-sm text-cyan-300 mb-1">Customer Type</div>
+                    <div className="text-sm text-blue-300 mb-1">Customer Type</div>
                     <div className="text-white font-medium capitalize">{rule.customerType}</div>
                   </div>
                   <div>
-                    <div className="text-sm text-cyan-300 mb-1">Success Rate</div>
+                    <div className="text-sm text-blue-300 mb-1">Success Rate</div>
                     <div className="text-green-400 font-medium">{rule.successRate}%</div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-cyan-300 mb-6">
+                <div className="flex items-center justify-between text-sm text-blue-300 mb-6">
                   <div>
                     <span>Last run: {formatDate(rule.lastRun)}</span>
                     <span className="mx-3">•</span>
@@ -382,16 +382,16 @@ export default function RemindersPage() {
                 </div>
 
                 {/* Message Preview */}
-                <div className="bg-black/20 border border-cyan-400/20 rounded-lg p-4 mb-6">
-                  <div className="text-sm font-medium text-cyan-300 mb-2">Message Preview:</div>
+                <div className="bg-black/20 border border-blue-400/20 rounded-lg p-4 mb-6">
+                  <div className="text-sm font-medium text-blue-300 mb-2">Message Preview:</div>
                   <div className="text-sm text-white line-clamp-3">
                     {rule.template.split('\n')[0]}...
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-cyan-400/20">
+                <div className="flex items-center justify-between pt-4 border-t border-blue-400/20">
                   <div className="flex space-x-3">
-                    <button className="bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-500/30 transition-all">
+                    <button className="bg-blue-500/20 border border-blue-400 glow-blue-sm text-blue-300 px-4 py-2 rounded-lg font-semibold hover:glow-blue/30 transition-all">
                       <Edit className="h-4 w-4 inline mr-2" />
                       Edit
                     </button>
@@ -409,13 +409,13 @@ export default function RemindersPage() {
             ))}
 
             {rules.length === 0 && (
-              <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-12 text-center">
-                <Bell className="h-16 w-16 text-cyan-400 mx-auto mb-6" />
+              <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-12 text-center">
+                <Bell className="h-16 w-16 text-blue-300 mx-auto mb-6" />
                 <h3 className="text-2xl font-bold text-white mb-4">No automation rules</h3>
-                <p className="text-cyan-200 text-lg mb-6">Create your first rule to start sending automated reminders</p>
+                <p className="text-white/80 text-lg mb-6">Create your first rule to start sending automated reminders</p>
                 <Link
                   href="/tester-portal/reminders/new"
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all inline-block"
+                  className="glass-btn-primary glow-blue text-white px-8 py-3 rounded-lg font-semibold hover:glow-blue transition-all inline-block"
                 >
                   <Plus className="h-5 w-5 inline mr-2" />
                   Create First Rule
@@ -429,7 +429,7 @@ export default function RemindersPage() {
         {activeTab === 'scheduled' && (
           <div className="space-y-6">
             {scheduledReminders.filter(r => r.status === 'scheduled').map((reminder) => (
-              <div key={reminder.id} className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+              <div key={reminder.id} className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
@@ -438,7 +438,7 @@ export default function RemindersPage() {
                         {reminder.contactMethod.toUpperCase()}
                       </span>
                     </div>
-                    <p className="text-cyan-200">Rule: {reminder.ruleName}</p>
+                    <p className="text-white/80">Rule: {reminder.ruleName}</p>
                   </div>
                   <div className="text-right">
                     <div className="text-white font-medium text-lg">
@@ -452,14 +452,14 @@ export default function RemindersPage() {
 
                 <div className="space-y-4">
                   <div>
-                    <span className="text-cyan-300 font-medium">Contact: </span>
+                    <span className="text-blue-300 font-medium">Contact: </span>
                     <span className="text-white">
                       {reminder.contactMethod === 'email' ? reminder.customerEmail : reminder.customerPhone}
                     </span>
                   </div>
 
                   <div>
-                    <span className="text-cyan-300 font-medium">Devices Due: </span>
+                    <span className="text-blue-300 font-medium">Devices Due: </span>
                     <div className="mt-2 space-y-1">
                       {reminder.devicesDue.map((device, idx) => (
                         <div key={idx} className="text-white bg-black/20 rounded px-3 py-2">
@@ -469,15 +469,15 @@ export default function RemindersPage() {
                     </div>
                   </div>
 
-                  <div className="bg-black/20 border border-cyan-400/20 rounded-lg p-4">
-                    <div className="text-sm font-medium text-cyan-300 mb-2">Message:</div>
+                  <div className="bg-black/20 border border-blue-400/20 rounded-lg p-4">
+                    <div className="text-sm font-medium text-blue-300 mb-2">Message:</div>
                     <div className="text-sm text-white">
                       {reminder.message}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-4 border-t border-cyan-400/20 mt-6">
+                <div className="flex items-center justify-between pt-4 border-t border-blue-400/20 mt-6">
                   <div className="flex space-x-3">
                     <button
                       onClick={() => sendReminderNow(reminder.id)}
@@ -486,7 +486,7 @@ export default function RemindersPage() {
                       <Send className="h-4 w-4 inline mr-2" />
                       Send Now
                     </button>
-                    <button className="bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-500/30 transition-all">
+                    <button className="bg-blue-500/20 border border-blue-400 glow-blue-sm text-blue-300 px-4 py-2 rounded-lg font-semibold hover:glow-blue/30 transition-all">
                       <Edit className="h-4 w-4 inline mr-2" />
                       Edit
                     </button>
@@ -500,10 +500,10 @@ export default function RemindersPage() {
             ))}
 
             {scheduledReminders.filter(r => r.status === 'scheduled').length === 0 && (
-              <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-12 text-center">
-                <Clock className="h-16 w-16 text-cyan-400 mx-auto mb-6" />
+              <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-12 text-center">
+                <Clock className="h-16 w-16 text-blue-300 mx-auto mb-6" />
                 <h3 className="text-2xl font-bold text-white mb-4">No scheduled reminders</h3>
-                <p className="text-cyan-200 text-lg">Your automation rules will generate scheduled reminders here</p>
+                <p className="text-white/80 text-lg">Your automation rules will generate scheduled reminders here</p>
               </div>
             )}
           </div>
@@ -513,13 +513,13 @@ export default function RemindersPage() {
         {activeTab === 'sent' && (
           <div className="space-y-6">
             {scheduledReminders.filter(r => ['sent', 'delivered', 'failed'].includes(r.status)).map((reminder) => (
-              <div key={reminder.id} className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+              <div key={reminder.id} className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
                       <h3 className="text-xl font-semibold text-white">{reminder.customerName}</h3>
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        reminder.status === 'sent' ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white' :
+                        reminder.status === 'sent' ? 'glass-btn-primary glow-blue text-white' :
                         reminder.status === 'delivered' ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' :
                         'bg-gradient-to-r from-red-500 to-red-600 text-white'
                       }`}>
@@ -531,13 +531,13 @@ export default function RemindersPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-cyan-200">
+                    <p className="text-white/80">
                       Sent {formatDate(reminder.sentDate)} via {reminder.contactMethod}
                     </p>
                   </div>
                 </div>
 
-                <div className="text-cyan-200 space-y-1">
+                <div className="text-white/80 space-y-1">
                   <div>Rule: {reminder.ruleName}</div>
                   <div>Contact: {reminder.contactMethod === 'email' ? reminder.customerEmail : reminder.customerPhone}</div>
                 </div>
@@ -554,10 +554,10 @@ export default function RemindersPage() {
             ))}
 
             {scheduledReminders.filter(r => ['sent', 'delivered', 'failed'].includes(r.status)).length === 0 && (
-              <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-12 text-center">
-                <CheckCircle className="h-16 w-16 text-cyan-400 mx-auto mb-6" />
+              <div className="bg-black/40 backdrop-blur-sm border border-blue-400/20 rounded-xl p-12 text-center">
+                <CheckCircle className="h-16 w-16 text-blue-300 mx-auto mb-6" />
                 <h3 className="text-2xl font-bold text-white mb-4">No sent reminders</h3>
-                <p className="text-cyan-200 text-lg">Your sent reminder history will appear here</p>
+                <p className="text-white/80 text-lg">Your sent reminder history will appear here</p>
               </div>
             )}
           </div>

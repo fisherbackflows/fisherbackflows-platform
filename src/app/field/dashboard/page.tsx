@@ -340,14 +340,14 @@ export default function FieldDashboard() {
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-3 bg-cyan-50 border border-cyan-200 rounded-xl p-4">
-                        <div className="p-2 bg-cyan-500/20 border border-cyan-400 glow-blue-sm rounded-2xl">
-                          <Phone className="h-5 w-5 text-cyan-300" />
+                      <div className="flex items-center space-x-3 glass border border-blue-400 rounded-xl p-4 glow-blue">
+                        <div className="p-2 bg-blue-500/20 border border-blue-400 glow-blue-sm border border-blue-400 glow-blue-sm rounded-2xl">
+                          <Phone className="h-5 w-5 text-blue-300" />
                         </div>
                         <div>
                           <p className="text-sm text-white/90">Phone</p>
                           <p className="font-semibold text-white">
-                            <a href={`tel:${appointment.customerPhone}`} className="hover:text-cyan-300 transition-colors">
+                            <a href={`tel:${appointment.customerPhone}`} className="hover:text-blue-300 transition-colors">
                               {appointment.customerPhone}
                             </a>
                           </p>

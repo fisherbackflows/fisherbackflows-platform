@@ -141,12 +141,12 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-black flex items-center justify-center px-4 py-12">
       <div className="max-w-6xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Welcome to Tester Portal</h1>
-          <p className="text-xl text-cyan-300">The Complete Backflow Testing Management Platform</p>
+          <p className="text-xl text-blue-300">The Complete Backflow Testing Management Platform</p>
         </div>
 
         {step === 1 ? (
@@ -159,7 +159,7 @@ export default function SignupPage() {
                   onClick={() => setBillingCycle('monthly')}
                   className={`px-4 py-2 rounded-md transition-all ${
                     billingCycle === 'monthly' 
-                      ? 'bg-cyan-500 text-white' 
+                      ? 'glass-btn-primary glow-blue text-white' 
                       : 'text-white/70 hover:text-white'
                   }`}
                 >
@@ -169,7 +169,7 @@ export default function SignupPage() {
                   onClick={() => setBillingCycle('yearly')}
                   className={`px-4 py-2 rounded-md transition-all ${
                     billingCycle === 'yearly' 
-                      ? 'bg-cyan-500 text-white' 
+                      ? 'glass-btn-primary glow-blue text-white' 
                       : 'text-white/70 hover:text-white'
                   }`}
                 >
@@ -191,19 +191,19 @@ export default function SignupPage() {
                 >
                   {plan.popular && (
                     <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <span className="bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      <span className="bg-gradient-to-r from-blue-400 to-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                         Most Popular
                       </span>
                     </div>
                   )}
                   <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
-                  <p className="text-3xl font-bold text-cyan-300 mb-4">
+                  <p className="text-3xl font-bold text-blue-300 mb-4">
                     {billingCycle === 'monthly' ? plan.price : plan.yearlyPrice}
                   </p>
                   <ul className="space-y-2">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start text-white/80">
-                        <svg className="w-5 h-5 text-cyan-400 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5 text-blue-300 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                         {feature}
@@ -217,7 +217,7 @@ export default function SignupPage() {
             <div className="text-center">
               <button
                 onClick={() => setStep(2)}
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+                className="glass-btn-primary glow-blue text-white px-8 py-3 rounded-lg font-semibold hover:glow-blue transition-all"
               >
                 Continue with {plans.find(p => p.id === selectedPlan)?.name} Plan
               </button>
@@ -243,11 +243,11 @@ export default function SignupPage() {
                     required
                     value={formData.companyName}
                     onChange={handleCompanyNameChange}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     placeholder="ABC Backflow Testing"
                   />
                   {formData.companySlug && (
-                    <p className="text-sm text-cyan-300 mt-1">
+                    <p className="text-sm text-blue-300 mt-1">
                       Your URL: tester-portal.com/{formData.companySlug}
                     </p>
                   )}
@@ -261,7 +261,7 @@ export default function SignupPage() {
                       required
                       value={formData.firstName}
                       onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                      className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     />
                   </div>
                   <div>
@@ -271,7 +271,7 @@ export default function SignupPage() {
                       required
                       value={formData.lastName}
                       onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                      className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                      className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     />
                   </div>
                 </div>
@@ -283,7 +283,7 @@ export default function SignupPage() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     placeholder="admin@company.com"
                   />
                 </div>
@@ -296,7 +296,7 @@ export default function SignupPage() {
                     minLength={8}
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     placeholder="••••••••"
                   />
                 </div>
@@ -307,7 +307,7 @@ export default function SignupPage() {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
                     placeholder="(555) 123-4567"
                   />
                 </div>
@@ -323,7 +323,7 @@ export default function SignupPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all disabled:opacity-50"
+                    className="flex-1 glass-btn-primary glow-blue text-white px-6 py-3 rounded-lg font-semibold hover:glow-blue transition-all disabled:opacity-50"
                   >
                     {loading ? 'Creating Account...' : 'Start Free Trial'}
                   </button>
@@ -332,7 +332,7 @@ export default function SignupPage() {
 
               <p className="text-center text-white/60 text-sm mt-6">
                 Already have an account?{' '}
-                <Link href="/team-portal/login" className="text-cyan-300 hover:text-cyan-200">
+                <Link href="/team-portal/login" className="text-blue-300 hover:text-white/80">
                   Sign in
                 </Link>
               </p>

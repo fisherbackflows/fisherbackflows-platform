@@ -163,7 +163,7 @@ export default function CustomerDevicesPage() {
                     setUploadingDevice(device);
                     setShowUploadModal(true);
                   }}
-                  className="w-full py-2 bg-cyan-600/20 border border-cyan-400/30 text-cyan-300 hover:bg-cyan-600/30 hover:text-white rounded-2xl text-sm transition-all flex items-center justify-center space-x-2"
+                  className="w-full py-2 bg-blue-600/20 border border-blue-400/30 text-blue-300 hover:bg-blue-600/30 hover:text-white rounded-2xl text-sm transition-all flex items-center justify-center space-x-2"
                 >
                   <Upload className="h-4 w-4" />
                   <span>Upload District Notice</span>
@@ -252,7 +252,7 @@ export default function CustomerDevicesPage() {
         {/* Upload District Notice Modal */}
         {showUploadModal && uploadingDevice && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <div className="glass rounded-2xl p-6 border border-cyan-400 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="glass rounded-2xl p-6 border border-blue-400 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h2 className="text-2xl font-bold text-white">Upload District Notice</h2>
