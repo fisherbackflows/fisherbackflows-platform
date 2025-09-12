@@ -24,10 +24,11 @@ After analyzing all migration files, here's the conflict-free execution order. *
 ```
 
 ### 2️⃣ **MISSING SUPPORT TABLES** (REQUIRED)
-**File:** `/supabase/migrations/20250111_fix_missing_tables.sql`
+**File:** `/supabase/migrations/20250111_fix_missing_tables_compatible.sql`
 **Creates:** Supporting tables that reference core schema
 **Size:** Medium file
 **Notes:** Must run AFTER core schema since it references those tables
+**IMPORTANT:** Use the _compatible version to match organization_id column naming
 
 ```sql
 -- This file creates:
