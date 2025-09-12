@@ -1,25 +1,16 @@
-// MIGRATED FROM TEAM-PORTAL - REQUIRES FULL INTEGRATION
-// Feature requirement: branding
-
 'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { 
-  Palette, 
-  Upload, 
-  Eye, 
-  Save, 
-  RefreshCw, 
-  ArrowLeft,
-  Monitor,
-  Smartphone,
-  Globe,
-  AlertCircle,
-  CheckCircle
-} from 'lucide-react'
 import Link from 'next/link'
+import { Palette, Upload, Eye, Save, RefreshCw, ArrowLeft, Monitor, Smartphone, Globe, AlertCircle, CheckCircle } from 'lucide-react'
+
+interface UserPermissions {
+  isOwner: boolean
+  subscriptions: string[]
+  userInfo: any
+}
 
 interface BrandingSettings {
   id?: string
@@ -51,6 +42,7 @@ const DEFAULT_SETTINGS: Partial<BrandingSettings> = {
 
 export default function BrandingSettingsPage() {
   const router = useRouter()
+  const [permissions, setPermissions] = useState<UserPermissions | null>(null)
   const [settings, setSettings] = useState<BrandingSettings | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -60,38 +52,57 @@ export default function BrandingSettingsPage() {
   const [companyId, setCompanyId] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchBrandingSettings()
+    fetchPermissionsAndSettings()
   }, [])
 
-  const fetchBrandingSettings = async () => {
+  const fetchPermissionsAndSettings = async () => {
     try {
-      // Get company info first
-      const companyResponse = await fetch('/api/team/company')
-      if (!companyResponse.ok) {
-        throw new Error('Failed to fetch company info')
+      // Get permissions first
+      const permResponse = await fetch('/api/tester-portal/permissions')
+      if (permResponse.ok) {
+        const permData = await permResponse.json()
+        setPermissions(permData.data)
+        
+        // Only proceed if user has access
+        if (permData.data.isOwner || permData.data.subscriptions.includes('branding')) {
+          await fetchBrandingSettings()
+        }
       }
-      const company = await companyResponse.json()
-      setCompanyId(company.id)
-
-      // Get branding settings
-      const response = await fetch(`/api/companies/${company.id}/branding`)
-      if (response.ok) {
-        const data = await response.json()
-        setSettings(data)
-      } else {
-        // Use defaults for new branding
-        setSettings({
-          company_id: company.id,
-          company_name: company.name,
-          contact_email: '',
-          ...DEFAULT_SETTINGS
-        } as BrandingSettings)
-      }
-    } catch (err: any) {
-      setError(err.message)
+    } catch (error) {
+      console.error('Failed to fetch permissions:', error)
     } finally {
       setLoading(false)
     }
+  }
+
+  const fetchBrandingSettings = async () => {
+    try {
+      // Get branding settings
+      const response = await fetch('/api/tester-portal/branding')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success) {
+          setSettings(data.settings)
+          setCompanyId(data.settings.company_id)
+        }
+      } else {
+        // Use defaults for new branding
+        setSettings({
+          company_id: 'default',
+          company_name: 'Your Company',
+          contact_email: '',
+          ...DEFAULT_SETTINGS
+        } as BrandingSettings)
+        setCompanyId('default')
+      }
+    } catch (err: any) {
+      setError(err.message)
+    }
+  }
+
+  const hasAccess = (feature: string) => {
+    if (!permissions) return false
+    return permissions.isOwner || permissions.subscriptions.includes(feature)
   }
 
   const handleSave = async () => {
@@ -102,7 +113,7 @@ export default function BrandingSettingsPage() {
     setSuccess('')
 
     try {
-      const response = await fetch(`/api/companies/${companyId}/branding`, {
+      const response = await fetch('/api/tester-portal/branding', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(settings)
@@ -137,6 +148,36 @@ export default function BrandingSettingsPage() {
     } as BrandingSettings)
   }
 
+  if (!hasAccess('branding') && !permissions?.isOwner) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8">
+          <div className="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mx-auto mb-6">
+            <Palette className="h-8 w-8 text-yellow-400" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-4">Brand Customization</h2>
+          <p className="text-cyan-200 mb-6">
+            This feature requires a branding subscription to customize your customer portal appearance and colors.
+          </p>
+          <div className="space-y-3">
+            <Link
+              href="/tester-portal/upgrade"
+              className="block bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+            >
+              Upgrade to Access
+            </Link>
+            <Link
+              href="/tester-portal/dashboard"
+              className="block text-cyan-400 hover:text-white transition-colors"
+            >
+              Back to Dashboard
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
@@ -168,23 +209,31 @@ export default function BrandingSettingsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
       {/* Header */}
-      <header className="bg-black/20 backdrop-blur-md border-b border-cyan-400/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <header className="border-b border-cyan-400/20 bg-black/20 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link
-                href="/team-portal/settings"
-                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                href="/tester-portal/dashboard"
+                className="bg-cyan-500/20 hover:bg-cyan-500/30 p-2 rounded-lg transition-colors"
               >
-                <ArrowLeft className="h-5 w-5 text-white" />
+                <ArrowLeft className="h-5 w-5 text-cyan-400" />
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-white">Brand Customization</h1>
-                <p className="text-cyan-300 text-sm">Customize how your customer portal looks</p>
+                <h1 className="text-3xl font-bold text-white flex items-center">
+                  <Palette className="h-8 w-8 text-cyan-400 mr-3" />
+                  Brand Customization
+                  {permissions?.isOwner && (
+                    <span className="ml-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                      OWNER ACCESS
+                    </span>
+                  )}
+                </h1>
+                <p className="text-cyan-200 mt-2">Customize how your customer portal looks and feels</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="flex bg-white/10 rounded-lg p-1">
+              <div className="flex bg-black/20 rounded-lg p-1">
                 <button
                   onClick={() => setPreviewMode('desktop')}
                   className={`px-3 py-2 rounded-md transition-colors ${
@@ -208,9 +257,9 @@ export default function BrandingSettingsPage() {
               </div>
               <button
                 onClick={resetToDefaults}
-                className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors"
+                className="px-4 py-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-400 rounded-lg transition-colors"
               >
-                Reset to Defaults
+                Reset Defaults
               </button>
               <button
                 onClick={handleSave}
@@ -258,7 +307,7 @@ export default function BrandingSettingsPage() {
           {/* Settings Panel */}
           <div className="space-y-6">
             {/* Basic Information */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
                 <Globe className="h-5 w-5 mr-2 text-cyan-400" />
                 Company Information
@@ -270,7 +319,7 @@ export default function BrandingSettingsPage() {
                     type="text"
                     value={settings.company_name}
                     onChange={(e) => updateSetting('company_name', e.target.value)}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-3 bg-black/20 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
                   />
                 </div>
                 
@@ -280,7 +329,7 @@ export default function BrandingSettingsPage() {
                     type="text"
                     value={settings.portal_title}
                     onChange={(e) => updateSetting('portal_title', e.target.value)}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-3 bg-black/20 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
                     placeholder="Customer Portal"
                   />
                 </div>
@@ -291,7 +340,7 @@ export default function BrandingSettingsPage() {
                     value={settings.portal_description}
                     onChange={(e) => updateSetting('portal_description', e.target.value)}
                     rows={3}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-3 bg-black/20 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
                     placeholder="Manage your backflow testing services online"
                   />
                 </div>
@@ -299,7 +348,7 @@ export default function BrandingSettingsPage() {
             </div>
 
             {/* Logo Upload */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
                 <Upload className="h-5 w-5 mr-2 text-cyan-400" />
                 Company Logo
@@ -311,10 +360,10 @@ export default function BrandingSettingsPage() {
                     type="url"
                     value={settings.logo_url || ''}
                     onChange={(e) => updateSetting('logo_url', e.target.value)}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-3 bg-black/20 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
                     placeholder="https://your-domain.com/logo.png"
                   />
-                  <p className="text-white/60 text-sm mt-1">
+                  <p className="text-cyan-300 text-sm mt-1">
                     Recommended: 200x200px PNG with transparent background
                   </p>
                 </div>
@@ -322,7 +371,7 @@ export default function BrandingSettingsPage() {
             </div>
 
             {/* Colors */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
                 <Palette className="h-5 w-5 mr-2 text-cyan-400" />
                 Brand Colors
@@ -335,13 +384,13 @@ export default function BrandingSettingsPage() {
                       type="color"
                       value={settings.primary_color}
                       onChange={(e) => updateSetting('primary_color', e.target.value)}
-                      className="w-12 h-10 rounded border border-white/30"
+                      className="w-12 h-10 rounded border border-cyan-400/30"
                     />
                     <input
                       type="text"
                       value={settings.primary_color}
                       onChange={(e) => updateSetting('primary_color', e.target.value)}
-                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
+                      className="flex-1 px-3 py-2 bg-black/20 border border-cyan-400/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
                     />
                   </div>
                 </div>
@@ -353,13 +402,13 @@ export default function BrandingSettingsPage() {
                       type="color"
                       value={settings.secondary_color}
                       onChange={(e) => updateSetting('secondary_color', e.target.value)}
-                      className="w-12 h-10 rounded border border-white/30"
+                      className="w-12 h-10 rounded border border-cyan-400/30"
                     />
                     <input
                       type="text"
                       value={settings.secondary_color}
                       onChange={(e) => updateSetting('secondary_color', e.target.value)}
-                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
+                      className="flex-1 px-3 py-2 bg-black/20 border border-cyan-400/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
                     />
                   </div>
                 </div>
@@ -371,13 +420,13 @@ export default function BrandingSettingsPage() {
                       type="color"
                       value={settings.accent_color}
                       onChange={(e) => updateSetting('accent_color', e.target.value)}
-                      className="w-12 h-10 rounded border border-white/30"
+                      className="w-12 h-10 rounded border border-cyan-400/30"
                     />
                     <input
                       type="text"
                       value={settings.accent_color}
                       onChange={(e) => updateSetting('accent_color', e.target.value)}
-                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
+                      className="flex-1 px-3 py-2 bg-black/20 border border-cyan-400/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
                     />
                   </div>
                 </div>
@@ -389,13 +438,13 @@ export default function BrandingSettingsPage() {
                       type="color"
                       value={settings.background_color}
                       onChange={(e) => updateSetting('background_color', e.target.value)}
-                      className="w-12 h-10 rounded border border-white/30"
+                      className="w-12 h-10 rounded border border-cyan-400/30"
                     />
                     <input
                       type="text"
                       value={settings.background_color}
                       onChange={(e) => updateSetting('background_color', e.target.value)}
-                      className="flex-1 px-3 py-2 bg-white/20 border border-white/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
+                      className="flex-1 px-3 py-2 bg-black/20 border border-cyan-400/30 rounded text-white text-sm focus:outline-none focus:border-cyan-400"
                     />
                   </div>
                 </div>
@@ -403,7 +452,7 @@ export default function BrandingSettingsPage() {
             </div>
 
             {/* Contact Information */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
               <h3 className="text-xl font-semibold text-white mb-4">Contact Information</h3>
               <div className="space-y-4">
                 <div>
@@ -412,7 +461,7 @@ export default function BrandingSettingsPage() {
                     type="email"
                     value={settings.contact_email}
                     onChange={(e) => updateSetting('contact_email', e.target.value)}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-3 bg-black/20 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
                     placeholder="support@yourcompany.com"
                   />
                 </div>
@@ -423,7 +472,7 @@ export default function BrandingSettingsPage() {
                     type="tel"
                     value={settings.contact_phone || ''}
                     onChange={(e) => updateSetting('contact_phone', e.target.value)}
-                    className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-cyan-400"
+                    className="w-full px-4 py-3 bg-black/20 border border-cyan-400/30 rounded-lg text-white placeholder-cyan-300 focus:outline-none focus:border-cyan-400"
                     placeholder="(555) 123-4567"
                   />
                 </div>
@@ -431,7 +480,7 @@ export default function BrandingSettingsPage() {
             </div>
 
             {/* Advanced Options */}
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
               <h3 className="text-xl font-semibold text-white mb-4">Advanced Options</h3>
               <div className="space-y-4">
                 <div>
@@ -440,11 +489,11 @@ export default function BrandingSettingsPage() {
                       type="checkbox"
                       checked={settings.hide_backflow_buddy_branding}
                       onChange={(e) => updateSetting('hide_backflow_buddy_branding', e.target.checked)}
-                      className="w-4 h-4 text-cyan-500 bg-white/20 border-white/30 rounded focus:ring-cyan-400"
+                      className="w-4 h-4 text-cyan-500 bg-black/20 border-cyan-400/30 rounded focus:ring-cyan-400"
                     />
                     <span className="text-white/80">Hide "Powered by Tester Portal" footer</span>
                   </label>
-                  <p className="text-white/60 text-sm mt-1 ml-7">
+                  <p className="text-cyan-300 text-sm mt-1 ml-7">
                     Available on Professional and Enterprise plans
                   </p>
                 </div>
@@ -454,7 +503,7 @@ export default function BrandingSettingsPage() {
 
           {/* Preview Panel */}
           <div className="space-y-6">
-            <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-cyan-400/30">
+            <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
               <h3 className="text-xl font-semibold text-white mb-4 flex items-center">
                 <Eye className="h-5 w-5 mr-2 text-cyan-400" />
                 Live Preview
@@ -463,7 +512,7 @@ export default function BrandingSettingsPage() {
               {/* Preview Frame */}
               <div className={`${previewMode === 'mobile' ? 'max-w-sm mx-auto' : ''}`}>
                 <div 
-                  className="border-2 border-white/20 rounded-lg overflow-hidden"
+                  className="border-2 border-cyan-400/20 rounded-lg overflow-hidden"
                   style={{ 
                     backgroundColor: settings.background_color,
                     minHeight: previewMode === 'mobile' ? '600px' : '400px'

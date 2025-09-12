@@ -1,472 +1,379 @@
-// MIGRATED FROM TEAM-PORTAL - REQUIRES FULL INTEGRATION
-// Feature requirement: communications
+'use client'
 
-'use client';
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { Bell, Calendar, Mail, Phone, Send, Plus, Play, Pause, CheckCircle, Edit, Trash2, Settings, Clock, AlertTriangle, FileText } from 'lucide-react'
 
-import { useState, useEffect } from 'react';
-import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
-import { Button } from '@/components/ui/button';
-import { 
-  Bell,
-  Calendar,
-  Mail,
-  Phone,
-  MessageSquare,
-  Send,
-  Clock,
-  Users,
-  Settings,
-  Plus,
-  Play,
-  Pause,
-  CheckCircle,
-  AlertTriangle,
-  Filter,
-  Search,
-  RotateCcw,
-  Edit,
-  Trash2,
-  Building2,
-  FileText
-} from 'lucide-react';
-import Link from 'next/link';
+interface UserPermissions {
+  isOwner: boolean
+  subscriptions: string[]
+  userInfo: any
+}
 
 interface ReminderRule {
-  id: string;
-  name: string;
-  description: string;
-  triggerType: 'days_before_due' | 'days_after_due' | 'monthly' | 'custom_date';
-  triggerValue: number; // days before/after or day of month
-  customerType: 'all' | 'residential' | 'commercial' | 'industrial';
-  waterDistrict: 'all' | string;
-  contactMethod: 'email' | 'phone' | 'text' | 'mail' | 'all_preferred';
-  template: string;
-  active: boolean;
-  lastRun: string | null;
-  nextRun: string | null;
-  totalSent: number;
-  successRate: number;
-  autoSchedule: boolean; // Auto-schedule appointments when sending reminder
-  createdDate: string;
+  id: string
+  name: string
+  description: string
+  triggerType: 'days_before_due' | 'days_after_due' | 'monthly' | 'custom_date'
+  triggerValue: number
+  customerType: 'all' | 'residential' | 'commercial' | 'industrial'
+  waterDistrict: 'all' | string
+  contactMethod: 'email' | 'phone' | 'text' | 'mail' | 'all_preferred'
+  template: string
+  active: boolean
+  lastRun: string | null
+  nextRun: string | null
+  totalSent: number
+  successRate: number
+  autoSchedule: boolean
+  createdDate: string
 }
 
 interface ScheduledReminder {
-  id: string;
-  ruleId: string;
-  ruleName: string;
-  customerId: string;
-  customerName: string;
-  customerEmail: string;
-  customerPhone: string;
-  contactMethod: 'email' | 'phone' | 'text' | 'mail';
-  scheduledDate: string;
-  scheduledTime: string;
-  status: 'scheduled' | 'sent' | 'delivered' | 'failed' | 'responded';
-  message: string;
-  sentDate?: string;
-  responseDate?: string;
-  appointmentScheduled?: boolean;
+  id: string
+  ruleId: string
+  ruleName: string
+  customerId: string
+  customerName: string
+  customerEmail: string
+  customerPhone: string
+  contactMethod: 'email' | 'phone' | 'text' | 'mail'
+  scheduledDate: string
+  scheduledTime: string
+  status: 'scheduled' | 'sent' | 'delivered' | 'failed' | 'responded'
+  message: string
+  sentDate?: string
+  responseDate?: string
+  appointmentScheduled?: boolean
   devicesDue: {
-    type: string;
-    serialNumber: string;
-    dueDate: string;
-  }[];
-  retryCount: number;
-  lastError?: string;
+    type: string
+    serialNumber: string
+    dueDate: string
+  }[]
+  retryCount: number
+  lastError?: string
 }
 
 export default function RemindersPage() {
-  const [activeTab, setActiveTab] = useState<'rules' | 'scheduled' | 'sent'>('rules');
-  const [rules, setRules] = useState<ReminderRule[]>([]);
-  const [scheduledReminders, setScheduledReminders] = useState<ScheduledReminder[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('active');
+  const [permissions, setPermissions] = useState<UserPermissions | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState<'rules' | 'scheduled' | 'sent'>('rules')
+  const [rules, setRules] = useState<ReminderRule[]>([])
+  const [scheduledReminders, setScheduledReminders] = useState<ScheduledReminder[]>([])
 
   useEffect(() => {
-    // Load reminder rules and scheduled reminders
-    const sampleRules: ReminderRule[] = [
-      {
-        id: 'rule-1',
-        name: '30-Day Test Reminder',
-        description: 'Send email reminder 30 days before test due date',
-        triggerType: 'days_before_due',
-        triggerValue: 30,
-        customerType: 'all',
-        waterDistrict: 'all',
-        contactMethod: 'email',
-        template: `Dear {{customerName}},
+    fetchPermissions()
+  }, [])
 
-This is a friendly reminder that your backflow prevention device testing is due on {{dueDate}}.
+  useEffect(() => {
+    if (permissions && hasAccess('communications')) {
+      loadReminderData()
+    }
+  }, [permissions])
 
-Device Details:
-{{devicesList}}
-
-To schedule your test, please:
-- Call us at (253) 278-8692
-- Email us at service@fisherbackflows.com
-- Book online at fisherbackflows.com
-
-Thank you,
-Fisher Backflows`,
-        active: true,
-        lastRun: '2024-08-20',
-        nextRun: '2024-08-25',
-        totalSent: 145,
-        successRate: 92.5,
-        autoSchedule: false,
-        createdDate: '2024-01-01'
-      },
-      {
-        id: 'rule-2',
-        name: 'Commercial 45-Day Notice',
-        description: 'Extended notice for commercial customers',
-        triggerType: 'days_before_due',
-        triggerValue: 45,
-        customerType: 'commercial',
-        waterDistrict: 'all',
-        contactMethod: 'all_preferred',
-        template: `Dear {{customerName}},
-
-Your commercial backflow prevention system requires annual testing in {{daysUntilDue}} days ({{dueDate}}).
-
-As a commercial facility, we recommend scheduling early to ensure compliance with local regulations.
-
-{{devicesList}}
-
-Please contact us to schedule:
-📞 (253) 278-8692
-📧 service@fisherbackflows.com
-
-Fisher Backflows - Licensed & Certified`,
-        active: true,
-        lastRun: '2024-08-15',
-        nextRun: '2024-08-22',
-        totalSent: 89,
-        successRate: 94.1,
-        autoSchedule: true,
-        createdDate: '2024-01-15'
-      },
-      {
-        id: 'rule-3',
-        name: 'Overdue Follow-up',
-        description: 'Follow up on overdue tests',
-        triggerType: 'days_after_due',
-        triggerValue: 7,
-        customerType: 'all',
-        waterDistrict: 'all',
-        contactMethod: 'phone',
-        template: `URGENT: Your backflow test was due on {{dueDate}} and is now {{daysOverdue}} days overdue.
-
-This is required by law and your water service may be affected.
-
-Please call us immediately at (253) 278-8692 to schedule.`,
-        active: true,
-        lastRun: '2024-08-18',
-        nextRun: '2024-08-25',
-        totalSent: 23,
-        successRate: 78.3,
-        autoSchedule: false,
-        createdDate: '2024-02-01'
+  const fetchPermissions = async () => {
+    try {
+      const response = await fetch('/api/tester-portal/permissions')
+      if (response.ok) {
+        const data = await response.json()
+        setPermissions(data.data)
       }
-    ];
+    } catch (error) {
+      console.error('Failed to fetch permissions:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
-    const sampleScheduled: ScheduledReminder[] = [
-      {
-        id: 'sched-1',
-        ruleId: 'rule-1',
-        ruleName: '30-Day Test Reminder',
-        customerId: '1',
-        customerName: 'Johnson Properties LLC',
-        customerEmail: 'manager@johnsonproperties.com',
-        customerPhone: '(253) 555-0123',
-        contactMethod: 'email',
-        scheduledDate: '2024-08-26',
-        scheduledTime: '09:00',
-        status: 'scheduled',
-        message: `Dear Johnson Properties LLC,
+  const hasAccess = (feature: string) => {
+    if (!permissions) return false
+    return permissions.isOwner || permissions.subscriptions.includes(feature)
+  }
 
-This is a friendly reminder that your backflow prevention device testing is due on March 15, 2025.
-
-Device Details:
-- RP Device (RP-12345-A) at Main Building Entrance
-- RP Device (RP-12345-B) at Building B Service Line
-
-To schedule your test, please call us at (253) 278-8692.
-
-Thank you,
-Fisher Backflows`,
-        devicesDue: [
-          { type: 'RP', serialNumber: 'RP-12345-A', dueDate: '2025-03-15' },
-          { type: 'RP', serialNumber: 'RP-12345-B', dueDate: '2025-03-15' }
-        ],
-        retryCount: 0
-      },
-      {
-        id: 'sched-2',
-        ruleId: 'rule-3',
-        ruleName: 'Overdue Follow-up',
-        customerId: '3',
-        customerName: 'Parkland Medical Center',
-        customerEmail: 'facilities@parklandmedical.com',
-        customerPhone: '(253) 555-0125',
-        contactMethod: 'phone',
-        scheduledDate: '2024-08-25',
-        scheduledTime: '10:30',
-        status: 'scheduled',
-        message: 'URGENT: Your backflow test was due on November 10, 2024 and is now 15 days overdue.',
-        devicesDue: [
-          { type: 'RP', serialNumber: 'RP-11111', dueDate: '2024-11-10' }
-        ],
-        retryCount: 1
-      },
-      {
-        id: 'sched-3',
-        ruleId: 'rule-1',
-        ruleName: '30-Day Test Reminder',
-        customerId: '2',
-        customerName: 'Smith Residence',
-        customerEmail: 'john.smith@gmail.com',
-        customerPhone: '(253) 555-0124',
-        contactMethod: 'email',
-        scheduledDate: '2024-08-20',
-        scheduledTime: '08:00',
-        status: 'sent',
-        message: 'Reminder: Your backflow test is due January 20, 2025.',
-        sentDate: '2024-08-20',
-        devicesDue: [
-          { type: 'PVB', serialNumber: 'PVB-67890', dueDate: '2025-01-20' }
-        ],
-        retryCount: 0,
-        appointmentScheduled: false
+  const loadReminderData = async () => {
+    try {
+      const response = await fetch('/api/tester-portal/reminders')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.success) {
+          setRules(data.rules || [])
+          setScheduledReminders(data.scheduled || [])
+        }
       }
-    ];
+    } catch (error) {
+      console.error('Failed to load reminder data:', error)
+    }
+  }
 
-    setTimeout(() => {
-      setRules(sampleRules);
-      setScheduledReminders(sampleScheduled);
-      setLoading(false);
-    }, 500);
-  }, []);
-
-  const toggleRuleStatus = (ruleId: string) => {
-    setRules(prev => prev.map(rule => 
-      rule.id === ruleId ? { ...rule, active: !rule.active } : rule
-    ));
-  };
+  const toggleRuleStatus = async (ruleId: string) => {
+    try {
+      const response = await fetch(`/api/tester-portal/reminders/${ruleId}/toggle`, {
+        method: 'POST'
+      })
+      
+      if (response.ok) {
+        setRules(prev => prev.map(rule => 
+          rule.id === ruleId ? { ...rule, active: !rule.active } : rule
+        ))
+      }
+    } catch (error) {
+      console.error('Failed to toggle rule status:', error)
+    }
+  }
 
   const runRuleNow = async (ruleId: string) => {
-    const rule = rules.find(r => r.id === ruleId);
-    if (!rule) return;
+    const rule = rules.find(r => r.id === ruleId)
+    if (!rule) return
 
     try {
-      // Simulate running the rule
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Update rule stats
-      setRules(prev => prev.map(r => 
-        r.id === ruleId 
-          ? { ...r, lastRun: new Date().toISOString().split('T')[0], totalSent: r.totalSent + 3 }
-          : r
-      ));
-      
-      alert(`Rule "${rule.name}" executed successfully! 3 reminders scheduled.`);
+      const response = await fetch(`/api/tester-portal/reminders/${ruleId}/run`, {
+        method: 'POST'
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setRules(prev => prev.map(r => 
+          r.id === ruleId 
+            ? { ...r, lastRun: new Date().toISOString().split('T')[0], totalSent: r.totalSent + data.remindersSent }
+            : r
+        ))
+        alert(`Rule "${rule.name}" executed successfully! ${data.remindersSent} reminders scheduled.`)
+      }
     } catch (error) {
-      alert('Error running rule. Please try again.');
+      alert('Error running rule. Please try again.')
     }
-  };
+  }
 
   const sendReminderNow = async (reminderId: string) => {
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const response = await fetch(`/api/tester-portal/reminders/send/${reminderId}`, {
+        method: 'POST'
+      })
       
-      setScheduledReminders(prev => prev.map(reminder => 
-        reminder.id === reminderId 
-          ? { 
-              ...reminder, 
-              status: 'sent', 
-              sentDate: new Date().toISOString().split('T')[0] 
-            }
-          : reminder
-      ));
-      
-      alert('Reminder sent successfully!');
+      if (response.ok) {
+        setScheduledReminders(prev => prev.map(reminder => 
+          reminder.id === reminderId 
+            ? { 
+                ...reminder, 
+                status: 'sent', 
+                sentDate: new Date().toISOString().split('T')[0] 
+              }
+            : reminder
+        ))
+        alert('Reminder sent successfully!')
+      }
     } catch (error) {
-      alert('Error sending reminder. Please try again.');
+      alert('Error sending reminder. Please try again.')
     }
-  };
+  }
 
   const formatDate = (dateString: string | null) => {
-    if (!dateString) return 'Never';
+    if (!dateString) return 'Never'
     return new Date(dateString).toLocaleDateString('en-US', { 
       month: 'short', 
       day: 'numeric', 
       year: 'numeric' 
-    });
-  };
+    })
+  }
 
   const getReminderStats = () => {
-    const total = scheduledReminders.length;
-    const scheduled = scheduledReminders.filter(r => r.status === 'scheduled').length;
-    const sent = scheduledReminders.filter(r => r.status === 'sent' || r.status === 'delivered').length;
-    const failed = scheduledReminders.filter(r => r.status === 'failed').length;
+    const total = scheduledReminders.length
+    const scheduled = scheduledReminders.filter(r => r.status === 'scheduled').length
+    const sent = scheduledReminders.filter(r => r.status === 'sent' || r.status === 'delivered').length
+    const failed = scheduledReminders.filter(r => r.status === 'failed').length
     
-    return { total, scheduled, sent, failed };
-  };
+    return { total, scheduled, sent, failed }
+  }
 
-  const stats = getReminderStats();
-
-  if (loading) {
+  if (!hasAccess('communications') && !permissions?.isOwner) {
     return (
-      <div className="min-h-screen bg-black">
-        <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
-        <div className="flex items-center justify-center min-h-[50vh]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-white/80">Loading reminder system...</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+        <div className="text-center max-w-md mx-auto p-8">
+          <div className="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mx-auto mb-6">
+            <Bell className="h-8 w-8 text-yellow-400" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-4">Automated Reminders</h2>
+          <p className="text-cyan-200 mb-6">
+            This feature requires a communications subscription to create and manage automated customer reminders.
+          </p>
+          <div className="space-y-3">
+            <Link
+              href="/tester-portal/upgrade"
+              className="block bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+            >
+              Upgrade to Access
+            </Link>
+            <Link
+              href="/tester-portal/dashboard"
+              className="block text-cyan-400 hover:text-white transition-colors"
+            >
+              Back to Dashboard
+            </Link>
           </div>
         </div>
       </div>
-    );
+    )
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto"></div>
+          <p className="mt-4 text-white/80">Loading reminder system...</p>
+        </div>
+      </div>
+    )
+  }
+
+  const stats = getReminderStats()
+
   return (
-    <div className="min-h-screen bg-black">
-      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
-      
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        {/* Page Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-3">
-            <Bell className="h-8 w-8 text-blue-300" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-cyan-900">
+      {/* Header */}
+      <div className="border-b border-cyan-400/20 bg-black/20 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-white">Automated Reminders</h1>
-              <p className="text-white/60">Manage customer notification rules</p>
+              <h1 className="text-3xl font-bold text-white flex items-center">
+                <Bell className="h-8 w-8 text-cyan-400 mr-3" />
+                Automated Reminders
+                {permissions?.isOwner && (
+                  <span className="ml-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                    OWNER ACCESS
+                  </span>
+                )}
+              </h1>
+              <p className="text-cyan-200 mt-2">Manage customer notification rules and scheduled reminders</p>
             </div>
-          </div>
-          <Button size="sm" asChild>
-            <Link href="/team-portal/reminders/new">
-              <Plus className="h-4 w-4 mr-2" />
+            <Link
+              href="/tester-portal/reminders/new"
+              className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+            >
+              <Plus className="h-5 w-5 inline mr-2" />
               New Rule
             </Link>
-          </Button>
+          </div>
         </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Overview */}
-        <div className="glass rounded-2xl glow-blue-sm p-6 mb-6">
-          <h2 className="text-lg font-semibold mb-4">System Stats</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl p-4 text-center">
-              <div className="text-xl font-bold text-blue-700">{rules.filter(r => r.active).length}</div>
-              <div className="text-sm text-blue-300">Active Rules</div>
+        <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 mb-8">
+          <h2 className="text-xl font-semibold text-white mb-6">System Statistics</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-cyan-400/30 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-cyan-400">{rules.filter(r => r.active).length}</div>
+              <div className="text-sm text-cyan-300 mt-1">Active Rules</div>
             </div>
-            <div className="bg-yellow-50 rounded-2xl p-4 text-center">
-              <div className="text-xl font-bold text-yellow-700">{stats.scheduled}</div>
-              <div className="text-sm text-yellow-600">Scheduled</div>
+            <div className="bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border border-yellow-400/30 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-yellow-400">{stats.scheduled}</div>
+              <div className="text-sm text-yellow-300 mt-1">Scheduled</div>
             </div>
-            <div className="bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl rounded-2xl p-4 text-center">
-              <div className="text-xl font-bold text-green-700">{stats.sent}</div>
-              <div className="text-sm text-green-300">Sent Today</div>
+            <div className="bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-green-400">{stats.sent}</div>
+              <div className="text-sm text-green-300 mt-1">Sent Today</div>
             </div>
-            <div className="bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl rounded-2xl p-4 text-center">
-              <div className="text-xl font-bold text-red-700">{stats.failed}</div>
-              <div className="text-sm text-red-300">Failed</div>
+            <div className="bg-gradient-to-r from-red-500/20 to-red-600/20 border border-red-400/30 rounded-xl p-6 text-center">
+              <div className="text-3xl font-bold text-red-400">{stats.failed}</div>
+              <div className="text-sm text-red-300 mt-1">Failed</div>
             </div>
           </div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="glass rounded-2xl glow-blue-sm p-4 mb-6">
-          <div className="flex space-x-1 bg-black/30 backdrop-blur-lg p-1 rounded-2xl">
+        <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6 mb-8">
+          <div className="flex space-x-2 bg-black/20 p-2 rounded-lg">
             {[
               { key: 'rules', label: 'Automation Rules', icon: Settings },
               { key: 'scheduled', label: 'Scheduled', icon: Clock },
               { key: 'sent', label: 'Sent History', icon: CheckCircle }
             ].map(tab => {
-              const Icon = tab.icon;
+              const Icon = tab.icon
               return (
                 <button
                   key={tab.key}
                   onClick={() => setActiveTab(tab.key as any)}
-                  className={`flex-1 flex items-center justify-center space-x-2 py-2 px-3 rounded-xl text-sm font-medium transition-colors ${
+                  className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 rounded-lg text-sm font-medium transition-all ${
                     activeTab === tab.key
-                      ? 'glass text-blue-300 glow-blue-sm'
-                      : 'text-white/80 hover:text-white/80'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white'
+                      : 'text-cyan-300 hover:text-white hover:bg-cyan-500/20'
                   }`}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-5 w-5" />
                   <span className="hidden sm:inline">{tab.label}</span>
                 </button>
-              );
+              )
             })}
           </div>
         </div>
+
         {/* Automation Rules Tab */}
         {activeTab === 'rules' && (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {rules.map((rule) => (
-              <div key={rule.id} className="glass rounded-2xl glow-blue-sm p-4">
-                <div className="flex justify-between items-start mb-3">
+              <div key={rule.id} className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+                <div className="flex justify-between items-start mb-6">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <h3 className="font-semibold text-white/80">{rule.name}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        rule.active ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300' : 'glass text-white/90'
+                    <div className="flex items-center space-x-3 mb-2">
+                      <h3 className="text-xl font-semibold text-white">{rule.name}</h3>
+                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        rule.active 
+                          ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' 
+                          : 'bg-gray-500/20 text-gray-300'
                       }`}>
                         {rule.active ? 'ACTIVE' : 'INACTIVE'}
                       </span>
                       {rule.autoSchedule && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-300">
+                        <span className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-blue-500 to-cyan-500 text-white">
                           AUTO-SCHEDULE
                         </span>
                       )}
                     </div>
-                    <p className="text-white/80 text-sm">{rule.description}</p>
+                    <p className="text-cyan-200">{rule.description}</p>
                   </div>
-                  <div className="flex space-x-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
+                  <div className="flex space-x-3">
+                    <button
                       onClick={() => toggleRuleStatus(rule.id)}
+                      className="bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-500/30 transition-all"
                     >
                       {rule.active ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
+                    </button>
+                    <button
                       onClick={() => runRuleNow(rule.id)}
                       disabled={!rule.active}
+                      className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     >
                       <Play className="h-4 w-4" />
-                    </Button>
+                    </button>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 mb-3">
-                  <div className="text-sm">
-                    <span className="text-white/80">Trigger:</span>
-                    <span className="ml-1 font-medium">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                  <div>
+                    <div className="text-sm text-cyan-300 mb-1">Trigger</div>
+                    <div className="text-white font-medium">
                       {rule.triggerValue} days {rule.triggerType.includes('before') ? 'before' : 'after'} due
-                    </span>
+                    </div>
                   </div>
-                  <div className="text-sm">
-                    <span className="text-white/80">Contact:</span>
-                    <span className="ml-1 font-medium capitalize">{rule.contactMethod.replace('_', ' ')}</span>
+                  <div>
+                    <div className="text-sm text-cyan-300 mb-1">Contact Method</div>
+                    <div className="text-white font-medium capitalize">{rule.contactMethod.replace('_', ' ')}</div>
                   </div>
-                  <div className="text-sm">
-                    <span className="text-white/80">Customers:</span>
-                    <span className="ml-1 font-medium capitalize">{rule.customerType}</span>
+                  <div>
+                    <div className="text-sm text-cyan-300 mb-1">Customer Type</div>
+                    <div className="text-white font-medium capitalize">{rule.customerType}</div>
                   </div>
-                  <div className="text-sm">
-                    <span className="text-white/80">Success Rate:</span>
-                    <span className="ml-1 font-medium text-green-300">{rule.successRate}%</span>
+                  <div>
+                    <div className="text-sm text-cyan-300 mb-1">Success Rate</div>
+                    <div className="text-green-400 font-medium">{rule.successRate}%</div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-white/80">
+                <div className="flex items-center justify-between text-sm text-cyan-300 mb-6">
                   <div>
                     <span>Last run: {formatDate(rule.lastRun)}</span>
-                    <span className="mx-2">•</span>
+                    <span className="mx-3">•</span>
                     <span>Total sent: {rule.totalSent}</span>
                   </div>
                   <div>
@@ -474,44 +381,45 @@ Fisher Backflows`,
                   </div>
                 </div>
 
-                {/* Preview of message template */}
-                <div className="mt-3 glass rounded-2xl p-3">
-                  <div className="text-sm font-medium text-white/80 mb-1">Message Preview:</div>
-                  <div className="text-sm text-white/80 line-clamp-3">
+                {/* Message Preview */}
+                <div className="bg-black/20 border border-cyan-400/20 rounded-lg p-4 mb-6">
+                  <div className="text-sm font-medium text-cyan-300 mb-2">Message Preview:</div>
+                  <div className="text-sm text-white line-clamp-3">
                     {rule.template.split('\n')[0]}...
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t mt-3">
-                  <div className="flex space-x-2">
-                    <Button size="sm" className="glass hover:glass text-white/80 border border-blue-400">
-                      <Edit className="h-4 w-4 mr-1" />
+                <div className="flex items-center justify-between pt-4 border-t border-cyan-400/20">
+                  <div className="flex space-x-3">
+                    <button className="bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-500/30 transition-all">
+                      <Edit className="h-4 w-4 inline mr-2" />
                       Edit
-                    </Button>
-                    <Button size="sm" className="glass hover:glass text-white/80 border border-blue-400">
-                      <FileText className="h-4 w-4 mr-1" />
+                    </button>
+                    <button className="bg-purple-500/20 text-purple-400 px-4 py-2 rounded-lg font-semibold hover:bg-purple-500/30 transition-all">
+                      <FileText className="h-4 w-4 inline mr-2" />
                       Template
-                    </Button>
+                    </button>
                   </div>
-                  <Button size="sm" className="glass hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl text-red-300 border border-red-300 hover:text-red-700">
-                    <Trash2 className="h-4 w-4 mr-1" />
+                  <button className="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg font-semibold hover:bg-red-500/30 transition-all">
+                    <Trash2 className="h-4 w-4 inline mr-2" />
                     Delete
-                  </Button>
+                  </button>
                 </div>
               </div>
             ))}
 
             {rules.length === 0 && (
-              <div className="glass rounded-2xl glow-blue-sm p-8 text-center">
-                <Bell className="h-12 w-12 text-white/80 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-white/80 mb-2">No automation rules</h3>
-                <p className="text-white/80 mb-4">Create your first rule to start sending automated reminders</p>
-                <Button asChild>
-                  <Link href="/app/reminders/new">
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create First Rule
-                  </Link>
-                </Button>
+              <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-12 text-center">
+                <Bell className="h-16 w-16 text-cyan-400 mx-auto mb-6" />
+                <h3 className="text-2xl font-bold text-white mb-4">No automation rules</h3>
+                <p className="text-cyan-200 text-lg mb-6">Create your first rule to start sending automated reminders</p>
+                <Link
+                  href="/tester-portal/reminders/new"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all inline-block"
+                >
+                  <Plus className="h-5 w-5 inline mr-2" />
+                  Create First Rule
+                </Link>
               </div>
             )}
           </div>
@@ -519,124 +427,142 @@ Fisher Backflows`,
 
         {/* Scheduled Reminders Tab */}
         {activeTab === 'scheduled' && (
-          <div className="space-y-3">
+          <div className="space-y-6">
             {scheduledReminders.filter(r => r.status === 'scheduled').map((reminder) => (
-              <div key={reminder.id} className="glass rounded-2xl glow-blue-sm p-4">
-                <div className="flex justify-between items-start mb-3">
+              <div key={reminder.id} className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+                <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <h3 className="font-semibold text-white/80">{reminder.customerName}</h3>
-                      <span className="px-2 py-1 rounded-full text-xs font-medium bg-yellow-400/20 text-yellow-400">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <h3 className="text-xl font-semibold text-white">{reminder.customerName}</h3>
+                      <span className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-yellow-500/20 to-amber-500/20 border border-yellow-400/30 text-yellow-400">
                         {reminder.contactMethod.toUpperCase()}
                       </span>
                     </div>
-                    <p className="text-white/80 text-sm">Rule: {reminder.ruleName}</p>
+                    <p className="text-cyan-200">Rule: {reminder.ruleName}</p>
                   </div>
-                  <div className="text-right text-sm">
-                    <div className="text-white/80 font-medium">
+                  <div className="text-right">
+                    <div className="text-white font-medium text-lg">
                       {formatDate(reminder.scheduledDate)} at {reminder.scheduledTime}
                     </div>
                     {reminder.retryCount > 0 && (
-                      <div className="text-red-300">Retry #{reminder.retryCount}</div>
+                      <div className="text-red-400 text-sm">Retry #{reminder.retryCount}</div>
                     )}
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <div className="text-sm">
-                    <span className="text-white/80">Contact:</span>
-                    <span className="ml-1">
+                <div className="space-y-4">
+                  <div>
+                    <span className="text-cyan-300 font-medium">Contact: </span>
+                    <span className="text-white">
                       {reminder.contactMethod === 'email' ? reminder.customerEmail : reminder.customerPhone}
                     </span>
                   </div>
 
-                  <div className="text-sm">
-                    <span className="text-white/80">Devices Due:</span>
-                    <div className="ml-1">
+                  <div>
+                    <span className="text-cyan-300 font-medium">Devices Due: </span>
+                    <div className="mt-2 space-y-1">
                       {reminder.devicesDue.map((device, idx) => (
-                        <div key={idx} className="text-white/80">
+                        <div key={idx} className="text-white bg-black/20 rounded px-3 py-2">
                           {device.type} ({device.serialNumber}) - Due {formatDate(device.dueDate)}
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="glass rounded-2xl p-3 mt-3">
-                    <div className="text-sm font-medium text-white/80 mb-1">Message:</div>
-                    <div className="text-sm text-white/80 line-clamp-4">
+                  <div className="bg-black/20 border border-cyan-400/20 rounded-lg p-4">
+                    <div className="text-sm font-medium text-cyan-300 mb-2">Message:</div>
+                    <div className="text-sm text-white">
                       {reminder.message}
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-3 border-t mt-3">
-                  <div className="flex space-x-2">
-                    <Button
-                      size="sm"
+                <div className="flex items-center justify-between pt-4 border-t border-cyan-400/20 mt-6">
+                  <div className="flex space-x-3">
+                    <button
                       onClick={() => sendReminderNow(reminder.id)}
+                      className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-600 transition-all"
                     >
-                      <Send className="h-4 w-4 mr-1" />
+                      <Send className="h-4 w-4 inline mr-2" />
                       Send Now
-                    </Button>
-                    <Button size="sm" className="glass hover:glass text-white/80 border border-blue-400">
-                      <Edit className="h-4 w-4 mr-1" />
+                    </button>
+                    <button className="bg-cyan-500/20 text-cyan-400 px-4 py-2 rounded-lg font-semibold hover:bg-cyan-500/30 transition-all">
+                      <Edit className="h-4 w-4 inline mr-2" />
                       Edit
-                    </Button>
+                    </button>
                   </div>
-                  <Button size="sm" className="glass hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl text-red-300 border border-red-300">
-                    <Trash2 className="h-4 w-4 mr-1" />
+                  <button className="bg-red-500/20 text-red-400 px-4 py-2 rounded-lg font-semibold hover:bg-red-500/30 transition-all">
+                    <Trash2 className="h-4 w-4 inline mr-2" />
                     Cancel
-                  </Button>
+                  </button>
                 </div>
               </div>
             ))}
+
+            {scheduledReminders.filter(r => r.status === 'scheduled').length === 0 && (
+              <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-12 text-center">
+                <Clock className="h-16 w-16 text-cyan-400 mx-auto mb-6" />
+                <h3 className="text-2xl font-bold text-white mb-4">No scheduled reminders</h3>
+                <p className="text-cyan-200 text-lg">Your automation rules will generate scheduled reminders here</p>
+              </div>
+            )}
           </div>
         )}
 
         {/* Sent History Tab */}
         {activeTab === 'sent' && (
-          <div className="space-y-3">
+          <div className="space-y-6">
             {scheduledReminders.filter(r => ['sent', 'delivered', 'failed'].includes(r.status)).map((reminder) => (
-              <div key={reminder.id} className="glass rounded-2xl glow-blue-sm p-4">
-                <div className="flex justify-between items-start mb-3">
+              <div key={reminder.id} className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-6">
+                <div className="flex justify-between items-start mb-4">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <h3 className="font-semibold text-white/80">{reminder.customerName}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        reminder.status === 'sent' ? 'bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm text-blue-300' :
-                        reminder.status === 'delivered' ? 'bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300' :
-                        'bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl/20 border border-red-400 glow-blue-sm text-red-300'
+                    <div className="flex items-center space-x-3 mb-2">
+                      <h3 className="text-xl font-semibold text-white">{reminder.customerName}</h3>
+                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        reminder.status === 'sent' ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white' :
+                        reminder.status === 'delivered' ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' :
+                        'bg-gradient-to-r from-red-500 to-red-600 text-white'
                       }`}>
                         {reminder.status.toUpperCase()}
                       </span>
                       {reminder.appointmentScheduled && (
-                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl/20 border border-green-400 glow-blue-sm text-green-300">
+                        <span className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-green-500 to-emerald-500 text-white">
                           APPOINTMENT BOOKED
                         </span>
                       )}
                     </div>
-                    <p className="text-white/80 text-sm">
+                    <p className="text-cyan-200">
                       Sent {formatDate(reminder.sentDate)} via {reminder.contactMethod}
                     </p>
                   </div>
                 </div>
 
-                <div className="text-sm text-white/80">
+                <div className="text-cyan-200 space-y-1">
                   <div>Rule: {reminder.ruleName}</div>
                   <div>Contact: {reminder.contactMethod === 'email' ? reminder.customerEmail : reminder.customerPhone}</div>
                 </div>
 
                 {reminder.lastError && (
-                  <div className="mt-2 text-sm text-red-300 bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl rounded p-2">
-                    <AlertTriangle className="h-4 w-4 inline mr-1" />
-                    {reminder.lastError}
+                  <div className="mt-4 p-3 bg-gradient-to-r from-red-500/20 to-red-600/20 border border-red-400/30 rounded-lg">
+                    <div className="flex items-center text-red-400">
+                      <AlertTriangle className="h-4 w-4 mr-2" />
+                      <span className="text-sm">{reminder.lastError}</span>
+                    </div>
                   </div>
                 )}
               </div>
             ))}
+
+            {scheduledReminders.filter(r => ['sent', 'delivered', 'failed'].includes(r.status)).length === 0 && (
+              <div className="bg-black/40 backdrop-blur-sm border border-cyan-400/20 rounded-xl p-12 text-center">
+                <CheckCircle className="h-16 w-16 text-cyan-400 mx-auto mb-6" />
+                <h3 className="text-2xl font-bold text-white mb-4">No sent reminders</h3>
+                <p className="text-cyan-200 text-lg">Your sent reminder history will appear here</p>
+              </div>
+            )}
           </div>
         )}
       </div>
     </div>
-  );
+  )
 }
