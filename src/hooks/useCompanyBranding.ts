@@ -121,14 +121,14 @@ export function useCustomerPortalBranding(): UseBrandingResult {
     let slug: string | null = null
     
     // Check if we're on a subdomain (not localhost or main domain)
-    if (subdomain && subdomain !== 'localhost' && subdomain !== 'backflowbuddy' && !hostname.includes('vercel')) {
+    if (subdomain && subdomain !== 'localhost' && subdomain !== 'tester-portal' && !hostname.includes('vercel')) {
       slug = subdomain
     } else if (pathSlug && pathSlug.length > 0) {
       slug = pathSlug
     }
 
     if (!slug) {
-      // No specific company slug, use default Backflow Buddy branding
+      // No specific company slug, use default Tester Portal branding
       setIsLoading(false)
       return
     }

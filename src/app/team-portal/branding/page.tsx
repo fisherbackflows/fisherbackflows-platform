@@ -439,7 +439,7 @@ export default function BrandingSettingsPage() {
                       onChange={(e) => updateSetting('hide_backflow_buddy_branding', e.target.checked)}
                       className="w-4 h-4 text-cyan-500 bg-white/20 border-white/30 rounded focus:ring-cyan-400"
                     />
-                    <span className="text-white/80">Hide "Powered by Backflow Buddy" footer</span>
+                    <span className="text-white/80">Hide "Powered by Tester Portal" footer</span>
                   </label>
                   <p className="text-white/60 text-sm mt-1 ml-7">
                     Available on Professional and Enterprise plans
@@ -553,7 +553,7 @@ export default function BrandingSettingsPage() {
                   {!settings.hide_backflow_buddy_branding && (
                     <div className="border-t border-white/20 p-4 text-center">
                       <p className="text-white/40 text-xs">
-                        Powered by <span style={{ color: settings.primary_color }}>Backflow Buddy</span>
+                        Powered by <span style={{ color: settings.primary_color }}>Tester Portal</span>
                       </p>
                     </div>
                   )}

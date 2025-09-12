@@ -73,7 +73,7 @@ export default function BrandedPortalLayout({
               )}
               <div>
                 <h1 className="text-lg font-bold custom-text">
-                  {branding?.company_name || 'Backflow Buddy'}
+                  {branding?.company_name || 'Tester Portal'}
                 </h1>
                 <p className="text-xs custom-text-muted">
                   {branding?.portal_title || 'Customer Portal'}
@@ -181,7 +181,7 @@ export default function BrandedPortalLayout({
                 <p className="custom-text-muted">{branding.footer_text}</p>
               ) : (
                 <p className="custom-text-muted">
-                  © {new Date().getFullYear()} {branding?.company_name || 'Backflow Buddy'}. 
+                  © {new Date().getFullYear()} {branding?.company_name || 'Tester Portal'}. 
                   All rights reserved.
                 </p>
               )}
@@ -205,17 +205,17 @@ export default function BrandedPortalLayout({
                 </a>
               )}
               
-              {/* Backflow Buddy attribution (unless hidden) */}
+              {/* Tester Portal attribution (unless hidden) */}
               {!branding?.hide_backflow_buddy_branding && (
                 <div className="flex items-center space-x-2">
                   <span className="custom-text-muted text-sm">Powered by</span>
                   <Link 
-                    href="https://backflowbuddy.com"
+                    href="https://tester-portal.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="custom-primary hover:custom-secondary text-sm font-medium transition-colors"
                   >
-                    Backflow Buddy
+                    Tester Portal
                   </Link>
                 </div>
               )}

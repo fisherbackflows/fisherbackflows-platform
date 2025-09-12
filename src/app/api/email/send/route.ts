@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendEmail, getVerificationEmailHtml } from '@/lib/resend';
 
-// Email templates for Backflow Buddy API
+// Email templates for Tester Portal API
 const emailTemplates = {
   customer_welcome: {
     subject: 'Welcome to {{company_name}}',
@@ -73,15 +73,15 @@ const emailTemplates = {
               <div class="alert">
                 <strong>⚠️ Your payment of $${data.amount} could not be processed.</strong>
               </div>
-              <p>We were unable to process your recent payment for your Backflow Buddy subscription.</p>
+              <p>We were unable to process your recent payment for your Tester Portal subscription.</p>
               <p>To avoid service interruption, please update your payment method as soon as possible.</p>
               <p style="text-align: center;">
                 <a href="${data.dashboard_url}" class="button">Update Payment Method</a>
               </p>
-              <p>Best regards,<br>The Backflow Buddy Team</p>
+              <p>Best regards,<br>The Tester Portal Team</p>
             </div>
             <div class="footer">
-              <p>© 2025 Backflow Buddy. All rights reserved.</p>
+              <p>© 2025 Tester Portal. All rights reserved.</p>
             </div>
           </div>
         </body>
@@ -114,22 +114,22 @@ const emailTemplates = {
               <div class="warning">
                 <strong>⏰ Your 14-day trial will end on ${data.trial_end_date}</strong>
               </div>
-              <p>We hope you've been enjoying Backflow Buddy!</p>
+              <p>We hope you've been enjoying Tester Portal!</p>
               <p style="text-align: center;">
                 <a href="${data.billing_url}" class="button">Review Your Plan</a>
               </p>
-              <p>Best regards,<br>The Backflow Buddy Team</p>
+              <p>Best regards,<br>The Tester Portal Team</p>
             </div>
             <div class="footer">
-              <p>© 2025 Backflow Buddy. All rights reserved.</p>
+              <p>© 2025 Tester Portal. All rights reserved.</p>
             </div>
           </div>
         </body>
       </html>
     `
   },
-  backflowbuddy_welcome: {
-    subject: 'Welcome to Backflow Buddy - Your API Key Inside',
+  tester_portal_welcome: {
+    subject: 'Welcome to Tester Portal - Your API Key Inside',
     getHtml: (data: any) => `
       <!DOCTYPE html>
       <html>
@@ -148,11 +148,11 @@ const emailTemplates = {
         <body>
           <div class="container">
             <div class="header">
-              <h1>Welcome to Backflow Buddy!</h1>
+              <h1>Welcome to Tester Portal!</h1>
             </div>
             <div class="content">
               <p>Dear ${data.company_name},</p>
-              <p>Congratulations! Your Backflow Buddy API account is now active. You have a 14-day free trial until ${data.trial_ends}.</p>
+              <p>Congratulations! Your Tester Portal API account is now active. You have a 14-day free trial until ${data.trial_ends}.</p>
               
               <div class="important">
                 <strong>🔑 Your API Key (SAVE THIS!):</strong>
@@ -165,10 +165,10 @@ const emailTemplates = {
                 <a href="${data.docs_url}" class="button">View API Docs</a>
               </p>
 
-              <p>Best regards,<br>The Backflow Buddy Team</p>
+              <p>Best regards,<br>The Tester Portal Team</p>
             </div>
             <div class="footer">
-              <p>© 2025 Backflow Buddy API Platform. All rights reserved.</p>
+              <p>© 2025 Tester Portal API Platform. All rights reserved.</p>
             </div>
           </div>
         </body>

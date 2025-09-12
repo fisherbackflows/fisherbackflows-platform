@@ -61,7 +61,7 @@ export default function CustomerPortalLoginPage() {
               )}
               <div>
                 <h1 className="text-lg font-bold custom-text">
-                  {branding?.company_name || 'Backflow Buddy'}
+                  {branding?.company_name || 'Tester Portal'}
                 </h1>
                 <p className="text-xs custom-text-muted">
                   {branding?.portal_title || 'Customer Portal'}

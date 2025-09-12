@@ -7,13 +7,13 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16'
-})
+}) : null
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!
 
-// POST /api/backflowbuddy/webhooks/stripe - Handle Stripe webhooks
+// POST /api/tester-portal/webhooks/stripe - Handle Stripe webhooks
 export async function POST(request: NextRequest) {
   try {
     const body = await request.text()
@@ -302,7 +302,7 @@ async function handlePaymentFailed(invoice: Stripe.Invoice) {
           company_name: company.name,
           amount: (invoice.amount_due / 100).toFixed(2),
           invoice_url: invoice.hosted_invoice_url,
-          dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL}/backflowbuddy/dashboard`
+          dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL}/tester-portal/dashboard`
         }
       })
     }).catch(error => console.error('Failed to send payment failed email:', error))
@@ -358,8 +358,8 @@ async function handleTrialWillEnd(subscription: Stripe.Subscription) {
         data: {
           company_name: company.name,
           trial_end_date: new Date(subscription.trial_end! * 1000).toLocaleDateString(),
-          dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL}/backflowbuddy/dashboard`,
-          billing_url: `${process.env.NEXT_PUBLIC_APP_URL}/backflowbuddy/billing`
+          dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL}/tester-portal/dashboard`,
+          billing_url: `${process.env.NEXT_PUBLIC_APP_URL}/tester-portal/billing`
         }
       })
     }).catch(error => console.error('Failed to send trial ending email:', error))

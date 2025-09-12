@@ -8,13 +8,17 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16'
-})
+}) : null
 
-// GET /api/backflowbuddy/billing - Get billing information
+// GET /api/tester-portal/billing - Get billing information
 export async function GET(request: NextRequest) {
   try {
+    if (!stripe) {
+      return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 })
+    }
+    
     const user = await requireAuth(['admin'])(request)
     if (user instanceof NextResponse) return user
 
@@ -122,7 +126,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/backflowbuddy/billing - Create or update subscription
+// POST /api/tester-portal/billing - Create or update subscription
 export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth(['admin'])(request)

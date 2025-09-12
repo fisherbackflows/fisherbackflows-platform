@@ -78,7 +78,7 @@ export default function SecurityPage() {
                 <span className="text-white font-bold text-xl">BB</span>
               </div>
               <div>
-                <h1 className="text-lg font-bold text-white">Backflow Buddy</h1>
+                <h1 className="text-lg font-bold text-white">Tester Portal</h1>
                 <p className="text-xs text-white/60">Enterprise Security</p>
               </div>
             </Link>
@@ -105,7 +105,7 @@ export default function SecurityPage() {
           </h1>
           
           <p className="text-xl text-white/80 mb-8 max-w-3xl mx-auto">
-            At Backflow Buddy, we understand that your customer data is your most valuable asset. 
+            At Tester Portal, we understand that your customer data is your most valuable asset. 
             That\'s why we\'ve built enterprise-grade security with complete data isolation between companies.
             <strong className="text-white"> No other company can ever access your customer data.</strong>
           </p>
@@ -245,7 +245,7 @@ export default function SecurityPage() {
             Ready to Secure Your Backflow Testing Business?
           </h2>
           <p className="text-xl text-white/80 mb-8">
-            Join companies that trust Backflow Buddy with their customer data
+            Join companies that trust Tester Portal with their customer data
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -267,7 +267,7 @@ export default function SecurityPage() {
       {/* Footer */}
       <footer className="py-8 px-6 border-t border-white/10">
         <div className="max-w-7xl mx-auto text-center text-white/60">
-          <p>© 2025 Backflow Buddy. Enterprise-grade security for backflow testing companies.</p>
+          <p>© 2025 Tester Portal. Enterprise-grade security for backflow testing companies.</p>
           <p className="mt-2">
             <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
             {' • '}

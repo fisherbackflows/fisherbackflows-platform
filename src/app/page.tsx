@@ -119,12 +119,12 @@ export default function HomePage() {
             <Link href="/" className="flex items-center space-x-3">
               <div className="relative">
                 <div className="w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">BB</span>
+                  <span className="text-white font-bold text-xl">TP</span>
                 </div>
                 <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500/20 border border-emerald-400 glow-blue-sm0 rounded-full"></div>
               </div>
               <div>
-                <h1 className="text-lg font-bold text-white">Backflow Buddy</h1>
+                <h1 className="text-lg font-bold text-white">Tester Portal</h1>
                 <p className="text-xs text-white/60">SaaS Platform for Backflow Testing</p>
               </div>
             </Link>

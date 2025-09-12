@@ -7,7 +7,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-// GET /api/backflowbuddy/usage - Get API usage analytics
+// GET /api/tester-portal/usage - Get API usage analytics
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth(['admin'])(request)

@@ -9,9 +9,9 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16'
-})
+}) : null
 
 // Generate secure API key
 function generateApiKey(): string {
@@ -28,7 +28,7 @@ function getApiKeyPreview(key: string): string {
   return '****' + key.slice(-4)
 }
 
-// POST /api/backflowbuddy/signup - Handle new company signup
+// POST /api/tester-portal/signup - Handle new company signup
 export async function POST(request: NextRequest) {
   try {
     const {
@@ -265,12 +265,12 @@ export async function POST(request: NextRequest) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         to: email,
-        template: 'backflowbuddy_welcome',
+        template: 'tester-portal_welcome',
         data: {
           company_name: company_name,
           api_key: apiKey,
-          dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL}/backflowbuddy/dashboard`,
-          docs_url: `${process.env.NEXT_PUBLIC_APP_URL}/backflowbuddy/docs`,
+          dashboard_url: `${process.env.NEXT_PUBLIC_APP_URL}/tester-portal/dashboard`,
+          docs_url: `${process.env.NEXT_PUBLIC_APP_URL}/tester-portal/docs`,
           trial_ends: trialEndsAt.toLocaleDateString()
         }
       })

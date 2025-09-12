@@ -135,7 +135,7 @@ function SignupForm() {
       }
 
       // Create subscription
-      const response = await fetch('/api/backflowbuddy/signup', {
+      const response = await fetch('/api/tester-portal/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -176,19 +176,19 @@ function SignupForm() {
         <div className="max-w-md mx-auto text-center">
           <div className="bg-white/5 backdrop-blur-sm border border-green-400/30 rounded-xl p-8">
             <CheckCircle className="h-16 w-16 text-green-400 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold text-white mb-4">Welcome to Backflow Buddy!</h1>
+            <h1 className="text-2xl font-bold text-white mb-4">Welcome to Tester Portal!</h1>
             <p className="text-green-300 mb-6">
               Your account has been created successfully. You're now on a 14-day free trial.
             </p>
             <div className="space-y-3">
               <a 
-                href="/backflowbuddy/dashboard"
+                href="/tester-portal/dashboard"
                 className="block w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
               >
                 Go to Dashboard
               </a>
               <a 
-                href="/backflowbuddy/docs"
+                href="/tester-portal/docs"
                 className="block w-full px-6 py-3 bg-white/10 border border-white/30 text-white rounded-lg font-semibold hover:bg-white/20 transition-all"
               >
                 View API Documentation
@@ -209,20 +209,20 @@ function SignupForm() {
             <div className="flex items-center space-x-4">
               <Code className="h-8 w-8 text-cyan-400" />
               <div>
-                <h1 className="text-2xl font-bold text-white">Backflow Buddy API</h1>
+                <h1 className="text-2xl font-bold text-white">Tester Portal API</h1>
                 <p className="text-cyan-400">Get Started</p>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
               <a
-                href="/backflowbuddy"
+                href="/tester-portal"
                 className="text-cyan-400 hover:text-white transition-colors"
               >
                 Back to Home
               </a>
               <a
-                href="/backflowbuddy/docs"
+                href="/tester-portal/docs"
                 className="text-cyan-400 hover:text-white transition-colors"
               >
                 Documentation

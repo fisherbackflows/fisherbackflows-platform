@@ -7,7 +7,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-// DELETE /api/backflowbuddy/api-keys/[id] - Delete API key
+// DELETE /api/tester-portal/api-keys/[id] - Delete API key
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -78,7 +78,7 @@ export async function DELETE(
   }
 }
 
-// PATCH /api/backflowbuddy/api-keys/[id] - Update API key
+// PATCH /api/tester-portal/api-keys/[id] - Update API key
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }

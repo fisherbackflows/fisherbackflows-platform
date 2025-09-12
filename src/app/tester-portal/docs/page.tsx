@@ -60,14 +60,14 @@ export default function BackflowBuddyDocs() {
             <div className="flex items-center space-x-4">
               <Code className="h-8 w-8 text-cyan-400" />
               <div>
-                <h1 className="text-2xl font-bold text-white">Backflow Buddy API</h1>
+                <h1 className="text-2xl font-bold text-white">Tester Portal API</h1>
                 <p className="text-cyan-400">Developer Documentation</p>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
               <a
-                href="/backflowbuddy/dashboard"
+                href="/tester-portal/dashboard"
                 className="text-cyan-400 hover:text-white transition-colors"
               >
                 Dashboard
@@ -118,7 +118,7 @@ export default function BackflowBuddyDocs() {
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-4">Getting Started</h2>
                     <p className="text-cyan-200 text-lg mb-6">
-                      Welcome to the Backflow Buddy API! This RESTful API allows you to integrate 
+                      Welcome to the Tester Portal API! This RESTful API allows you to integrate 
                       professional backflow testing management into your existing applications.
                     </p>
                   </div>
@@ -197,7 +197,7 @@ console.log(data.data); // Array of customers`}
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-4">Authentication</h2>
                     <p className="text-cyan-200 text-lg mb-6">
-                      The Backflow Buddy API uses API keys for authentication. Include your API key 
+                      The Tester Portal API uses API keys for authentication. Include your API key 
                       in the <code className="bg-black/30 px-2 py-1 rounded text-cyan-400">X-API-Key</code> header 
                       with every request.
                     </p>
@@ -206,7 +206,7 @@ console.log(data.data); // Array of customers`}
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Getting Your API Key</h3>
                     <ol className="list-decimal list-inside text-cyan-200 space-y-2 mb-6">
-                      <li>Log in to your <a href="/backflowbuddy/dashboard" className="text-cyan-400 hover:text-cyan-300">Backflow Buddy Dashboard</a></li>
+                      <li>Log in to your <a href="/tester-portal/dashboard" className="text-cyan-400 hover:text-cyan-300">Tester Portal Dashboard</a></li>
                       <li>Navigate to the "API Keys" section</li>
                       <li>Click "Create Key" and give it a descriptive name</li>
                       <li>Copy your API key immediately (it won't be shown again)</li>

@@ -55,13 +55,13 @@ export default function CompanyPortalPage() {
             </p>
             <div className="space-y-3">
               <Link 
-                href="https://backflowbuddy.com"
+                href="https://tester-portal.com"
                 className="block w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
               >
-                Go to Backflow Buddy
+                Go to Tester Portal
               </Link>
               <Link 
-                href="https://backflowbuddy.com/signup"
+                href="https://tester-portal.com/signup"
                 className="block w-full px-6 py-3 bg-white/10 border border-white/30 text-white rounded-lg font-semibold hover:bg-white/20 transition-all"
               >
                 Sign Up Your Company
@@ -304,17 +304,17 @@ export default function CompanyPortalPage() {
                 <span className="custom-text-muted text-sm">{branding.address}</span>
               )}
               
-              {/* Backflow Buddy attribution (unless hidden) */}
+              {/* Tester Portal attribution (unless hidden) */}
               {!branding.hide_backflow_buddy_branding && (
                 <div className="flex items-center space-x-2">
                   <span className="custom-text-muted text-xs">Powered by</span>
                   <Link 
-                    href="https://backflowbuddy.com"
+                    href="https://tester-portal.com"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="custom-primary hover:custom-secondary text-xs font-medium transition-colors"
                   >
-                    Backflow Buddy
+                    Tester Portal
                   </Link>
                 </div>
               )}

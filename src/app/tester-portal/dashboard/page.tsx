@@ -54,7 +54,7 @@ export default function BackflowBuddyDashboard() {
 
   const fetchApiKeys = async () => {
     try {
-      const response = await fetch('/api/backflowbuddy/api-keys')
+      const response = await fetch('/api/tester-portal/api-keys')
       const data = await response.json()
       if (response.ok) {
         setApiKeys(data.data || [])
@@ -66,7 +66,7 @@ export default function BackflowBuddyDashboard() {
 
   const fetchUsage = async () => {
     try {
-      const response = await fetch('/api/backflowbuddy/usage')
+      const response = await fetch('/api/tester-portal/usage')
       const data = await response.json()
       if (response.ok) {
         setUsage(data.data)
@@ -82,7 +82,7 @@ export default function BackflowBuddyDashboard() {
     if (!newKeyName.trim()) return
 
     try {
-      const response = await fetch('/api/backflowbuddy/api-keys', {
+      const response = await fetch('/api/tester-portal/api-keys', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newKeyName })
@@ -105,7 +105,7 @@ export default function BackflowBuddyDashboard() {
     }
 
     try {
-      const response = await fetch(`/api/backflowbuddy/api-keys/${id}`, {
+      const response = await fetch(`/api/tester-portal/api-keys/${id}`, {
         method: 'DELETE'
       })
       
@@ -142,14 +142,14 @@ export default function BackflowBuddyDashboard() {
             <div className="flex items-center space-x-4">
               <Code className="h-8 w-8 text-cyan-400" />
               <div>
-                <h1 className="text-2xl font-bold text-white">Backflow Buddy API</h1>
+                <h1 className="text-2xl font-bold text-white">Tester Portal API</h1>
                 <p className="text-cyan-400">Developer Dashboard</p>
               </div>
             </div>
             
             <div className="flex items-center space-x-4">
               <a
-                href="/backflowbuddy/docs"
+                href="/tester-portal/docs"
                 className="text-cyan-400 hover:text-white transition-colors"
               >
                 API Docs

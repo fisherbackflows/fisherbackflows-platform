@@ -145,7 +145,7 @@ export default function SignupPage() {
       <div className="max-w-6xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Welcome to Backflow Buddy</h1>
+          <h1 className="text-4xl font-bold text-white mb-2">Welcome to Tester Portal</h1>
           <p className="text-xl text-cyan-300">The Complete Backflow Testing Management Platform</p>
         </div>
 
@@ -248,7 +248,7 @@ export default function SignupPage() {
                   />
                   {formData.companySlug && (
                     <p className="text-sm text-cyan-300 mt-1">
-                      Your URL: backflowbuddy.com/{formData.companySlug}
+                      Your URL: tester-portal.com/{formData.companySlug}
                     </p>
                   )}
                 </div>

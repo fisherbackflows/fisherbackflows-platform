@@ -23,7 +23,7 @@ function getApiKeyPreview(key: string): string {
   return '****' + key.slice(-4)
 }
 
-// GET /api/backflowbuddy/api-keys - List API keys
+// GET /api/tester-portal/api-keys - List API keys
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth(['admin'])(request)
@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/backflowbuddy/api-keys - Create new API key
+// POST /api/tester-portal/api-keys - Create new API key
 export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth(['admin'])(request)

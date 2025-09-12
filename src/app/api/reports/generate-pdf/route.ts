@@ -193,7 +193,7 @@ export async function POST(request: NextRequest) {
     doc.setTextColor(107, 114, 128)
     doc.text('This report is certified accurate as of the test date shown above.', 105, doc.internal.pageSize.height - 20, { align: 'center' })
     doc.text(`Generated on ${new Date().toLocaleString()}`, 105, doc.internal.pageSize.height - 15, { align: 'center' })
-    doc.text('Powered by Backflow Buddy API', 105, doc.internal.pageSize.height - 10, { align: 'center' })
+    doc.text('Powered by Tester Portal API', 105, doc.internal.pageSize.height - 10, { align: 'center' })
     
     // Generate PDF as buffer
     const pdfBuffer = doc.output('arraybuffer')
