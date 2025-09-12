@@ -44,13 +44,13 @@ export async function middleware(request: NextRequest) {
 
     if (error || !company) {
       // Subdomain doesn't exist, redirect to main site
-      return NextResponse.redirect(new URL(`https://backflowbuddy.com${path}`, request.url))
+      return NextResponse.redirect(new URL(`https://fisherbackflows.com${path}`, request.url))
     }
 
     // Check if company subscription is active
     if (!['active', 'trialing'].includes(company.subscription_status)) {
       // Inactive subscription, redirect to billing
-      return NextResponse.redirect(new URL('https://backflowbuddy.com/billing-required', request.url))
+      return NextResponse.redirect(new URL('https://fisherbackflows.com/billing-required', request.url))
     }
 
     // Handle portal routes for company subdomains
@@ -71,7 +71,7 @@ export async function middleware(request: NextRequest) {
     // Handle team portal routes
     if (path.startsWith('/team')) {
       // Team routes should redirect to main domain
-      return NextResponse.redirect(new URL(`https://backflowbuddy.com${path}`, request.url))
+      return NextResponse.redirect(new URL(`https://fisherbackflows.com${path}`, request.url))
     }
 
     // Default: serve the portal login for company subdomain
@@ -111,13 +111,13 @@ function getSubdomain(hostname: string): string | null {
   // Handle production domains
   const parts = hostname.split('.')
   
-  // For backflowbuddy.com, extract subdomain
-  if (parts.length >= 3 && hostname.includes('backflowbuddy.com')) {
+  // For fisherbackflows.com, extract subdomain
+  if (parts.length >= 3 && hostname.includes('fisherbackflows.com')) {
     return parts[0]
   }
   
   // For custom domains, treat the whole domain as a company identifier
-  if (parts.length >= 2 && !hostname.includes('backflowbuddy.com')) {
+  if (parts.length >= 2 && !hostname.includes('fisherbackflows.com')) {
     return hostname.replace(/\./g, '-')
   }
   
@@ -127,9 +127,9 @@ function getSubdomain(hostname: string): string | null {
 // Check if hostname is a main domain
 function isMainDomain(hostname: string): boolean {
   const mainDomains = [
-    'backflowbuddy.com',
-    'www.backflowbuddy.com',
-    'app.backflowbuddy.com',
+    'fisherbackflows.com',
+    'www.fisherbackflows.com',
+    'app.fisherbackflows.com',
     'localhost',
     'localhost:3000',
     'localhost:3010'
@@ -154,7 +154,7 @@ function getMainDomain(hostname: string): string {
     }
   }
   
-  return 'backflowbuddy.com'
+  return 'fisherbackflows.com'
 }
 
 export const config = {
