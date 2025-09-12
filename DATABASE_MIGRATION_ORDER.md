@@ -9,10 +9,11 @@ After analyzing all migration files, here's the conflict-free execution order. *
 ## 📋 MIGRATION FILES TO EXECUTE (5 Files Total)
 
 ### 1️⃣ **CORE BUSINESS SCHEMA** (REQUIRED)
-**File:** `/supabase/migrations/001_consolidated_schema.sql`
+**File:** `/supabase/migrations/001_consolidated_schema_supabase_compatible.sql`
 **Creates:** All core business tables (customers, devices, appointments, test_reports, invoices, etc.)
 **Size:** Large file with complete schema
 **Notes:** This is your foundation - everything else depends on this
+**IMPORTANT:** Use the _supabase_compatible version to avoid auth schema errors
 
 ```sql
 -- This file creates:
