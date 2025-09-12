@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import StripeService from '@/lib/stripe';
-import { supabase } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { logger } from '@/lib/logger';
 import { z } from 'zod';
 
@@ -16,6 +16,7 @@ const PaymentRequestSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
+    const supabase = createRouteHandlerClient(request);
     const body = await request.json();
     const validatedData = PaymentRequestSchema.parse(body);
 
@@ -33,36 +34,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create or get Stripe customer
-    let stripeCustomer;
-    if (customer.stripe_customer_id) {
-      // Existing Stripe customer
-      stripeCustomer = { id: customer.stripe_customer_id };
-    } else {
-      // Create new Stripe customer
-      stripeCustomer = await StripeService.customer.upsertCustomer({
-        email: customer.email,
-        name: `${customer.first_name} ${customer.last_name}`,
-        phone: customer.phone,
-        address: customer.address ? {
-          line1: customer.address.street,
-          city: customer.address.city,
-          state: customer.address.state,
-          postal_code: customer.address.zip,
-          country: 'US'
-        } : undefined,
-        metadata: {
-          customer_id: customer.id,
-          company: customer.company_name || ''
-        }
-      });
-
-      // Save Stripe customer ID
-      await supabase
-        .from('customers')
-        .update({ stripe_customer_id: stripeCustomer.id })
-        .eq('id', customer.id);
-    }
+    // For now, we'll create a temporary Stripe customer (no DB storage until we add the column)
+    const stripeCustomer = await StripeService.customer.upsertCustomer({
+      email: customer.email,
+      name: `${customer.first_name} ${customer.last_name}`,
+      phone: customer.phone,
+      address: {
+        line1: customer.address_line1 || '',
+        line2: customer.address_line2 || '',
+        city: customer.city || '',
+        state: customer.state || '',
+        postal_code: customer.zip_code || '',
+        country: 'US'
+      },
+      metadata: {
+        customer_id: customer.id,
+        company: customer.company_name || ''
+      }
+    });
 
     // Create payment record in database
     const { data: payment, error: paymentError } = await supabase
@@ -141,25 +130,45 @@ export async function POST(request: NextRequest) {
 
       // Update invoice if linked
       if (validatedData.invoiceId) {
-        await supabase
+        // Get current invoice to calculate new balance
+        const { data: invoice } = await supabase
           .from('invoices')
-          .update({
-            status: 'paid',
-            paid_date: new Date().toISOString()
-          })
-          .eq('id', validatedData.invoiceId);
+          .select('amount_paid, balance_due, total_amount')
+          .eq('id', validatedData.invoiceId)
+          .single();
+        
+        if (invoice) {
+          const newAmountPaid = (invoice.amount_paid || 0) + validatedData.amount;
+          const newBalanceDue = invoice.total_amount - newAmountPaid;
+          const isPaid = newBalanceDue <= 0;
+          
+          await supabase
+            .from('invoices')
+            .update({
+              status: isPaid ? 'paid' : 'draft',
+              amount_paid: newAmountPaid,
+              balance_due: Math.max(0, newBalanceDue),
+              paid_date: isPaid ? new Date().toISOString() : null
+            })
+            .eq('id', validatedData.invoiceId);
+            
+          console.log(`✅ Invoice ${validatedData.invoiceId} updated: $${newAmountPaid} paid, $${newBalanceDue} balance`);
+        }
       }
 
       // Send confirmation email
       try {
-        const { sendPaymentConfirmation } = await import('@/lib/email-templates');
-        await sendPaymentConfirmation({
+        const { sendEmail, emailTemplates } = await import('@/lib/email');
+        const customerName = `${customer.first_name} ${customer.last_name}`;
+        const emailTemplate = emailTemplates.paymentReceived(customerName, `$${validatedData.amount.toFixed(2)}`);
+        
+        await sendEmail({
           to: customer.email,
-          customerName: `${customer.first_name} ${customer.last_name}`,
-          amount: validatedData.amount,
-          paymentId: payment.id,
-          receiptUrl: result.receiptUrl
+          subject: emailTemplate.subject,
+          html: emailTemplate.html
         });
+        
+        console.log('✅ Payment confirmation email sent to:', customer.email);
       } catch (emailError) {
         logger.error('Failed to send payment confirmation email', { error: emailError });
       }

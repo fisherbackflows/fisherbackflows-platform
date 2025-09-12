@@ -16,18 +16,23 @@ export async function GET(
         *,
         customers (
           id,
-          name,
+          first_name,
+          last_name,
           email,
           phone,
-          address
+          address_line1,
+          address_line2,
+          city,
+          state,
+          zip_code
         ),
         devices (
           id,
           serial_number,
-          size,
-          make,
+          size_inches,
+          manufacturer,
           model,
-          location,
+          location_description,
           last_test_date
         )
       `)
@@ -41,36 +46,54 @@ export async function GET(
       );
     }
 
+    // Format customer address
+    const formatCustomerAddress = (customer: any) => {
+      if (!customer) return '';
+      const parts = [
+        customer.address_line1,
+        customer.address_line2,
+        customer.city,
+        customer.state,
+        customer.zip_code
+      ].filter(Boolean);
+      return parts.join(', ');
+    };
+
     // Transform data for field app
     const transformedAppointment = {
       id: appointment.id,
       customerId: appointment.customer_id,
-      customerName: appointment.customers?.name || 'Unknown Customer',
+      customerName: appointment.customers 
+        ? `${appointment.customers.first_name} ${appointment.customers.last_name}`.trim() 
+        : 'Unknown Customer',
       customerPhone: appointment.customers?.phone || '',
+      customerEmail: appointment.customers?.email || '',
       customer: appointment.customers,
-      serviceType: appointment.service_type || 'Annual Test',
-      date: appointment.appointment_date,
-      appointment_date: appointment.appointment_date,
-      time: appointment.appointment_time,
-      appointment_time: appointment.appointment_time,
-      duration: appointment.duration || 60,
+      serviceType: appointment.appointment_type || 'Annual Test',
+      date: appointment.scheduled_date,
+      appointment_date: appointment.scheduled_date,
+      time: appointment.scheduled_time_start,
+      appointment_time: appointment.scheduled_time_start,
+      duration: appointment.estimated_duration || 60,
       status: appointment.status,
-      deviceLocation: appointment.device_location || appointment.customers?.address || '',
-      device_location: appointment.device_location || appointment.customers?.address || '',
-      notes: appointment.notes || '',
-      technician: appointment.technician || 'Mike Fisher',
+      deviceLocation: appointment.special_instructions || formatCustomerAddress(appointment.customers),
+      device_location: appointment.special_instructions || formatCustomerAddress(appointment.customers),
+      address: formatCustomerAddress(appointment.customers),
+      notes: appointment.customer_notes || appointment.technician_notes || '',
+      technician: appointment.assigned_technician || 'Mike Fisher',
       createdDate: appointment.created_at?.split('T')[0] || new Date().toISOString().split('T')[0],
       device_id: appointment.device_id,
       device: appointment.devices ? {
         id: appointment.devices.id,
-        serialNumber: appointment.devices.serial_number,
-        serial_number: appointment.devices.serial_number,
-        size: appointment.devices.size,
-        make: appointment.devices.make,
-        model: appointment.devices.model,
-        location: appointment.devices.location,
-        lastTestDate: appointment.devices.last_test_date,
-        last_test_date: appointment.devices.last_test_date
+        serialNumber: appointment.devices.serial_number || 'Unknown',
+        serial_number: appointment.devices.serial_number || 'Unknown', 
+        size: appointment.devices.size_inches || '3/4"',
+        make: appointment.devices.manufacturer || 'Unknown',
+        manufacturer: appointment.devices.manufacturer || 'Unknown',
+        model: appointment.devices.model || 'Unknown',
+        location: appointment.devices.location_description || '',
+        lastTestDate: appointment.devices.last_test_date || '2023-01-01',
+        last_test_date: appointment.devices.last_test_date || '2023-01-01'
       } : null
     };
 

@@ -41,9 +41,9 @@ const SERVICE_RATES = {
 };
 
 // Auto-generate invoices for completed tests
-async function createAutoInvoice(customerId: string, serviceType: string, deviceSize: string, notes?: string) {
+export async function createAutoInvoice(customerId: string, serviceType: string, deviceSize: string, notes?: string, testReportId?: string, appointmentId?: string, supabaseClient?: any) {
   try {
-    const supabase = createRouteHandlerClient(new Request('http://localhost'));
+    const supabase = supabaseClient || createRouteHandlerClient(new Request('http://localhost'));
     
     // Get customer info
     const { data: customer, error: customerError } = await supabase
@@ -56,19 +56,22 @@ async function createAutoInvoice(customerId: string, serviceType: string, device
       throw new Error('Customer not found');
     }
 
-    // Calculate pricing
-    const services = [];
+    // Calculate pricing based on device size
     let totalAmount = 0;
-
-    if (serviceType === 'Annual Test') {
-      const rate = SERVICE_RATES['Annual Test'][deviceSize as keyof typeof SERVICE_RATES['Annual Test']] || 75;
-      services.push({
-        description: `Annual Backflow Test - ${deviceSize} Device`,
-        quantity: 1,
-        rate,
-        total: rate
-      });
-      totalAmount = rate;
+    
+    if (serviceType === 'annual' || serviceType === 'Annual Test') {
+      const rates = {
+        '1/2"': 65,
+        '3/4"': 75,
+        '1"': 100,
+        '1.5"': 125,
+        '2"': 150
+      };
+      totalAmount = rates[deviceSize as keyof typeof rates] || 75;
+    } else if (serviceType === 'repair') {
+      totalAmount = 50; // Base repair rate
+    } else {
+      totalAmount = 75; // Default rate
     }
 
     // Generate invoice number
@@ -78,16 +81,27 @@ async function createAutoInvoice(customerId: string, serviceType: string, device
     
     const invoiceNumber = `INV-${new Date().getFullYear()}-${String((count || 0) + 1).padStart(3, '0')}`;
 
-    // Create invoice
+    // Create invoice with proper column names
     const invoiceData = {
       customer_id: customerId,
+      appointment_id: appointmentId || null,
+      test_report_id: testReportId || null,
       invoice_number: invoiceNumber,
-      issue_date: new Date().toISOString().split('T')[0],
+      invoice_date: new Date().toISOString().split('T')[0],
       due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-      amount: totalAmount,
-      status: 'Pending' as const,
-      services: services,
-      notes: notes || `Automated invoice for ${serviceType}`
+      subtotal: totalAmount,
+      tax_rate: 0.00,
+      tax_amount: 0.00,
+      discount_amount: 0.00,
+      total_amount: totalAmount,
+      amount_paid: 0.00,
+      balance_due: totalAmount,
+      status: 'draft',
+      payment_terms: 'net_30',
+      notes: notes || `Automated invoice for ${serviceType} - ${deviceSize} device`,
+      internal_notes: `Auto-generated from test completion workflow`,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     };
 
     const { data: newInvoice, error } = await supabase
@@ -97,7 +111,57 @@ async function createAutoInvoice(customerId: string, serviceType: string, device
       .single();
 
     if (error) {
+      console.error('Invoice creation error:', error);
       throw error;
+    }
+
+    // Send invoice email to customer if we have their email
+    try {
+      if (customer.email) {
+        const { sendEmail, emailTemplates } = require('@/lib/email');
+        const customerName = `${customer.first_name} ${customer.last_name}`.trim();
+        const paymentUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/portal/pay?invoice=${newInvoice.id}`;
+        
+        const emailTemplate = emailTemplates.invoiceGenerated(
+          customerName, 
+          newInvoice.invoice_number,
+          newInvoice.total_amount.toString(),
+          new Date(newInvoice.due_date).toLocaleDateString(),
+          paymentUrl
+        );
+        
+        await sendEmail({
+          to: customer.email,
+          subject: emailTemplate.subject,
+          html: emailTemplate.html
+        });
+        
+        console.log('✅ Invoice email sent to:', customer.email);
+      }
+    } catch (emailError) {
+      console.error('⚠️ Failed to send invoice email:', emailError);
+      // Don't fail invoice creation if email fails
+    }
+
+    // Create line item for the service
+    try {
+      const lineItemData = {
+        invoice_id: newInvoice.id,
+        description: `${serviceType === 'annual' ? 'Annual' : 'Backflow'} Testing - ${deviceSize} Device`,
+        quantity: 1,
+        unit_price: totalAmount,
+        total_price: totalAmount,
+        item_type: 'service',
+        sort_order: 1
+      };
+
+      await supabase
+        .from('invoice_line_items')
+        .insert(lineItemData);
+        
+      console.log('✅ Invoice line item created');
+    } catch (lineItemError) {
+      console.error('⚠️ Failed to create invoice line item:', lineItemError);
     }
 
     return newInvoice;
@@ -259,5 +323,3 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Export createAutoInvoice for use in other routes
-export { createAutoInvoice }

@@ -31,10 +31,14 @@ export async function POST(request: NextRequest) {
         *,
         customers (
           id,
-          name,
+          first_name,
+          last_name,
           email,
           phone,
-          address
+          address_line1,
+          city,
+          state,
+          zip_code
         )
       `)
       .eq('id', data.appointmentId)
@@ -61,21 +65,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create test report
+    // Create test report with proper column names
     const testReportData = {
+      appointment_id: data.appointmentId,
       customer_id: appointment.customer_id,
       device_id: data.deviceId,
+      technician_id: appointment.assigned_technician || '0c1aeab4-350e-42c6-8dc2-0e3dcc278a38',
       test_date: data.testDate || new Date().toISOString().split('T')[0],
-      test_type: appointment.service_type,
+      test_time: new Date().toTimeString().split(' ')[0],
+      test_type: appointment.appointment_type || 'annual',
+      test_passed: data.testResult === 'Passed',
       initial_pressure: data.initialPressure || 15.0,
       final_pressure: data.finalPressure || 14.5,
-      test_duration: data.testDuration || 15,
-      status: data.testResult, // 'Passed', 'Failed', 'Needs Repair'
-      technician: data.technician || appointment.technician || 'Mike Fisher',
+      pressure_drop: Math.abs((data.initialPressure || 15.0) - (data.finalPressure || 14.5)),
+      check_valve_1_passed: data.testResult === 'Passed',
+      check_valve_2_passed: data.testResult === 'Passed',
+      relief_valve_passed: data.testResult === 'Passed',
+      overall_condition: data.testResult === 'Passed' ? 'Good' : 'Poor',
+      repairs_needed: data.testResult !== 'Passed',
+      repairs_completed: false,
+      certifier_name: data.technician || 'Mike Fisher',
+      certifier_number: 'WA-BF-001',
       notes: data.notes || '',
-      water_district: data.waterDistrict || 'City of Tacoma',
-      submitted: true,
-      submitted_date: new Date().toISOString()
+      submitted_to_district: true,
+      district_submission_date: new Date().toISOString()
     };
 
     const { data: testReport, error: testError } = await supabase
@@ -95,34 +108,40 @@ export async function POST(request: NextRequest) {
     // Update appointment status
     await supabase
       .from('appointments')
-      .update({ status: 'Completed' })
+      .update({ 
+        status: 'completed',
+        actual_start_time: new Date().toISOString(),
+        actual_end_time: new Date().toISOString(),
+        completion_notes: `Test ${data.testResult}: ${data.notes || 'No additional notes'}`
+      })
       .eq('id', data.appointmentId);
 
     // Update device status and last test date
-    const deviceUpdateData: DeviceUpdateData = {
+    const deviceUpdateData = {
       last_test_date: testReportData.test_date,
-      status: data.testResult
+      device_status: data.testResult === 'Passed' ? 'active' : 'needs_service'
     };
 
     // If test passed, set next test date
     if (data.testResult === 'Passed') {
       const nextTestDate = new Date(testReportData.test_date);
       nextTestDate.setFullYear(nextTestDate.getFullYear() + 1);
-      deviceUpdateData.next_test_date = nextTestDate.toISOString().split('T')[0];
+      deviceUpdateData.next_test_due = nextTestDate.toISOString().split('T')[0];
       
-      // Update customer's next test date as well
+      // Update customer status to active
       await supabase
         .from('customers')
         .update({ 
-          next_test_date: nextTestDate.toISOString().split('T')[0],
-          status: 'Active'
+          account_status: 'active'
         })
         .eq('id', appointment.customer_id);
     } else {
       // If failed, customer needs service
       await supabase
         .from('customers')
-        .update({ status: 'Needs Service' })
+        .update({ 
+          account_status: 'needs_service'
+        })
         .eq('id', appointment.customer_id);
     }
 
@@ -131,17 +150,69 @@ export async function POST(request: NextRequest) {
       .update(deviceUpdateData)
       .eq('id', data.deviceId);
 
-    // Auto-generate invoice
+    // Auto-generate invoice directly
     let invoice = null;
     try {
-      invoice = await createAutoInvoice(
-        appointment.customer_id,
-        appointment.service_type,
-        device.size,
-        `Test completed on ${testReportData.test_date}. Result: ${data.testResult}`
-      );
+      const customerName = appointment.customers 
+        ? `${appointment.customers.first_name} ${appointment.customers.last_name}`.trim()
+        : 'Unknown Customer';
+      
+      // Calculate pricing based on device size
+      const deviceSize = device?.size_inches || '0.75';
+      const rates = {
+        '0.5': 65,
+        '0.75': 75, 
+        '1': 100,
+        '1.5': 125,
+        '2': 150
+      };
+      const totalAmount = rates[deviceSize as keyof typeof rates] || 75;
+
+      // Generate invoice number
+      const { count } = await supabase
+        .from('invoices')
+        .select('*', { count: 'exact', head: true });
+      
+      const invoiceNumber = `INV-${new Date().getFullYear()}-${String((count || 0) + 1).padStart(3, '0')}`;
+
+      // Create invoice directly
+      const invoiceData = {
+        customer_id: appointment.customer_id,
+        appointment_id: data.appointmentId,
+        test_report_id: testReport.id,
+        invoice_number: invoiceNumber,
+        invoice_date: new Date().toISOString().split('T')[0],
+        due_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        subtotal: totalAmount,
+        tax_rate: 0.00,
+        tax_amount: 0.00,
+        discount_amount: 0.00,
+        total_amount: totalAmount,
+        amount_paid: 0.00,
+        balance_due: totalAmount,
+        status: 'draft',
+        payment_terms: 'net_30',
+        notes: `Test completed on ${testReportData.test_date}. Result: ${data.testResult}. Customer: ${customerName}`,
+        internal_notes: 'Auto-generated from test completion',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      const { data: newInvoice, error: invoiceError } = await supabase
+        .from('invoices')
+        .insert(invoiceData)
+        .select()
+        .single();
+
+      if (invoiceError) {
+        console.error('Invoice creation error:', invoiceError);
+        throw invoiceError;
+      }
+
+      invoice = newInvoice;
+      console.log('✅ Invoice auto-generated:', invoice?.id);
     } catch (invoiceError) {
-      console.error('Error creating auto invoice:', invoiceError);
+      console.error('❌ Error creating auto invoice:', invoiceError);
     }
 
     // Send push notification to admins about test completion
@@ -151,12 +222,12 @@ export async function POST(request: NextRequest) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: `Test Completed - ${data.testResult}`,
-          message: `${appointment.customers?.name || 'Customer'}'s backflow test ${data.testResult.toLowerCase()}. ${data.testResult === 'Passed' ? 'Invoice generated automatically.' : 'Customer will need repairs.'}`,
+          message: `${customerName}'s backflow test ${data.testResult.toLowerCase()}. ${data.testResult === 'Passed' ? 'Invoice generated automatically.' : 'Customer will need repairs.'}`,
           type: 'test_completed',
           data: {
             testReportId: testReport.id,
             customerId: appointment.customer_id,
-            customerName: appointment.customers?.name,
+            customerName: customerName,
             testResult: data.testResult,
             invoiceId: invoice?.id
           },
