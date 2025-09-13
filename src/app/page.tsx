@@ -240,12 +240,15 @@ export default function HomePage() {
               </div>
             </div>
             
-            <h1 className="relative text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white">
-              The Complete Platform for<br className="hidden sm:block" />
-              <span className="block sm:inline text-white">
-                Backflow Testing
-              </span>
-            </h1>
+            <div className="relative inline-block">
+              <div className="absolute inset-0 -inset-x-8 -inset-y-4 glass border border-blue-400 rounded-2xl glow-blue"></div>
+              <h1 className="relative text-4xl sm:text-5xl md:text-7xl font-bold leading-tight text-white px-8 py-4">
+                The Complete Platform for<br className="hidden sm:block" />
+                <span className="block sm:inline text-white">
+                  Backflow Testing
+                </span>
+              </h1>
+            </div>
           </div>
           
           <div className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed px-4">
