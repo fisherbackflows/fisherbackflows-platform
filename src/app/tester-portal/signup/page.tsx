@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { loadStripe } from '@stripe/stripe-js'
@@ -181,18 +183,16 @@ function SignupForm() {
               Your account has been created successfully. You're now on a 14-day free trial.
             </p>
             <div className="space-y-3">
-              <a 
-                href="/tester-portal/dashboard"
+              <Link href="/tester-portal/dashboard"
                 className="block w-full px-6 py-3 glass-btn-primary glow-blue text-white rounded-lg font-semibold hover:glow-blue transition-all"
               >
                 Go to Dashboard
-              </a>
-              <a 
-                href="/tester-portal/docs"
+              </Link>
+              <Link href="/tester-portal/docs"
                 className="block w-full px-6 py-3 bg-white/10 border border-white/30 text-white rounded-lg font-semibold hover:bg-white/20 transition-all"
               >
                 View API Documentation
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -215,18 +215,16 @@ function SignupForm() {
             </div>
             
             <div className="flex items-center space-x-4">
-              <a
-                href="/tester-portal"
+              <Link href="/tester-portal"
                 className="text-blue-300 hover:text-white transition-colors"
               >
                 Back to Home
-              </a>
-              <a
-                href="/tester-portal/docs"
+              </Link>
+              <Link href="/tester-portal/docs"
                 className="text-blue-300 hover:text-white transition-colors"
               >
                 Documentation
-              </a>
+              </Link>
             </div>
           </div>
         </div>

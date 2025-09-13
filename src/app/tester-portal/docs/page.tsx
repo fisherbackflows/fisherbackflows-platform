@@ -1,5 +1,7 @@
 'use client'
 
+import Link from 'next/link'
+
 import { useState } from 'react'
 import { 
   Code, 
@@ -66,12 +68,11 @@ export default function BackflowBuddyDocs() {
             </div>
             
             <div className="flex items-center space-x-4">
-              <a
-                href="/tester-portal/dashboard"
+              <Link href="/tester-portal/dashboard"
                 className="text-blue-300 hover:text-white transition-colors"
               >
                 Dashboard
-              </a>
+              </Link>
               <a
                 href="https://github.com/fisherbackflows/backflow-buddy-api"
                 target="_blank"
@@ -206,7 +207,7 @@ console.log(data.data); // Array of customers`}
                   <div>
                     <h3 className="text-xl font-semibold text-white mb-4">Getting Your API Key</h3>
                     <ol className="list-decimal list-inside text-white/80 space-y-2 mb-6">
-                      <li>Log in to your <a href="/tester-portal/dashboard" className="text-blue-300 hover:text-blue-300">Tester Portal Dashboard</a></li>
+                      <li>Log in to your <Link href="/tester-portal/dashboard" className="text-blue-300 hover:text-blue-300">Tester Portal Dashboard</Link></li>
                       <li>Navigate to the "API Keys" section</li>
                       <li>Click "Create Key" and give it a descriptive name</li>
                       <li>Copy your API key immediately (it won't be shown again)</li>

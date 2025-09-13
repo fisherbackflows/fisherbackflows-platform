@@ -105,7 +105,7 @@ export default function BackupPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <header>
           <div className="flex items-center space-x-4">
-            <Link href="/app/more">
+            <Link href="/team-portal/more">
               <Button variant="ghost" size="sm">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back

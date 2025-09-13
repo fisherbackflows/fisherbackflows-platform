@@ -529,7 +529,7 @@ export default function DistrictReportsPage() {
                 No district reports match your current filters
               </p>
               <Button asChild>
-                <Link href="/app/test-report">
+                <Link href="/team-portal/test-report">
                   <Plus className="h-4 w-4 mr-2" />
                   Create Test Report
                 </Link>
@@ -572,19 +572,19 @@ export default function DistrictReportsPage() {
             <div className="h-6 w-6 bg-black/30 backdrop-blur-lg rounded"></div>
             <span className="text-xs">Home</span>
           </Link>
-          <Link href="/app/customers" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
+          <Link href="/team-portal/customers" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Users className="h-6 w-6" />
             <span className="text-xs">Customers</span>
           </Link>
-          <Link href="/app/test-report" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
+          <Link href="/team-portal/test-report" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Plus className="h-6 w-6" />
             <span className="text-xs">Test</span>
           </Link>
-          <Link href="/app/schedule" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
+          <Link href="/team-portal/schedule" className="flex flex-col items-center py-2 px-1 text-white/80 hover:text-white/80">
             <Calendar className="h-6 w-6" />
             <span className="text-xs">Schedule</span>
           </Link>
-          <Link href="/app/more" className="flex flex-col items-center py-2 px-1 text-blue-300 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl">
+          <Link href="/team-portal/more" className="flex flex-col items-center py-2 px-1 text-blue-300 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl">
             <div className="flex space-x-1">
               <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>
               <div className="w-1 h-1 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-full"></div>

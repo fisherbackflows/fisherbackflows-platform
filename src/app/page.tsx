@@ -522,10 +522,10 @@ export default function HomePage() {
             <div>
               <h4 className="text-xl font-bold mb-6 text-white">Quick Links</h4>
               <div className="space-y-3">
-                <a href="/portal" className="block text-white/90 hover:text-white text-lg transition-colors">Customer Portal</a>
-                <a href="/portal/schedule" className="block text-white/90 hover:text-white text-lg transition-colors">Schedule Service</a>
-                <a href="/portal/pay" className="block text-white/90 hover:text-white text-lg transition-colors">Pay Bill</a>
-                <a href="/team-portal" className="block text-white/90 hover:text-white text-lg transition-colors">Team Portal</a>
+                <Link href="/portal" className="block text-white/90 hover:text-white text-lg transition-colors">Customer Portal</Link>
+                <Link href="/portal/schedule" className="block text-white/90 hover:text-white text-lg transition-colors">Schedule Service</Link>
+                <Link href="/portal/pay" className="block text-white/90 hover:text-white text-lg transition-colors">Pay Bill</Link>
+                <Link href="/team-portal" className="block text-white/90 hover:text-white text-lg transition-colors">Team Portal</Link>
               </div>
             </div>
             

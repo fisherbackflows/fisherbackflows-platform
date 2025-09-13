@@ -101,7 +101,7 @@ export default function CustomerDetailPage() {
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-white/80 mb-4">Customer Not Found</h1>
-          <Link href="/app/customers">
+          <Link href="/team-portal/customers">
             <Button>Back to Customers</Button>
           </Link>
         </div>
@@ -116,7 +116,7 @@ export default function CustomerDetailPage() {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Link href="/app/customers">
+              <Link href="/team-portal/customers">
                 <Button variant="ghost" size="sm">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back
@@ -125,13 +125,13 @@ export default function CustomerDetailPage() {
               <h1 className="text-2xl font-bold text-white/80">{customer.name}</h1>
             </div>
             <div className="flex items-center space-x-2">
-              <Link href={`/app/customers/${customerId}/edit`}>
+              <Link href={`/team-portal/customers/${customerId}/edit`}>
                 <Button variant="outline">
                   <Edit className="h-4 w-4 mr-2" />
                   Edit
                 </Button>
               </Link>
-              <Link href={`/app/test-report?customer=${customerId}`}>
+              <Link href={`/team-portal/test-report?customer=${customerId}`}>
                 <Button>
                   <Plus className="h-4 w-4 mr-2" />
                   New Test
@@ -188,7 +188,7 @@ export default function CustomerDetailPage() {
               <div className="p-6 border-b">
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold">Test History</h2>
-                  <Link href={`/app/test-report?customer=${customerId}`}>
+                  <Link href={`/team-portal/test-report?customer=${customerId}`}>
                     <Button>
                       <Plus className="h-4 w-4 mr-2" />
                       New Test Report
@@ -201,7 +201,7 @@ export default function CustomerDetailPage() {
                   <div className="text-center py-8 text-white/80">
                     <FileText className="h-12 w-12 mx-auto mb-4 text-white/80" />
                     <p>No test reports yet</p>
-                    <Link href={`/app/test-report?customer=${customerId}`}>
+                    <Link href={`/team-portal/test-report?customer=${customerId}`}>
                       <Button className="mt-4">Create First Report</Button>
                     </Link>
                   </div>

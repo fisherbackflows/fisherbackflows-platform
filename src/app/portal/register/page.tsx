@@ -427,13 +427,13 @@ export default function CustomerRegistrationPage() {
                 />
                 <label htmlFor="agreeToTerms" className="text-sm text-white/80">
                   I agree to the{' '}
-                  <a href="/terms" className="text-blue-300 hover:text-blue-700 underline font-medium">
+                  <Link href="/terms" className="text-blue-300 hover:text-blue-700 underline font-medium">
                     Terms of Service
-                  </a>{' '}
+                  </Link>{' '}
                   and{' '}
-                  <a href="/privacy" className="text-blue-300 hover:text-blue-700 underline font-medium">
+                  <Link href="/privacy" className="text-blue-300 hover:text-blue-700 underline font-medium">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </label>
               </div>
 

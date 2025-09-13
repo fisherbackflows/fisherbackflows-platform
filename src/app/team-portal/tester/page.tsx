@@ -166,14 +166,14 @@ export default function TesterDashboard() {
       title: 'Fill Test Report',
       description: 'Complete current test',
       icon: <FileText className="h-8 w-8" />,
-      href: currentAppointment ? `/app/test-report/${currentAppointment.id}` : '/app/test-reports',
+      href: currentAppointment ? `/team-portal/test-report/${currentAppointment.id}` : '/team-portal/test-reports',
       disabled: !currentAppointment
     },
     {
       title: 'View Schedule',
       description: 'Today\'s appointments',
       icon: <Calendar className="h-8 w-8" />,
-      href: '/app/schedule',
+      href: '/team-portal/schedule',
       disabled: false
     },
     {
@@ -276,7 +276,7 @@ export default function TesterDashboard() {
               
               <div className="mt-4 pt-4 border-t border-yellow-400/20">
                 <Link
-                  href={`/app/test-report/${currentAppointment.id}`}
+                  href={`/team-portal/test-report/${currentAppointment.id}`}
                   className="btn-glow px-6 py-3 rounded-2xl inline-flex items-center"
                 >
                   <FileText className="h-5 w-5 mr-2" />

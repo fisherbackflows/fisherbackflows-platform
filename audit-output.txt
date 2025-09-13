@@ -1,0 +1,242 @@
+[36m[1m🔍 Navigation Verification Script[0m
+[36m==================================================[0m
+
+[34mFound 110 pages to analyze[0m
+
+[1m📊 VERIFICATION RESULTS[0m
+==================================================
+
+[36mStatistics:[0m
+  Total pages: 110
+  Pages checked: 110
+  Pages with issues: 8
+  Total links found: 259
+  Broken links: 0
+  Missing Link imports: 0
+
+[36mPages by Section:[0m
+
+  [1mAdmin Panel[0m (3 pages):
+    [32m✓[0m /admin/bookings
+    [32m✓[0m /admin/dashboard
+    [32m✓[0m /admin
+
+  [1mai-showcase[0m (1 pages):
+    [32m✓[0m /ai-showcase
+
+  [1manalytics[0m (1 pages):
+    [32m✓[0m /analytics
+
+  [1mapp[0m (2 pages):
+    [32m✓[0m /app/dashboard
+    [32m✓[0m /app
+
+  [1mauth[0m (2 pages):
+    [32m✓[0m /auth/debug
+    [32m✓[0m /auth/verify
+
+  [1mBusiness Admin[0m (4 pages):
+    [32m✓[0m /business-admin/lead-generator
+    [32m✓[0m /business-admin/leads/[id]
+    [32m✓[0m /business-admin/leads
+    [32m✓[0m /business-admin
+
+  [1mcontact[0m (1 pages):
+    [32m✓[0m /contact
+
+  [1mcustomer[0m (2 pages):
+    [32m✓[0m /customer/feedback
+    [32m✓[0m /customer
+
+  [1mField Operations[0m (7 pages):
+    [32m✓[0m /field/appointments
+    [31m✗[0m /field/dashboard
+    [32m✓[0m /field/login
+    [31m✗[0m /field
+    [32m✓[0m /field/route
+    [32m✓[0m /field/test/[appointmentId]
+    [32m✓[0m /field/test-report
+
+  [1mlogin[0m (1 pages):
+    [32m✓[0m /login
+
+  [1mmaintenance[0m (1 pages):
+    [32m✓[0m /maintenance
+
+  [1mowner[0m (1 pages):
+    [32m✓[0m /owner
+
+  [1m.[0m (1 pages):
+    [32m✓[0m /
+
+  [1mCustomer Portal[0m (25 pages):
+    [32m✓[0m /portal/appointments
+    [32m✓[0m /portal/billing
+    [32m✓[0m /portal/company/[slug]/dashboard
+    [32m✓[0m /portal/company/[slug]
+    [31m✗[0m /portal/dashboard
+    [32m✓[0m /portal/devices
+    [32m✓[0m /portal/directory
+    [32m✓[0m /portal/forgot-password
+    [32m✓[0m /portal/help
+    [32m✓[0m /portal/login
+    [32m✓[0m /portal/map
+    [32m✓[0m /portal
+    [32m✓[0m /portal/pay
+    [32m✓[0m /portal/payment-cancelled
+    [32m✓[0m /portal/payment-success
+    [31m✗[0m /portal/register
+    [32m✓[0m /portal/registration-success
+    [32m✓[0m /portal/reports
+    [32m✓[0m /portal/reset-password
+    [32m✓[0m /portal/schedule
+    [32m✓[0m /portal/support
+    [32m✓[0m /portal/thank-you
+    [32m✓[0m /portal/verification-error
+    [32m✓[0m /portal/verification-success
+    [32m✓[0m /portal/verify-email
+
+  [1mprivacy[0m (1 pages):
+    [32m✓[0m /privacy
+
+  [1msecurity[0m (1 pages):
+    [32m✓[0m /security
+
+  [1msignup[0m (1 pages):
+    [32m✓[0m /signup
+
+  [1mTeam Portal[0m (33 pages):
+    [32m✓[0m /team-portal/backup
+    [32m✓[0m /team-portal/billing/subscriptions/create
+    [32m✓[0m /team-portal/billing/subscriptions
+    [32m✓[0m /team-portal/branding
+    [32m✓[0m /team-portal/customers/[id]/edit
+    [32m✓[0m /team-portal/customers/[id]
+    [32m✓[0m /team-portal/customers/database
+    [32m✓[0m /team-portal/customers/import
+    [32m✓[0m /team-portal/customers/new
+    [32m✓[0m /team-portal/customers
+    [31m✗[0m /team-portal/dashboard
+    [32m✓[0m /team-portal/data-management
+    [32m✓[0m /team-portal/district-reports
+    [32m✓[0m /team-portal/export
+    [32m✓[0m /team-portal/help
+    [32m✓[0m /team-portal/import
+    [32m✓[0m /team-portal/instagram
+    [32m✓[0m /team-portal/invoices/[id]/edit
+    [32m✓[0m /team-portal/invoices/[id]
+    [32m✓[0m /team-portal/invoices/new
+    [32m✓[0m /team-portal/invoices
+    [32m✓[0m /team-portal/labels
+    [32m✓[0m /team-portal/login
+    [32m✓[0m /team-portal/more
+    [31m✗[0m /team-portal
+    [32m✓[0m /team-portal/reminders/new
+    [32m✓[0m /team-portal/reminders
+    [32m✓[0m /team-portal/schedule/new
+    [32m✓[0m /team-portal/schedule
+    [32m✓[0m /team-portal/settings
+    [32m✓[0m /team-portal/test-report
+    [32m✓[0m /team-portal/test-reports/[id]/submit-district
+    [32m✓[0m /team-portal/tester
+
+  [1mterms[0m (1 pages):
+    [32m✓[0m /terms
+
+  [1mtest-navigation[0m (1 pages):
+    [32m✓[0m /test-navigation
+
+  [1mTester Portal[0m (20 pages):
+    [32m✓[0m /tester-portal/analytics
+    [32m✓[0m /tester-portal/branding
+    [32m✓[0m /tester-portal/compliance/districts
+    [32m✓[0m /tester-portal/contact
+    [32m✓[0m /tester-portal/customers/import
+    [32m✓[0m /tester-portal/customers/new
+    [32m✓[0m /tester-portal/customers
+    [31m✗[0m /tester-portal/dashboard
+    [32m✓[0m /tester-portal/demo
+    [32m✓[0m /tester-portal/docs
+    [32m✓[0m /tester-portal/invoices/new
+    [32m✓[0m /tester-portal/invoices
+    [31m✗[0m /tester-portal
+    [32m✓[0m /tester-portal/reminders/new
+    [32m✓[0m /tester-portal/reminders
+    [32m✓[0m /tester-portal/reports
+    [32m✓[0m /tester-portal/schedule/new
+    [32m✓[0m /tester-portal/schedule
+    [32m✓[0m /tester-portal/signup
+    [32m✓[0m /tester-portal/upgrade
+
+[31m[1m⚠️  ISSUES FOUND[0m
+==================================================
+
+[33m📄 /field/dashboard[0m
+  🔗 Missing expected navigation links: /field/dashboard, /field/appointments, /field/route, /field/test-report
+  🔗 Missing expected navigation links: /field/dashboard, /field/appointments, /field/route, /field/test-report
+
+[33m📄 /field[0m
+  🔗 Missing expected navigation links: /field/appointments, /field/route, /field/test-report
+  🔗 Missing expected navigation links: /field/appointments, /field/route, /field/test-report
+
+[33m📄 /portal/dashboard[0m
+  🔗 Missing expected navigation links: /portal/dashboard, /portal/appointments
+  🔗 Missing expected navigation links: /portal/dashboard, /portal/appointments
+  🔗 Missing expected navigation links: /portal/dashboard, /portal/appointments
+  🔗 Missing expected navigation links: /portal/dashboard, /portal/appointments
+  🔗 Missing expected navigation links: /portal/dashboard, /portal/appointments
+  🔗 Missing expected navigation links: /portal/dashboard, /portal/appointments
+  🔗 Missing expected navigation links: /portal/dashboard, /portal/appointments
+  🔗 Missing expected navigation links: /portal/dashboard, /portal/appointments
+  🔗 Missing expected navigation links: /portal/dashboard, /portal/appointments
+
+[33m📄 /portal/register[0m
+  ⚠️ Using <a> tag for internal navigation instead of <Link>
+     Line: 430
+  ⚠️ Using <a> tag for internal navigation instead of <Link>
+     Line: 434
+
+[33m📄 /team-portal/dashboard[0m
+  🔗 Missing expected navigation links: /team-portal/dashboard
+  🔗 Missing expected navigation links: /team-portal/dashboard
+  🔗 Missing expected navigation links: /team-portal/dashboard
+  🔗 Missing expected navigation links: /team-portal/dashboard
+  🔗 Missing expected navigation links: /team-portal/dashboard
+  🔗 Missing expected navigation links: /team-portal/dashboard
+  🔗 Missing expected navigation links: /team-portal/dashboard
+  🔗 Missing expected navigation links: /team-portal/dashboard
+  🔗 Missing expected navigation links: /team-portal/dashboard
+  🔗 Missing expected navigation links: /team-portal/dashboard
+  🔗 Missing expected navigation links: /team-portal/dashboard
+
+[33m📄 /team-portal[0m
+  🔗 Missing expected navigation links: /team-portal/customers, /team-portal/invoices, /team-portal/schedule
+  🔗 Missing expected navigation links: /team-portal/customers, /team-portal/invoices, /team-portal/schedule
+  🔗 Missing expected navigation links: /team-portal/customers, /team-portal/invoices, /team-portal/schedule
+  🔗 Missing expected navigation links: /team-portal/customers, /team-portal/invoices, /team-portal/schedule
+  🔗 Missing expected navigation links: /team-portal/customers, /team-portal/invoices, /team-portal/schedule
+
+[33m📄 /tester-portal/dashboard[0m
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+
+[33m📄 /tester-portal[0m
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+  🔗 Missing expected navigation links: /tester-portal/dashboard, /tester-portal/schedule, /tester-portal/reports, /tester-portal/customers
+
+[35m[1m💡 RECOMMENDATIONS[0m
+==================================================
+
+• Replace 2 <a> tags with <Link> components for internal navigation
+
+[33mRun 'npm run lint' to auto-fix some issues[0m

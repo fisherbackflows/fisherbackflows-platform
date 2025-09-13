@@ -132,7 +132,7 @@ export default function InvoiceDetailPage() {
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-white/80 mb-4">Invoice Not Found</h1>
-          <Link href="/app/invoices">
+          <Link href="/team-portal/invoices">
             <Button>Back to Invoices</Button>
           </Link>
         </div>

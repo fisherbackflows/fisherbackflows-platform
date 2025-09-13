@@ -504,7 +504,7 @@ Fisher Backflows`,
                 <h3 className="text-lg font-medium text-white/80 mb-2">No automation rules</h3>
                 <p className="text-white/80 mb-4">Create your first rule to start sending automated reminders</p>
                 <Button asChild>
-                  <Link href="/app/reminders/new">
+                  <Link href="/team-portal/reminders/new">
                     <Plus className="h-4 w-4 mr-2" />
                     Create First Rule
                   </Link>

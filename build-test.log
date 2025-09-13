@@ -1,0 +1,317 @@
+
+> fisherbackflows@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.2
+   - Environments: .env.local, .env.production
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 14.2s
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+   Generating static pages (0/259) ...
+   Generating static pages (64/259) 
+   Generating static pages (129/259) 
+   Generating static pages (194/259) 
+ ✓ Generating static pages (259/259)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                            Size  First Load JS
+┌ ○ /                                               6.57 kB         126 kB
+├ ○ /_not-found                                        1 kB         103 kB
+├ ○ /admin                                            541 B         102 kB
+├ ○ /admin/bookings                                 7.74 kB         136 kB
+├ ○ /admin/dashboard                                3.24 kB         126 kB
+├ ○ /ai-showcase                                    5.96 kB         108 kB
+├ ○ /analytics                                       108 kB         217 kB
+├ ƒ /api/admin/activity                               541 B         102 kB
+├ ƒ /api/admin/analytics                              541 B         102 kB
+├ ƒ /api/admin/audit-export                           541 B         102 kB
+├ ƒ /api/admin/audit-logs                             541 B         102 kB
+├ ƒ /api/admin/audit-stats                            541 B         102 kB
+├ ƒ /api/admin/bookings                               541 B         102 kB
+├ ƒ /api/admin/bookings/[id]                          541 B         102 kB
+├ ƒ /api/admin/bookings/[id]/status                   541 B         102 kB
+├ ƒ /api/admin/bookings/export                        541 B         102 kB
+├ ƒ /api/admin/bypass                                 541 B         102 kB
+├ ƒ /api/admin/export                                 541 B         102 kB
+├ ƒ /api/admin/feedback                               541 B         102 kB
+├ ƒ /api/admin/import                                 541 B         102 kB
+├ ƒ /api/admin/intelligence/business-opportunities    541 B         102 kB
+├ ƒ /api/admin/intelligence/customer-health           541 B         102 kB
+├ ƒ /api/admin/intelligence/kpi-dashboard             541 B         102 kB
+├ ƒ /api/admin/intelligence/operational-insights      541 B         102 kB
+├ ƒ /api/admin/intelligence/revenue-forecast          541 B         102 kB
+├ ƒ /api/admin/leads                                  541 B         102 kB
+├ ƒ /api/admin/metrics                                541 B         102 kB
+├ ƒ /api/admin/private-mode                           541 B         102 kB
+├ ƒ /api/admin/reports/dashboard                      541 B         102 kB
+├ ƒ /api/admin/reports/export                         541 B         102 kB
+├ ƒ /api/admin/route-optimization                     541 B         102 kB
+├ ƒ /api/admin/security/rls-status                    541 B         102 kB
+├ ƒ /api/admin/simple-metrics                         541 B         102 kB
+├ ƒ /api/admin/unlock-account                         541 B         102 kB
+├ ƒ /api/ai/chat                                      541 B         102 kB
+├ ƒ /api/ai/customer-communication                    541 B         102 kB
+├ ƒ /api/ai/generate-report                           541 B         102 kB
+├ ƒ /api/ai/insights                                  541 B         102 kB
+├ ƒ /api/analytics/dashboard                          541 B         102 kB
+├ ƒ /api/analytics/export                             541 B         102 kB
+├ ƒ /api/analytics/predictive                         541 B         102 kB
+├ ƒ /api/analytics/revenue                            541 B         102 kB
+├ ƒ /api/appointments                                 541 B         102 kB
+├ ƒ /api/appointments/[id]                            541 B         102 kB
+├ ƒ /api/appointments/[id]/technician-location        541 B         102 kB
+├ ƒ /api/appointments/available-dates                 541 B         102 kB
+├ ƒ /api/appointments/available-times                 541 B         102 kB
+├ ƒ /api/appointments/book                            541 B         102 kB
+├ ƒ /api/appointments/book-secure                     541 B         102 kB
+├ ƒ /api/appointments/cancel                          541 B         102 kB
+├ ƒ /api/appointments/cancel-simple                   541 B         102 kB
+├ ƒ /api/appointments/list                            541 B         102 kB
+├ ƒ /api/appointments/next-available                  541 B         102 kB
+├ ƒ /api/appointments/reschedule                      541 B         102 kB
+├ ƒ /api/appointments/resolve-conflicts               541 B         102 kB
+├ ƒ /api/appointments/send-reminders                  541 B         102 kB
+├ ƒ /api/auth/forgot-password                         541 B         102 kB
+├ ƒ /api/auth/health                                  541 B         102 kB
+├ ƒ /api/auth/login                                   541 B         102 kB
+├ ƒ /api/auth/login-new                               541 B         102 kB
+├ ƒ /api/auth/portal                                  541 B         102 kB
+├ ƒ /api/auth/register                                541 B         102 kB
+├ ƒ /api/auth/register-new                            541 B         102 kB
+├ ƒ /api/auth/register-resend-only                    541 B         102 kB
+├ ƒ /api/auth/register-with-resend                    541 B         102 kB
+├ ƒ /api/auth/resend-sms                              541 B         102 kB
+├ ƒ /api/auth/resend-verification                     541 B         102 kB
+├ ƒ /api/auth/reset-password                          541 B         102 kB
+├ ƒ /api/auth/seed-test-user                          541 B         102 kB
+├ ƒ /api/auth/send-verification                       541 B         102 kB
+├ ƒ /api/auth/validate-session                        541 B         102 kB
+├ ƒ /api/auth/verify                                  541 B         102 kB
+├ ƒ /api/auth/verify-email                            541 B         102 kB
+├ ƒ /api/auth/verify-reset                            541 B         102 kB
+├ ƒ /api/auth/verify-simple                           541 B         102 kB
+├ ƒ /api/auth/verify-sms                              541 B         102 kB
+├ ƒ /api/automation/email                             541 B         102 kB
+├ ƒ /api/automation/engine                            541 B         102 kB
+├ ƒ /api/automation/orchestrator                      541 B         102 kB
+├ ƒ /api/automation/payments                          541 B         102 kB
+├ ƒ /api/automation/water-department                  541 B         102 kB
+├ ƒ /api/billing/subscriptions                        541 B         102 kB
+├ ƒ /api/billing/subscriptions/[id]                   541 B         102 kB
+├ ƒ /api/business-admin/leads                         541 B         102 kB
+├ ƒ /api/business-admin/leads/[id]                    541 B         102 kB
+├ ƒ /api/business-admin/leads/[id]/activity           541 B         102 kB
+├ ƒ /api/business-admin/metrics                       541 B         102 kB
+├ ƒ /api/calendar/available-dates                     541 B         102 kB
+├ ƒ /api/companies/[companyId]/branding               541 B         102 kB
+├ ƒ /api/companies/by-slug/[slug]/branding            541 B         102 kB
+├ ƒ /api/cron/compliance-check                        541 B         102 kB
+├ ƒ /api/customer/feedback                            541 B         102 kB
+├ ƒ /api/customers                                    541 B         102 kB
+├ ƒ /api/customers/[id]                               541 B         102 kB
+├ ƒ /api/data/export                                  541 B         102 kB
+├ ƒ /api/data/import                                  541 B         102 kB
+├ ƒ /api/debug                                        541 B         102 kB
+├ ƒ /api/debug/auth-env                               541 B         102 kB
+├ ƒ /api/debug/simple-register                        541 B         102 kB
+├ ƒ /api/devices                                      541 B         102 kB
+├ ƒ /api/email/send                                   541 B         102 kB
+├ ƒ /api/emergency/fix-auth-policies                  541 B         102 kB
+├ ƒ /api/errors/report                                541 B         102 kB
+├ ƒ /api/files/upload                                 541 B         102 kB
+├ ƒ /api/fix-password                                 541 B         102 kB
+├ ƒ /api/health                                       541 B         102 kB
+├ ƒ /api/invoices                                     541 B         102 kB
+├ ƒ /api/invoices/[id]                                541 B         102 kB
+├ ƒ /api/invoices/[id]/pdf                            541 B         102 kB
+├ ƒ /api/lead-generation/compliance-monitor           541 B         102 kB
+├ ƒ /api/lead-generation/data-mining                  541 B         102 kB
+├ ƒ /api/lead-generation/database-integration         541 B         102 kB
+├ ƒ /api/lead-generation/scoring-engine               541 B         102 kB
+├ ƒ /api/lead-generation/web-scraper                  541 B         102 kB
+├ ƒ /api/leads/generate                               541 B         102 kB
+├ ƒ /api/mobile/dashboard                             541 B         102 kB
+├ ƒ /api/monitoring/ai-systems                      2.63 kB         105 kB
+├ ƒ /api/monitoring/dashboard                         541 B         102 kB
+├ ƒ /api/notifications/mobile                         541 B         102 kB
+├ ƒ /api/notifications/mobile/[id]/read               541 B         102 kB
+├ ƒ /api/notifications/send                           541 B         102 kB
+├ ƒ /api/notifications/track                          541 B         102 kB
+├ ƒ /api/owner/metrics                                541 B         102 kB
+├ ƒ /api/payments/checkout                            541 B         102 kB
+├ ƒ /api/payments/methods                             541 B         102 kB
+├ ƒ /api/payments/process                             541 B         102 kB
+├ ƒ /api/payments/receipt/[paymentId]                 541 B         102 kB
+├ ƒ /api/payments/receipt/[paymentId]/email           541 B         102 kB
+├ ƒ /api/payments/secure                              541 B         102 kB
+├ ƒ /api/payments/test-checkout                       541 B         102 kB
+├ ƒ /api/portal/company/[slug]/dashboard              541 B         102 kB
+├ ƒ /api/portal/company/[slug]/login                  541 B         102 kB
+├ ƒ /api/portal/directory                             541 B         102 kB
+├ ƒ /api/pricing/dynamic                            4.13 kB         150 kB
+├ ƒ /api/push/send                                    541 B         102 kB
+├ ƒ /api/push/subscribe                               541 B         102 kB
+├ ƒ /api/reports/generate-pdf                         541 B         102 kB
+├ ƒ /api/scheduling/intelligent                       541 B         102 kB
+├ ƒ /api/search                                       541 B         102 kB
+├ ƒ /api/security/status                              541 B         102 kB
+├ ƒ /api/stripe/webhook                               541 B         102 kB
+├ ƒ /api/subscriptions/create-checkout                541 B         102 kB
+├ ƒ /api/team/appointments                            541 B         102 kB
+├ ƒ /api/team/auth/login                              541 B         102 kB
+├ ƒ /api/team/auth/logout                             541 B         102 kB
+├ ƒ /api/team/auth/me                                 541 B         102 kB
+├ ƒ /api/team/company                                 541 B         102 kB
+├ ƒ /api/team/customers                               541 B         102 kB
+├ ƒ /api/team/customers/import                        541 B         102 kB
+├ ƒ /api/team/dashboard/stats                         541 B         102 kB
+├ ƒ /api/technicians/available                        541 B         102 kB
+├ ƒ /api/technicians/location                         541 B         102 kB
+├ ƒ /api/technicians/location/sync                    541 B         102 kB
+├ ƒ /api/test                                         541 B         102 kB
+├ ƒ /api/test-reports                                 541 B         102 kB
+├ ƒ /api/test-reports/[id]/pdf                        541 B         102 kB
+├ ƒ /api/test-reports/complete                        541 B         102 kB
+├ ƒ /api/test-reports/submit-district                 541 B         102 kB
+├ ƒ /api/tester-portal/analytics                      541 B         102 kB
+├ ƒ /api/tester-portal/api-keys                       541 B         102 kB
+├ ƒ /api/tester-portal/api-keys/[id]                  541 B         102 kB
+├ ƒ /api/tester-portal/billing                        541 B         102 kB
+├ ƒ /api/tester-portal/invoices                       541 B         102 kB
+├ ƒ /api/tester-portal/permissions                    541 B         102 kB
+├ ƒ /api/tester-portal/reminders                      541 B         102 kB
+├ ƒ /api/tester-portal/reports                        541 B         102 kB
+├ ƒ /api/tester-portal/schedule                       541 B         102 kB
+├ ƒ /api/tester-portal/signup                         541 B         102 kB
+├ ƒ /api/tester-portal/usage                          541 B         102 kB
+├ ƒ /api/tester-portal/webhooks/stripe                541 B         102 kB
+├ ƒ /api/testing/workflow                             541 B         102 kB
+├ ƒ /api/upload/district-notice                       541 B         102 kB
+├ ƒ /api/v1/appointments                              541 B         102 kB
+├ ƒ /api/v1/customers                                 541 B         102 kB
+├ ƒ /api/v1/devices                                   541 B         102 kB
+├ ƒ /api/v1/invoices                                  541 B         102 kB
+├ ƒ /api/v1/reports                                   541 B         102 kB
+├ ƒ /api/water-districts                              541 B         102 kB
+├ ƒ /api/webhooks/stripe                              541 B         102 kB
+├ ƒ /api/webhooks/stripe-secure                       541 B         102 kB
+├ ○ /app                                              548 B         103 kB
+├ ○ /app/dashboard                                    552 B         103 kB
+├ ○ /auth/debug                                       973 B         106 kB
+├ ○ /auth/verify                                    3.72 kB         168 kB
+├ ○ /business-admin                                  153 kB         264 kB
+├ ○ /business-admin/lead-generator                  8.18 kB         119 kB
+├ ○ /business-admin/leads                           7.85 kB         122 kB
+├ ƒ /business-admin/leads/[id]                      7.32 kB         122 kB
+├ ○ /contact                                        1.24 kB         107 kB
+├ ○ /customer                                         541 B         102 kB
+├ ○ /customer/feedback                              6.74 kB         130 kB
+├ ○ /field                                             6 kB         129 kB
+├ ○ /field/appointments                             5.86 kB         129 kB
+├ ○ /field/dashboard                                7.71 kB         351 kB
+├ ○ /field/login                                    4.39 kB         336 kB
+├ ○ /field/route                                        0 B            0 B
+├ ○ /field/test-report                              7.09 kB         130 kB
+├ ƒ /field/test/[appointmentId]                     6.11 kB         134 kB
+├ ○ /icon.png                                           0 B            0 B
+├ ○ /login                                          5.38 kB         340 kB
+├ ○ /maintenance                                    3.32 kB         120 kB
+├ ○ /owner                                          4.18 kB         150 kB
+├ ○ /portal                                           557 B         103 kB
+├ ○ /portal/appointments                            2.02 kB         171 kB
+├ ○ /portal/billing                                 3.77 kB         173 kB
+├ ƒ /portal/company/[slug]                          7.88 kB         172 kB
+├ ƒ /portal/company/[slug]/dashboard                6.08 kB         156 kB
+├ ○ /portal/dashboard                               4.04 kB         173 kB
+├ ○ /portal/devices                                 5.24 kB         174 kB
+├ ○ /portal/directory                               3.69 kB         114 kB
+├ ○ /portal/forgot-password                         3.84 kB         124 kB
+├ ○ /portal/help                                    1.25 kB         107 kB
+├ ○ /portal/login                                     541 B         102 kB
+├ ○ /portal/map                                     9.12 kB         111 kB
+├ ○ /portal/pay                                     3.53 kB         120 kB
+├ ○ /portal/payment-cancelled                       2.13 kB         119 kB
+├ ○ /portal/payment-success                         2.75 kB         120 kB
+├ ○ /portal/register                                   5 kB         125 kB
+├ ○ /portal/registration-success                      166 B         106 kB
+├ ○ /portal/reports                                 3.71 kB         173 kB
+├ ○ /portal/reset-password                          4.13 kB         124 kB
+├ ○ /portal/schedule                                8.93 kB         183 kB
+├ ○ /portal/support                                 1.25 kB         107 kB
+├ ○ /portal/thank-you                               1.25 kB         107 kB
+├ ○ /portal/verification-error                      2.62 kB         117 kB
+├ ○ /portal/verification-success                       2 kB         117 kB
+├ ○ /portal/verify-email                            3.02 kB         123 kB
+├ ○ /privacy                                        1.25 kB         107 kB
+├ ○ /security                                       4.49 kB         110 kB
+├ ○ /signup                                         3.01 kB         148 kB
+├ ○ /team-portal                                      906 B         103 kB
+├ ○ /team-portal/backup                             4.04 kB         127 kB
+├ ○ /team-portal/billing/subscriptions              4.75 kB         128 kB
+├ ○ /team-portal/billing/subscriptions/create       1.26 kB         107 kB
+├ ○ /team-portal/branding                           4.73 kB         115 kB
+├ ○ /team-portal/customers                           4.8 kB         128 kB
+├ ƒ /team-portal/customers/[id]                      3.3 kB         118 kB
+├ ƒ /team-portal/customers/[id]/edit                4.05 kB         127 kB
+├ ○ /team-portal/customers/database                  6.4 kB         130 kB
+├ ○ /team-portal/customers/import                     11 kB         116 kB
+├ ○ /team-portal/customers/new                      6.46 kB         130 kB
+├ ○ /team-portal/dashboard                          4.87 kB         128 kB
+├ ○ /team-portal/data-management                    5.96 kB         129 kB
+├ ○ /team-portal/district-reports                   6.16 kB         129 kB
+├ ○ /team-portal/export                             3.59 kB         127 kB
+├ ○ /team-portal/help                               4.43 kB         128 kB
+├ ○ /team-portal/import                             4.14 kB         127 kB
+├ ○ /team-portal/instagram                          6.68 kB         130 kB
+├ ○ /team-portal/invoices                           5.25 kB         128 kB
+├ ƒ /team-portal/invoices/[id]                      4.06 kB         127 kB
+├ ƒ /team-portal/invoices/[id]/edit                 3.88 kB         127 kB
+├ ○ /team-portal/invoices/new                       5.37 kB         129 kB
+├ ○ /team-portal/labels                             4.04 kB         127 kB
+├ ○ /team-portal/login                              3.96 kB         132 kB
+├ ○ /team-portal/more                               4.47 kB         128 kB
+├ ○ /team-portal/reminders                          6.34 kB         129 kB
+├ ○ /team-portal/reminders/new                      3.81 kB         127 kB
+├ ○ /team-portal/schedule                           5.24 kB         128 kB
+├ ○ /team-portal/schedule/new                       6.26 kB         129 kB
+├ ○ /team-portal/settings                           3.58 kB         127 kB
+├ ○ /team-portal/test-report                        5.72 kB         129 kB
+├ ƒ /team-portal/test-reports/[id]/submit-district  4.09 kB         127 kB
+├ ○ /team-portal/tester                             4.18 kB         127 kB
+├ ○ /terms                                          1.25 kB         107 kB
+├ ○ /test-navigation                                2.95 kB         108 kB
+├ ○ /tester-portal                                  4.22 kB         110 kB
+├ ○ /tester-portal/analytics                        1.28 kB         107 kB
+├ ○ /tester-portal/branding                         5.12 kB         116 kB
+├ ○ /tester-portal/compliance/districts             1.78 kB         107 kB
+├ ○ /tester-portal/contact                          1.25 kB         107 kB
+├ ○ /tester-portal/customers                        4.26 kB         110 kB
+├ ○ /tester-portal/customers/import                 1.78 kB         107 kB
+├ ○ /tester-portal/customers/new                    2.96 kB         108 kB
+├ ○ /tester-portal/dashboard                        5.18 kB         111 kB
+├ ○ /tester-portal/demo                             1.25 kB         107 kB
+├ ○ /tester-portal/docs                             6.36 kB         112 kB
+├ ○ /tester-portal/invoices                         4.68 kB         110 kB
+├ ○ /tester-portal/invoices/new                     1.78 kB         107 kB
+├ ○ /tester-portal/reminders                         5.4 kB         111 kB
+├ ○ /tester-portal/reminders/new                    1.79 kB         107 kB
+├ ○ /tester-portal/reports                          5.82 kB         111 kB
+├ ○ /tester-portal/schedule                         4.85 kB         110 kB
+├ ○ /tester-portal/schedule/new                     1.78 kB         107 kB
+├ ○ /tester-portal/signup                           9.84 kB         115 kB
+└ ○ /tester-portal/upgrade                          2.17 kB         108 kB
++ First Load JS shared by all                        102 kB
+  ├ chunks/1255-f206d8cb7c37a3ff.js                 45.6 kB
+  ├ chunks/4bd1b696-100b9d70ed4e49c1.js             54.2 kB
+  └ other shared chunks (total)                     2.13 kB
+
+
+ƒ Middleware                                        66.5 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
