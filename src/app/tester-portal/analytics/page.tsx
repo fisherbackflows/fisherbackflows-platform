@@ -9,8 +9,8 @@ import {
   CurrencyDollarIcon,
   UsersIcon,
   ClockIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon,
   CalendarIcon,
   FunnelIcon,
   MapPinIcon,
@@ -225,7 +225,7 @@ export default function AdvancedAnalytics() {
                 <p className="text-blue-200 text-sm font-medium">Total Revenue</p>
                 <p className="text-3xl font-bold text-white">{formatCurrency(mockAnalyticsData.revenue.total)}</p>
                 <div className="flex items-center mt-2">
-                  <TrendingUpIcon className="h-4 w-4 text-green-400 mr-1" />
+                  <ArrowTrendingUpIcon className="h-4 w-4 text-green-400 mr-1" />
                   <span className="text-green-400 text-sm font-medium">
                     {formatPercentage(mockAnalyticsData.revenue.growth)}
                   </span>
@@ -241,7 +241,7 @@ export default function AdvancedAnalytics() {
                 <p className="text-blue-200 text-sm font-medium">Total Customers</p>
                 <p className="text-3xl font-bold text-white">{mockAnalyticsData.customers.total.toLocaleString()}</p>
                 <div className="flex items-center mt-2">
-                  <TrendingUpIcon className="h-4 w-4 text-green-400 mr-1" />
+                  <ArrowTrendingUpIcon className="h-4 w-4 text-green-400 mr-1" />
                   <span className="text-green-400 text-sm font-medium">
                     +{mockAnalyticsData.customers.newThisMonth} this month
                   </span>
@@ -273,7 +273,7 @@ export default function AdvancedAnalytics() {
                 <p className="text-blue-200 text-sm font-medium">Customer Satisfaction</p>
                 <p className="text-3xl font-bold text-white">{mockAnalyticsData.performance.customerSatisfaction}/5.0</p>
                 <div className="flex items-center mt-2">
-                  <TrendingUpIcon className="h-4 w-4 text-green-400 mr-1" />
+                  <ArrowTrendingUpIcon className="h-4 w-4 text-green-400 mr-1" />
                   <span className="text-green-400 text-sm font-medium">
                     {mockAnalyticsData.performance.efficiency}% efficiency
                   </span>
@@ -356,12 +356,12 @@ export default function AdvancedAnalytics() {
               Geographic Performance
             </h3>
             <div className="space-y-4">
-              {mockAnalyticsData.geography.regions.map((region) => (
+              {mockAnalyticsData.geography.map((region) => (
                 <div key={region.name} className="p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="font-medium text-white">{region.name}</h4>
                     <div className="flex items-center">
-                      <TrendingUpIcon className="h-4 w-4 text-green-400 mr-1" />
+                      <ArrowTrendingUpIcon className="h-4 w-4 text-green-400 mr-1" />
                       <span className="text-green-400 text-sm">{formatPercentage(region.growth)}</span>
                     </div>
                   </div>
