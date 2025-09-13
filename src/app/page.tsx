@@ -241,11 +241,15 @@ export default function HomePage() {
             </div>
             
             <div className="relative inline-block mb-8">
-              <div className="absolute inset-0 -inset-x-3 -inset-y-6 bg-gradient-to-r from-blue-600/10 to-purple-600/10 backdrop-blur-md border-2 border-blue-400/50 rounded-[3rem] shadow-[0_0_50px_rgba(59,130,246,0.4),inset_0_0_30px_rgba(59,130,246,0.1)]"></div>
-              <h1 className="relative text-4xl sm:text-5xl md:text-7xl font-bold leading-tight text-white px-3 py-6">
-                The Complete Platform for<br className="hidden sm:block" />
-                <span className="block sm:inline text-white">
-                  Backflow Testing
+              <h1 className="relative text-4xl sm:text-5xl md:text-7xl font-bold leading-tight text-white">
+                <span className="relative inline-block">
+                  <div className="absolute inset-0 -inset-x-4 -inset-y-3 bg-gradient-to-r from-blue-600/10 to-purple-600/10 backdrop-blur-md border-2 border-blue-400/50 rounded-[2.5rem] shadow-[0_0_50px_rgba(59,130,246,0.4),inset_0_0_30px_rgba(59,130,246,0.1)]"></div>
+                  <span className="relative px-4 py-3 inline-block">The Complete Platform for</span>
+                </span>
+                <br className="hidden sm:block" />
+                <span className="relative inline-block mt-2">
+                  <div className="absolute inset-0 -inset-x-4 -inset-y-3 bg-gradient-to-r from-blue-600/10 to-purple-600/10 backdrop-blur-md border-2 border-blue-400/50 rounded-[2.5rem] shadow-[0_0_50px_rgba(59,130,246,0.4),inset_0_0_30px_rgba(59,130,246,0.1)]"></div>
+                  <span className="relative px-4 py-3 inline-block text-white">Backflow Testing</span>
                 </span>
               </h1>
             </div>
