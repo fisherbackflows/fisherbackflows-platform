@@ -1,249 +1,187 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-import { triggerWebhook, WEBHOOK_EVENTS } from '@/lib/webhooks'
+import { requireSession } from '@/lib/auth/requireSession'
+import { validateAndSanitize, CustomerCreateSchema, CustomerQuerySchema } from '@/lib/validation/schemas'
+import { getCustomers, createCustomer } from '@/lib/db/queries'
+import { logger } from '@/lib/logging/logger'
+import { rateLimit } from '@/lib/cache/redis'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+/**
+ * GET /api/v1/customers
+ * List customers with filtering and pagination
+ */
+export async function GET(req: NextRequest) {
+  return requireSession(['admin', 'manager', 'coordinator'], async ({ orgId, userId, session }) => {
+    const requestId = req.headers.get('x-request-id') || crypto.randomUUID()
 
-// API key authentication middleware
-async function authenticateApiKey(request: NextRequest) {
-  const apiKey = request.headers.get('x-api-key')
-  if (!apiKey) {
-    return { error: 'API key required', status: 401 }
-  }
-
-  // Verify API key and get associated company
-  const { data: apiKeyRecord, error } = await supabase
-    .from('api_keys')
-    .select(`
-      id,
-      company_id,
-      name,
-      is_active,
-      rate_limit_per_hour,
-      companies (
-        id,
-        name,
-        subscription_status
-      )
-    `)
-    .eq('key_hash', apiKey)
-    .eq('is_active', true)
-    .single()
-
-  if (error || !apiKeyRecord) {
-    return { error: 'Invalid API key', status: 401 }
-  }
-
-  if (!['active', 'trialing'].includes(apiKeyRecord.companies.subscription_status)) {
-    return { error: 'Subscription not active', status: 403 }
-  }
-
-  return { 
-    company: apiKeyRecord.companies,
-    apiKey: apiKeyRecord,
-    success: true 
-  }
-}
-
-// GET /api/v1/customers - List customers
-export async function GET(request: NextRequest) {
-  try {
-    const auth = await authenticateApiKey(request)
-    if (!auth.success) {
-      return NextResponse.json({ error: auth.error }, { status: auth.status })
-    }
-
-    const { searchParams } = new URL(request.url)
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = Math.min(parseInt(searchParams.get('limit') || '50'), 100)
-    const search = searchParams.get('search')
-    const status = searchParams.get('status')
-
-    let query = supabase
-      .from('customers')
-      .select(`
-        id,
-        email,
-        first_name,
-        last_name,
-        phone,
-        address,
-        city,
-        state,
-        zip_code,
-        is_active,
-        email_verified,
-        next_test_date,
-        created_at,
-        updated_at
-      `, { count: 'exact' })
-      .eq('company_id', auth.company.id)
-      .order('created_at', { ascending: false })
-
-    // Apply filters
-    if (search) {
-      query = query.or(`first_name.ilike.%${search}%,last_name.ilike.%${search}%,email.ilike.%${search}%`)
-    }
-    
-    if (status) {
-      query = query.eq('is_active', status === 'active')
-    }
-
-    // Apply pagination
-    const offset = (page - 1) * limit
-    query = query.range(offset, offset + limit - 1)
-
-    const { data: customers, error, count } = await query
-
-    if (error) {
-      console.error('Database error:', error)
-      return NextResponse.json({ error: 'Failed to fetch customers' }, { status: 500 })
-    }
-
-    // Log API usage
-    await supabase
-      .from('api_usage_logs')
-      .insert({
-        api_key_id: auth.apiKey.id,
-        company_id: auth.company.id,
-        endpoint: '/customers',
-        method: 'GET',
-        status_code: 200,
-        ip_address: request.headers.get('x-forwarded-for') || 'unknown',
-        user_agent: request.headers.get('user-agent') || 'unknown'
-      })
-
-    return NextResponse.json({
-      data: customers || [],
-      pagination: {
-        page,
-        limit,
-        total: count || 0,
-        pages: Math.ceil((count || 0) / limit)
-      }
-    })
-
-  } catch (error) {
-    console.error('API error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  }
-}
-
-// POST /api/v1/customers - Create customer
-export async function POST(request: NextRequest) {
-  try {
-    const auth = await authenticateApiKey(request)
-    if (!auth.success) {
-      return NextResponse.json({ error: auth.error }, { status: auth.status })
-    }
-
-    const body = await request.json()
-    const {
-      email,
-      first_name,
-      last_name,
-      phone,
-      address,
-      city,
-      state,
-      zip_code,
-      send_welcome_email = true
-    } = body
-
-    // Validate required fields
-    if (!email || !first_name || !last_name) {
-      return NextResponse.json({ 
-        error: 'Missing required fields: email, first_name, last_name' 
-      }, { status: 400 })
-    }
-
-    // Check if customer already exists
-    const { data: existingCustomer } = await supabase
-      .from('customers')
-      .select('id')
-      .eq('company_id', auth.company.id)
-      .eq('email', email.toLowerCase())
-      .single()
-
-    if (existingCustomer) {
-      return NextResponse.json({ 
-        error: 'Customer with this email already exists' 
-      }, { status: 409 })
-    }
-
-    // Create customer
-    const { data: customer, error } = await supabase
-      .from('customers')
-      .insert({
-        company_id: auth.company.id,
-        email: email.toLowerCase(),
-        first_name,
-        last_name,
-        phone,
-        address,
-        city,
-        state,
-        zip_code,
-        is_active: true,
-        email_verified: false
-      })
-      .select()
-      .single()
-
-    if (error) {
-      console.error('Database error:', error)
-      return NextResponse.json({ error: 'Failed to create customer' }, { status: 500 })
-    }
-
-    // Send welcome email if requested
-    if (send_welcome_email) {
-      try {
-        await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/email/send`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: email,
-            template: 'customer_welcome',
-            data: {
-              customer_name: `${first_name} ${last_name}`,
-              company_name: auth.company.name,
-              portal_url: `${process.env.NEXT_PUBLIC_APP_URL}/portal`
+    try {
+      // Rate limiting
+      const clientIP = req.headers.get('x-forwarded-for') || 'unknown'
+      const rateLimitResult = await rateLimit(`api:customers:${clientIP}`, 60, 300) // 60 requests per 5 minutes
+      
+      if (!rateLimitResult.allowed) {
+        return NextResponse.json(
+          { error: 'Rate limit exceeded' },
+          { 
+            status: 429,
+            headers: {
+              'X-RateLimit-Limit': '60',
+              'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+              'X-RateLimit-Reset': new Date(rateLimitResult.reset).toISOString()
             }
-          })
-        })
-      } catch (error) {
-        console.error('Failed to send welcome email:', error)
+          }
+        )
       }
-    }
 
-    // Trigger webhook for customer creation
-    await triggerWebhook(auth.company.id, WEBHOOK_EVENTS.CUSTOMER_CREATED, {
-      customer: customer
-    })
+      // Parse and validate query parameters
+      const searchParams = req.nextUrl.searchParams
+      const queryParams = {
+        page: searchParams.get('page'),
+        limit: searchParams.get('limit'),
+        search: searchParams.get('search'),
+        tags: searchParams.get('tags')?.split(',').filter(Boolean),
+        is_active: searchParams.get('is_active') === 'true' ? true : 
+                   searchParams.get('is_active') === 'false' ? false : undefined
+      }
 
-    // Log API usage
-    await supabase
-      .from('api_usage_logs')
-      .insert({
-        api_key_id: auth.apiKey.id,
-        company_id: auth.company.id,
-        endpoint: '/customers',
-        method: 'POST',
-        status_code: 201,
-        ip_address: request.headers.get('x-forwarded-for') || 'unknown',
-        user_agent: request.headers.get('user-agent') || 'unknown'
+      const validatedQuery = validateAndSanitize(CustomerQuerySchema, queryParams)
+
+      logger.info('Fetching customers', {
+        orgId,
+        userId,
+        query: validatedQuery,
+        requestId
       })
 
-    return NextResponse.json({
-      data: customer,
-      message: 'Customer created successfully'
-    }, { status: 201 })
+      // Fetch customers from database
+      const result = await getCustomers(orgId, validatedQuery)
 
-  } catch (error) {
-    console.error('API error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  }
+      logger.info('Customers fetched successfully', {
+        count: result.data.length,
+        totalCount: result.pagination.total,
+        requestId
+      })
+
+      return NextResponse.json({
+        success: true,
+        data: result.data,
+        pagination: result.pagination,
+        requestId
+      })
+
+    } catch (error) {
+      logger.error('Failed to fetch customers', {
+        error,
+        orgId,
+        userId,
+        requestId
+      })
+
+      return NextResponse.json(
+        {
+          error: 'Failed to fetch customers',
+          message: error instanceof Error ? error.message : 'Unknown error',
+          requestId
+        },
+        { status: 500 }
+      )
+    }
+  })
+}
+
+/**
+ * POST /api/v1/customers
+ * Create a new customer
+ */
+export async function POST(req: NextRequest) {
+  return requireSession(['admin', 'manager', 'coordinator'], async ({ orgId, userId, session }) => {
+    const requestId = req.headers.get('x-request-id') || crypto.randomUUID()
+
+    try {
+      // Rate limiting for creation (more restrictive)
+      const clientIP = req.headers.get('x-forwarded-for') || 'unknown'
+      const rateLimitResult = await rateLimit(`api:customers:create:${clientIP}`, 10, 300) // 10 creates per 5 minutes
+      
+      if (!rateLimitResult.allowed) {
+        return NextResponse.json(
+          { error: 'Rate limit exceeded for customer creation' },
+          { 
+            status: 429,
+            headers: {
+              'X-RateLimit-Limit': '10',
+              'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+              'X-RateLimit-Reset': new Date(rateLimitResult.reset).toISOString()
+            }
+          }
+        )
+      }
+
+      // Parse and validate request body
+      const body = await req.json()
+      const validatedData = validateAndSanitize(CustomerCreateSchema, body)
+
+      logger.info('Creating customer', {
+        orgId,
+        userId,
+        customerName: validatedData.name,
+        requestId
+      })
+
+      // Create customer in database
+      const customer = await createCustomer(orgId, userId, validatedData)
+
+      logger.info('Customer created successfully', {
+        customerId: customer.id,
+        customerName: customer.name,
+        orgId,
+        userId,
+        requestId
+      })
+
+      return NextResponse.json({
+        success: true,
+        data: customer,
+        requestId
+      }, { status: 201 })
+
+    } catch (error) {
+      logger.error('Failed to create customer', {
+        error,
+        orgId,
+        userId,
+        requestId
+      })
+
+      // Handle validation errors
+      if (error?.name === 'ZodError') {
+        return NextResponse.json(
+          {
+            error: 'Validation failed',
+            details: error.errors,
+            requestId
+          },
+          { status: 400 }
+        )
+      }
+
+      // Handle database constraint errors
+      if (error?.code === '23505') { // Unique constraint violation
+        return NextResponse.json(
+          {
+            error: 'Customer with this information already exists',
+            requestId
+          },
+          { status: 409 }
+        )
+      }
+
+      return NextResponse.json(
+        {
+          error: 'Failed to create customer',
+          message: error instanceof Error ? error.message : 'Unknown error',
+          requestId
+        },
+        { status: 500 }
+      )
+    }
+  })
 }

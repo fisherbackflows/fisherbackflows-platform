@@ -1,0 +1,47 @@
+# A string used to distinguish different Supabase projects on the same machine.
+# Not required if you have a single project running.
+project_id = "fisherbackflows-platform"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[graphql]
+enabled = true
+port = 54322
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+
+[inbucket]
+enabled = true
+port = 54324
+smtp_port = 54325
+pop3_port = 54326
+
+[realtime]
+enabled = true
+port = 54323
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+enabled = true
+port = 54321
+site_url = "https://fisherbackflows.com"
+additional_redirect_urls = ["https://localhost:3000"]
+jwt_expiry = 3600
+enable_signup = true
+
+[edge_functions]
+enabled = false
+port = 54321
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15

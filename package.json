@@ -14,7 +14,7 @@
     "format:check": "prettier --check .",
     "test": "jest --selectProjects unit integration",
     "test:unit": "jest --selectProjects unit --runInBand",
-    "test:integration": "jest --selectProjects integration --runInBand --passWithNoTests",
+    "test:integration": "jest --config jest.integration.config.js --runInBand",
     "test:e2e": "playwright test",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
