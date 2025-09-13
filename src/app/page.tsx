@@ -241,8 +241,8 @@ export default function HomePage() {
             </div>
             
             <div className="relative inline-block mb-8">
-              <div className="absolute inset-0 -inset-x-6 -inset-y-6 bg-gradient-to-r from-blue-600/10 to-purple-600/10 backdrop-blur-md border-2 border-blue-400/50 rounded-[3rem] shadow-[0_0_50px_rgba(59,130,246,0.4),inset_0_0_30px_rgba(59,130,246,0.1)]"></div>
-              <h1 className="relative text-4xl sm:text-5xl md:text-7xl font-bold leading-tight text-white px-6 py-6">
+              <div className="absolute inset-0 -inset-x-3 -inset-y-6 bg-gradient-to-r from-blue-600/10 to-purple-600/10 backdrop-blur-md border-2 border-blue-400/50 rounded-[3rem] shadow-[0_0_50px_rgba(59,130,246,0.4),inset_0_0_30px_rgba(59,130,246,0.1)]"></div>
+              <h1 className="relative text-4xl sm:text-5xl md:text-7xl font-bold leading-tight text-white px-3 py-6">
                 The Complete Platform for<br className="hidden sm:block" />
                 <span className="block sm:inline text-white">
                   Backflow Testing
