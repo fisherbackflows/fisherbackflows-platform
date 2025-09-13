@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
   try {
-    // Use team portal session authentication
+    // Use tester portal session authentication
     const cookieStore = await cookies();
     const sessionToken = cookieStore.get('team_session')?.value;
 
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
       }, { status: 500 });
     }
 
-    // Transform data to match team portal interface expectations
+    // Transform data to match tester portal interface expectations
     const transformedAppointments = appointments?.map(appointment => ({
       id: appointment.id,
       customerId: appointment.customer_id,

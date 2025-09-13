@@ -206,14 +206,7 @@ export default function HomePage() {
                   className="block px-4 py-3 rounded-2xl bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-white text-center font-semibold transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Tester Portal
-                </Link>
-                <Link 
-                  href="/business-admin" 
-                  className="block px-4 py-3 rounded-2xl bg-amber-500/20 border border-amber-400 glow-blue-sm text-white text-center font-semibold transition-all duration-200"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Tester Portal
+                  Business Login
                 </Link>
                 
                 <div className="border-t border-blue-400/30 pt-3 mt-3">
@@ -248,18 +241,18 @@ export default function HomePage() {
           </div>
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white">
-            The Complete Platform for<br className="hidden sm:block" />
+            Professional Backflow Testing<br className="hidden sm:block" />
             <span className="block sm:inline">
-              <span className="bg-gradient-to-r from-blue-300 via-blue-400 to-blue-500 bg-clip-text text-transparent">Backflow Testing Companies</span>
+              <span className="bg-gradient-to-r from-blue-300 via-blue-400 to-blue-500 bg-clip-text text-transparent">Services in Pierce County</span>
             </span>
           </h1>
           
           <div className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed px-4">
             <p className="text-center mb-6">
-              Streamline your backflow testing business with automated scheduling, digital reports, and instant compliance submissions.
+              BAT certified backflow testing services with digital reports, online scheduling, and automatic compliance submissions to your water district.
             </p>
             <p className="text-center">
-              <strong className="text-white/90">Start your 14-day free trial. No credit card required.</strong>
+              <strong className="text-white/90">Licensed, insured, and serving all of Pierce County, Washington.</strong>
             </p>
           </div>
           
@@ -314,11 +307,10 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Customer Portal
+              Online Customer Portal
             </h2>
             <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-              Manage your backflow testing services online with our secure customer portal. 
-              Schedule appointments, pay bills, and access your compliance records anytime.
+              Manage your Fisher Backflows services online. Schedule appointments, pay bills, and access your test reports and compliance certificates 24/7.
             </p>
           </div>
           
@@ -363,7 +355,7 @@ export default function HomePage() {
                 className="glass border-2 border-blue-400 text-white/80 hover:bg-black/40 backdrop-blur-xl hover:border-blue-500/40 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 glow-blue-sm"
                 onClick={() => window.location.href = '/team-portal'}
               >
-                Business Portal
+                Business Login
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </div>
@@ -525,7 +517,7 @@ export default function HomePage() {
                 <Link href="/portal" className="block text-white/90 hover:text-white text-lg transition-colors">Customer Portal</Link>
                 <Link href="/portal/schedule" className="block text-white/90 hover:text-white text-lg transition-colors">Schedule Service</Link>
                 <Link href="/portal/pay" className="block text-white/90 hover:text-white text-lg transition-colors">Pay Bill</Link>
-                <Link href="/team-portal" className="block text-white/90 hover:text-white text-lg transition-colors">Tester Portal</Link>
+                <Link href="/team-portal" className="block text-white/90 hover:text-white text-lg transition-colors">Business Login</Link>
               </div>
             </div>
             

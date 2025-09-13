@@ -7,7 +7,7 @@ export default function AppDashboardRedirect() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to the new team portal dashboard
+    // Redirect to the new tester portal dashboard
     router.replace('/team-portal/dashboard');
   }, [router]);
 

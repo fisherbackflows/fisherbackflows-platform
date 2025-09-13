@@ -85,7 +85,7 @@ export default function TeamPortalDashboard() {
           setUserInfo(userData);
         }
 
-        // Load real metrics from admin API (team portal has admin-level access)
+        // Load real metrics from admin API (tester portal has admin-level access)
         const [metricsResponse, activityResponse] = await Promise.allSettled([
           fetch('/api/admin/metrics'),
           fetch('/api/admin/activity?limit=5')

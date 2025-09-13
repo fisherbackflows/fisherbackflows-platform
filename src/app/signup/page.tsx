@@ -131,7 +131,7 @@ export default function SignupPage() {
 
       if (teamError) throw teamError
 
-      // Redirect to team portal
+      // Redirect to tester portal
       router.push('/team-portal')
     } catch (err: any) {
       setError(err.message || 'Failed to create account')
@@ -244,7 +244,7 @@ export default function SignupPage() {
                     value={formData.companyName}
                     onChange={handleCompanyNameChange}
                     className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
-                    placeholder="ABC Backflow Testing"
+                    placeholder="Your Company Name"
                   />
                   {formData.companySlug && (
                     <p className="text-sm text-blue-300 mt-1">
@@ -284,7 +284,7 @@ export default function SignupPage() {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-4 py-2 bg-white/20 border border-white/30 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-400"
-                    placeholder="admin@company.com"
+                    placeholder="owner@company.com"
                   />
                 </div>
 

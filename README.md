@@ -17,7 +17,7 @@ For property owners who need backflow testing:
 - **Reports**: Access test reports and compliance certificates
 - **Upload System**: Upload water district notices for device identification
 
-### 2. Tester Portal (`/tester-portal/*`) 
+### 2. Tester Portal (`/team-portal/*`) 
 For backflow testing companies:
 - **API Access**: RESTful API for integration with external systems
 - **CRM Dashboard**: Lead management and customer pipeline
@@ -25,8 +25,8 @@ For backflow testing companies:
 - **Modular Add-ons**: Premium features available as paid upgrades
 - **Company Signup**: Self-service registration for testing companies
 
-### 3. Team Portal (`/team-portal/*`)
-Internal business management (being migrated to Tester Portal add-ons):
+### 3. Internal Management System
+Core business management features integrated into Tester Portal:
 - **Customer Management**: Full CRUD operations for customer data
 - **Invoice Management**: Create, edit, and track invoices
 - **Test Reports**: Generate and submit compliance reports

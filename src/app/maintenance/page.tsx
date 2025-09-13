@@ -37,7 +37,7 @@ export default function MaintenancePage() {
       });
 
       if (response.ok) {
-        // Redirect to team portal
+        // Redirect to tester portal
         window.location.href = '/team-portal';
       } else {
         const data = await response.json();

@@ -68,7 +68,7 @@ export async function middleware(request: NextRequest) {
       return response
     }
 
-    // Handle team portal routes
+    // Handle tester portal routes
     if (path.startsWith('/team')) {
       // Team routes should redirect to main domain
       return NextResponse.redirect(new URL(`https://fisherbackflows.com${path}`, request.url))

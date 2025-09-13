@@ -77,7 +77,7 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
   const navigationItems = NAVIGATION_CONFIG[section] || [];
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
-  // Use light theme for team portal (white backgrounds), dark theme for others
+  // Use light theme for tester portal (white backgrounds), dark theme for others
   const currentTheme = section === 'team-portal' ? LIGHT_THEME : THEME;
 
   const handleLogout = async () => {

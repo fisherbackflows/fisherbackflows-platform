@@ -103,7 +103,7 @@ export default function TeamPortalLoginPage() {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
-                  placeholder="admin@fisherbackflows.com"
+                  placeholder="tester@company.com"
                   required
                 />
               </div>

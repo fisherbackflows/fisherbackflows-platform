@@ -7,7 +7,7 @@ export default function AppRedirect() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to the new team portal
+    // Redirect to the new tester portal
     router.replace('/team-portal');
   }, [router]);
 

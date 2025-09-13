@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LucideIcon } from 'lucide-react';
 
-// Unified glassmorphism theme matching team portal login
+// Unified glassmorphism theme matching tester portal login
 export const THEME = {
   colors: {
     background: 'bg-black',
@@ -36,7 +36,7 @@ export const THEME = {
   }
 };
 
-// Light theme for team portal (white backgrounds)
+// Light theme for tester portal (white backgrounds)
 export const LIGHT_THEME = {
   colors: {
     background: 'bg-white',
@@ -64,7 +64,7 @@ export const LIGHT_THEME = {
   }
 };
 
-// Base layout component matching team portal theme
+// Base layout component matching tester portal theme
 interface UnifiedPageLayoutProps {
   children: React.ReactNode;
   className?: string;
@@ -101,7 +101,7 @@ export function GlassContainer({ children, className = '', glow = true, padding 
   );
 }
 
-// Page content wrapper matching team portal layout
+// Page content wrapper matching tester portal layout
 interface ContentSectionProps {
   children: React.ReactNode;
   className?: string;

@@ -177,12 +177,12 @@ export const siteStructure: PageInfo[] = [
   },
 
   // ============================================================================
-  // TEAM PORTAL (20 pages) - Green theme
+  // TESTER PORTAL (20 pages) - Green theme
   // ============================================================================
   {
     path: '/team-portal',
     title: 'Tester Portal',
-    description: 'Team portal landing',
+    description: 'Tester portal landing',
     category: 'team',
     theme: 'green',
     status: 'active',
