@@ -126,7 +126,7 @@ export default function CompanyDirectoryPage() {
                 placeholder="Search by company name or location..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50"
+                className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50"
               />
             </div>
             
@@ -135,7 +135,7 @@ export default function CompanyDirectoryPage() {
               <select
                 value={selectedArea}
                 onChange={(e) => setSelectedArea(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-xl text-black focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50"
+                className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400 rounded-xl text-white focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50"
               >
                 <option value="">All Service Areas</option>
                 {serviceAreas.map(area => (

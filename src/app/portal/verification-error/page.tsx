@@ -73,7 +73,7 @@ function VerificationErrorContent() {
                   placeholder="Enter your email address"
                   value={userEmail}
                   onChange={(e) => setUserEmail(e.target.value)}
-                  className="w-full p-3 rounded-xl bg-white/90 border border-blue-400 text-black placeholder-gray-500 focus:border-blue-400 focus:outline-none"
+                  className="w-full p-3 rounded-xl bg-white/10 border border-blue-400 text-white placeholder-gray-400 focus:border-blue-400 focus:outline-none"
                 />
                 
                 <Button 

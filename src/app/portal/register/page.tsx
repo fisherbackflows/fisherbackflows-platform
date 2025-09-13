@@ -153,7 +153,7 @@ export default function CustomerRegistrationPage() {
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-gray-600" />
+                        <User className="h-5 w-5 text-gray-400" />
                       </div>
                       <input
                         id="firstName"
@@ -161,7 +161,7 @@ export default function CustomerRegistrationPage() {
                         value={formData.firstName}
                         onChange={(e) => setFormData(prev => ({ ...prev, firstName: e.target.value }))}
                         placeholder="John"
-                        className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                        className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                         required
                       />
                     </div>
@@ -173,7 +173,7 @@ export default function CustomerRegistrationPage() {
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-gray-600" />
+                        <User className="h-5 w-5 text-gray-400" />
                       </div>
                       <input
                         id="lastName"
@@ -181,7 +181,7 @@ export default function CustomerRegistrationPage() {
                         value={formData.lastName}
                         onChange={(e) => setFormData(prev => ({ ...prev, lastName: e.target.value }))}
                         placeholder="Doe"
-                        className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                        className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                         required
                       />
                     </div>
@@ -194,7 +194,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-gray-600" />
+                      <Mail className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="email"
@@ -202,7 +202,7 @@ export default function CustomerRegistrationPage() {
                       value={formData.email}
                       onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                       placeholder="john@example.com"
-                      className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                      className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                       required
                     />
                   </div>
@@ -214,7 +214,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Phone className="h-5 w-5 text-gray-600" />
+                      <Phone className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="phone"
@@ -222,7 +222,7 @@ export default function CustomerRegistrationPage() {
                       value={formData.phone}
                       onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
                       placeholder="(253) 555-0123"
-                      className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                      className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                       required
                     />
                   </div>
@@ -239,7 +239,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Home className="h-5 w-5 text-gray-600" />
+                      <Home className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="street"
@@ -250,7 +250,7 @@ export default function CustomerRegistrationPage() {
                         address: { ...prev.address, street: e.target.value }
                       }))}
                       placeholder="123 Main Street"
-                      className="w-full pl-10 pr-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                      className="w-full pl-10 pr-4 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                       required
                     />
                   </div>
@@ -270,7 +270,7 @@ export default function CustomerRegistrationPage() {
                         address: { ...prev.address, city: e.target.value }
                       }))}
                       placeholder="Tacoma"
-                      className="w-full px-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                      className="w-full px-4 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                       required
                     />
                   </div>
@@ -286,7 +286,7 @@ export default function CustomerRegistrationPage() {
                         ...prev, 
                         address: { ...prev.address, state: e.target.value }
                       }))}
-                      className="w-full px-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black"
+                      className="w-full px-4 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                       required
                     >
                       <option value="WA">WA</option>
@@ -306,7 +306,7 @@ export default function CustomerRegistrationPage() {
                         address: { ...prev.address, zipCode: e.target.value }
                       }))}
                       placeholder="98401"
-                      className="w-full px-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                      className="w-full px-4 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                       required
                     />
                   </div>
@@ -320,7 +320,7 @@ export default function CustomerRegistrationPage() {
                     id="propertyType"
                     value={formData.propertyType}
                     onChange={(e) => setFormData(prev => ({ ...prev, propertyType: e.target.value as 'residential' | 'commercial' }))}
-                    className="w-full px-4 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black"
+                    className="w-full px-4 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white"
                     required
                   >
                     <option value="residential">Residential</option>
@@ -339,7 +339,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-gray-600" />
+                      <Lock className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="password"
@@ -347,14 +347,14 @@ export default function CustomerRegistrationPage() {
                       value={formData.password}
                       onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
                       placeholder="Create a strong password"
-                      className="w-full pl-10 pr-12 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                      className="w-full pl-10 pr-12 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                       required
                       minLength={8}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition-colors"
                     >
                       {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
@@ -392,7 +392,7 @@ export default function CustomerRegistrationPage() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-gray-600" />
+                      <Lock className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="confirmPassword"
@@ -400,14 +400,14 @@ export default function CustomerRegistrationPage() {
                       value={formData.confirmPassword}
                       onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
                       placeholder="Confirm your password"
-                      className="w-full pl-10 pr-12 py-3 bg-white/90 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                      className="w-full pl-10 pr-12 py-3 bg-white/10 border border-blue-400 rounded-2xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                       required
                       minLength={8}
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition-colors"
                     >
                       {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>

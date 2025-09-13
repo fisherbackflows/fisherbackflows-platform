@@ -361,7 +361,7 @@ function TestReportContent() {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 bg-white/90 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                  className="w-full px-3 py-2 bg-white/10 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                   value={formData.manufacturer}
                   onChange={(e) => handleInputChange('manufacturer', e.target.value)}
                   placeholder="e.g. Watts, Zurn, Febco"
@@ -373,7 +373,7 @@ function TestReportContent() {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 bg-white/90 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                  className="w-full px-3 py-2 bg-white/10 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                   value={formData.model}
                   onChange={(e) => handleInputChange('model', e.target.value)}
                   placeholder="Model number"
@@ -388,7 +388,7 @@ function TestReportContent() {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 bg-white/90 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                  className="w-full px-3 py-2 bg-white/10 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                   value={formData.serialNumber}
                   onChange={(e) => handleInputChange('serialNumber', e.target.value)}
                   placeholder="Serial number"
@@ -400,7 +400,7 @@ function TestReportContent() {
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 bg-white/90 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-black placeholder-gray-500"
+                  className="w-full px-3 py-2 bg-white/10 border border-blue-400 rounded-xl focus:ring-2 focus:ring-blue-400 focus:border-blue-400 text-white placeholder-gray-400"
                   value={formData.location}
                   onChange={(e) => handleInputChange('location', e.target.value)}
                   placeholder="e.g. Front yard, Basement"

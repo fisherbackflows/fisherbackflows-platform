@@ -26,7 +26,7 @@ export const THEME = {
       warning: 'text-amber-400 bg-amber-500/20 border-amber-400',
       danger: 'text-red-400 bg-red-500/20 border-red-400'
     },
-    input: 'bg-white/90 text-black placeholder-gray-500',
+    input: 'bg-white/10 text-white placeholder-gray-400',
     glow: 'glow-blue'
   },
   gradients: {

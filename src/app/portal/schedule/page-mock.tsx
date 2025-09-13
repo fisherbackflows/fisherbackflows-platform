@@ -490,7 +490,7 @@ export default function SchedulePage() {
                   onChange={handleInputChange}
                   placeholder="Gate codes, pet information, access instructions, or anything else we should know..."
                   rows={4}
-                  className="w-full px-4 py-4 bg-white/90 border border-blue-400 rounded-xl glass text-black placeholder-gray-500 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 resize-none"
+                  className="w-full px-4 py-4 bg-white/10 border border-blue-400 rounded-xl glass text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 resize-none"
                 />
                 <p className="text-sm text-white/80 mt-2">
                   This helps our technicians prepare and ensures a smooth service experience
