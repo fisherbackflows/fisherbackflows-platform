@@ -32,7 +32,7 @@ export default function NavigationTestPage() {
     { path: '/api/automation/payments', name: 'Payment Processing', category: 'API' },
 
     // Admin/App Routes
-    { path: '/team-portal', name: 'Team Portal', category: 'Admin' },
+    { path: '/team-portal', name: 'Tester Portal', category: 'Admin' },
     { path: '/team-portal/customers', name: 'Customer Management', category: 'Admin' },
     { path: '/team-portal/schedule', name: 'Schedule Management', category: 'Admin' },
     { path: '/team-portal/invoices', name: 'Invoice Management', category: 'Admin' },

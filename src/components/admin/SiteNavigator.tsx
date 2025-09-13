@@ -57,7 +57,7 @@ const categoryConfig = {
   },
   team: {
     icon: UserGroupIcon,
-    label: 'Team Portal',
+    label: 'Tester Portal',
     color: 'text-green-400',
     bgColor: 'bg-gradient-to-r from-green-600 to-green-500',
     glassColor: 'bg-green-700/10 border-green-500/20'

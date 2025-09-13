@@ -139,7 +139,7 @@ export default function SmartNavigation({
                   </Link>
                   <Link href="/app" className="flex items-center space-x-3 text-white/90 hover:text-white text-sm p-2 rounded-lg hover:bg-white/10 transition-colors">
                     <Sparkles className="h-4 w-4" />
-                    <span>Team Portal</span>
+                    <span>Tester Portal</span>
                   </Link>
                   <a href="tel:2532788692" className="flex items-center space-x-3 text-white/90 hover:text-white text-sm p-2 rounded-lg hover:bg-white/10 transition-colors">
                     <Phone className="h-4 w-4" />

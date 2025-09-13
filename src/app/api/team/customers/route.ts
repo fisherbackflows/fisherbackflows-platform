@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 
     const supabase = supabaseAdmin || createRouteHandlerClient(request);
     
-    console.log('🔍 Team Portal: Fetching customers from database...');
+    console.log('🔍 Tester Portal: Fetching customers from database...');
     
     // Fetch real customers from the database
     const { data: customers, error: customerError } = await supabase
@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
       totalPaid: 0 // This would need to be calculated from payments/invoices
     })) || [];
 
-    console.log(`📊 Team Portal: Loaded ${transformedCustomers.length} real customers`);
+    console.log(`📊 Tester Portal: Loaded ${transformedCustomers.length} real customers`);
 
     return NextResponse.json({ 
       success: true,

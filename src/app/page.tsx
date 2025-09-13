@@ -206,14 +206,14 @@ export default function HomePage() {
                   className="block px-4 py-3 rounded-2xl bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-white text-center font-semibold transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Team Portal
+                  Tester Portal
                 </Link>
                 <Link 
                   href="/business-admin" 
                   className="block px-4 py-3 rounded-2xl bg-amber-500/20 border border-amber-400 glow-blue-sm text-white text-center font-semibold transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Admin Portal
+                  Tester Portal
                 </Link>
                 
                 <div className="border-t border-blue-400/30 pt-3 mt-3">
@@ -525,7 +525,7 @@ export default function HomePage() {
                 <Link href="/portal" className="block text-white/90 hover:text-white text-lg transition-colors">Customer Portal</Link>
                 <Link href="/portal/schedule" className="block text-white/90 hover:text-white text-lg transition-colors">Schedule Service</Link>
                 <Link href="/portal/pay" className="block text-white/90 hover:text-white text-lg transition-colors">Pay Bill</Link>
-                <Link href="/team-portal" className="block text-white/90 hover:text-white text-lg transition-colors">Team Portal</Link>
+                <Link href="/team-portal" className="block text-white/90 hover:text-white text-lg transition-colors">Tester Portal</Link>
               </div>
             </div>
             

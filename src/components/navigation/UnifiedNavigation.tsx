@@ -106,7 +106,7 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
   const getSectionTitle = () => {
     switch (section) {
       case 'portal': return 'Customer Portal';
-      case 'team-portal': return 'Team Portal';
+      case 'team-portal': return 'Tester Portal';
       case 'admin': return 'Admin Panel';
       case 'field': return 'Field App';
       default: return 'Fisher Backflows';

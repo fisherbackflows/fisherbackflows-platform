@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 
     const supabase = supabaseAdmin || createRouteHandlerClient(request);
     
-    console.log('🔍 Team Portal: Fetching appointments from database...');
+    console.log('🔍 Tester Portal: Fetching appointments from database...');
     
     // Fetch real appointments from the database
     const { data: appointments, error: appointmentError } = await supabase
@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
       priority: appointment.priority || 'medium'
     })) || [];
 
-    console.log(`📊 Team Portal: Loaded ${transformedAppointments.length} real appointments`);
+    console.log(`📊 Tester Portal: Loaded ${transformedAppointments.length} real appointments`);
 
     return NextResponse.json({ 
       success: true,

@@ -79,7 +79,7 @@ export default function OnboardingWizard({ onComplete, userType }: OnboardingWiz
   const teamSteps: OnboardingStep[] = [
     {
       id: 'welcome',
-      title: 'Welcome to the Team Portal',
+      title: 'Welcome to the Tester Portal',
       description: 'Let\'s get you familiar with the platform',
       icon: Sparkles,
       component: TeamWelcomeStep
@@ -678,7 +678,7 @@ function TeamWelcomeStep({ onNext }: { onNext: () => void; onSkip?: () => void }
     <div className="text-center py-12">
       <Sparkles className="h-16 w-16 text-blue-400 mx-auto mb-4" />
       <h1 className="text-3xl font-bold text-white mb-4">
-        Welcome to Fisher Backflows Team Portal
+        Welcome to Fisher Backflows Tester Portal
       </h1>
       <p className="text-white/80 text-lg max-w-lg mx-auto mb-8">
         Everything you need to manage customers, schedule tests, and track your work.

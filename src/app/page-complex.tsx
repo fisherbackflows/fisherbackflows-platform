@@ -293,7 +293,7 @@ export default function HomePage() {
                 <a href="/portal" className="block text-white/50 hover:text-white/80 text-sm transition-colors">Customer Portal</a>
                 <a href="/portal/schedule" className="block text-white/50 hover:text-white/80 text-sm transition-colors">Schedule Service</a>
                 <a href="/portal/pay" className="block text-white/50 hover:text-white/80 text-sm transition-colors">Pay Bill</a>
-                <a href="/app" className="block text-white/50 hover:text-white/80 text-sm transition-colors">Team App</a>
+                <a href="/app" className="block text-white/50 hover:text-white/80 text-sm transition-colors">Tester Portal</a>
               </div>
             </div>
             

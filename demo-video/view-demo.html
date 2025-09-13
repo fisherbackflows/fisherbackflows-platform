@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fisher Backflows Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        video {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            background: #000;
+        }
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.5);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .info {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 15px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+        .info h3 {
+            color: #3b82f6;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .info p {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        .workflow-step {
+            text-align: left;
+            margin: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        .workflow-step:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fisher Backflows</h1>
+        <p class="subtitle">Complete Workflow Demo</p>
+        
+        <video id="demo" controls autoplay muted loop playsinline>
+            <source src="fisher-backflows-demo.mp4" type="video/mp4">
+            <source src="fisher-backflows-demo.gif" type="image/gif">
+            Your browser does not support the video tag.
+        </video>
+        
+        <div class="controls">
+            <button onclick="playVideo()">▶️ Play</button>
+            <button onclick="pauseVideo()">⏸️ Pause</button>
+            <button onclick="restartVideo()">🔄 Restart</button>
+            <button onclick="changeSpeed()">⚡ Speed</button>
+        </div>
+        
+        <div class="info">
+            <h3>Workflow Overview</h3>
+            <div class="workflow-step">Landing page introduction</div>
+            <div class="workflow-step">Account type selection</div>
+            <div class="workflow-step">Tester registration process</div>
+            <div class="workflow-step">Tester dashboard navigation</div>
+            <div class="workflow-step">New test creation</div>
+            <div class="workflow-step">Test data entry</div>
+            <div class="workflow-step">Test submission</div>
+            <div class="workflow-step">Company registration</div>
+            <div class="workflow-step">Company dashboard</div>
+            <div class="workflow-step">Property management</div>
+            <div class="workflow-step">Device tracking</div>
+            <div class="workflow-step">Report viewing</div>
+            <div class="workflow-step">PDF generation</div>
+            <div class="workflow-step">Report submission</div>
+        </div>
+    </div>
+    
+    <script>
+        const video = document.getElementById('demo');
+        let currentSpeed = 1;
+        
+        function playVideo() {
+            video.play();
+        }
+        
+        function pauseVideo() {
+            video.pause();
+        }
+        
+        function restartVideo() {
+            video.currentTime = 0;
+            video.play();
+        }
+        
+        function changeSpeed() {
+            const speeds = [0.5, 1, 1.5, 2];
+            currentSpeed = speeds[(speeds.indexOf(currentSpeed) + 1) % speeds.length];
+            video.playbackRate = currentSpeed;
+            alert(`Playback speed: ${currentSpeed}x`);
+        }
+    </script>
+</body>
+</html>

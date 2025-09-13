@@ -28,7 +28,7 @@ export default function NavigationHeader() {
             <a href="#about" className="text-white/80 hover:text-white transition-colors hover:text-glow-sm">About</a>
             <a href="#contact" className="text-white/80 hover:text-white transition-colors hover:text-glow-sm">Contact</a>
             <a href="/portal" className="btn-glass px-4 py-2 rounded-lg hover-glow">Customer Portal</a>
-            <a href="/app" className="btn-glow px-4 py-2 rounded-lg">Team App</a>
+            <a href="/app" className="btn-glow px-4 py-2 rounded-lg">Tester Portal</a>
           </nav>
           
           <button
@@ -47,7 +47,7 @@ export default function NavigationHeader() {
             <a href="#about" className="text-white/80 hover:text-white transition-colors py-2">About</a>
             <a href="#contact" className="text-white/80 hover:text-white transition-colors py-2">Contact</a>
             <a href="/portal" className="btn-glass px-4 py-2 rounded-lg text-center">Customer Portal</a>
-            <a href="/app" className="btn-glow px-4 py-2 rounded-lg text-center">Team App</a>
+            <a href="/app" className="btn-glow px-4 py-2 rounded-lg text-center">Tester Portal</a>
           </nav>
         </div>
       )}

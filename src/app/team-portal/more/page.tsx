@@ -359,7 +359,7 @@ export default function MorePage() {
         <section className="mb-6">
           <div className="bg-black/30 backdrop-blur-lg rounded-2xl p-4 text-center">
             <div className="text-sm text-white/80 mb-2">
-              Fisher Backflows Team App
+              Fisher Backflows Tester Portal
             </div>
             <div className="text-xs text-white/80">
               Version 1.0.0 • Next.js with Turbopack

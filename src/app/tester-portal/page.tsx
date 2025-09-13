@@ -45,7 +45,7 @@ export default function BackflowBuddyPage() {
                 href="/team-portal"
                 className="text-blue-300 hover:text-blue-400 transition-colors"
               >
-                Team Portal
+                Tester Portal
               </Link>
               <Link
                 href="/tester-portal/signup"

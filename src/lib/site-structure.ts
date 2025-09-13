@@ -181,7 +181,7 @@ export const siteStructure: PageInfo[] = [
   // ============================================================================
   {
     path: '/team-portal',
-    title: 'Team Portal',
+    title: 'Tester Portal',
     description: 'Team portal landing',
     category: 'team',
     theme: 'green',
@@ -360,7 +360,7 @@ export const siteStructure: PageInfo[] = [
     requiresAuth: true
   },
 
-  // Additional Team Portal Pages
+  // Additional Tester Portal Pages
   {
     path: '/team-portal/export',
     title: 'Export Data',

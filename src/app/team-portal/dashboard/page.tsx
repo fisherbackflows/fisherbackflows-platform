@@ -174,7 +174,7 @@ export default function TeamPortalDashboard() {
                 <Link href="/admin/dashboard">
                   <Button className="glass-btn-primary hover:glow-blue bg-purple-500/20 border border-purple-400 text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
                     <Shield className="h-5 w-5 mr-2" />
-                    Admin Portal
+                    Tester Portal
                   </Button>
                 </Link>
                 <Link href="/team-portal/customers/new">
@@ -352,7 +352,7 @@ export default function TeamPortalDashboard() {
                   <Activity className="h-8 w-8 text-blue-300" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-white mb-2">Get Started with Your Team Portal</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">Get Started with Your Tester Portal</h3>
                   <p className="text-white/80 text-lg mb-6">
                     Start managing your backflow testing operations by adding customers and scheduling tests.
                   </p>

@@ -121,7 +121,7 @@ export default function CustomerRegistrationPage() {
               </Link>
               <Link href="/team-portal">
                 <Button variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-500/20 border border-emerald-400 glow-blue-sm hover:border-emerald-300 px-5 py-2.5 rounded-2xl font-medium transition-colors duration-200">
-                  Team Portal
+                  Tester Portal
                 </Button>
               </Link>
             </nav>

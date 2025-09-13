@@ -476,7 +476,7 @@ export default function BusinessAdminPortal() {
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-3 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-lg font-medium text-white/80">Loading Admin Portal...</p>
+          <p className="text-lg font-medium text-white/80">Loading Tester Portal...</p>
         </div>
       </div>
     );
@@ -494,7 +494,7 @@ export default function BusinessAdminPortal() {
                 <Shield className="h-10 w-10 text-white" />
               </div>
               <h1 className="text-2xl font-bold text-white mb-2">Fisher Backflows</h1>
-              <h2 className="text-lg font-semibold text-white/90 mb-1">Business Admin Portal</h2>
+              <h2 className="text-lg font-semibold text-white/90 mb-1">Business Tester Portal</h2>
               <p className="text-white/70 text-sm">Secure Login - Admin Access Only</p>
             </div>
 
@@ -545,7 +545,7 @@ export default function BusinessAdminPortal() {
                 className="w-full glass-btn-primary text-white font-semibold py-3"
               >
                 <LogIn className="h-4 w-4 mr-2" />
-                Access Admin Portal
+                Access Tester Portal
               </Button>
             </form>
 

@@ -88,7 +88,7 @@ export default function TeamPortalLoginPage() {
               <div className="inline-flex p-4 rounded-2xl glass mb-6">
                 <Lock className="h-8 w-8 text-white/80" />
               </div>
-              <h1 className="text-3xl font-bold text-white mb-2">Team Portal</h1>
+              <h1 className="text-3xl font-bold text-white mb-2">Tester Portal</h1>
               <p className="text-white/90">Sign in to access business management tools</p>
             </div>
 
