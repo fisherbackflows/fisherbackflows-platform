@@ -78,39 +78,60 @@ export default function TeamPortalDashboard() {
         setLoading(true);
         setError(null);
 
-        // Load user info
+        // Load user info (optional for public access)
         const userResponse = await fetch('/api/team/auth/me');
         if (userResponse.ok) {
           const userData = await userResponse.json();
           setUserInfo(userData);
         }
 
-        // Load real metrics from admin API (tester portal has admin-level access)
-        const [metricsResponse, activityResponse] = await Promise.allSettled([
-          fetch('/api/admin/metrics'),
-          fetch('/api/admin/activity?limit=5')
-        ]);
+        // For unauthenticated users, load demo/sample data
+        const isAuthenticated = userResponse.ok;
 
-        // Process metrics
-        if (metricsResponse.status === 'fulfilled' && metricsResponse.value.ok) {
-          const metricsData = await metricsResponse.value.json();
-          if (metricsData.success) {
-            setStats(metricsData.metrics);
-          }
-        }
+        if (isAuthenticated) {
+          // Load real metrics from admin API (team portal has admin-level access)
+          const [metricsResponse, activityResponse] = await Promise.allSettled([
+            fetch('/api/admin/metrics'),
+            fetch('/api/admin/activity?limit=5')
+          ]);
 
-        // Process activities
-        if (activityResponse.status === 'fulfilled' && activityResponse.value.ok) {
-          const activityData = await activityResponse.value.json();
-          if (activityData.success) {
-            setActivities(activityData.activities || []);
+          // Process metrics
+          if (metricsResponse.status === 'fulfilled' && metricsResponse.value.ok) {
+            const metricsData = await metricsResponse.value.json();
+            if (metricsData.success) {
+              setStats(metricsData.metrics);
+            }
           }
+
+          // Process activities
+          if (activityResponse.status === 'fulfilled' && activityResponse.value.ok) {
+            const activityData = await activityResponse.value.json();
+            if (activityData.success) {
+              setActivities(activityData.activities || []);
+            }
+          }
+        } else {
+          // Set demo data for unauthenticated users
+          setStats({
+            customers: { total: 247, active: 189, needsService: 32 },
+            appointments: { scheduled: 14, completed: 128, pending: 7 },
+            financials: { monthlyRevenue: 18450, pendingInvoices: 12, overduePayments: 3 },
+            testing: { totalTests: 384, passedTests: 362, failedTests: 22, passRate: 94 }
+          });
+
+          setActivities([
+            { id: '1', type: 'test', icon: 'CheckCircle', text: 'Test completed for 1234 Main St', time: '2 hours ago', color: 'green' },
+            { id: '2', type: 'customer', icon: 'Users', text: 'New customer registered', time: '5 hours ago', color: 'blue' },
+            { id: '3', type: 'appointment', icon: 'Calendar', text: 'Appointment scheduled for tomorrow', time: '1 day ago', color: 'purple' },
+            { id: '4', type: 'payment', icon: 'DollarSign', text: 'Payment received from ABC Corp', time: '2 days ago', color: 'green' },
+            { id: '5', type: 'alert', icon: 'Activity', text: 'Device inspection due soon', time: '3 days ago', color: 'orange' }
+          ]);
         }
 
         setLoading(false);
       } catch (error) {
         console.error('Error loading dashboard data:', error);
-        setError('Failed to load dashboard data. Please refresh the page.');
+        setError(null); // Don't show error for unauthenticated users
         setLoading(false);
       }
     };
@@ -167,28 +188,47 @@ export default function TeamPortalDashboard() {
                   Team Operations Center
                 </h1>
                 <p className="text-xl text-white/90 leading-relaxed">
-                  Manage your team operations, track performance, and drive business growth
+                  {userInfo ? 'Manage your team operations, track performance, and drive business growth' : 'Professional backflow testing management platform'}
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Link href="/admin/dashboard">
-                  <Button className="glass-btn-primary hover:glow-blue bg-purple-500/20 border border-purple-400 text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
-                    <Shield className="h-5 w-5 mr-2" />
-                    Tester Portal
-                  </Button>
-                </Link>
-                <Link href="/team-portal/customers/new">
-                  <Button className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
-                    <PlusCircle className="h-5 w-5 mr-2" />
-                    Add Customer
-                  </Button>
-                </Link>
-                <Link href="/team-portal/schedule/new">
-                  <Button className="glass-btn-primary hover:glow-blue bg-emerald-500/20 border border-emerald-400 text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
-                    <Calendar className="h-5 w-5 mr-2" />
-                    Schedule Test
-                  </Button>
-                </Link>
+                {userInfo ? (
+                  <>
+                    <Link href="/admin/dashboard">
+                      <Button className="glass-btn-primary hover:glow-blue bg-purple-500/20 border border-purple-400 text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
+                        <Shield className="h-5 w-5 mr-2" />
+                        Tester Portal
+                      </Button>
+                    </Link>
+                    <Link href="/team-portal/customers/new">
+                      <Button className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
+                        <PlusCircle className="h-5 w-5 mr-2" />
+                        Add Customer
+                      </Button>
+                    </Link>
+                    <Link href="/team-portal/schedule/new">
+                      <Button className="glass-btn-primary hover:glow-blue bg-emerald-500/20 border border-emerald-400 text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
+                        <Calendar className="h-5 w-5 mr-2" />
+                        Schedule Test
+                      </Button>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/team-portal/login">
+                      <Button className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
+                        <Shield className="h-5 w-5 mr-2" />
+                        Team Login
+                      </Button>
+                    </Link>
+                    <Link href="/portal/login">
+                      <Button className="glass-btn-primary hover:glow-blue bg-emerald-500/20 border border-emerald-400 text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
+                        <Users className="h-5 w-5 mr-2" />
+                        Customer Portal
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -306,40 +346,92 @@ export default function TeamPortalDashboard() {
             <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-8">
               <div className="mb-6">
                 <h2 className="text-2xl font-bold text-white mb-2">Quick Actions</h2>
-                <p className="text-white/90">Common tasks and shortcuts</p>
+                <p className="text-white/90">{userInfo ? 'Common tasks and shortcuts' : 'Key features available'}</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <Link href="/team-portal/customers">
-                  <div className="group glass hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-400 hover:border-blue-200 rounded-2xl p-6 hover:glow-blue transition-all duration-200 cursor-pointer">
-                    <Users className="h-10 w-10 text-blue-300 mb-4 group-hover:scale-105 transition-transform duration-200" />
-                    <h3 className="font-bold text-white mb-2">Manage Customers</h3>
-                    <p className="text-sm text-white/90">View and edit customer information</p>
-                  </div>
-                </Link>
+                <div
+                  onClick={() => !userInfo && alert('Please log in to access this feature')}
+                  className={`group glass hover:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-400 hover:border-blue-200 rounded-2xl p-6 hover:glow-blue transition-all duration-200 ${userInfo ? 'cursor-pointer' : 'cursor-not-allowed opacity-75'}`}
+                >
+                  {userInfo ? (
+                    <Link href="/team-portal/customers">
+                      <div>
+                        <Users className="h-10 w-10 text-blue-300 mb-4 group-hover:scale-105 transition-transform duration-200" />
+                        <h3 className="font-bold text-white mb-2">Manage Customers</h3>
+                        <p className="text-sm text-white/90">View and edit customer information</p>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div>
+                      <Users className="h-10 w-10 text-blue-300 mb-4" />
+                      <h3 className="font-bold text-white mb-2">Manage Customers</h3>
+                      <p className="text-sm text-white/90">View and edit customer information</p>
+                    </div>
+                  )}
+                </div>
 
-                <Link href="/team-portal/schedule">
-                  <div className="group glass hover:bg-emerald-500/20 border border-emerald-400 glow-blue-sm border border-blue-400 hover:border-emerald-200 rounded-2xl p-6 hover:glow-blue transition-all duration-200 cursor-pointer">
-                    <Calendar className="h-10 w-10 text-emerald-300 mb-4 group-hover:scale-105 transition-transform duration-200" />
-                    <h3 className="font-bold text-white mb-2">Schedule Tests</h3>
-                    <p className="text-sm text-white/90">Book and manage appointments</p>
-                  </div>
-                </Link>
+                <div
+                  onClick={() => !userInfo && alert('Please log in to access this feature')}
+                  className={`group glass hover:bg-emerald-500/20 border border-emerald-400 glow-blue-sm hover:border-emerald-200 rounded-2xl p-6 hover:glow-blue transition-all duration-200 ${userInfo ? 'cursor-pointer' : 'cursor-not-allowed opacity-75'}`}
+                >
+                  {userInfo ? (
+                    <Link href="/team-portal/schedule">
+                      <div>
+                        <Calendar className="h-10 w-10 text-emerald-300 mb-4 group-hover:scale-105 transition-transform duration-200" />
+                        <h3 className="font-bold text-white mb-2">Schedule Tests</h3>
+                        <p className="text-sm text-white/90">Book and manage appointments</p>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div>
+                      <Calendar className="h-10 w-10 text-emerald-300 mb-4" />
+                      <h3 className="font-bold text-white mb-2">Schedule Tests</h3>
+                      <p className="text-sm text-white/90">Book and manage appointments</p>
+                    </div>
+                  )}
+                </div>
 
-                <Link href="/team-portal/test-report">
-                  <div className="group glass hover:bg-amber-50 border border-blue-400 hover:border-amber-200 rounded-2xl p-6 hover:glow-blue transition-all duration-200 cursor-pointer">
-                    <FileText className="h-10 w-10 text-amber-300 mb-4 group-hover:scale-105 transition-transform duration-200" />
-                    <h3 className="font-bold text-white mb-2">Test Reports</h3>
-                    <p className="text-sm text-white/90">Create and manage test reports</p>
-                  </div>
-                </Link>
+                <div
+                  onClick={() => !userInfo && alert('Please log in to access this feature')}
+                  className={`group glass hover:bg-amber-50 border border-blue-400 hover:border-amber-200 rounded-2xl p-6 hover:glow-blue transition-all duration-200 ${userInfo ? 'cursor-pointer' : 'cursor-not-allowed opacity-75'}`}
+                >
+                  {userInfo ? (
+                    <Link href="/team-portal/test-report">
+                      <div>
+                        <FileText className="h-10 w-10 text-amber-300 mb-4 group-hover:scale-105 transition-transform duration-200" />
+                        <h3 className="font-bold text-white mb-2">Test Reports</h3>
+                        <p className="text-sm text-white/90">Create and manage test reports</p>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div>
+                      <FileText className="h-10 w-10 text-amber-300 mb-4" />
+                      <h3 className="font-bold text-white mb-2">Test Reports</h3>
+                      <p className="text-sm text-white/90">Create and manage test reports</p>
+                    </div>
+                  )}
+                </div>
 
-                <Link href="/team-portal/invoices">
-                  <div className="group glass hover:bg-purple-50 border border-blue-400 hover:border-purple-200 rounded-2xl p-6 hover:glow-blue transition-all duration-200 cursor-pointer">
-                    <CreditCard className="h-10 w-10 text-purple-300 mb-4 group-hover:scale-105 transition-transform duration-200" />
-                    <h3 className="font-bold text-white mb-2">Invoices</h3>
-                    <p className="text-sm text-white/90">Generate and send invoices</p>
-                  </div>
-                </Link>
+                <div
+                  onClick={() => !userInfo && alert('Please log in to access this feature')}
+                  className={`group glass hover:bg-purple-50 border border-blue-400 hover:border-purple-200 rounded-2xl p-6 hover:glow-blue transition-all duration-200 ${userInfo ? 'cursor-pointer' : 'cursor-not-allowed opacity-75'}`}
+                >
+                  {userInfo ? (
+                    <Link href="/team-portal/invoices">
+                      <div>
+                        <CreditCard className="h-10 w-10 text-purple-300 mb-4 group-hover:scale-105 transition-transform duration-200" />
+                        <h3 className="font-bold text-white mb-2">Invoices</h3>
+                        <p className="text-sm text-white/90">Generate and send invoices</p>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div>
+                      <CreditCard className="h-10 w-10 text-purple-300 mb-4" />
+                      <h3 className="font-bold text-white mb-2">Invoices</h3>
+                      <p className="text-sm text-white/90">Generate and send invoices</p>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -352,7 +444,7 @@ export default function TeamPortalDashboard() {
                   <Activity className="h-8 w-8 text-blue-300" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-white mb-2">Get Started with Your Tester Portal</h3>
+                  <h3 className="text-xl font-bold text-white mb-2">Get Started with Your Team Portal</h3>
                   <p className="text-white/80 text-lg mb-6">
                     Start managing your backflow testing operations by adding customers and scheduling tests.
                   </p>

@@ -16,7 +16,7 @@ const PROTECTED_ROUTES = [
 const PUBLIC_ROUTES = [
   '/',
   '/login',
-  '/maintenance', 
+  '/maintenance',
   '/test-navigation',
   '/portal', // Customer portal login page
   '/portal/login',
@@ -25,7 +25,8 @@ const PUBLIC_ROUTES = [
   '/portal/verification-success',
   '/portal/verification-error',
   '/api/auth',
-  '/api/register'
+  '/api/register',
+  '/team-portal/dashboard' // Team portal dashboard accessible without login
 ];
 
 // Routes that should redirect if already authenticated
