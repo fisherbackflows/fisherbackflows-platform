@@ -437,51 +437,64 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="py-24 px-6">
+      {/* Platform Features Grid - Modern Bento Box Design */}
+      <section id="services" className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-6 text-white">Our Services</h2>
-            <p className="text-xl text-white/80">Professional backflow testing and certification services</p>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Everything You Need in One Platform
+            </h2>
+            <p className="text-lg text-white/70 max-w-2xl mx-auto">
+              Comprehensive tools for testing companies and property owners
+            </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => (
-              <div key={index} className="glass backdrop-blur-sm border border-blue-500/40/30 rounded-2xl p-10 hover:scale-105 transition-all duration-300 glow-blue-lg">
-                <div className="text-center mb-8">
-                  {service.icon}
-                  <h3 className="text-2xl font-bold mb-4 text-white">{service.title}</h3>
-                  <p className="text-white/90 text-lg leading-relaxed">{service.description}</p>
+              <div 
+                key={index} 
+                className="group relative glass border border-blue-400/30 rounded-3xl p-8 hover:border-blue-400 transition-all duration-500 hover:glow-blue"
+              >
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-3xl group-hover:from-blue-500/20 transition-all duration-500" />
+                
+                <div className="relative">
+                  <div className="mb-6">
+                    {service.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-3">{service.title}</h3>
+                  <p className="text-white/60 mb-6 text-sm leading-relaxed">{service.description}</p>
+                  
+                  <div className="space-y-2">
+                    {service.features.slice(0, 3).map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center text-white/70 text-sm">
+                        <div className="w-1 h-1 bg-blue-400 rounded-full mr-3" />
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <ul className="space-y-3">
-                  {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-white/90">
-                      <CheckCircle className="h-5 w-5 text-emerald-400 mr-3 flex-shrink-0" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-24 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-6 text-white">Why Choose Fisher Backflows?</h2>
-            <p className="text-white/90 text-xl">Professional service you can trust</p>
+      {/* Why Choose - Minimal Grid */}
+      <section className="py-20 px-6 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent pointer-events-none" />
+        <div className="max-w-6xl mx-auto relative">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Why Teams Choose Our Platform</h2>
+            <p className="text-white/60 text-lg">Trusted features that drive success</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {features.map((feature, index) => (
-              <div key={index} className="glass backdrop-blur-sm border border-blue-500/40/20 rounded-xl p-6 hover:scale-105 transition-all duration-300">
-                <div className="flex items-center space-x-4">
-                  <div className={`p-3 rounded-2xl bg-black/40 backdrop-blur-xl/50 ${feature.color}`}>
+              <div key={index} className="glass border border-blue-400/20 rounded-2xl p-5 hover:border-blue-400/50 hover:glow-blue-sm transition-all duration-300">
+                <div className="flex items-center space-x-3">
+                  <div className={`p-2.5 rounded-xl glass ${feature.color}`}>
                     {feature.icon}
                   </div>
-                  <p className="text-white/90 font-medium">{feature.text}</p>
+                  <p className="text-white/80 text-sm font-medium">{feature.text}</p>
                 </div>
               </div>
             ))}
@@ -489,66 +502,51 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-24 px-6 mb-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-6 text-white">Get Started Today</h2>
-            <p className="text-xl text-white/80">Choose the most convenient way to reach us</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <div className="glass backdrop-blur-sm border border-blue-400/20 rounded-2xl p-8 text-center hover:scale-105 transition-all duration-300">
-              <div className="inline-block p-6 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 rounded-2xl mb-6">
-                <Phone className="h-12 w-12 text-blue-400" />
+      {/* Contact Section - Modern CTA */}
+      <section id="contact" className="py-20 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="glass border border-blue-400/30 rounded-3xl p-12 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-emerald-500/10 to-transparent rounded-full blur-3xl" />
+            
+            <div className="relative text-center">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                Ready to Transform Your Business?
+              </h2>
+              <p className="text-xl text-white/70 max-w-2xl mx-auto mb-10">
+                Join hundreds of testing companies already using our platform
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Button 
+                  size="lg" 
+                  className="glass-btn-primary hover:glow-blue text-white px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-200 glow-blue"
+                  onClick={() => window.location.href = '/signup'}
+                >
+                  Start Free Trial
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button 
+                  size="lg" 
+                  className="glass border-2 border-white/20 text-white hover:border-blue-400 hover:glow-blue-sm px-8 py-4 text-lg font-semibold rounded-2xl transition-all duration-200"
+                  onClick={() => window.location.href = '/portal'}
+                >
+                  Browse Companies
+                </Button>
               </div>
-              <h3 className="text-2xl font-semibold mb-4 text-white">Call or Text</h3>
-              <a href="tel:2532788692" className="text-blue-400 hover:text-blue-300 text-2xl font-bold transition-colors block">
-                (253) 278-8692
-              </a>
-            </div>
-
-            <div className="glass backdrop-blur-sm border border-emerald-400/20 rounded-2xl p-8 text-center hover:scale-105 transition-all duration-300">
-              <div className="inline-block p-6 bg-emerald-600/20 rounded-2xl mb-6">
-                <Mail className="h-12 w-12 text-emerald-400" />
-              </div>
-              <h3 className="text-2xl font-semibold mb-4 text-white">Email</h3>
-              <a href="mailto:service@fisherbackflows.com" className="text-emerald-400 hover:text-emerald-300 text-lg font-semibold transition-colors block">
-                service@fisherbackflows.com
-              </a>
-            </div>
-
-            <div className="glass backdrop-blur-sm border border-amber-400/20 rounded-2xl p-8 text-center hover:scale-105 transition-all duration-300">
-              <div className="inline-block p-6 bg-amber-600/20 rounded-2xl mb-6">
-                <Calendar className="h-12 w-12 text-amber-400" />
-              </div>
-              <h3 className="text-2xl font-semibold mb-4 text-white">Book Online</h3>
-              <Button 
-                className="glass hover:from-amber-700 hover:to-amber-600 text-white px-8 py-3 rounded-xl transition-all duration-300"
-                onClick={() => window.location.href = '/portal'}
-              >
-                Schedule Now
-              </Button>
-            </div>
-          </div>
-
-          <div className="glass backdrop-blur-sm border border-blue-500/40/20 rounded-2xl p-8 max-w-3xl mx-auto text-center">
-            <div className="flex items-center justify-center mb-6">
-              <Clock className="h-8 w-8 text-white/90 mr-3" />
-              <h3 className="text-2xl font-bold text-white">Business Hours</h3>
-            </div>
-            <div className="grid md:grid-cols-3 gap-4 text-white/90 text-lg">
-              <div>
-                <strong className="text-white">Monday–Friday</strong><br />
-                7:00 AM – 6:00 PM
-              </div>
-              <div>
-                <strong className="text-white">Saturday</strong><br />
-                8:00 AM – 4:00 PM
-              </div>
-              <div>
-                <strong className="text-white">Sunday</strong><br />
-                Emergency service only
+              
+              <div className="mt-10 pt-10 border-t border-white/10">
+                <p className="text-white/60 mb-4">Questions? Contact our team</p>
+                <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                  <a href="tel:2532788692" className="flex items-center text-blue-300 hover:text-blue-400 transition-colors">
+                    <Phone className="h-5 w-5 mr-2" />
+                    (253) 278-8692
+                  </a>
+                  <a href="mailto:service@fisherbackflows.com" className="flex items-center text-emerald-300 hover:text-emerald-400 transition-colors">
+                    <Mail className="h-5 w-5 mr-2" />
+                    service@fisherbackflows.com
+                  </a>
+                </div>
               </div>
             </div>
           </div>
