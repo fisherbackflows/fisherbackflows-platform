@@ -248,10 +248,14 @@ export default function HomePage() {
           </h1>
           
           <div className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed px-4">
-            <p className="text-center mb-6">
-              <strong>For Property Owners:</strong> Find certified testers, schedule appointments, and manage compliance.<br className="hidden sm:block" />
-              <strong>For Testing Companies:</strong> Grow your business with automated scheduling, digital reports, and customer management.
-            </p>
+            <div className="text-center mb-6 space-y-4">
+              <p className="text-white/90 leading-relaxed">
+                <strong className="text-blue-300">For Property Owners:</strong> Find certified testing companies, schedule appointments online, and stay compliant with automated district submissions.
+              </p>
+              <p className="text-white/90 leading-relaxed">
+                <strong className="text-emerald-300">For Testing Companies:</strong> Grow your business with comprehensive customer management, smart scheduling, and digital reporting tools.
+              </p>
+            </div>
             <p className="text-center">
               <strong className="text-white/90">Join thousands using our platform nationwide.</strong>
             </p>
