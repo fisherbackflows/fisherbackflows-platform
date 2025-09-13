@@ -199,14 +199,14 @@ export default function HomePage() {
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <User className="inline h-4 w-4 mr-2" />
-                  Customer Portal
+                  Property Owner Portal
                 </Link>
                 <Link 
                   href="/team-portal" 
                   className="block px-4 py-3 rounded-2xl bg-emerald-500/20 border border-emerald-400 glow-blue-sm text-white text-center font-semibold transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Business Login
+                  Testing Company Portal
                 </Link>
                 
                 <div className="border-t border-blue-400/30 pt-3 mt-3">
@@ -241,18 +241,19 @@ export default function HomePage() {
           </div>
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white">
-            Professional Backflow Testing<br className="hidden sm:block" />
+            The Complete Platform for<br className="hidden sm:block" />
             <span className="block sm:inline">
-              <span className="bg-gradient-to-r from-blue-300 via-blue-400 to-blue-500 bg-clip-text text-transparent">Services in Pierce County</span>
+              <span className="bg-gradient-to-r from-blue-300 via-blue-400 to-blue-500 bg-clip-text text-transparent">Backflow Testing</span>
             </span>
           </h1>
           
           <div className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed px-4">
             <p className="text-center mb-6">
-              BAT certified backflow testing services with digital reports, online scheduling, and automatic compliance submissions to your water district.
+              <strong>For Property Owners:</strong> Find certified testers, schedule appointments, and manage compliance.<br className="hidden sm:block" />
+              <strong>For Testing Companies:</strong> Grow your business with automated scheduling, digital reports, and customer management.
             </p>
             <p className="text-center">
-              <strong className="text-white/90">Licensed, insured, and serving all of Pierce County, Washington.</strong>
+              <strong className="text-white/90">Join thousands using our platform nationwide.</strong>
             </p>
           </div>
           
@@ -262,41 +263,41 @@ export default function HomePage() {
               className="w-full sm:w-auto glass-btn-primary hover:glow-blue text-white px-8 py-4 text-lg font-semibold rounded-xl group transition-all duration-200 glow-blue hover:glow-blue-lg"
               onClick={() => window.location.href = '/portal'}
             >
-              Schedule Testing Now
+              Find Testing Companies
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
             </Button>
             <Button 
               size="lg" 
               className="w-full sm:w-auto glass border-2 border-blue-400 text-white/80 hover:bg-black/40 backdrop-blur-xl hover:border-blue-500/40 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 glow-blue-sm"
-              onClick={() => window.location.href = 'tel:2532788692'}
+              onClick={() => window.location.href = '/signup'}
             >
-              <Phone className="mr-2 h-5 w-5" />
-              (253) 278-8692
+              <User className="mr-2 h-5 w-5" />
+              Start Free Trial
             </Button>
           </div>
           
-          {/* Trust Indicators */}
+          {/* Platform Benefits */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto px-4">
             <div className="glass border border-blue-400 rounded-2xl p-8 glow-blue-sm hover:glow-blue transition-all duration-200">
               <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Shield className="h-8 w-8 text-emerald-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Licensed & Insured</h3>
-              <p className="text-white/90 leading-relaxed">Fully certified contractor with comprehensive insurance for your complete protection and peace of mind.</p>
+              <h3 className="text-xl font-bold text-white mb-3">Verified Companies</h3>
+              <p className="text-white/90 leading-relaxed">All testing companies are pre-verified for licenses, insurance, and BAT certification before joining our network.</p>
             </div>
             <div className="glass border border-blue-400 rounded-2xl p-8 glow-blue-sm hover:glow-blue transition-all duration-200">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Clock className="h-8 w-8 text-blue-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Same Week Service</h3>
-              <p className="text-white/90 leading-relaxed">Fast scheduling with same-week appointments available to meet your testing deadlines and requirements.</p>
+              <h3 className="text-xl font-bold text-white mb-3">Automated Compliance</h3>
+              <p className="text-white/90 leading-relaxed">Digital reports automatically submitted to water districts with instant compliance tracking and reminders.</p>
             </div>
             <div className="glass border border-blue-400 rounded-2xl p-8 glow-blue-sm hover:glow-blue transition-all duration-200">
               <div className="w-16 h-16 bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Award className="h-8 w-8 text-amber-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">BAT Certified</h3>
-              <p className="text-white/90 leading-relaxed">Certified Backflow Assembly Tester with years of experience and up-to-date certifications.</p>
+              <h3 className="text-xl font-bold text-white mb-3">Nationwide Network</h3>
+              <p className="text-white/90 leading-relaxed">Connect with certified testing professionals across the country through our growing marketplace platform.</p>
             </div>
           </div>
         </div>
@@ -307,10 +308,10 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Online Customer Portal
+              For Property Owners
             </h2>
             <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-              Manage your Fisher Backflows services online. Schedule appointments, pay bills, and access your test reports and compliance certificates 24/7.
+              Find certified testing companies in your area, schedule appointments online, and manage all your backflow compliance requirements in one place.
             </p>
           </div>
           
@@ -319,8 +320,8 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Calendar className="h-8 w-8 text-blue-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Easy Scheduling</h3>
-              <p className="text-white/90 leading-relaxed">Book appointments online 24/7 with real-time availability and instant confirmation.</p>
+              <h3 className="text-xl font-bold text-white mb-4">Find Local Testers</h3>
+              <p className="text-white/90 leading-relaxed">Browse certified testing companies in your area with ratings, availability, and competitive pricing.</p>
             </div>
             
             <div className="glass border border-blue-400 rounded-xl p-8 text-center glow-blue-sm hover:glow-blue transition-all duration-200">
@@ -335,8 +336,8 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <FileText className="h-8 w-8 text-amber-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Digital Records</h3>
-              <p className="text-white/90 leading-relaxed">Access all your test reports, compliance certificates, and service history instantly.</p>
+              <h3 className="text-xl font-bold text-white mb-4">Compliance Tracking</h3>
+              <p className="text-white/90 leading-relaxed">Automatic district submissions, renewal reminders, and complete compliance history tracking.</p>
             </div>
           </div>
           
@@ -348,15 +349,76 @@ export default function HomePage() {
                 onClick={() => window.location.href = '/portal'}
               >
                 <User className="mr-2 h-5 w-5" />
-                Customer Login
+                Property Owner Portal
               </Button>
               <Button 
                 size="lg" 
                 className="glass border-2 border-blue-400 text-white/80 hover:bg-black/40 backdrop-blur-xl hover:border-blue-500/40 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 glow-blue-sm"
                 onClick={() => window.location.href = '/team-portal'}
               >
-                Business Login
+                Testing Company Portal
                 <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testing Companies Section */}
+      <section className="py-20 px-6 bg-gradient-to-r from-emerald-900/20 to-blue-900/20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              For Testing Companies
+            </h2>
+            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
+              Grow your backflow testing business with our complete management platform. Get more customers, streamline operations, and automate compliance.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div className="glass border border-emerald-400 rounded-xl p-8 text-center glow-blue-sm hover:glow-blue transition-all duration-200">
+              <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <User className="h-8 w-8 text-emerald-300" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Customer Management</h3>
+              <p className="text-white/90 leading-relaxed">Complete CRM with lead tracking, customer profiles, service history, and automated follow-ups.</p>
+            </div>
+            
+            <div className="glass border border-blue-400 rounded-xl p-8 text-center glow-blue-sm hover:glow-blue transition-all duration-200">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Calendar className="h-8 w-8 text-blue-300" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Smart Scheduling</h3>
+              <p className="text-white/90 leading-relaxed">Route optimization, online booking integration, and automated appointment confirmations.</p>
+            </div>
+            
+            <div className="glass border border-amber-400 rounded-xl p-8 text-center glow-blue-sm hover:glow-blue transition-all duration-200">
+              <div className="w-16 h-16 bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <FileText className="h-8 w-8 text-amber-300" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Digital Reports</h3>
+              <p className="text-white/90 leading-relaxed">Generate professional reports, automatic district submissions, and compliance tracking.</p>
+            </div>
+          </div>
+          
+          <div className="text-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg" 
+                className="glass-btn-primary hover:glow-blue text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 glow-blue hover:glow-blue-lg"
+                onClick={() => window.location.href = '/signup'}
+              >
+                <ArrowRight className="mr-2 h-5 w-5" />
+                Start Free Trial
+              </Button>
+              <Button 
+                size="lg" 
+                className="glass border-2 border-emerald-400 text-white/80 hover:bg-black/40 backdrop-blur-xl hover:border-emerald-500/40 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 glow-blue-sm"
+                onClick={() => window.location.href = '/team-portal'}
+              >
+                Company Login
+                <User className="ml-2 h-5 w-5" />
               </Button>
             </div>
           </div>
@@ -517,7 +579,7 @@ export default function HomePage() {
                 <Link href="/portal" className="block text-white/90 hover:text-white text-lg transition-colors">Customer Portal</Link>
                 <Link href="/portal/schedule" className="block text-white/90 hover:text-white text-lg transition-colors">Schedule Service</Link>
                 <Link href="/portal/pay" className="block text-white/90 hover:text-white text-lg transition-colors">Pay Bill</Link>
-                <Link href="/team-portal" className="block text-white/90 hover:text-white text-lg transition-colors">Business Login</Link>
+                <Link href="/team-portal" className="block text-white/90 hover:text-white text-lg transition-colors">Testing Company Portal</Link>
               </div>
             </div>
             
