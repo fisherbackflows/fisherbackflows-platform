@@ -231,21 +231,27 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative pt-24 pb-24 px-6">
         <div className="max-w-6xl mx-auto text-center">
-          {/* Trust Badge */}
-          <div className="inline-block mb-12">
-            <div className="bg-emerald-500/20 border border-emerald-400 px-6 py-3 rounded-full text-white text-sm font-semibold flex items-center space-x-2">
-              <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-              <Award className="h-4 w-4 text-emerald-300" />
-              <span>BAT Certified • Licensed & Insured • Pierce County</span>
+          {/* Title area with background */}
+          <div className="relative mb-12">
+            {/* Background effect only for title */}
+            <div className="absolute inset-0 -top-20 bottom-4 glass rounded-3xl pointer-events-none"></div>
+            
+            {/* Trust Badge */}
+            <div className="relative inline-block mb-12 pt-8">
+              <div className="bg-emerald-500/20 border border-emerald-400 px-6 py-3 rounded-full text-white text-sm font-semibold flex items-center space-x-2">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
+                <Award className="h-4 w-4 text-emerald-300" />
+                <span>BAT Certified • Licensed & Insured • Pierce County</span>
+              </div>
             </div>
+            
+            <h1 className="relative text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white pb-8">
+              The Complete Platform for<br className="hidden sm:block" />
+              <span className="block sm:inline text-white">
+                Backflow Testing
+              </span>
+            </h1>
           </div>
-          
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white">
-            The Complete Platform for<br className="hidden sm:block" />
-            <span className="block sm:inline text-white">
-              Backflow Testing
-            </span>
-          </h1>
           
           <div className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed px-4">
             <div className="text-center mb-6 space-y-4">
