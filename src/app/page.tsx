@@ -108,8 +108,6 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Clean minimal background */}
-      <div className="absolute inset-0 glass pointer-events-none"></div>
       
       {/* Unified Header */}
       <header className="sticky top-0 z-50 glass border-b border-blue-400 glow-blue-sm">
@@ -231,13 +229,10 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative pt-24 pb-24 px-6">
         <div className="max-w-6xl mx-auto text-center">
-          {/* Title area with background */}
+          {/* Title area */}
           <div className="relative mb-12">
-            {/* Background effect only for title */}
-            <div className="absolute inset-0 -top-20 bottom-4 glass rounded-3xl pointer-events-none"></div>
-            
             {/* Trust Badge */}
-            <div className="relative inline-block mb-12 pt-8">
+            <div className="relative inline-block mb-12">
               <div className="bg-emerald-500/20 border border-emerald-400 px-6 py-3 rounded-full text-white text-sm font-semibold flex items-center space-x-2">
                 <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
                 <Shield className="h-4 w-4 text-emerald-300" />
@@ -245,7 +240,7 @@ export default function HomePage() {
               </div>
             </div>
             
-            <h1 className="relative text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white pb-8">
+            <h1 className="relative text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white">
               The Complete Platform for<br className="hidden sm:block" />
               <span className="block sm:inline text-white">
                 Backflow Testing
