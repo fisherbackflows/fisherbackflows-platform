@@ -1,5 +1,5 @@
 import { Resend } from 'resend'
-import { logger } from '@/lib/logging/logger'
+import { logger } from '@/lib/logger'
 import type { EmailSend } from '@/lib/validation/schemas'
 
 // Initialize Resend client

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
 import { verifyResendWebhook } from '@/lib/email/resend'
-import { logger } from '@/lib/logging/logger'
+import { logger } from '@/lib/logger'
 
 interface ResendWebhookEvent {
   type: 'email.sent' | 'email.delivered' | 'email.delivery_delayed' | 'email.complained' | 'email.bounced' | 'email.opened' | 'email.clicked'

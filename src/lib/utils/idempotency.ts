@@ -1,7 +1,7 @@
 import { createHash, createHmac } from 'crypto'
 import { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { logger } from '@/lib/logging/logger'
+import { logger } from '@/lib/logger'
 
 /**
  * Generate idempotency key from request

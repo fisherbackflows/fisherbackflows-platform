@@ -467,6 +467,8 @@ export async function getOrganizationStats(orgId: string) {
   // Check cache first
   const cached = await cache.get(cacheKey)
   if (cached) return cached
+  
+  return await cache.set(cacheKey, async () => {
     const supabase = createClient()
     
     // Get basic counts

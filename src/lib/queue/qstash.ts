@@ -1,5 +1,5 @@
 import { Client, Receiver } from '@upstash/qstash'
-import { logger } from '@/lib/logging/logger'
+import { logger } from '@/lib/logger'
 import type { JobType } from '@/lib/validation/schemas'
 
 // Initialize QStash client

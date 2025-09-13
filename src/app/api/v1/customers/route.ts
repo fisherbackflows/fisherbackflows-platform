@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireSession } from '@/lib/auth/requireSession'
 import { validateAndSanitize, CustomerCreateSchema, CustomerQuerySchema } from '@/lib/validation/schemas'
 import { getCustomers, createCustomer } from '@/lib/db/queries'
-import { logger } from '@/lib/logging/logger'
-import { rateLimit } from '@/lib/cache/redis'
+import { logger } from '@/lib/logger'
+import { rateLimit } from '@/lib/redis'
 
 /**
  * GET /api/v1/customers

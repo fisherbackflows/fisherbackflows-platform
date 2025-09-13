@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyWebhook } from '@/lib/queue/qstash'
 import { createServiceClient } from '@/lib/supabase/server'
-import { logger } from '@/lib/logging/logger'
+import { logger } from '@/lib/logger'
 import { updateJob } from '@/lib/db/queries'
-import PDFDocument from 'pdfkit'
-import { Readable } from 'stream'
 
 interface PDFJobPayload {
   type: 'generate_pdf'
