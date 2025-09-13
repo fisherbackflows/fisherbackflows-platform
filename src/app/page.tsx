@@ -239,9 +239,9 @@ export default function HomePage() {
             {/* Trust Badge */}
             <div className="relative inline-block mb-12 pt-8">
               <div className="bg-emerald-500/20 border border-emerald-400 px-6 py-3 rounded-full text-white text-sm font-semibold flex items-center space-x-2">
-                <div className="w-2 h-2 bg-emerald-400 rounded-full"></div>
-                <Award className="h-4 w-4 text-emerald-300" />
-                <span>BAT Certified • Licensed & Insured • Pierce County</span>
+                <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                <Shield className="h-4 w-4 text-emerald-300" />
+                <span>Trusted by 500+ Testing Companies • 10,000+ Properties Protected</span>
               </div>
             </div>
             
