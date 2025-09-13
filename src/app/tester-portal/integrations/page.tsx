@@ -23,7 +23,8 @@ import {
   ChartBarIcon,
   BeakerIcon,
   KeyIcon,
-  GlobeAltIcon
+  GlobeAltIcon,
+  CurrencyDollarIcon
 } from '@heroicons/react/24/outline'
 import { 
   CheckCircleIcon as CheckCircleIconSolid,
