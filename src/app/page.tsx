@@ -242,8 +242,8 @@ export default function HomePage() {
           
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 leading-tight text-white">
             The Complete Platform for<br className="hidden sm:block" />
-            <span className="block sm:inline">
-              <span className="bg-gradient-to-r from-blue-300 via-blue-400 to-blue-500 bg-clip-text text-transparent">Backflow Testing</span>
+            <span className="block sm:inline text-white">
+              Backflow Testing
             </span>
           </h1>
           
