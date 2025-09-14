@@ -14,7 +14,8 @@ import {
   Shield,
   CheckCircle,
   ArrowRight,
-  AlertCircle
+  AlertCircle,
+  Lock
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -260,113 +261,115 @@ export default function CompanyRegistrationPage() {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <Building2 className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Company Information</h2>
-              <p className="text-slate-600">Tell us about your business</p>
+              <div className="p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl inline-block mb-6">
+                <Building2 className="h-12 w-12 text-blue-300" />
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-2">Company Information</h2>
+              <p className="text-white/90">Tell us about your business</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Company Name *
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => updateFormData('name', e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                    errors.name ? 'border-red-300' : 'border-slate-300'
+                  className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                    errors.name ? 'border-red-400' : 'border-blue-400'
                   }`}
                   placeholder="Acme Backflow Testing"
                 />
-                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Business Type
                 </label>
                 <select
                   value={formData.businessType}
                   onChange={(e) => updateFormData('businessType', e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
                 >
                   {businessTypes.map(type => (
-                    <option key={type.value} value={type.value}>{type.label}</option>
+                    <option key={type.value} value={type.value} className="bg-slate-900 text-white">{type.label}</option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Company Email *
                 </label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => updateFormData('email', e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                    errors.email ? 'border-red-300' : 'border-slate-300'
+                  className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                    errors.email ? 'border-red-400' : 'border-blue-400'
                   }`}
                   placeholder="contact@acmebackflow.com"
                 />
-                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Phone Number *
                 </label>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => updateFormData('phone', e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                    errors.phone ? 'border-red-300' : 'border-slate-300'
+                  className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                    errors.phone ? 'border-red-400' : 'border-blue-400'
                   }`}
                   placeholder="(555) 123-4567"
                 />
-                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                {errors.phone && <p className="text-red-400 text-sm mt-1">{errors.phone}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Website
                 </label>
                 <input
                   type="url"
                   value={formData.website}
                   onChange={(e) => updateFormData('website', e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
                   placeholder="https://acmebackflow.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   License Number
                 </label>
                 <input
                   type="text"
                   value={formData.licenseNumber}
                   onChange={(e) => updateFormData('licenseNumber', e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
                   placeholder="BT-12345"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-white/80 mb-2">
                 Certification Level
               </label>
               <select
                 value={formData.certificationLevel}
                 onChange={(e) => updateFormData('certificationLevel', e.target.value)}
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
               >
                 {certificationLevels.map(level => (
-                  <option key={level.value} value={level.value}>{level.label}</option>
+                  <option key={level.value} value={level.value} className="bg-slate-900 text-white">{level.label}</option>
                 ))}
               </select>
             </div>
@@ -377,88 +380,90 @@ export default function CompanyRegistrationPage() {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <MapPin className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Business Address</h2>
-              <p className="text-slate-600">Where is your business located?</p>
+              <div className="p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl inline-block mb-6">
+                <MapPin className="h-12 w-12 text-blue-300" />
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-2">Business Address</h2>
+              <p className="text-white/90">Where is your business located?</p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Street Address *
                 </label>
                 <input
                   type="text"
                   value={formData.addressLine1}
                   onChange={(e) => updateFormData('addressLine1', e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                    errors.addressLine1 ? 'border-red-300' : 'border-slate-300'
+                  className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                    errors.addressLine1 ? 'border-red-400' : 'border-blue-400'
                   }`}
                   placeholder="123 Main Street"
                 />
-                {errors.addressLine1 && <p className="text-red-500 text-sm mt-1">{errors.addressLine1}</p>}
+                {errors.addressLine1 && <p className="text-red-400 text-sm mt-1">{errors.addressLine1}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Apartment, suite, etc.
                 </label>
                 <input
                   type="text"
                   value={formData.addressLine2}
                   onChange={(e) => updateFormData('addressLine2', e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
                   placeholder="Suite 100"
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-white/80 mb-2">
                     City *
                   </label>
                   <input
                     type="text"
                     value={formData.city}
                     onChange={(e) => updateFormData('city', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                      errors.city ? 'border-red-300' : 'border-slate-300'
+                    className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                      errors.city ? 'border-red-400' : 'border-blue-400'
                     }`}
                     placeholder="Tacoma"
                   />
-                  {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
+                  {errors.city && <p className="text-red-400 text-sm mt-1">{errors.city}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-white/80 mb-2">
                     State *
                   </label>
                   <input
                     type="text"
                     value={formData.state}
                     onChange={(e) => updateFormData('state', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                      errors.state ? 'border-red-300' : 'border-slate-300'
+                    className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                      errors.state ? 'border-red-400' : 'border-blue-400'
                     }`}
                     placeholder="WA"
                   />
-                  {errors.state && <p className="text-red-500 text-sm mt-1">{errors.state}</p>}
+                  {errors.state && <p className="text-red-400 text-sm mt-1">{errors.state}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-white/80 mb-2">
                     ZIP Code *
                   </label>
                   <input
                     type="text"
                     value={formData.zipCode}
                     onChange={(e) => updateFormData('zipCode', e.target.value)}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                      errors.zipCode ? 'border-red-300' : 'border-slate-300'
+                    className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                      errors.zipCode ? 'border-red-400' : 'border-blue-400'
                     }`}
                     placeholder="98401"
                   />
-                  {errors.zipCode && <p className="text-red-500 text-sm mt-1">{errors.zipCode}</p>}
+                  {errors.zipCode && <p className="text-red-400 text-sm mt-1">{errors.zipCode}</p>}
                 </div>
               </div>
             </div>
@@ -469,93 +474,95 @@ export default function CompanyRegistrationPage() {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <Shield className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Admin Account</h2>
-              <p className="text-slate-600">Create your administrator account</p>
+              <div className="p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl inline-block mb-6">
+                <Shield className="h-12 w-12 text-blue-300" />
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-2">Admin Account</h2>
+              <p className="text-white/90">Create your administrator account</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   First Name *
                 </label>
                 <input
                   type="text"
                   value={formData.adminFirstName}
                   onChange={(e) => updateFormData('adminFirstName', e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                    errors.adminFirstName ? 'border-red-300' : 'border-slate-300'
+                  className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                    errors.adminFirstName ? 'border-red-400' : 'border-blue-400'
                   }`}
                   placeholder="John"
                 />
-                {errors.adminFirstName && <p className="text-red-500 text-sm mt-1">{errors.adminFirstName}</p>}
+                {errors.adminFirstName && <p className="text-red-400 text-sm mt-1">{errors.adminFirstName}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-white/80 mb-2">
                   Last Name *
                 </label>
                 <input
                   type="text"
                   value={formData.adminLastName}
                   onChange={(e) => updateFormData('adminLastName', e.target.value)}
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                    errors.adminLastName ? 'border-red-300' : 'border-slate-300'
+                  className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                    errors.adminLastName ? 'border-red-400' : 'border-blue-400'
                   }`}
                   placeholder="Smith"
                 />
-                {errors.adminLastName && <p className="text-red-500 text-sm mt-1">{errors.adminLastName}</p>}
+                {errors.adminLastName && <p className="text-red-400 text-sm mt-1">{errors.adminLastName}</p>}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-white/80 mb-2">
                 Admin Email *
               </label>
               <input
                 type="email"
                 value={formData.adminEmail}
                 onChange={(e) => updateFormData('adminEmail', e.target.value)}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.adminEmail ? 'border-red-300' : 'border-slate-300'
+                className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                  errors.adminEmail ? 'border-red-400' : 'border-blue-400'
                 }`}
                 placeholder="admin@acmebackflow.com"
               />
-              {errors.adminEmail && <p className="text-red-500 text-sm mt-1">{errors.adminEmail}</p>}
-              <p className="text-sm text-slate-500 mt-1">This will be your login email</p>
+              {errors.adminEmail && <p className="text-red-400 text-sm mt-1">{errors.adminEmail}</p>}
+              <p className="text-sm text-white/60 mt-1">This will be your login email</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-white/80 mb-2">
                 Password *
               </label>
               <input
                 type="password"
                 value={formData.adminPassword}
                 onChange={(e) => updateFormData('adminPassword', e.target.value)}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.adminPassword ? 'border-red-300' : 'border-slate-300'
+                className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                  errors.adminPassword ? 'border-red-400' : 'border-blue-400'
                 }`}
                 placeholder="Enter secure password"
               />
-              {errors.adminPassword && <p className="text-red-500 text-sm mt-1">{errors.adminPassword}</p>}
-              <p className="text-sm text-slate-500 mt-1">Must be at least 12 characters</p>
+              {errors.adminPassword && <p className="text-red-400 text-sm mt-1">{errors.adminPassword}</p>}
+              <p className="text-sm text-white/60 mt-1">Must be at least 12 characters</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-white/80 mb-2">
                 Confirm Password *
               </label>
               <input
                 type="password"
                 value={formData.adminPasswordConfirm}
                 onChange={(e) => updateFormData('adminPasswordConfirm', e.target.value)}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                  errors.adminPasswordConfirm ? 'border-red-300' : 'border-slate-300'
+                className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
+                  errors.adminPasswordConfirm ? 'border-red-400' : 'border-blue-400'
                 }`}
                 placeholder="Confirm password"
               />
-              {errors.adminPasswordConfirm && <p className="text-red-500 text-sm mt-1">{errors.adminPasswordConfirm}</p>}
+              {errors.adminPasswordConfirm && <p className="text-red-400 text-sm mt-1">{errors.adminPasswordConfirm}</p>}
             </div>
           </div>
         );
@@ -564,20 +571,22 @@ export default function CompanyRegistrationPage() {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <FileText className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Choose Your Plan</h2>
-              <p className="text-slate-600">Select the plan that fits your business needs</p>
+              <div className="p-4 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl rounded-2xl inline-block mb-6">
+                <FileText className="h-12 w-12 text-blue-300" />
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-2">Choose Your Plan</h2>
+              <p className="text-white/90">Select the plan that fits your business needs</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {plans.map((plan) => (
                 <div
                   key={plan.id}
-                  className={`relative bg-white border-2 rounded-2xl p-6 cursor-pointer transition-all ${
+                  className={`relative glass border-2 rounded-2xl p-6 cursor-pointer transition-all glow-blue-sm ${
                     formData.planType === plan.id
-                      ? 'border-blue-500 ring-2 ring-blue-100'
-                      : 'border-slate-200 hover:border-blue-300'
-                  } ${plan.popular ? 'ring-2 ring-blue-100' : ''}`}
+                      ? 'border-blue-400 ring-2 ring-blue-400/50 glow-blue'
+                      : 'border-blue-400/50 hover:border-blue-300'
+                  } ${plan.popular ? 'ring-2 ring-blue-400/30' : ''}`}
                   onClick={() => updateFormData('planType', plan.id as any)}
                 >
                   {plan.popular && (
@@ -589,22 +598,22 @@ export default function CompanyRegistrationPage() {
                   )}
 
                   <div className="text-center mb-6">
-                    <h3 className="text-xl font-bold text-slate-900 mb-2">{plan.name}</h3>
+                    <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
                     <div className="mb-4">
-                      <span className="text-3xl font-bold text-blue-600">{plan.price}</span>
-                      <span className="text-slate-500">{plan.period}</span>
+                      <span className="text-3xl font-bold text-blue-300">{plan.price}</span>
+                      <span className="text-white/60">{plan.period}</span>
                     </div>
-                    <p className="text-slate-600 text-sm">{plan.description}</p>
+                    <p className="text-white/80 text-sm">{plan.description}</p>
                   </div>
 
                   <div className="space-y-3 mb-6">
                     <div className="flex items-center text-sm">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                      <span className="font-medium">Up to {plan.maxUsers} users</span>
+                      <CheckCircle className="h-4 w-4 text-green-400 mr-2" />
+                      <span className="font-medium text-white">Up to {plan.maxUsers} users</span>
                     </div>
                     {plan.features.map((feature, index) => (
-                      <div key={index} className="flex items-center text-sm text-slate-600">
-                        <CheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                      <div key={index} className="flex items-center text-sm text-white/80">
+                        <CheckCircle className="h-4 w-4 text-green-400 mr-2 flex-shrink-0" />
                         <span>{feature}</span>
                       </div>
                     ))}
@@ -613,8 +622,8 @@ export default function CompanyRegistrationPage() {
                   <div className="flex items-center justify-center">
                     <div className={`w-5 h-5 rounded-full border-2 ${
                       formData.planType === plan.id
-                        ? 'border-blue-500 bg-blue-500'
-                        : 'border-slate-300'
+                        ? 'border-blue-400 bg-blue-500'
+                        : 'border-blue-400'
                     }`}>
                       {formData.planType === plan.id && (
                         <CheckCircle className="w-5 h-5 text-white" />
@@ -625,10 +634,10 @@ export default function CompanyRegistrationPage() {
               ))}
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-blue-500/10 border border-blue-400/50 rounded-xl p-4 glass">
               <div className="flex items-start">
-                <AlertCircle className="h-5 w-5 text-blue-500 mr-2 flex-shrink-0 mt-0.5" />
-                <div className="text-sm text-blue-700">
+                <AlertCircle className="h-5 w-5 text-blue-400 mr-2 flex-shrink-0 mt-0.5" />
+                <div className="text-sm text-blue-300">
                   <p className="font-medium mb-1">14-day free trial included</p>
                   <p>Start with any plan and get full access for 14 days. No credit card required to begin.</p>
                 </div>
@@ -636,8 +645,8 @@ export default function CompanyRegistrationPage() {
             </div>
 
             {errors.submit && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <p className="text-red-700 text-sm">{errors.submit}</p>
+              <div className="bg-red-500/10 border border-red-400/50 rounded-xl p-4 glass">
+                <p className="text-red-400 text-sm">{errors.submit}</p>
               </div>
             )}
           </div>
@@ -646,29 +655,31 @@ export default function CompanyRegistrationPage() {
       case 5:
         return (
           <div className="text-center space-y-6">
-            <CheckCircle className="h-20 w-20 text-green-500 mx-auto" />
+            <div className="p-6 bg-gradient-to-r from-green-600/80 to-green-500/80 backdrop-blur-xl rounded-2xl inline-block mb-6">
+              <CheckCircle className="h-20 w-20 text-green-300 mx-auto" />
+            </div>
             <div>
-              <h2 className="text-3xl font-bold text-slate-900 mb-4">Welcome to Fisher Backflows!</h2>
-              <p className="text-xl text-slate-600 mb-6">
+              <h2 className="text-3xl font-bold text-white mb-4">Welcome to Fisher Backflows!</h2>
+              <p className="text-xl text-white/90 mb-6">
                 Your company account has been created successfully.
               </p>
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
-                <h3 className="font-semibold text-green-800 mb-2">What's Next?</h3>
-                <ul className="text-left space-y-2 text-green-700">
+              <div className="bg-green-500/10 border border-green-400/50 rounded-xl p-6 mb-6 glass">
+                <h3 className="font-semibold text-green-300 mb-2">What's Next?</h3>
+                <ul className="text-left space-y-2 text-green-200">
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 mr-2" />
+                    <CheckCircle className="h-4 w-4 mr-2 text-green-400" />
                     Check your email for account verification
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 mr-2" />
+                    <CheckCircle className="h-4 w-4 mr-2 text-green-400" />
                     Set up your company settings
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 mr-2" />
+                    <CheckCircle className="h-4 w-4 mr-2 text-green-400" />
                     Invite your team members
                   </li>
                   <li className="flex items-center">
-                    <CheckCircle className="h-4 w-4 mr-2" />
+                    <CheckCircle className="h-4 w-4 mr-2 text-green-400" />
                     Start managing your customers and appointments
                   </li>
                 </ul>
@@ -677,7 +688,7 @@ export default function CompanyRegistrationPage() {
 
             <Button
               onClick={() => router.push('/team-portal/login')}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg font-medium inline-flex items-center"
+              className="glass-btn-primary hover:glow-blue text-white px-8 py-3 rounded-2xl font-medium inline-flex items-center glow-blue-sm"
             >
               Sign In to Your Account
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -691,7 +702,7 @@ export default function CompanyRegistrationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-black">
       <TeamPortalNavigation userInfo={{ name: '', email: '' }} />
 
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -703,7 +714,7 @@ export default function CompanyRegistrationPage() {
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center font-medium ${
                   currentStep >= step
                     ? 'bg-blue-500 text-white'
-                    : 'bg-slate-200 text-slate-500'
+                    : 'bg-white/10 text-white/60 border border-blue-400/50'
                 }`}>
                   {currentStep > step ? (
                     <CheckCircle className="w-6 h-6" />
@@ -713,7 +724,7 @@ export default function CompanyRegistrationPage() {
                 </div>
                 {step < 4 && (
                   <div className={`w-16 h-1 mx-2 ${
-                    currentStep > step ? 'bg-blue-500' : 'bg-slate-200'
+                    currentStep > step ? 'bg-blue-500' : 'bg-white/20'
                   }`} />
                 )}
               </div>
@@ -721,23 +732,23 @@ export default function CompanyRegistrationPage() {
           </div>
 
           <div className="flex justify-between mt-2 text-sm">
-            <span className={currentStep >= 1 ? 'text-blue-600 font-medium' : 'text-slate-500'}>
+            <span className={currentStep >= 1 ? 'text-blue-300 font-medium' : 'text-white/60'}>
               Company Info
             </span>
-            <span className={currentStep >= 2 ? 'text-blue-600 font-medium' : 'text-slate-500'}>
+            <span className={currentStep >= 2 ? 'text-blue-300 font-medium' : 'text-white/60'}>
               Address
             </span>
-            <span className={currentStep >= 3 ? 'text-blue-600 font-medium' : 'text-slate-500'}>
+            <span className={currentStep >= 3 ? 'text-blue-300 font-medium' : 'text-white/60'}>
               Admin Account
             </span>
-            <span className={currentStep >= 4 ? 'text-blue-600 font-medium' : 'text-slate-500'}>
+            <span className={currentStep >= 4 ? 'text-blue-300 font-medium' : 'text-white/60'}>
               Plan Selection
             </span>
           </div>
         </div>
 
         {/* Form Content */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-8">
+        <div className="glass rounded-2xl border border-blue-400 p-8 glow-blue-sm">
           {renderStepContent()}
         </div>
 
@@ -748,8 +759,7 @@ export default function CompanyRegistrationPage() {
               {currentStep > 1 && (
                 <Button
                   onClick={handlePreviousStep}
-                  variant="outline"
-                  className="px-6 py-2"
+                  className="glass hover:glass text-white/80 px-6 py-2 rounded-2xl border border-blue-400/50"
                 >
                   Previous
                 </Button>
@@ -758,7 +768,7 @@ export default function CompanyRegistrationPage() {
 
             <div className="flex space-x-4">
               <Link href="/team-portal/login">
-                <Button variant="ghost" className="px-6 py-2">
+                <Button className="glass hover:glass text-white/80 px-6 py-2 rounded-2xl">
                   Already have an account? Sign In
                 </Button>
               </Link>
@@ -766,7 +776,7 @@ export default function CompanyRegistrationPage() {
               {currentStep < 4 ? (
                 <Button
                   onClick={handleNextStep}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2"
+                  className="glass-btn-primary hover:glow-blue text-white px-6 py-2 rounded-2xl glow-blue-sm"
                 >
                   Next
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -775,7 +785,7 @@ export default function CompanyRegistrationPage() {
                 <Button
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3"
+                  className="glass-btn-primary hover:glow-blue text-white px-8 py-3 rounded-2xl glow-blue-sm disabled:opacity-50"
                 >
                   {loading ? 'Creating Account...' : 'Create Company Account'}
                 </Button>
