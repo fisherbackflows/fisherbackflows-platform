@@ -147,17 +147,17 @@ export default function TesterDashboard() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'text-green-400';
-      case 'in_progress': return 'text-yellow-400';
-      default: return 'text-blue-400';
+      case 'completed': return 'text-green-600';
+      case 'in_progress': return 'text-yellow-600';
+      default: return 'text-blue-600';
     }
   };
 
   const getStatusBg = (status: string) => {
     switch (status) {
-      case 'completed': return 'glass-green';
-      case 'in_progress': return 'glass-yellow';
-      default: return 'glass-blue';
+      case 'completed': return 'bg-green-50 border border-green-200';
+      case 'in_progress': return 'bg-yellow-50 border border-yellow-200';
+      default: return 'bg-blue-50 border border-blue-200';
     }
   };
 
@@ -187,17 +187,17 @@ export default function TesterDashboard() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
         <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
         <div className="flex items-center justify-center min-h-[50vh]">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400" />
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       <TeamPortalNavigation userInfo={{ 
         name: `${user.first_name} ${user.last_name}`, 
         email: user.email || '',
@@ -209,20 +209,20 @@ export default function TesterDashboard() {
         {/* Page Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
-            <User className="h-8 w-8 text-blue-300" />
+            <User className="h-8 w-8 text-blue-600" />
             <div>
-              <h1 className="text-3xl font-bold text-white">Tester Dashboard</h1>
-              <p className="text-white/60">Field technician interface</p>
+              <h1 className="text-3xl font-bold text-slate-900">Tester Dashboard</h1>
+              <p className="text-slate-600">Field technician interface</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <div className="glass rounded-2xl px-3 py-2">
+            <div className="glass rounded-2xl px-3 py-2 bg-white/80 border border-slate-200">
               <div className="flex items-center space-x-2 text-sm">
-                <Clock className="h-4 w-4 text-blue-400" />
-                <span className="text-white/80">
-                  {currentTime.toLocaleTimeString('en-US', { 
-                    hour: 'numeric', 
-                    minute: '2-digit' 
+                <Clock className="h-4 w-4 text-blue-600" />
+                <span className="text-slate-700">
+                  {currentTime.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit'
                   })}
                 </span>
               </div>
@@ -238,46 +238,46 @@ export default function TesterDashboard() {
         </div>
           {/* Current Appointment */}
           {currentAppointment && (
-            <div className="glass-yellow rounded-xl p-6 mb-8 glow-yellow-sm">
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="glass-yellow rounded-2xl p-3">
-                    <AlertCircle className="h-6 w-6 text-yellow-400" />
+                  <div className="bg-yellow-100 rounded-2xl p-3">
+                    <AlertCircle className="h-6 w-6 text-yellow-600" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-white">Current Appointment</h2>
-                    <p className="text-yellow-300 text-sm">In Progress</p>
+                    <h2 className="text-xl font-bold text-slate-900">Current Appointment</h2>
+                    <p className="text-yellow-700 text-sm">In Progress</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-white">
+                  <div className="text-2xl font-bold text-slate-900">
                     {formatTime(currentAppointment.time)}
                   </div>
-                  <div className="text-yellow-300 text-sm">
+                  <div className="text-yellow-700 text-sm">
                     ~{currentAppointment.estimated_duration} min
                   </div>
                 </div>
               </div>
-              
+
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
-                  <User className="h-5 w-5 text-yellow-400" />
-                  <span className="text-white font-medium">{currentAppointment.customer_name}</span>
+                  <User className="h-5 w-5 text-yellow-600" />
+                  <span className="text-slate-900 font-medium">{currentAppointment.customer_name}</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <MapPin className="h-5 w-5 text-yellow-400" />
-                  <span className="text-white/80">{currentAppointment.address}</span>
+                  <MapPin className="h-5 w-5 text-yellow-600" />
+                  <span className="text-slate-700">{currentAppointment.address}</span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Phone className="h-5 w-5 text-yellow-400" />
-                  <span className="text-white/80">{currentAppointment.phone}</span>
+                  <Phone className="h-5 w-5 text-yellow-600" />
+                  <span className="text-slate-700">{currentAppointment.phone}</span>
                 </div>
               </div>
-              
-              <div className="mt-4 pt-4 border-t border-yellow-400/20">
+
+              <div className="mt-4 pt-4 border-t border-yellow-200">
                 <Link
                   href={`/team-portal/test-report/${currentAppointment.id}`}
-                  className="btn-glow px-6 py-3 rounded-2xl inline-flex items-center"
+                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-2xl inline-flex items-center font-medium transition-colors"
                 >
                   <FileText className="h-5 w-5 mr-2" />
                   Complete Test Report
@@ -289,24 +289,26 @@ export default function TesterDashboard() {
           {/* Tester Actions */}
           <section className="mb-8">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-white">Tester Dashboard</h2>
-              <div className="text-white/60 text-sm">Field technician access</div>
+              <h2 className="text-2xl font-bold text-slate-900">Tester Dashboard</h2>
+              <div className="text-slate-600 text-sm">Field technician access</div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {testerActions.map((action, index) => (
-                <div key={index} className={`glass rounded-xl p-6 ${action.disabled ? 'opacity-50' : 'card-hover'}`}>
+                <div key={index} className={`bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl p-6 ${action.disabled ? 'opacity-50' : 'hover:shadow-lg hover:border-blue-300 transition-all duration-200'}`}>
                   <div className="text-center">
-                    <div className="inline-block glass-blue rounded-full p-4 mb-4 pulse-glow">
-                      {action.icon}
+                    <div className="inline-block bg-blue-50 rounded-full p-4 mb-4">
+                      <div className="text-blue-600">
+                        {action.icon}
+                      </div>
                     </div>
-                    <h3 className="text-lg font-semibold text-white mb-2">{action.title}</h3>
-                    <p className="text-white/60 text-sm mb-4">{action.description}</p>
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">{action.title}</h3>
+                    <p className="text-slate-600 text-sm mb-4">{action.description}</p>
                     {!action.disabled ? (
-                      <Link href={action.href} className="btn-glass px-4 py-2 rounded-2xl inline-flex items-center">
+                      <Link href={action.href} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-2xl inline-flex items-center font-medium transition-colors">
                         Access
                       </Link>
                     ) : (
-                      <div className="text-white/40 text-sm">No active appointment</div>
+                      <div className="text-slate-400 text-sm">No active appointment</div>
                     )}
                   </div>
                 </div>
@@ -317,31 +319,31 @@ export default function TesterDashboard() {
           {/* Today's Schedule */}
           <section>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-white">Today's Schedule</h2>
-              <div className="glass rounded-2xl px-3 py-1">
-                <span className="text-white/80 text-sm">{todaySchedule.length} appointments</span>
+              <h2 className="text-xl font-semibold text-slate-900">Today's Schedule</h2>
+              <div className="bg-white/95 backdrop-blur-sm border border-slate-200 rounded-2xl px-3 py-1">
+                <span className="text-slate-700 text-sm">{todaySchedule.length} appointments</span>
               </div>
             </div>
-            
+
             <div className="space-y-4">
               {todaySchedule.map((appointment, index) => (
-                <div key={appointment.id} className="glass rounded-xl p-6">
+                <div key={appointment.id} className="bg-white/95 backdrop-blur-sm border border-slate-200 rounded-xl p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <div className="text-center">
-                        <div className="text-xl font-bold text-white">
+                        <div className="text-xl font-bold text-slate-900">
                           {formatTime(appointment.time)}
                         </div>
                         <div className={`text-xs ${getStatusColor(appointment.status)}`}>
                           {appointment.status.replace('_', ' ').toUpperCase()}
                         </div>
                       </div>
-                      
+
                       <div className="flex-1">
-                        <div className="font-semibold text-white mb-1">
+                        <div className="font-semibold text-slate-900 mb-1">
                           {appointment.customer_name}
                         </div>
-                        <div className="flex items-center space-x-4 text-sm text-white/60">
+                        <div className="flex items-center space-x-4 text-sm text-slate-600">
                           <div className="flex items-center space-x-1">
                             <MapPin className="h-4 w-4" />
                             <span>{appointment.address}</span>
@@ -353,7 +355,7 @@ export default function TesterDashboard() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="text-right">
                       <div className={`inline-flex items-center space-x-2 ${getStatusBg(appointment.status)} rounded-2xl px-3 py-2`}>
                         <CheckCircle className={`h-4 w-4 ${getStatusColor(appointment.status)}`} />
@@ -362,21 +364,21 @@ export default function TesterDashboard() {
                            appointment.status === 'completed' ? 'COMPLETED' : 'SCHEDULED'}
                         </span>
                       </div>
-                      <div className="text-white/40 text-xs mt-1">
+                      <div className="text-slate-400 text-xs mt-1">
                         {appointment.estimated_duration}min + {appointment.travel_time}min travel
                       </div>
                     </div>
                   </div>
-                  
+
                   {appointment.status === 'scheduled' && index === todaySchedule.findIndex(a => a.status === 'scheduled') && (
-                    <div className="mt-4 pt-4 border-t border-white/10">
+                    <div className="mt-4 pt-4 border-t border-slate-200">
                       <div className="flex items-center justify-between">
-                        <div className="text-white/60 text-sm">
+                        <div className="text-slate-600 text-sm">
                           Next appointment - travel time: {appointment.travel_time} minutes
                         </div>
                         <Button
                           size="sm"
-                          className="btn-glass px-3 py-1 rounded-2xl"
+                          className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-2xl"
                         >
                           <Navigation className="h-4 w-4 mr-2" />
                           Get Directions
