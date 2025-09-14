@@ -872,6 +872,15 @@ export default function CompanyRegistrationPage() {
           {renderStepContent()}
         </div>
 
+        {/* Legend */}
+        {currentStep < 5 && (
+          <div className="mt-4 text-center">
+            <p className="text-white/60 text-sm">
+              <span className="text-red-400">*</span> Required fields • All other fields are optional
+            </p>
+          </div>
+        )}
+
         {/* Navigation Buttons */}
         {currentStep < 5 && (
           <div className="flex justify-between mt-8">
