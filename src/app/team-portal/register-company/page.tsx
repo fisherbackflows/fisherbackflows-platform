@@ -345,7 +345,7 @@ export default function CompanyRegistrationPage() {
                   className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                     errors.name ? 'border-red-400' : 'border-blue-400'
                   }`}
-                  placeholder="Your company name"
+                  placeholder=""
                 />
                 {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
               </div>
@@ -393,7 +393,7 @@ export default function CompanyRegistrationPage() {
                   className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                     errors.phone ? 'border-red-400' : 'border-blue-400'
                   }`}
-                  placeholder="(555) 123-4567"
+                  placeholder=""
                 />
                 {errors.phone && <p className="text-red-400 text-sm mt-1">{errors.phone}</p>}
               </div>
@@ -469,7 +469,7 @@ export default function CompanyRegistrationPage() {
                   value={formData.businessLicense}
                   onChange={(e) => updateFormData('businessLicense', e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
-                  placeholder="Optional"
+                  placeholder=""
                 />
               </div>
 
@@ -526,7 +526,7 @@ export default function CompanyRegistrationPage() {
                   value={formData.addressLine2}
                   onChange={(e) => updateFormData('addressLine2', e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
-                  placeholder="Optional"
+                  placeholder=""
                 />
               </div>
 
