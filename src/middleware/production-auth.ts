@@ -25,8 +25,7 @@ const PUBLIC_ROUTES = [
   '/portal/verification-success',
   '/portal/verification-error',
   '/api/auth',
-  '/api/register',
-  '/team-portal/dashboard' // Team portal dashboard accessible without login
+  '/api/register'
 ];
 
 // Routes that should redirect if already authenticated
