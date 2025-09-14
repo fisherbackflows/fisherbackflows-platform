@@ -113,18 +113,18 @@ export default function HomePage() {
       <header className="sticky top-0 z-50 glass border-b border-blue-400 glow-blue-sm">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            {/* Logo and Company Title */}
+            {/* Logo and Platform Title */}
             <Link href="/" className="flex items-center space-x-3">
               <Image
                 src="/fisher-backflows-logo.png"
-                alt="Fisher Backflows LLC"
+                alt="Fisher Backflows Platform"
                 width={40}
                 height={40}
                 className="brightness-110 contrast-105 rounded-lg"
               />
               <div>
-                <h1 className="text-lg font-bold text-white">Fisher Backflows</h1>
-                <p className="text-xs text-white/60">Professional Backflow Testing</p>
+                <h1 className="text-lg font-bold text-white">Fisher Backflows Platform</h1>
+                <p className="text-xs text-white/60">SaaS Compliance Marketplace</p>
               </div>
             </Link>
             
@@ -236,7 +236,7 @@ export default function HomePage() {
               <div className="bg-emerald-500/20 border border-emerald-400 px-6 py-3 rounded-full text-white text-sm font-semibold flex items-center space-x-2">
                 <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
                 <Shield className="h-4 w-4 text-emerald-300" />
-                <span>Trusted by 500+ Testing Companies • 10,000+ Properties Protected</span>
+                <span>SaaS Platform • 500+ Testing Companies • 10,000+ Properties Managed</span>
               </div>
             </div>
             
@@ -245,9 +245,9 @@ export default function HomePage() {
                 <span className="relative inline-block">
                   <div className="absolute inset-0 -inset-x-4 -inset-y-3 bg-gradient-to-r from-blue-600/10 to-purple-600/10 backdrop-blur-md border-2 border-blue-400/50 rounded-[2.5rem] shadow-[0_0_50px_rgba(59,130,246,0.4),inset_0_0_30px_rgba(59,130,246,0.1)]"></div>
                   <span className="relative px-4 py-3 inline-block">
-                    The Complete Platform
+                    The Backflow Compliance
                     <br className="hidden sm:block" />
-                    for Backflow Testing
+                    Marketplace Platform
                   </span>
                 </span>
               </h1>
@@ -256,33 +256,33 @@ export default function HomePage() {
           <div className="text-lg sm:text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed px-4">
             <div className="text-center mb-6 space-y-4">
               <p className="text-white/90 leading-relaxed">
-                <strong className="text-blue-300">For Property Owners:</strong> Find certified testing companies, schedule appointments online, and stay compliant with automated district submissions.
+                <strong className="text-blue-300">For Property Owners:</strong> Create your all-in-one compliance portal. Track all backflow devices, automatically schedule yearly testing, search certified testers by location or name, and never miss a deadline.
               </p>
               <p className="text-white/90 leading-relaxed">
-                <strong className="text-emerald-300">For Testing Companies:</strong> Grow your business with comprehensive customer management, smart scheduling, and digital reporting tools.
+                <strong className="text-emerald-300">For Testing Companies:</strong> From solo testers to large HVAC firms - streamline your entire workflow with admin controls, tester profiles, auto-populated forms, smart routing, and mobile apps for field techs.
               </p>
             </div>
             <p className="text-center">
-              <strong className="text-white/90">Join thousands using our platform nationwide.</strong>
+              <strong className="text-white/90">Powered by Fisher Backflows Platform - The industry's leading SaaS solution</strong>
             </p>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20 px-4">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="w-full sm:w-auto glass-btn-primary hover:glow-blue text-white px-8 py-4 text-lg font-semibold rounded-xl group transition-all duration-200 glow-blue hover:glow-blue-lg"
               onClick={() => window.location.href = '/portal'}
             >
-              Find Testing Companies
+              Property Owner Portal
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-200" />
             </Button>
-            <Button 
-              size="lg" 
-              className="w-full sm:w-auto glass border-2 border-blue-400 text-white/80 hover:bg-black/40 backdrop-blur-xl hover:border-blue-500/40 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 glow-blue-sm"
+            <Button
+              size="lg"
+              className="w-full sm:w-auto glass border-2 border-emerald-400 text-white/80 hover:bg-black/40 backdrop-blur-xl hover:border-emerald-500/40 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200 glow-blue-sm"
               onClick={() => window.location.href = '/signup'}
             >
               <User className="mr-2 h-5 w-5" />
-              Start Free Trial
+              Testing Company Trial
             </Button>
           </div>
           
@@ -292,22 +292,22 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Shield className="h-8 w-8 text-emerald-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Verified Companies</h3>
-              <p className="text-white/90 leading-relaxed">All testing companies are pre-verified for licenses, insurance, and BAT certification before joining our network.</p>
+              <h3 className="text-xl font-bold text-white mb-3">Marketplace of Testers</h3>
+              <p className="text-white/90 leading-relaxed">Browse certified testers from solo operators to large HVAC companies. Search by location, name, or view all. Every tester verified for licenses and BAT certification.</p>
             </div>
             <div className="glass border border-blue-400 rounded-2xl p-8 glow-blue-sm hover:glow-blue transition-all duration-200">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Clock className="h-8 w-8 text-blue-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Automated Compliance</h3>
-              <p className="text-white/90 leading-relaxed">Digital reports automatically submitted to water districts with instant compliance tracking and reminders.</p>
+              <h3 className="text-xl font-bold text-white mb-3">Yearly Compliance Portal</h3>
+              <p className="text-white/90 leading-relaxed">Track all devices in one dashboard. Auto-schedule yearly tests required by code. Get reminders, digital reports, and automatic district submissions.</p>
             </div>
             <div className="glass border border-blue-400 rounded-2xl p-8 glow-blue-sm hover:glow-blue transition-all duration-200">
               <div className="w-16 h-16 bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Award className="h-8 w-8 text-amber-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Nationwide Network</h3>
-              <p className="text-white/90 leading-relaxed">Connect with certified testing professionals across the country through our growing marketplace platform.</p>
+              <h3 className="text-xl font-bold text-white mb-3">End-to-End Workflow</h3>
+              <p className="text-white/90 leading-relaxed">Testing companies get auto-populated forms, optimized routes, mobile tech apps, and complete business management from scheduling to billing.</p>
             </div>
           </div>
         </div>
@@ -318,10 +318,10 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              For Property Owners
+              Your Complete Compliance Portal
             </h2>
             <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-              Find certified testing companies in your area, schedule appointments online, and manage all your backflow compliance requirements in one place.
+              Property owners create one account to manage all backflow devices. Track compliance history, auto-schedule yearly required testing, and choose from our marketplace of verified testing companies - from independent testers to full-service plumbing and HVAC firms.
             </p>
           </div>
           
@@ -330,8 +330,8 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Calendar className="h-8 w-8 text-blue-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Find Local Testers</h3>
-              <p className="text-white/90 leading-relaxed">Browse certified testing companies in your area with ratings, availability, and competitive pricing.</p>
+              <h3 className="text-xl font-bold text-white mb-4">Search & Compare Testers</h3>
+              <p className="text-white/90 leading-relaxed">Search by location radius, company name, or browse all. Compare solo testers, plumbing companies, and HVAC firms with transparent pricing and availability.</p>
             </div>
             
             <div className="glass border border-blue-400 rounded-xl p-8 text-center glow-blue-sm hover:glow-blue transition-all duration-200">
@@ -346,8 +346,8 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <FileText className="h-8 w-8 text-amber-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Compliance Tracking</h3>
-              <p className="text-white/90 leading-relaxed">Automatic district submissions, renewal reminders, and complete compliance history tracking.</p>
+              <h3 className="text-xl font-bold text-white mb-4">Automatic Yearly Scheduling</h3>
+              <p className="text-white/90 leading-relaxed">Set it and forget it. Auto-schedule next year's required test, get reminders 30 days before due, track all devices, and maintain complete compliance history.</p>
             </div>
           </div>
           
@@ -374,15 +374,85 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Marketplace Section - New */}
+      <section className="py-20 px-6 bg-gradient-to-r from-purple-900/20 to-blue-900/20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              The Testing Company Marketplace
+            </h2>
+            <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
+              Connect with the right testing company for your needs. Our platform hosts everyone from independent certified testers to full-service plumbing and HVAC companies offering backflow testing services.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div className="glass border border-purple-400 rounded-xl p-8 text-center glow-blue-sm hover:glow-blue transition-all duration-200">
+              <div className="w-16 h-16 bg-purple-500/20 border border-purple-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <User className="h-8 w-8 text-purple-300" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Solo Testers</h3>
+              <p className="text-white/90 leading-relaxed">Independent certified professionals who own their testing business. Often provide personalized service and competitive rates.</p>
+            </div>
+
+            <div className="glass border border-blue-400 rounded-xl p-8 text-center glow-blue-sm hover:glow-blue transition-all duration-200">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Gauge className="h-8 w-8 text-blue-300" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">Plumbing Companies</h3>
+              <p className="text-white/90 leading-relaxed">Full-service plumbing firms that include backflow testing. Can handle repairs, installations, and other plumbing needs.</p>
+            </div>
+
+            <div className="glass border border-emerald-400 rounded-xl p-8 text-center glow-blue-sm hover:glow-blue transition-all duration-200">
+              <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Zap className="h-8 w-8 text-emerald-300" />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-4">HVAC Companies</h3>
+              <p className="text-white/90 leading-relaxed">HVAC service providers offering backflow testing alongside heating and cooling services. Multiple techs for quick scheduling.</p>
+            </div>
+          </div>
+
+          <div className="glass border border-blue-400/30 rounded-2xl p-8 mb-12">
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">How Our Marketplace Works</h3>
+            <div className="grid md:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-blue-500/20 border border-blue-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span className="text-blue-300 font-bold">1</span>
+                </div>
+                <p className="text-white/80 text-sm">Enter your address or search area</p>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-blue-500/20 border border-blue-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span className="text-blue-300 font-bold">2</span>
+                </div>
+                <p className="text-white/80 text-sm">Browse testers by distance, name, or type</p>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-blue-500/20 border border-blue-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span className="text-blue-300 font-bold">3</span>
+                </div>
+                <p className="text-white/80 text-sm">Compare prices, availability & reviews</p>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-blue-500/20 border border-blue-400 rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span className="text-blue-300 font-bold">4</span>
+                </div>
+                <p className="text-white/80 text-sm">Book online & track everything in your portal</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testing Companies Section */}
       <section className="py-20 px-6 bg-gradient-to-r from-emerald-900/20 to-blue-900/20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              For Testing Companies
+              Complete Business Management Platform
             </h2>
             <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-              Grow your backflow testing business with our complete management platform. Get more customers, streamline operations, and automate compliance.
+              Whether you're a solo tester or a large HVAC company - streamline everything. Create company profiles with admin controls, manage multiple tester accounts with custom permissions, auto-populate forms, and give field techs mobile access with optimized routing.
             </p>
           </div>
           
@@ -391,24 +461,24 @@ export default function HomePage() {
               <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <User className="h-8 w-8 text-emerald-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Customer Management</h3>
-              <p className="text-white/90 leading-relaxed">Complete CRM with lead tracking, customer profiles, service history, and automated follow-ups.</p>
+              <h3 className="text-xl font-bold text-white mb-4">Multi-User Company Profiles</h3>
+              <p className="text-white/90 leading-relaxed">Create your company profile with admin controls. Add unlimited tester accounts with modular permissions. Perfect for solo testers to large teams.</p>
             </div>
             
             <div className="glass border border-blue-400 rounded-xl p-8 text-center glow-blue-sm hover:glow-blue transition-all duration-200">
               <div className="w-16 h-16 bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl/20 border border-blue-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Calendar className="h-8 w-8 text-blue-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Smart Scheduling</h3>
-              <p className="text-white/90 leading-relaxed">Route optimization, online booking integration, and automated appointment confirmations.</p>
+              <h3 className="text-xl font-bold text-white mb-4">Mobile Tech App & Routing</h3>
+              <p className="text-white/90 leading-relaxed">Field techs login to see their daily schedule with optimized routing. Auto-navigation to next job, digital forms, and real-time updates to office.</p>
             </div>
             
             <div className="glass border border-amber-400 rounded-xl p-8 text-center glow-blue-sm hover:glow-blue transition-all duration-200">
               <div className="w-16 h-16 bg-amber-500/20 border border-amber-400 glow-blue-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <FileText className="h-8 w-8 text-amber-300" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-4">Digital Reports</h3>
-              <p className="text-white/90 leading-relaxed">Generate professional reports, automatic district submissions, and compliance tracking.</p>
+              <h3 className="text-xl font-bold text-white mb-4">Automated Workflow</h3>
+              <p className="text-white/90 leading-relaxed">Auto-populate test forms from device history. Generate reports instantly. Submit to water districts automatically. Cut your entire process time by 70%.</p>
             </div>
           </div>
           
@@ -509,10 +579,10 @@ export default function HomePage() {
             
             <div className="relative text-center">
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Ready to Transform Your Business?
+                Join the Fisher Backflows Platform
               </h2>
               <p className="text-xl text-white/70 max-w-2xl mx-auto mb-10">
-                Join hundreds of testing companies already using our platform
+                The industry's leading SaaS marketplace connecting property owners with testing companies
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -559,15 +629,15 @@ export default function HomePage() {
               <div className="mb-6">
                 <Image
                   src="/fisher-backflows-logo.png"
-                  alt="Fisher Backflows LLC"
+                  alt="Fisher Backflows Platform"
                   width={200}
                   height={160}
                   className="brightness-110 contrast-105"
                 />
               </div>
               <p className="text-white/90 text-lg mb-6 leading-relaxed">
-                Professional backflow testing and prevention services for Pierce County. 
-                Protecting your water quality with certified expertise.
+                Fisher Backflows Platform - The complete SaaS marketplace for backflow compliance.
+                Connecting property owners with certified testing companies nationwide.
               </p>
               <div className="flex space-x-4">
                 <div className="flex items-center space-x-2 text-white/90">
@@ -612,10 +682,10 @@ export default function HomePage() {
           
           <div className="border-t border-blue-500/40/50 pt-8 text-center">
             <p className="text-white/80 text-lg mb-2">
-              © {currentYear} Fisher Backflows LLC. All rights reserved. Licensed & Insured.
+              © {currentYear} Fisher Backflows Platform. All rights reserved.
             </p>
             <p className="text-white/90 text-sm">
-              BAT Certified | Washington State Contractor License
+              SaaS Marketplace Platform | Powered by Fisher Backflows LLC
             </p>
           </div>
         </div>
