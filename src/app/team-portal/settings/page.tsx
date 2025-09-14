@@ -15,7 +15,19 @@ import {
   Globe,
   Lock,
   Eye,
-  EyeOff
+  EyeOff,
+  Clock,
+  Monitor,
+  Download,
+  Activity,
+  Keyboard,
+  AlertCircle,
+  CheckCircle,
+  Calendar,
+  Languages,
+  FileDown,
+  FileUp,
+  HelpCircle
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -26,21 +38,45 @@ export default function SettingsPage() {
     contactEmail: 'service@fisherbackflows.com',
     contactPhone: '(253) 278-8692',
     address: 'Pierce County, WA',
+    timezone: 'America/Los_Angeles',
+
+    // Display Preferences
+    dateFormat: 'MM/DD/YYYY',
+    timeFormat: '12h',
+    startWeekOn: 'sunday',
+    compactView: false,
+    showGridLines: true,
+    rowsPerPage: 25,
 
     // Notifications
     emailNotifications: true,
     smsNotifications: false,
     reminderDays: 30,
+    dailyDigest: true,
+    instantAlerts: true,
+    appointmentReminders: true,
+    paymentReminders: true,
+    reportDeadlines: true,
 
     // Invoicing
     invoicePrefix: 'INV-',
     taxRate: 9.8,
     paymentTerms: 30,
+    autoGenerateInvoices: true,
+    attachPDFToEmail: true,
+
+    // Data Management
+    autoBackup: true,
+    backupFrequency: 'daily',
+    exportFormat: 'xlsx',
+    includeArchived: false,
 
     // Security
     autoLogout: 60,
     requireStrongPasswords: true,
-    twoFactorAuth: false
+    twoFactorAuth: false,
+    sessionTimeout: true,
+    loginAlerts: true
   });
 
   const [userInfo, setUserInfo] = useState(null);
@@ -387,7 +423,7 @@ export default function SettingsPage() {
               <Bell className="h-5 w-5 inline mr-2" />
               Notification Settings
             </h2>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -405,7 +441,7 @@ export default function SettingsPage() {
                   <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
                 </label>
               </div>
-              
+
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-medium text-white">SMS Notifications</h3>
@@ -416,6 +452,57 @@ export default function SettingsPage() {
                     type="checkbox"
                     name="smsNotifications"
                     checked={settings.smsNotifications}
+                    onChange={handleInputChange}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-white">Daily Digest</h3>
+                  <p className="text-sm text-white/90">Receive a daily summary email</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="dailyDigest"
+                    checked={settings.dailyDigest}
+                    onChange={handleInputChange}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-white">Appointment Reminders</h3>
+                  <p className="text-sm text-white/90">Get notified before appointments</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="appointmentReminders"
+                    checked={settings.appointmentReminders}
+                    onChange={handleInputChange}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-white">Payment Reminders</h3>
+                  <p className="text-sm text-white/90">Alert for overdue payments</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="paymentReminders"
+                    checked={settings.paymentReminders}
                     onChange={handleInputChange}
                     className="sr-only peer"
                   />
@@ -497,6 +584,133 @@ export default function SettingsPage() {
             </div>
           </div>
 
+          {/* Display Preferences */}
+          <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
+            <h2 className="text-lg font-semibold mb-4">
+              <Monitor className="h-5 w-5 inline mr-2" />
+              Display Preferences
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Date Format
+                </label>
+                <select
+                  name="dateFormat"
+                  value={settings.dateFormat}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                  <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                  <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                  <option value="MMM DD, YYYY">MMM DD, YYYY</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Time Format
+                </label>
+                <select
+                  name="timeFormat"
+                  value={settings.timeFormat}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option value="12h">12-hour (AM/PM)</option>
+                  <option value="24h">24-hour</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Week Starts On
+                </label>
+                <select
+                  name="startWeekOn"
+                  value={settings.startWeekOn}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option value="sunday">Sunday</option>
+                  <option value="monday">Monday</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Timezone
+                </label>
+                <select
+                  name="timezone"
+                  value={settings.timezone}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option value="America/Los_Angeles">Pacific Time (PT)</option>
+                  <option value="America/Denver">Mountain Time (MT)</option>
+                  <option value="America/Chicago">Central Time (CT)</option>
+                  <option value="America/New_York">Eastern Time (ET)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Rows Per Page
+                </label>
+                <select
+                  name="rowsPerPage"
+                  value={settings.rowsPerPage}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option value={10}>10 rows</option>
+                  <option value={25}>25 rows</option>
+                  <option value={50}>50 rows</option>
+                  <option value={100}>100 rows</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-white">Compact View</h3>
+                  <p className="text-sm text-white/90">Show more information in less space</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="compactView"
+                    checked={settings.compactView}
+                    onChange={handleInputChange}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-white">Show Grid Lines</h3>
+                  <p className="text-sm text-white/90">Display grid lines in tables</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="showGridLines"
+                    checked={settings.showGridLines}
+                    onChange={handleInputChange}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+
           {/* Security Settings */}
           <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
             <h2 className="text-lg font-semibold mb-4">
@@ -559,6 +773,169 @@ export default function SettingsPage() {
                   </label>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Data Management */}
+          <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
+            <h2 className="text-lg font-semibold mb-4">
+              <Database className="h-5 w-5 inline mr-2" />
+              Data Management
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Auto Backup Frequency
+                </label>
+                <select
+                  name="backupFrequency"
+                  value={settings.backupFrequency}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="manual">Manual Only</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Default Export Format
+                </label>
+                <select
+                  name="exportFormat"
+                  value={settings.exportFormat}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <option value="xlsx">Excel (.xlsx)</option>
+                  <option value="csv">CSV (.csv)</option>
+                  <option value="pdf">PDF (.pdf)</option>
+                  <option value="json">JSON (.json)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="mt-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-white">Automatic Backups</h3>
+                  <p className="text-sm text-white/90">Automatically backup your data</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="autoBackup"
+                    checked={settings.autoBackup}
+                    onChange={handleInputChange}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
+                </label>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium text-white">Include Archived Data</h3>
+                  <p className="text-sm text-white/90">Include archived records in exports</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="includeArchived"
+                    checked={settings.includeArchived}
+                    onChange={handleInputChange}
+                    className="sr-only peer"
+                  />
+                  <div className="w-11 h-6 bg-black/30 backdrop-blur-lg peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:glass after:border-blue-500/50 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl"></div>
+                </label>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-blue-500/30">
+              <div className="flex flex-wrap gap-3">
+                <Button className="glass border border-blue-500/50 hover:bg-blue-500/20">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export All Data
+                </Button>
+                <Button className="glass border border-blue-500/50 hover:bg-blue-500/20">
+                  <FileUp className="h-4 w-4 mr-2" />
+                  Import Data
+                </Button>
+                <Button className="glass border border-blue-500/50 hover:bg-blue-500/20">
+                  <Activity className="h-4 w-4 mr-2" />
+                  View Activity Log
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
+            <h2 className="text-lg font-semibold mb-4">
+              <Keyboard className="h-5 w-5 inline mr-2" />
+              Keyboard Shortcuts
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div className="flex justify-between p-3 bg-blue-500/10 rounded-lg">
+                <span className="text-white/90">Quick Search</span>
+                <kbd className="px-2 py-1 bg-black/30 rounded text-blue-300">Ctrl + K</kbd>
+              </div>
+              <div className="flex justify-between p-3 bg-blue-500/10 rounded-lg">
+                <span className="text-white/90">New Customer</span>
+                <kbd className="px-2 py-1 bg-black/30 rounded text-blue-300">Ctrl + N</kbd>
+              </div>
+              <div className="flex justify-between p-3 bg-blue-500/10 rounded-lg">
+                <span className="text-white/90">New Appointment</span>
+                <kbd className="px-2 py-1 bg-black/30 rounded text-blue-300">Ctrl + A</kbd>
+              </div>
+              <div className="flex justify-between p-3 bg-blue-500/10 rounded-lg">
+                <span className="text-white/90">Save Changes</span>
+                <kbd className="px-2 py-1 bg-black/30 rounded text-blue-300">Ctrl + S</kbd>
+              </div>
+              <div className="flex justify-between p-3 bg-blue-500/10 rounded-lg">
+                <span className="text-white/90">Toggle Dark Mode</span>
+                <kbd className="px-2 py-1 bg-black/30 rounded text-blue-300">Ctrl + D</kbd>
+              </div>
+              <div className="flex justify-between p-3 bg-blue-500/10 rounded-lg">
+                <span className="text-white/90">Settings</span>
+                <kbd className="px-2 py-1 bg-black/30 rounded text-blue-300">Ctrl + ,</kbd>
+              </div>
+            </div>
+
+            <div className="mt-6 p-4 bg-amber-500/10 rounded-xl border border-amber-500/30">
+              <div className="flex items-start space-x-3">
+                <HelpCircle className="h-5 w-5 text-amber-300 mt-0.5" />
+                <div>
+                  <h4 className="text-amber-300 font-medium">Pro Tip</h4>
+                  <p className="text-amber-200/90 text-sm mt-1">
+                    Press <kbd className="px-1.5 py-0.5 bg-black/30 rounded text-amber-300">?</kbd> at any time to view all available keyboard shortcuts.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Actions */}
+        <div className="mt-8 p-6 glass rounded-2xl border border-blue-400/30">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="text-center sm:text-left">
+              <p className="text-white/60 text-sm">Last settings update</p>
+              <p className="text-white font-medium">{new Date().toLocaleDateString()}</p>
+            </div>
+            <div className="flex gap-3">
+              <Button className="glass border border-red-500/50 text-red-300 hover:bg-red-500/20">
+                Reset to Defaults
+              </Button>
+              <Button onClick={handleSave} className="glass-btn-primary hover:glow-blue">
+                <CheckCircle className="h-4 w-4 mr-2" />
+                Save All Changes
+              </Button>
             </div>
           </div>
         </div>
