@@ -1,19 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@/lib/supabase';
-import { createAutoInvoice } from '../../invoices/route';
-import type { TestReport, ApiResponse } from '@/types/api';
-
-// Device update interface
-interface DeviceUpdateData {
-  last_test_date: string;
-  status: string;
-  next_test_date?: string;
-}
+import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { auth } from '@/lib/auth';
 
 // Automated test completion workflow
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient(request);
+    const user = await auth.getApiUser(request);
+    if (!user || !['admin', 'technician'].includes(user.role)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    console.log('🔄 Field test completion: User', user.email, 'completing test');
+
+    const supabase = supabaseAdmin || createRouteHandlerClient(request);
     const data = await request.json();
     
     // Validate required fields

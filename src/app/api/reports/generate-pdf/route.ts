@@ -1,37 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-import jsPDF from 'jspdf'
-import 'jspdf-autotable'
-
-// Extend jsPDF type for autoTable
-declare module 'jspdf' {
-  interface jsPDF {
-    autoTable: (options: any) => jsPDF
-  }
-}
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase'
+import { auth } from '@/lib/auth'
+const jsPDF = require('jspdf').default;
+require('jspdf-autotable');
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await auth.getApiUser(request);
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    console.log('🔍 PDF generation request from user:', user.email, 'role:', user.role);
+
     const { reportId } = await request.json()
 
     if (!reportId) {
       return NextResponse.json({ error: 'Report ID is required' }, { status: 400 })
     }
 
-    // Fetch test report with all related data
+    console.log('📄 Generating PDF for report:', reportId);
+
+    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+
+    // Fetch test report with all related data using correct relationship syntax
     const { data: report, error } = await supabase
       .from('test_reports')
       .select(`
         *,
-        customers (
+        customer:customers (
           id,
           first_name,
           last_name,
+          company_name,
           email,
           phone,
           address_line1,
@@ -40,23 +41,44 @@ export async function POST(request: NextRequest) {
           state,
           zip_code
         ),
-        devices (
+        device:devices (
           id,
-          location,
+          location_description,
           device_type,
           manufacturer,
           model,
           serial_number,
+          size_inches,
           installation_date
+        ),
+        appointment:appointments (
+          scheduled_date,
+          appointment_type,
+          status
         )
       `)
       .eq('id', reportId)
       .single()
 
     if (error || !report) {
-      console.error('Database error:', error)
+      console.error('❌ Database error fetching report:', error)
       return NextResponse.json({ error: 'Test report not found' }, { status: 404 })
     }
+
+    // For customer users, ensure they can only access their own reports
+    if (user.role === 'customer') {
+      const { data: customerRecord } = await supabase
+        .from('customers')
+        .select('id')
+        .eq('email', user.email)
+        .single();
+
+      if (customerRecord && report.customer_id !== customerRecord.id) {
+        return NextResponse.json({ error: 'Access denied' }, { status: 403 });
+      }
+    }
+
+    console.log('✅ Report data retrieved successfully');
 
     // Create PDF document
     const doc = new jsPDF()
@@ -78,45 +100,53 @@ export async function POST(request: NextRequest) {
     // Reset text color
     doc.setTextColor(31, 41, 55)
     
-    // Certificate number and date
+    // Report ID and test date
     doc.setFontSize(10)
-    doc.text(`Certificate #: ${report.certificate_number || 'N/A'}`, 15, 40)
+    doc.text(`Report ID: ${report.id}`, 15, 40)
     doc.text(`Test Date: ${new Date(report.test_date).toLocaleDateString()}`, 150, 40)
-    
+    doc.text(`Certifier: ${report.certifier_name}`, 15, 46)
+    doc.text(`License #: ${report.certifier_number}`, 150, 46)
+
     // Customer Information Section
     doc.setFontSize(12)
     doc.setFont(undefined, 'bold')
-    doc.text('CUSTOMER INFORMATION', 15, 55)
+    doc.text('CUSTOMER INFORMATION', 15, 60)
     doc.setFont(undefined, 'normal')
     doc.setFontSize(10)
-    
-    const customer = report.customers
-    doc.text(`Name: ${customer.first_name} ${customer.last_name}`, 15, 62)
-    doc.text(`Email: ${customer.email}`, 15, 68)
-    doc.text(`Phone: ${customer.phone || 'N/A'}`, 15, 74)
-    doc.text(`Address: ${customer.address_line1}`, 15, 80)
-    if (customer.address_line2) {
-      doc.text(`         ${customer.address_line2}`, 15, 86)
-      doc.text(`         ${customer.city}, ${customer.state} ${customer.zip_code}`, 15, 92)
-    } else {
-      doc.text(`         ${customer.city}, ${customer.state} ${customer.zip_code}`, 15, 86)
+
+    const customer = report.customer
+    const customerName = customer.company_name || `${customer.first_name} ${customer.last_name}`
+    doc.text(`Name: ${customerName}`, 15, 67)
+    doc.text(`Email: ${customer.email}`, 15, 73)
+    doc.text(`Phone: ${customer.phone || 'N/A'}`, 15, 79)
+    if (customer.address_line1) {
+      doc.text(`Address: ${customer.address_line1}`, 15, 85)
+      if (customer.address_line2) {
+        doc.text(`         ${customer.address_line2}`, 15, 91)
+        doc.text(`         ${customer.city}, ${customer.state} ${customer.zip_code}`, 15, 97)
+      } else {
+        doc.text(`         ${customer.city}, ${customer.state} ${customer.zip_code}`, 15, 91)
+      }
     }
     
     // Device Information Section
-    const deviceY = customer.address_line2 ? 105 : 99
+    const deviceY = customer.address_line1 && customer.address_line2 ? 110 : customer.address_line1 ? 104 : 90
     doc.setFontSize(12)
     doc.setFont(undefined, 'bold')
     doc.text('DEVICE INFORMATION', 15, deviceY)
     doc.setFont(undefined, 'normal')
     doc.setFontSize(10)
-    
-    const device = report.devices
-    doc.text(`Location: ${device.location}`, 15, deviceY + 7)
-    doc.text(`Device Type: ${device.device_type}`, 15, deviceY + 13)
+
+    const device = report.device
+    doc.text(`Location: ${device.location_description || 'N/A'}`, 15, deviceY + 7)
+    doc.text(`Device Type: ${device.device_type || 'N/A'}`, 15, deviceY + 13)
     doc.text(`Manufacturer: ${device.manufacturer || 'N/A'}`, 15, deviceY + 19)
     doc.text(`Model: ${device.model || 'N/A'}`, 15, deviceY + 25)
+    doc.text(`Size: ${device.size_inches || 'N/A'}`, 150, deviceY + 19)
     doc.text(`Serial Number: ${device.serial_number || 'N/A'}`, 15, deviceY + 31)
-    doc.text(`Installation Date: ${device.installation_date ? new Date(device.installation_date).toLocaleDateString() : 'N/A'}`, 15, deviceY + 37)
+    if (device.installation_date) {
+      doc.text(`Installation Date: ${new Date(device.installation_date).toLocaleDateString()}`, 15, deviceY + 37)
+    }
     
     // Test Results Section
     const resultsY = deviceY + 50
@@ -127,8 +157,8 @@ export async function POST(request: NextRequest) {
     doc.setFontSize(10)
     
     // Result status with color coding
-    const resultText = report.result.toUpperCase()
-    if (report.result === 'Passed') {
+    const resultText = report.test_passed ? 'PASSED' : 'FAILED'
+    if (report.test_passed) {
       doc.setTextColor(34, 197, 94) // Green
     } else {
       doc.setTextColor(239, 68, 68) // Red
@@ -142,35 +172,23 @@ export async function POST(request: NextRequest) {
     doc.setFont(undefined, 'normal')
     doc.setFontSize(10)
     
-    // Test measurements table
+    // Test measurements - simple table format
     const tableY = resultsY + 20
-    doc.autoTable({
-      startY: tableY,
-      head: [['Measurement', 'Value', 'Unit']],
-      body: [
-        ['Initial Pressure', report.pressure_1 || 'N/A', 'PSI'],
-        ['Final Pressure', report.pressure_2 || 'N/A', 'PSI'],
-        ['Pressure Differential', report.pressure_differential || 'N/A', 'PSI'],
-        ['Test Duration', report.test_duration || 'N/A', 'minutes']
-      ],
-      theme: 'striped',
-      headStyles: { fillColor: [14, 165, 233] },
-      columnStyles: {
-        0: { cellWidth: 60 },
-        1: { cellWidth: 40, halign: 'center' },
-        2: { cellWidth: 30, halign: 'center' }
-      }
-    })
+    doc.text('Test Measurements:', 15, tableY)
+    doc.text(`Initial Pressure: ${report.initial_pressure || 'N/A'} PSI`, 15, tableY + 8)
+    doc.text(`Final Pressure: ${report.final_pressure || 'N/A'} PSI`, 15, tableY + 16)
+    doc.text(`Pressure Drop: ${report.pressure_drop || 'N/A'} PSI`, 15, tableY + 24)
+    doc.text(`Test Duration: ${report.test_duration || 'N/A'} minutes`, 15, tableY + 32)
     
     // Notes Section (if any)
     if (report.notes) {
-      const notesY = (doc as any).lastAutoTable.finalY + 15
+      const notesY = tableY + 45
       doc.setFontSize(12)
       doc.setFont(undefined, 'bold')
       doc.text('NOTES', 15, notesY)
       doc.setFont(undefined, 'normal')
       doc.setFontSize(10)
-      
+
       // Wrap long notes text
       const splitNotes = doc.splitTextToSize(report.notes, 180)
       doc.text(splitNotes, 15, notesY + 7)

@@ -5,46 +5,36 @@ import { sendEmail, emailTemplates } from '@/lib/email';
 
 export interface TestReport {
   id: string
-  customerId: string
-  customerName: string
-  deviceId: string
-  testDate: string
-  testType: string
-  results: {
-    initialPressure: number
-    finalPressure: number
-    testDuration: number
-    status: 'Passed' | 'Failed' | 'Needs Repair'
-  }
-  technician: string
+  appointment_id?: string
+  customer_id: string
+  device_id: string
+  technician_id?: string
+  test_date: string
+  test_time?: string
+  test_type: string
+  test_passed: boolean
+  initial_pressure: number
+  final_pressure: number
+  pressure_drop: number
+  check_valve_1_passed: boolean
+  check_valve_2_passed: boolean
+  relief_valve_passed: boolean
+  overall_condition: string
+  repairs_needed: boolean
+  repairs_completed: boolean
+  certifier_name: string
+  certifier_number: string
+  photo_url?: string
+  signature_url?: string
+  submitted_to_district: boolean
+  district_submission_date?: string
+  district_confirmation_number?: string
   notes?: string
-  waterDistrict?: string
-  submitted: boolean
-  submittedDate?: string
+  created_at: string
+  updated_at: string
+  company_id?: string
 }
 
-// Mock test reports data
-const mockTestReports: TestReport[] = [
-  {
-    id: '1',
-    customerId: '1',
-    customerName: 'John Smith',
-    deviceId: 'dev1',
-    testDate: '2024-01-15',
-    testType: 'Annual Test',
-    results: {
-      initialPressure: 15.2,
-      finalPressure: 14.8,
-      testDuration: 600,
-      status: 'Passed'
-    },
-    technician: 'Mike Fisher',
-    notes: 'Device functioning properly',
-    waterDistrict: 'Metro Water District',
-    submitted: true,
-    submittedDate: '2024-01-15'
-  }
-]
 
 export async function GET(request: NextRequest) {
   try {
@@ -53,84 +43,126 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    console.log('🔍 Fetching test reports for user:', user.email, 'role:', user.role);
+
     const { searchParams } = new URL(request.url);
     const customerId = searchParams.get('customerId');
+    const customer_id = searchParams.get('customer_id');
     const status = searchParams.get('status');
-    
+    const test_passed = searchParams.get('test_passed');
+    const submitted_to_district = searchParams.get('submitted_to_district');
+
+    const targetCustomerId = customerId || customer_id;
+
     const supabase = supabaseAdmin || createRouteHandlerClient(request);
-    
-    // Try to get real test reports from database
+
+    console.log('📍 Query filters:', { targetCustomerId, status, test_passed, submitted_to_district });
+
+    // Build query with proper relationships
     let query = supabase
       .from('test_reports')
       .select(`
         *,
-        customer:customers(first_name, last_name, company_name, email, phone),
-        device:devices(device_type, manufacturer, model, location_description)
+        customer:customers(first_name, last_name, company_name, email, phone, address_line1, city, state),
+        device:devices(device_type, manufacturer, model, location_description, serial_number, size_inches),
+        appointment:appointments(scheduled_date, appointment_type, status)
       `)
       .order('test_date', { ascending: false });
-    
+
     // Apply filters
-    if (customerId) {
-      query = query.eq('customer_id', customerId);
+    if (targetCustomerId) {
+      query = query.eq('customer_id', targetCustomerId);
     }
+
     if (status) {
-      query = query.eq('status', status);
+      // Handle both old status field and new test_passed boolean
+      if (status.toLowerCase() === 'passed') {
+        query = query.eq('test_passed', true);
+      } else if (status.toLowerCase() === 'failed') {
+        query = query.eq('test_passed', false);
+      }
     }
-    
+
+    if (test_passed !== null) {
+      query = query.eq('test_passed', test_passed === 'true');
+    }
+
+    if (submitted_to_district !== null) {
+      query = query.eq('submitted_to_district', submitted_to_district === 'true');
+    }
+
+    // For customer users, only show their own reports
+    if (user.role === 'customer') {
+      // Get customer record to find their customer_id
+      const { data: customerRecord } = await supabase
+        .from('customers')
+        .select('id')
+        .eq('email', user.email)
+        .single();
+
+      if (customerRecord) {
+        query = query.eq('customer_id', customerRecord.id);
+        console.log(`🔒 Customer-only filter applied for: ${customerRecord.id}`);
+      }
+    }
+
     const { data: testReports, error } = await query;
-    
+
     if (error) {
-      console.error('Database error:', error);
-      
-      // Fallback to simple query
-      const { data: simpleReports, error: simpleError } = await supabase
+      console.error('❌ Complex query failed:', error.message);
+
+      // Fallback to simple query without relationships
+      let simpleQuery = supabase
         .from('test_reports')
         .select('*')
         .order('test_date', { ascending: false });
-        
-      if (simpleError || !simpleReports || simpleReports.length === 0) {
-        console.log('No test reports found in database, using mock data');
-        
-        // Return mock data if no real data exists
-        let filteredReports = mockTestReports;
-        
-        if (customerId) {
-          filteredReports = filteredReports.filter(report =>
-            report.customerId === customerId
-          );
-        }
-        if (status) {
-          filteredReports = filteredReports.filter(report =>
-            report.results.status === status
-          );
-        }
-        
-        return NextResponse.json({ 
-          testReports: filteredReports,
-          count: filteredReports.length,
-          hasRealData: false,
-          note: 'Using mock test report data - database needs real test reports'
-        });
+
+      // Apply the same filters to simple query
+      if (targetCustomerId) {
+        simpleQuery = simpleQuery.eq('customer_id', targetCustomerId);
       }
-      
-      return NextResponse.json({ 
-        testReports: simpleReports,
-        count: simpleReports.length,
-        hasRealData: true
+      if (test_passed !== null) {
+        simpleQuery = simpleQuery.eq('test_passed', test_passed === 'true');
+      }
+      if (submitted_to_district !== null) {
+        simpleQuery = simpleQuery.eq('submitted_to_district', submitted_to_district === 'true');
+      }
+
+      const { data: simpleReports, error: simpleError } = await simpleQuery;
+
+      if (simpleError) {
+        console.error('❌ Simple query also failed:', simpleError.message);
+        return NextResponse.json({
+          error: 'Failed to fetch test reports',
+          details: simpleError.message
+        }, { status: 500 });
+      }
+
+      console.log(`✅ Simple query succeeded: ${simpleReports?.length || 0} reports`);
+      return NextResponse.json({
+        success: true,
+        testReports: simpleReports || [],
+        count: simpleReports?.length || 0,
+        hasRealData: true,
+        hasRelationships: false
       });
     }
-    
-    return NextResponse.json({ 
+
+    console.log(`✅ Complex query succeeded: ${testReports?.length || 0} reports`);
+
+    return NextResponse.json({
+      success: true,
       testReports: testReports || [],
       count: testReports?.length || 0,
-      hasRealData: true
+      hasRealData: true,
+      hasRelationships: true
     });
+
   } catch (error) {
-    console.error('Error fetching test reports:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch test reports' },
-      { status: 500 }
-    );
+    console.error('❌ Test reports API error:', error);
+    return NextResponse.json({
+      error: 'Server error fetching test reports'
+    }, { status: 500 });
   }
 }
 
@@ -152,31 +184,35 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Create test report data with correct column names
+    // Create test report data with correct column names and proper data types
     const testReportData = {
       appointment_id: data.appointment_id,
       customer_id: data.customer_id,
       device_id: data.device_id,
       technician_id: user.id,
       test_date: data.test_date || new Date().toISOString().split('T')[0],
-      test_time: data.test_time || '10:00:00',
-      test_type: data.test_type || 'annual',
-      test_passed: data.test_passed !== undefined ? data.test_passed : true,
-      initial_pressure: data.initial_pressure || 0,
-      final_pressure: data.final_pressure || 0,
-      pressure_drop: data.pressure_drop || Math.abs((data.initial_pressure || 0) - (data.final_pressure || 0)),
-      check_valve_1_passed: data.check_valve_1_passed !== undefined ? data.check_valve_1_passed : true,
-      check_valve_2_passed: data.check_valve_2_passed !== undefined ? data.check_valve_2_passed : true,
-      relief_valve_passed: data.relief_valve_passed !== undefined ? data.relief_valve_passed : true,
+      test_time: data.test_time || new Date().toTimeString().split(' ')[0],
+      test_type: data.test_type || 'Annual Test',
+      test_passed: Boolean(data.test_passed !== undefined ? data.test_passed : true),
+      initial_pressure: Number(data.initial_pressure || 0),
+      final_pressure: Number(data.final_pressure || 0),
+      pressure_drop: Number(data.pressure_drop || Math.abs((Number(data.initial_pressure) || 0) - (Number(data.final_pressure) || 0))),
+      check_valve_1_passed: Boolean(data.check_valve_1_passed !== undefined ? data.check_valve_1_passed : true),
+      check_valve_2_passed: Boolean(data.check_valve_2_passed !== undefined ? data.check_valve_2_passed : true),
+      relief_valve_passed: Boolean(data.relief_valve_passed !== undefined ? data.relief_valve_passed : true),
       overall_condition: data.overall_condition || (data.test_passed ? 'Good' : 'Poor'),
-      repairs_needed: data.repairs_needed !== undefined ? data.repairs_needed : !data.test_passed,
-      repairs_completed: data.repairs_completed || false,
-      certifier_name: data.certifier_name || user.first_name + ' ' + user.last_name,
+      repairs_needed: Boolean(data.repairs_needed !== undefined ? data.repairs_needed : !data.test_passed),
+      repairs_completed: Boolean(data.repairs_completed || false),
+      certifier_name: data.certifier_name || `${user.metadata?.firstName || ''} ${user.metadata?.lastName || ''}`.trim() || 'Certified Technician',
       certifier_number: data.certifier_number || 'WA-BF-001',
+      photo_url: data.photo_url || null,
+      signature_url: data.signature_url || null,
       notes: data.notes || '',
-      submitted_to_district: data.submitted_to_district || false,
+      submitted_to_district: Boolean(data.submitted_to_district || false),
       district_submission_date: data.submitted_to_district ? new Date().toISOString() : null,
-      created_at: new Date().toISOString()
+      district_confirmation_number: data.district_confirmation_number || null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
     };
     
     console.log('Creating test report with data:', testReportData);
@@ -184,7 +220,12 @@ export async function POST(request: NextRequest) {
     const { data: testReport, error } = await supabase
       .from('test_reports')
       .insert(testReportData)
-      .select()
+      .select(`
+        *,
+        customer:customers(first_name, last_name, company_name, email, phone),
+        device:devices(device_type, manufacturer, model, location_description, serial_number),
+        appointment:appointments(scheduled_date, appointment_type, status)
+      `)
       .single();
     
     if (error) {

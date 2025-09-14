@@ -1,13 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@/lib/supabase';
+import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { auth } from '@/lib/auth';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = createRouteHandlerClient(request);
+    const user = await auth.getApiUser(request);
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const supabase = supabaseAdmin || createRouteHandlerClient(request);
     const { id: appointmentId } = await params;
+
+    console.log('🔍 Individual appointment API: Fetching appointment', appointmentId, 'for user:', user.email);
 
     // Get appointment with customer and device details
     const { data: appointment, error } = await supabase

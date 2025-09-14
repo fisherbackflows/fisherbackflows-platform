@@ -19,12 +19,14 @@ import Link from 'next/link';
 import { useCustomerData } from '@/hooks/useCustomerData';
 import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import DistrictNoticeUpload from '@/components/upload/DistrictNoticeUpload';
+import DeviceRegistrationModal from '@/components/portal/DeviceRegistrationModal';
 
 export default function CustomerDevicesPage() {
   const { customer, loading, error } = useCustomerData();
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [uploadingDevice, setUploadingDevice] = useState(null);
+  const [showRegistrationModal, setShowRegistrationModal] = useState(false);
 
   if (loading) {
     return (
@@ -82,9 +84,18 @@ export default function CustomerDevicesPage() {
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 text-white">Your Devices</h1>
               <p className="text-white/90 text-base sm:text-lg">Manage your backflow prevention devices</p>
             </div>
-            <div className="text-left sm:text-right">
-              <p className="text-blue-200 font-bold text-xl sm:text-2xl">{customer.devices.length}</p>
-              <p className="text-white/60">Total Devices</p>
+            <div className="flex items-center space-x-4">
+              <Button
+                onClick={() => setShowRegistrationModal(true)}
+                className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl glow-blue-sm"
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                Register New Device
+              </Button>
+              <div className="text-left sm:text-right">
+                <p className="text-blue-200 font-bold text-xl sm:text-2xl">{customer.devices.length}</p>
+                <p className="text-white/60">Total Devices</p>
+              </div>
             </div>
           </div>
         </div>
@@ -303,6 +314,15 @@ export default function CustomerDevicesPage() {
             </div>
           </div>
         )}
+        {/* Device Registration Modal */}
+        <DeviceRegistrationModal
+          isOpen={showRegistrationModal}
+          onClose={() => setShowRegistrationModal(false)}
+          onSuccess={(device) => {
+            // Refresh customer data to include new device
+            window.location.reload();
+          }}
+        />
       </main>
     </div>
   );

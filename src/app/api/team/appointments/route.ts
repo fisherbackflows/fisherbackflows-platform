@@ -1,54 +1,44 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
-import { validateSession } from '@/lib/auth-security';
-import { cookies } from 'next/headers';
+import { auth } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
-    // Use tester portal session authentication
-    const cookieStore = await cookies();
-    const sessionToken = cookieStore.get('team_session')?.value;
-
-    if (!sessionToken) {
-      return NextResponse.json({ 
+    const user = await auth.getApiUser(request);
+    if (!user || !['admin', 'technician'].includes(user.role)) {
+      return NextResponse.json({
         success: false,
-        error: 'Not authenticated',
+        error: 'Unauthorized',
         appointments: [],
         count: 0
       }, { status: 401 });
     }
 
-    const sessionValidation = await validateSession(sessionToken);
-    if (!sessionValidation.isValid) {
-      return NextResponse.json({ 
-        success: false,
-        error: 'Session expired',
-        appointments: [],
-        count: 0
-      }, { status: 401 });
-    }
+    console.log('🔍 Team appointments API: Fetching appointments for user:', user.email, 'role:', user.role);
 
     const supabase = supabaseAdmin || createRouteHandlerClient(request);
-    
-    console.log('🔍 Tester Portal: Fetching appointments from database...');
-    
-    // Fetch real appointments from the database
+
+    console.log('🔍 Team appointments API: Fetching appointments from database...');
+
+    // Fetch real appointments from the database with correct relationship syntax
     const { data: appointments, error: appointmentError } = await supabase
       .from('appointments')
       .select(`
         *,
-        customers:customer_id(
+        customer:customers(
           first_name,
           last_name,
           company_name,
           phone,
-          street_address,
+          address_line1,
           city,
           state
         ),
-        devices:devices(
+        device:devices(
           device_type,
-          device_status
+          manufacturer,
+          model,
+          location_description
         )
       `)
       .order('scheduled_date', { ascending: true });
@@ -63,27 +53,50 @@ export async function GET(request: NextRequest) {
       }, { status: 500 });
     }
 
-    // Transform data to match tester portal interface expectations
-    const transformedAppointments = appointments?.map(appointment => ({
-      id: appointment.id,
-      customerId: appointment.customer_id,
-      customerName: appointment.customers?.company_name || 
-                   `${appointment.customers?.first_name} ${appointment.customers?.last_name}`,
-      customerPhone: appointment.customers?.phone || '',
-      address: appointment.customers?.street_address || '',
-      city: appointment.customers?.city || '',
-      date: appointment.scheduled_date?.split('T')[0] || '',
-      time: appointment.scheduled_time || '',
-      duration: appointment.duration_minutes || 60,
-      type: appointment.appointment_type || 'test',
-      status: appointment.status || 'scheduled',
-      notes: appointment.notes || '',
-      deviceCount: appointment.devices?.length || 1,
-      estimatedCost: appointment.estimated_cost || 0,
-      priority: appointment.priority || 'medium'
-    })) || [];
+    // Transform data to match team portal interface expectations
+    const transformedAppointments = appointments?.map(appointment => {
+      const customer = appointment.customer || {};
+      const device = appointment.device || {};
 
-    console.log(`📊 Tester Portal: Loaded ${transformedAppointments.length} real appointments`);
+      // Create customer name - prefer company name, fallback to individual name
+      const customerName = customer.company_name ||
+        `${customer.first_name || ''} ${customer.last_name || ''}`.trim() ||
+        'Unknown Customer';
+
+      // Map appointment type - map from database values to UI values
+      let appointmentType = 'test'; // default
+      if (appointment.appointment_type) {
+        const type = appointment.appointment_type.toLowerCase();
+        if (type.includes('repair')) appointmentType = 'repair';
+        else if (type.includes('install')) appointmentType = 'installation';
+        else if (type.includes('consult')) appointmentType = 'consultation';
+      }
+
+      // Estimate cost based on type
+      const baseCost = appointmentType === 'test' ? 150 :
+                       appointmentType === 'repair' ? 300 :
+                       appointmentType === 'installation' ? 500 : 200;
+
+      return {
+        id: appointment.id,
+        customerId: appointment.customer_id,
+        customerName,
+        customerPhone: customer.phone || 'No phone',
+        address: customer.address_line1 || 'Address not available',
+        city: customer.city || 'Unknown City',
+        date: appointment.scheduled_date,
+        time: appointment.scheduled_time_start || '09:00',
+        duration: appointment.estimated_duration || 60,
+        type: appointmentType,
+        status: appointment.status || 'scheduled',
+        notes: appointment.special_instructions || '',
+        deviceCount: device ? 1 : 1, // Default to 1
+        estimatedCost: baseCost,
+        priority: appointment.priority || 'medium'
+      };
+    }) || [];
+
+    console.log(`✅ Team appointments API: Successfully transformed ${transformedAppointments.length} appointments`);
 
     return NextResponse.json({ 
       success: true,
