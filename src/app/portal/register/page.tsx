@@ -89,7 +89,7 @@ export default function CustomerRegistrationPage() {
       
       // Redirect to login after success
       setTimeout(() => {
-        window.location.href = '/portal?registered=true';
+        window.location.href = '/portal/login?registered=true';
       }, 3000);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Registration failed';
