@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import RoleGuard from '@/components/auth/RoleGuard';
 import CompanyBrandingSettings from '@/components/team/CompanyBrandingSettings';
 
 interface BrandingSettings {
@@ -101,14 +102,16 @@ export default function CompanyBrandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
-      <div className="max-w-7xl mx-auto">
-        <CompanyBrandingSettings
-          companyId={companyId!}
-          currentSettings={settings || undefined}
-          onSave={handleSaveSettings}
-        />
+    <RoleGuard allowedRoles={['Company Admin', 'admin']}>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+        <div className="max-w-7xl mx-auto">
+          <CompanyBrandingSettings
+            companyId={companyId!}
+            currentSettings={settings || undefined}
+            onSave={handleSaveSettings}
+          />
+        </div>
       </div>
-    </div>
+    </RoleGuard>
   );
 }

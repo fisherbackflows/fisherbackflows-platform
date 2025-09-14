@@ -105,21 +105,49 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
     if (confirm('Are you sure you want to log out?')) {
       try {
         // Different logout endpoints for different sections
-        const logoutEndpoint = section === 'portal' 
-          ? '/api/auth/logout' 
+        const logoutEndpoint = section === 'portal'
+          ? '/api/auth/logout'
           : '/api/team/auth/logout';
-          
+
         await fetch(logoutEndpoint, { method: 'POST' });
-        
-        // Redirect to appropriate login page
-        const loginPage = section === 'portal' 
-          ? '/login' 
-          : `/${section}/login`;
-        router.push(loginPage);
+
+        // Force clear any cached session data
+        if (typeof window !== 'undefined') {
+          // Clear localStorage and sessionStorage
+          localStorage.clear();
+          sessionStorage.clear();
+
+          // Clear all cookies by setting them to expire
+          document.cookie.split(";").forEach(c => {
+            const eqPos = c.indexOf("=");
+            const name = eqPos > -1 ? c.substr(0, eqPos) : c;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+          });
+        }
+
+        // Redirect to appropriate login page with logout reason
+        const loginPage = section === 'portal'
+          ? '/login?reason=logout'
+          : `/${section}/login?reason=logout`;
+
+        // Use window.location for hard redirect to ensure clean state
+        if (typeof window !== 'undefined') {
+          window.location.href = loginPage;
+        } else {
+          router.push(loginPage);
+        }
       } catch (error) {
         console.error('Logout error:', error);
-        // Fallback redirect
-        router.push(section === 'portal' ? '/login' : `/${section}/login`);
+        // Fallback redirect with reason
+        const loginPage = section === 'portal'
+          ? '/login?reason=logout'
+          : `/${section}/login?reason=logout`;
+
+        if (typeof window !== 'undefined') {
+          window.location.href = loginPage;
+        } else {
+          router.push(loginPage);
+        }
       }
     }
   };

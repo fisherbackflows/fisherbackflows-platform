@@ -14,14 +14,8 @@ export default function TeamPortalPage() {
         const response = await fetch('/api/team/auth/me');
         if (response.ok) {
           const data = await response.json();
-          // Redirect based on role
-          if (data.role === 'admin') {
-            router.push('/team-portal/dashboard');
-          } else if (data.role === 'technician' || data.role === 'tester') {
-            router.push('/team-portal/tester');
-          } else {
-            router.push('/team-portal/dashboard');
-          }
+          // All authenticated users go to dashboard regardless of role
+          router.push('/team-portal/dashboard');
         } else {
           // Not authenticated, redirect to login
           router.push('/team-portal/login');

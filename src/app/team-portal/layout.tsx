@@ -16,8 +16,17 @@ export default function TeamPortalLayout({ children }: TeamPortalLayoutProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is authenticated
+    // Check if user is authenticated (skip for login and public pages)
     const checkAuth = async () => {
+      const currentPath = window.location.pathname;
+      const publicPaths = ['/team-portal/login', '/team-portal/register-company', '/team-portal/dashboard'];
+
+      // For public pages, just set loading to false
+      if (publicPaths.some(path => currentPath.startsWith(path))) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const response = await fetch('/api/team/auth/me');
         const isAuth = response.ok;
@@ -26,10 +35,17 @@ export default function TeamPortalLayout({ children }: TeamPortalLayoutProps) {
         // If authenticated, load user settings
         if (isAuth) {
           loadUserSettings();
+        } else {
+          // Redirect to login for protected pages
+          window.location.href = '/team-portal/login';
+          return;
         }
       } catch (error) {
         console.error('Auth check failed:', error);
         setIsAuthenticated(false);
+        // Redirect to login on auth failure for protected pages
+        window.location.href = '/team-portal/login';
+        return;
       } finally {
         setLoading(false);
       }

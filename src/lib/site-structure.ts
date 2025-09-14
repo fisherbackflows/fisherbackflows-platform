@@ -333,15 +333,6 @@ export const siteStructure: PageInfo[] = [
     requiresAuth: true
   },
   {
-    path: '/team-portal/tester',
-    title: 'Tester',
-    description: 'Tester tools',
-    category: 'team',
-    theme: 'green',
-    status: 'active',
-    requiresAuth: true
-  },
-  {
     path: '/team-portal/settings',
     title: 'Settings',
     description: 'Team settings',

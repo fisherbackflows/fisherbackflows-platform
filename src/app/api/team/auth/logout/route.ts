@@ -21,8 +21,11 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Clear cookie
-    cookieStore.set('team_session', '', {
+    // Create response with complete cookie cleanup
+    const response = NextResponse.json({ success: true });
+
+    // Clear team_session cookie
+    response.cookies.set('team_session', '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -30,7 +33,23 @@ export async function POST(request: NextRequest) {
       path: '/'
     });
 
-    return NextResponse.json({ success: true });
+    // Clear any other potential session cookies
+    response.cookies.set('session', '', {
+      maxAge: 0,
+      path: '/'
+    });
+
+    response.cookies.set('auth', '', {
+      maxAge: 0,
+      path: '/'
+    });
+
+    // Add cache control headers to prevent caching
+    response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    response.headers.set('Pragma', 'no-cache');
+    response.headers.set('Expires', '0');
+
+    return response;
 
   } catch (error) {
     console.error('Team logout error:', error);

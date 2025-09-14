@@ -185,10 +185,10 @@ export default function TeamPortalDashboard() {
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <div>
                 <h1 className="text-4xl font-bold text-white mb-3">
-                  Team Operations Center
+                  Team Portal Dashboard
                 </h1>
                 <p className="text-xl text-white/90 leading-relaxed">
-                  {userInfo ? 'Manage your team operations, track performance, and drive business growth' : 'Professional backflow testing management platform'}
+                  {userInfo ? 'Manage customers, schedule tests, and track business performance' : 'Professional backflow testing management platform'}
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
@@ -197,7 +197,7 @@ export default function TeamPortalDashboard() {
                     <Link href="/admin/dashboard">
                       <Button className="glass-btn-primary hover:glow-blue bg-purple-500/20 border border-purple-400 text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
                         <Shield className="h-5 w-5 mr-2" />
-                        Tester Portal
+                        System Admin
                       </Button>
                     </Link>
                     <Link href="/team-portal/customers/new">
@@ -218,7 +218,7 @@ export default function TeamPortalDashboard() {
                     <Link href="/team-portal/login">
                       <Button className="glass-btn-primary hover:glow-blue text-white px-6 py-3 rounded-2xl glow-blue-sm font-medium transition-colors duration-200 flex items-center">
                         <Shield className="h-5 w-5 mr-2" />
-                        Team Login
+                        Business Login
                       </Button>
                     </Link>
                     <Link href="/portal/login">

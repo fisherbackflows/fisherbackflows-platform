@@ -24,28 +24,28 @@ export default function TeamPortalLoginPage() {
   // Check for logout reason
   const logoutReason = searchParams?.get('reason');
 
-  // Check if already authenticated
+  // Check if already authenticated (but not if coming from logout)
   useEffect(() => {
+    // Don't auto-redirect if user just logged out or was logged out due to inactivity
+    if (logoutReason === 'logout' || logoutReason === 'idle') {
+      return;
+    }
+
     const checkAuth = async () => {
       try {
         const response = await fetch('/api/team/auth/me');
         if (response.ok) {
           const data = await response.json();
-          if (data.role === 'admin') {
-            router.push('/team-portal/dashboard');
-          } else if (data.role === 'technician' || data.role === 'tester') {
-            router.push('/team-portal/tester');
-          } else {
-            router.push('/team-portal/dashboard');
-          }
+          // All authenticated users go to dashboard regardless of role
+          router.push('/team-portal/dashboard');
         }
       } catch (error) {
         // User not authenticated, stay on login page
       }
     };
-    
+
     checkAuth();
-  }, [router]);
+  }, [router, logoutReason]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,14 +62,8 @@ export default function TeamPortalLoginPage() {
 
       if (response.ok) {
         toast.success('Login successful!');
-        // Redirect based on role
-        if (data.role === 'admin') {
-          router.push('/team-portal/dashboard');
-        } else if (data.role === 'technician' || data.role === 'tester') {
-          router.push('/team-portal/tester');
-        } else {
-          router.push('/team-portal/dashboard');
-        }
+        // All users go to dashboard regardless of role
+        router.push('/team-portal/dashboard');
       } else {
         toast.error(data.error || 'Login failed');
       }
@@ -92,11 +86,11 @@ export default function TeamPortalLoginPage() {
               <div className="inline-flex p-4 rounded-2xl glass mb-6">
                 <Lock className="h-8 w-8 text-white/80" />
               </div>
-              <h1 className="text-3xl font-bold text-white mb-2">Tester Portal</h1>
+              <h1 className="text-3xl font-bold text-white mb-2">Team Portal</h1>
               <p className="text-white/90">Sign in to access business management tools</p>
             </div>
 
-            {/* Idle Logout Notification */}
+            {/* Logout Notifications */}
             {logoutReason === 'idle' && (
               <div className="mb-6 p-4 bg-amber-500/20 border border-amber-400 rounded-xl">
                 <div className="flex items-center space-x-3">
@@ -105,6 +99,20 @@ export default function TeamPortalLoginPage() {
                     <h3 className="text-amber-300 font-semibold">Session Expired</h3>
                     <p className="text-amber-200/90 text-sm">
                       You were automatically logged out due to inactivity for security purposes.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {logoutReason === 'logout' && (
+              <div className="mb-6 p-4 bg-green-500/20 border border-green-400 rounded-xl">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <div>
+                    <h3 className="text-green-300 font-semibold">Logged Out Successfully</h3>
+                    <p className="text-green-200/90 text-sm">
+                      You have been securely logged out. Sign in again to continue.
                     </p>
                   </div>
                 </div>
