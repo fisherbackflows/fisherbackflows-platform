@@ -345,7 +345,7 @@ export default function CompanyRegistrationPage() {
                   className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                     errors.name ? 'border-red-400' : 'border-blue-400'
                   }`}
-                  placeholder="Acme Backflow Testing"
+                  placeholder="Your company name"
                 />
                 {errors.name && <p className="text-red-400 text-sm mt-1">{errors.name}</p>}
               </div>
@@ -376,7 +376,7 @@ export default function CompanyRegistrationPage() {
                   className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                     errors.email ? 'border-red-400' : 'border-blue-400'
                   }`}
-                  placeholder="contact@acmebackflow.com"
+                  placeholder=""
                 />
                 {errors.email && <p className="text-red-400 text-sm mt-1">{errors.email}</p>}
               </div>
@@ -407,7 +407,7 @@ export default function CompanyRegistrationPage() {
                   value={formData.website}
                   onChange={(e) => updateFormData('website', e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
-                  placeholder="https://acmebackflow.com"
+                  placeholder=""
                 />
               </div>
 
@@ -420,7 +420,7 @@ export default function CompanyRegistrationPage() {
                   value={formData.yearsInBusiness}
                   onChange={(e) => updateFormData('yearsInBusiness', e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
-                  placeholder="5 years"
+                  placeholder=""
                 />
               </div>
             </div>
@@ -469,7 +469,7 @@ export default function CompanyRegistrationPage() {
                   value={formData.businessLicense}
                   onChange={(e) => updateFormData('businessLicense', e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
-                  placeholder="BL-123456 (optional)"
+                  placeholder="Optional"
                 />
               </div>
 
@@ -482,7 +482,7 @@ export default function CompanyRegistrationPage() {
                   value={formData.serviceArea}
                   onChange={(e) => updateFormData('serviceArea', e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
-                  placeholder="Seattle Metro Area"
+                  placeholder=""
                 />
               </div>
             </div>
@@ -512,7 +512,7 @@ export default function CompanyRegistrationPage() {
                   className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                     errors.addressLine1 ? 'border-red-400' : 'border-blue-400'
                   }`}
-                  placeholder="123 Main Street"
+                  placeholder=""
                 />
                 {errors.addressLine1 && <p className="text-red-400 text-sm mt-1">{errors.addressLine1}</p>}
               </div>
@@ -526,7 +526,7 @@ export default function CompanyRegistrationPage() {
                   value={formData.addressLine2}
                   onChange={(e) => updateFormData('addressLine2', e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
-                  placeholder="Suite 100"
+                  placeholder="Optional"
                 />
               </div>
 
@@ -542,7 +542,7 @@ export default function CompanyRegistrationPage() {
                     className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                       errors.city ? 'border-red-400' : 'border-blue-400'
                     }`}
-                    placeholder="Tacoma"
+                    placeholder=""
                   />
                   {errors.city && <p className="text-red-400 text-sm mt-1">{errors.city}</p>}
                 </div>
@@ -558,7 +558,7 @@ export default function CompanyRegistrationPage() {
                     className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                       errors.state ? 'border-red-400' : 'border-blue-400'
                     }`}
-                    placeholder="WA"
+                    placeholder=""
                   />
                   {errors.state && <p className="text-red-400 text-sm mt-1">{errors.state}</p>}
                 </div>
@@ -574,7 +574,7 @@ export default function CompanyRegistrationPage() {
                     className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                       errors.zipCode ? 'border-red-400' : 'border-blue-400'
                     }`}
-                    placeholder="98401"
+                    placeholder=""
                   />
                   {errors.zipCode && <p className="text-red-400 text-sm mt-1">{errors.zipCode}</p>}
                 </div>
@@ -606,7 +606,7 @@ export default function CompanyRegistrationPage() {
                   className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                     errors.adminFirstName ? 'border-red-400' : 'border-blue-400'
                   }`}
-                  placeholder="John"
+                  placeholder=""
                 />
                 {errors.adminFirstName && <p className="text-red-400 text-sm mt-1">{errors.adminFirstName}</p>}
               </div>
@@ -622,7 +622,7 @@ export default function CompanyRegistrationPage() {
                   className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                     errors.adminLastName ? 'border-red-400' : 'border-blue-400'
                   }`}
-                  placeholder="Smith"
+                  placeholder=""
                 />
                 {errors.adminLastName && <p className="text-red-400 text-sm mt-1">{errors.adminLastName}</p>}
               </div>
@@ -639,7 +639,7 @@ export default function CompanyRegistrationPage() {
                 className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                   errors.adminEmail ? 'border-red-400' : 'border-blue-400'
                 }`}
-                placeholder="admin@acmebackflow.com"
+                placeholder=""
               />
               {errors.adminEmail && <p className="text-red-400 text-sm mt-1">{errors.adminEmail}</p>}
               <p className="text-sm text-white/60 mt-1">This will be your login email</p>
@@ -656,7 +656,7 @@ export default function CompanyRegistrationPage() {
                 className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                   errors.adminPassword ? 'border-red-400' : 'border-blue-400'
                 }`}
-                placeholder="Enter secure password"
+                placeholder=""
               />
               {errors.adminPassword && <p className="text-red-400 text-sm mt-1">{errors.adminPassword}</p>}
               <p className="text-sm text-white/60 mt-1">Must be at least 12 characters</p>
@@ -673,7 +673,7 @@ export default function CompanyRegistrationPage() {
                 className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                   errors.adminPasswordConfirm ? 'border-red-400' : 'border-blue-400'
                 }`}
-                placeholder="Confirm password"
+                placeholder=""
               />
               {errors.adminPasswordConfirm && <p className="text-red-400 text-sm mt-1">{errors.adminPasswordConfirm}</p>}
             </div>
