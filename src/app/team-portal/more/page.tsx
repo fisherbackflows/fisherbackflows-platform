@@ -352,6 +352,34 @@ export default function MorePage() {
                 <div className="text-white/80">→</div>
               </Link>
             ))}
+
+            {/* Logout Button */}
+            <button
+              onClick={async () => {
+                if (confirm('Are you sure you want to log out?')) {
+                  try {
+                    await fetch('/api/team/auth/logout', { method: 'POST' });
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    window.location.href = '/team-portal/login?reason=logout';
+                  } catch (error) {
+                    console.error('Logout failed:', error);
+                  }
+                }
+              }}
+              className="flex items-center justify-between glass rounded-2xl p-4 glow-blue-sm hover:glow-blue transition-shadow w-full border border-red-400/30"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="bg-red-500/20 text-white rounded-2xl p-2">
+                  <LogOut className="h-6 w-6 text-red-400" />
+                </div>
+                <div>
+                  <div className="font-semibold text-white/80">Sign Out</div>
+                  <div className="text-sm text-white/80">Log out of your account</div>
+                </div>
+              </div>
+              <div className="text-white/80">→</div>
+            </button>
           </div>
         </section>
 
@@ -359,13 +387,13 @@ export default function MorePage() {
         <section className="mb-6">
           <div className="bg-black/30 backdrop-blur-lg rounded-2xl p-4 text-center">
             <div className="text-sm text-white/80 mb-2">
-              Fisher Backflows Tester Portal
+              Fisher Backflows Platform - Testing Company Portal
             </div>
             <div className="text-xs text-white/80">
-              Version 1.0.0 • Next.js with Turbopack
+              SaaS Compliance Marketplace • Version 1.0.0
             </div>
             <div className="text-xs text-white/80">
-              © 2024 Fisher Backflows • Licensed & Insured
+              © 2024 Fisher Backflows Platform • Powered by Fisher Backflows LLC
             </div>
           </div>
         </section>
