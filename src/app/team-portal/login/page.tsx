@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,12 +13,16 @@ import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation'
 
 export default function TeamPortalLoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+
+  // Check for logout reason
+  const logoutReason = searchParams?.get('reason');
 
   // Check if already authenticated
   useEffect(() => {
@@ -91,6 +95,21 @@ export default function TeamPortalLoginPage() {
               <h1 className="text-3xl font-bold text-white mb-2">Tester Portal</h1>
               <p className="text-white/90">Sign in to access business management tools</p>
             </div>
+
+            {/* Idle Logout Notification */}
+            {logoutReason === 'idle' && (
+              <div className="mb-6 p-4 bg-amber-500/20 border border-amber-400 rounded-xl">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
+                  <div>
+                    <h3 className="text-amber-300 font-semibold">Session Expired</h3>
+                    <p className="text-amber-200/90 text-sm">
+                      You were automatically logged out due to inactivity for security purposes.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>

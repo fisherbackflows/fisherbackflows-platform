@@ -42,7 +42,8 @@ const NAVIGATION_CONFIG = {
     { href: '/team-portal/customers', icon: Users, label: 'Customers' },
     { href: '/team-portal/schedule', icon: Calendar, label: 'Schedule' },
     { href: '/team-portal/invoices', icon: CreditCard, label: 'Invoices' },
-    { href: '/team-portal/test-report', icon: FileText, label: 'Test Reports' }
+    { href: '/team-portal/test-report', icon: FileText, label: 'Test Reports' },
+    { href: '/team-portal/settings', icon: Settings, label: 'Settings' }
   ],
   admin: [
     { href: '/admin/dashboard', icon: Home, label: 'Dashboard' },

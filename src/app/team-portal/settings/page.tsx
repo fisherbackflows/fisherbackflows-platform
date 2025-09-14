@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
-import { 
+import {
   ArrowLeft,
   Save,
   User,
@@ -12,7 +12,10 @@ import {
   Shield,
   Database,
   Palette,
-  Globe
+  Globe,
+  Lock,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -23,22 +26,124 @@ export default function SettingsPage() {
     contactEmail: 'service@fisherbackflows.com',
     contactPhone: '(253) 278-8692',
     address: 'Pierce County, WA',
-    
+
     // Notifications
     emailNotifications: true,
     smsNotifications: false,
     reminderDays: 30,
-    
+
     // Invoicing
     invoicePrefix: 'INV-',
     taxRate: 9.8,
     paymentTerms: 30,
-    
+
     // Security
     autoLogout: 60,
     requireStrongPasswords: true,
     twoFactorAuth: false
   });
+
+  const [userInfo, setUserInfo] = useState(null);
+  const [passwordForm, setPasswordForm] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  const [showPasswords, setShowPasswords] = useState({
+    current: false,
+    new: false,
+    confirm: false
+  });
+  const [passwordLoading, setPasswordLoading] = useState(false);
+
+  useEffect(() => {
+    // Load user info
+    const loadUserInfo = async () => {
+      try {
+        const response = await fetch('/api/team/auth/me');
+        if (response.ok) {
+          const userData = await response.json();
+          setUserInfo(userData);
+        }
+      } catch (error) {
+        console.error('Failed to load user info:', error);
+      }
+    };
+
+    // Load saved settings from localStorage
+    const loadSettings = () => {
+      try {
+        const savedSettings = localStorage.getItem('team_portal_settings');
+        if (savedSettings) {
+          const parsed = JSON.parse(savedSettings);
+          setSettings(parsed);
+        }
+      } catch (error) {
+        console.error('Error loading saved settings:', error);
+      }
+    };
+
+    loadUserInfo();
+    loadSettings();
+  }, []);
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setPasswordForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const togglePasswordVisibility = (field: string) => {
+    setShowPasswords(prev => ({
+      ...prev,
+      [field]: !prev[field]
+    }));
+  };
+
+  const handlePasswordSubmit = async () => {
+    if (passwordForm.newPassword !== passwordForm.confirmPassword) {
+      alert('New passwords do not match');
+      return;
+    }
+
+    if (passwordForm.newPassword.length < 8) {
+      alert('New password must be at least 8 characters long');
+      return;
+    }
+
+    setPasswordLoading(true);
+    try {
+      const response = await fetch('/api/team/auth/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert('Password changed successfully!');
+        setPasswordForm({
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        });
+      } else {
+        alert(data.error || 'Failed to change password');
+      }
+    } catch (error) {
+      alert('An error occurred while changing password');
+    } finally {
+      setPasswordLoading(false);
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -62,10 +167,20 @@ export default function SettingsPage() {
     }
   };
 
-  const handleSave = () => {
-    // Mock save - replace with actual API call
-    console.log('Saving settings:', settings);
-    alert('Settings saved successfully!');
+  const handleSave = async () => {
+    try {
+      // Save settings to localStorage for now
+      // In the future, you could save to a user preferences API
+      localStorage.setItem('team_portal_settings', JSON.stringify(settings));
+
+      // Trigger a custom event to notify other components of setting changes
+      window.dispatchEvent(new CustomEvent('settingsChanged', { detail: settings }));
+
+      alert('Settings saved successfully!');
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      alert('Failed to save settings');
+    }
   };
 
   return (
@@ -85,6 +200,125 @@ export default function SettingsPage() {
           </Button>
         </div>
         <div className="space-y-6">
+          {/* Account Settings */}
+          <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
+            <h2 className="text-lg font-semibold mb-4">
+              <Lock className="h-5 w-5 inline mr-2" />
+              Account Settings
+            </h2>
+
+            {userInfo && (
+              <div className="mb-6 p-4 bg-blue-500/10 rounded-xl border border-blue-500/30">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-white/70">Email:</span>
+                    <span className="ml-2 text-white font-medium">{userInfo.email}</span>
+                  </div>
+                  <div>
+                    <span className="text-white/70">Role:</span>
+                    <span className="ml-2 text-white font-medium capitalize">{userInfo.role}</span>
+                  </div>
+                  <div>
+                    <span className="text-white/70">Name:</span>
+                    <span className="ml-2 text-white font-medium">{userInfo.first_name} {userInfo.last_name}</span>
+                  </div>
+                  <div>
+                    <span className="text-white/70">Last Login:</span>
+                    <span className="ml-2 text-white font-medium">
+                      {userInfo.last_login ? new Date(userInfo.last_login).toLocaleDateString() : 'Never'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <h3 className="text-md font-medium text-white mb-4">Change Password</h3>
+
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-white/80 mb-2">
+                    Current Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPasswords.current ? 'text' : 'password'}
+                      name="currentPassword"
+                      value={passwordForm.currentPassword}
+                      onChange={handlePasswordChange}
+                      className="w-full px-3 py-2 pr-10 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      placeholder="Enter your current password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('current')}
+                      className="absolute right-3 top-2.5 text-white/60 hover:text-white"
+                    >
+                      {showPasswords.current ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-white/80 mb-2">
+                    New Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPasswords.new ? 'text' : 'password'}
+                      name="newPassword"
+                      value={passwordForm.newPassword}
+                      onChange={handlePasswordChange}
+                      className="w-full px-3 py-2 pr-10 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      placeholder="Enter new password (min. 8 characters)"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('new')}
+                      className="absolute right-3 top-2.5 text-white/60 hover:text-white"
+                    >
+                      {showPasswords.new ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-white/80 mb-2">
+                    Confirm New Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPasswords.confirm ? 'text' : 'password'}
+                      name="confirmPassword"
+                      value={passwordForm.confirmPassword}
+                      onChange={handlePasswordChange}
+                      className="w-full px-3 py-2 pr-10 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      placeholder="Confirm your new password"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility('confirm')}
+                      className="absolute right-3 top-2.5 text-white/60 hover:text-white"
+                    >
+                      {showPasswords.confirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <Button
+                    onClick={handlePasswordSubmit}
+                    disabled={passwordLoading || !passwordForm.currentPassword || !passwordForm.newPassword || !passwordForm.confirmPassword}
+                    className="glass-btn-primary hover:glow-blue disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Lock className="h-4 w-4 mr-2" />
+                    {passwordLoading ? 'Changing Password...' : 'Change Password'}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Business Information */}
           <div className="glass rounded-2xl glow-blue-sm border border-blue-400 p-6">
             <h2 className="text-lg font-semibold mb-4">
@@ -102,7 +336,7 @@ export default function SettingsPage() {
                   name="businessName"
                   value={settings.businessName}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               
@@ -115,7 +349,7 @@ export default function SettingsPage() {
                   name="contactEmail"
                   value={settings.contactEmail}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               
@@ -128,7 +362,7 @@ export default function SettingsPage() {
                   name="contactPhone"
                   value={settings.contactPhone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               
@@ -141,7 +375,7 @@ export default function SettingsPage() {
                   name="address"
                   value={settings.address}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
             </div>
@@ -198,7 +432,7 @@ export default function SettingsPage() {
                     name="reminderDays"
                     value={settings.reminderDays}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   >
                     <option value={7}>7 days</option>
                     <option value={14}>14 days</option>
@@ -227,7 +461,7 @@ export default function SettingsPage() {
                   name="invoicePrefix"
                   value={settings.invoicePrefix}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               
@@ -241,7 +475,7 @@ export default function SettingsPage() {
                   name="taxRate"
                   value={settings.taxRate}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               
@@ -253,7 +487,7 @@ export default function SettingsPage() {
                   name="paymentTerms"
                   value={settings.paymentTerms}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 >
                   <option value={15}>Net 15</option>
                   <option value={30}>Net 30</option>
@@ -280,7 +514,7 @@ export default function SettingsPage() {
                     name="autoLogout"
                     value={settings.autoLogout}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full px-3 py-2 border border-blue-500/50 rounded-xl bg-black/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
                   >
                     <option value={30}>30 minutes</option>
                     <option value={60}>1 hour</option>
