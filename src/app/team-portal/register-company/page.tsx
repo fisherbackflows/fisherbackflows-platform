@@ -160,11 +160,38 @@ export default function CompanyRegistrationPage() {
     }
   ];
 
+  // Function to suggest plan based on employee count
+  const suggestPlanBasedOnEmployees = (employeeCount: string) => {
+    switch (employeeCount) {
+      case '1-5':
+        return 'starter';
+      case '6-10':
+      case '11-25':
+        return 'professional';
+      case '26-50':
+      case '51-100':
+      case '100+':
+        return 'enterprise';
+      default:
+        return 'professional'; // Default fallback
+    }
+  };
+
   const updateFormData = (field: keyof CompanyRegistrationData, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
+
+    // Auto-select plan based on employee count
+    if (field === 'numberOfEmployees' && value) {
+      const suggestedPlan = suggestPlanBasedOnEmployees(value);
+      setFormData(prev => ({
+        ...prev,
+        [field]: value,
+        planType: suggestedPlan as any
+      }));
+    }
 
     // Clear error when user starts typing
     if (errors[field]) {
@@ -581,6 +608,13 @@ export default function CompanyRegistrationPage() {
               </div>
               <h2 className="text-2xl font-bold text-white mb-2">Choose Your Plan</h2>
               <p className="text-white/90">Select the plan that fits your business needs</p>
+              {formData.numberOfEmployees && (
+                <div className="mt-4 p-3 bg-blue-500/10 border border-blue-400/50 rounded-xl glass">
+                  <p className="text-blue-300 text-sm">
+                    ✨ We've suggested the <span className="font-semibold capitalize">{formData.planType}</span> plan based on your team size ({formData.numberOfEmployees} employees)
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
