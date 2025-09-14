@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import RoleGuard from '@/components/auth/RoleGuard';
 import { 
   Users, 
   Calendar, 
@@ -78,60 +79,44 @@ export default function TeamPortalDashboard() {
         setLoading(true);
         setError(null);
 
-        // Load user info (optional for public access)
+        // SECURITY FIX: Require authentication for team portal dashboard
         const userResponse = await fetch('/api/team/auth/me');
-        if (userResponse.ok) {
-          const userData = await userResponse.json();
-          setUserInfo(userData);
+        if (!userResponse.ok) {
+          // Redirect to login if not authenticated
+          window.location.href = '/team-portal/login';
+          return;
         }
 
-        // For unauthenticated users, load demo/sample data
-        const isAuthenticated = userResponse.ok;
+        // User is authenticated - load their data
+        const userData = await userResponse.json();
+        setUserInfo(userData);
 
-        if (isAuthenticated) {
-          // Load real metrics from admin API (team portal has admin-level access)
-          const [metricsResponse, activityResponse] = await Promise.allSettled([
-            fetch('/api/admin/metrics'),
-            fetch('/api/admin/activity?limit=5')
-          ]);
+        // Load real metrics from admin API (team portal has admin-level access)
+        const [metricsResponse, activityResponse] = await Promise.allSettled([
+          fetch('/api/admin/metrics'),
+          fetch('/api/admin/activity?limit=5')
+        ]);
 
-          // Process metrics
-          if (metricsResponse.status === 'fulfilled' && metricsResponse.value.ok) {
-            const metricsData = await metricsResponse.value.json();
-            if (metricsData.success) {
-              setStats(metricsData.metrics);
-            }
+        // Process metrics
+        if (metricsResponse.status === 'fulfilled' && metricsResponse.value.ok) {
+          const metricsData = await metricsResponse.value.json();
+          if (metricsData.success) {
+            setStats(metricsData.metrics);
           }
+        }
 
-          // Process activities
-          if (activityResponse.status === 'fulfilled' && activityResponse.value.ok) {
-            const activityData = await activityResponse.value.json();
-            if (activityData.success) {
-              setActivities(activityData.activities || []);
-            }
+        // Process activities
+        if (activityResponse.status === 'fulfilled' && activityResponse.value.ok) {
+          const activityData = await activityResponse.value.json();
+          if (activityData.success) {
+            setActivities(activityData.activities || []);
           }
-        } else {
-          // Set demo data for unauthenticated users
-          setStats({
-            customers: { total: 247, active: 189, needsService: 32 },
-            appointments: { scheduled: 14, completed: 128, pending: 7 },
-            financials: { monthlyRevenue: 18450, pendingInvoices: 12, overduePayments: 3 },
-            testing: { totalTests: 384, passedTests: 362, failedTests: 22, passRate: 94 }
-          });
-
-          setActivities([
-            { id: '1', type: 'test', icon: 'CheckCircle', text: 'Test completed for 1234 Main St', time: '2 hours ago', color: 'green' },
-            { id: '2', type: 'customer', icon: 'Users', text: 'New customer registered', time: '5 hours ago', color: 'blue' },
-            { id: '3', type: 'appointment', icon: 'Calendar', text: 'Appointment scheduled for tomorrow', time: '1 day ago', color: 'purple' },
-            { id: '4', type: 'payment', icon: 'DollarSign', text: 'Payment received from ABC Corp', time: '2 days ago', color: 'green' },
-            { id: '5', type: 'alert', icon: 'Activity', text: 'Device inspection due soon', time: '3 days ago', color: 'orange' }
-          ]);
         }
 
         setLoading(false);
       } catch (error) {
         console.error('Error loading dashboard data:', error);
-        setError(null); // Don't show error for unauthenticated users
+        setError('Failed to load dashboard data. Please try logging in again.');
         setLoading(false);
       }
     };
@@ -175,10 +160,11 @@ export default function TeamPortalDashboard() {
   const hasData = stats.customers.total > 0 || stats.appointments.scheduled > 0 || stats.testing.totalTests > 0;
 
   return (
-    <div className="min-h-screen bg-black">
-      <TeamPortalNavigation userInfo={userInfo} />
-      
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    <RoleGuard allowedRoles={['admin', 'tester']} fallbackUrl="/team-portal/login">
+      <div className="min-h-screen bg-black">
+        <TeamPortalNavigation userInfo={userInfo} />
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="space-y-8">
           {/* Professional Header */}
           <div className="glass rounded-xl glow-blue-sm border border-blue-400 p-8">
@@ -501,7 +487,8 @@ export default function TeamPortalDashboard() {
             </div>
           )}
         </div>
+        </div>
       </div>
-    </div>
+    </RoleGuard>
   );
 }

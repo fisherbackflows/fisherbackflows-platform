@@ -24,28 +24,12 @@ export default function TeamPortalLoginPage() {
   // Check for logout reason
   const logoutReason = searchParams?.get('reason');
 
-  // Check if already authenticated (but not if coming from logout)
+  // SECURITY FIX: Removed automatic authentication check that bypassed login
+  // Users must explicitly login - no automatic redirects
   useEffect(() => {
-    // Don't auto-redirect if user just logged out or was logged out due to inactivity
-    if (logoutReason === 'logout' || logoutReason === 'idle') {
-      return;
-    }
-
-    const checkAuth = async () => {
-      try {
-        const response = await fetch('/api/team/auth/me');
-        if (response.ok) {
-          const data = await response.json();
-          // All authenticated users go to dashboard regardless of role
-          router.push('/team-portal/dashboard');
-        }
-      } catch (error) {
-        // User not authenticated, stay on login page
-      }
-    };
-
-    checkAuth();
-  }, [router, logoutReason]);
+    // Only show logout notifications if present
+    // No automatic authentication checks to prevent bypass
+  }, [logoutReason]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

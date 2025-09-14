@@ -24,25 +24,26 @@ export async function POST(request: NextRequest) {
     // Create response with complete cookie cleanup
     const response = NextResponse.json({ success: true });
 
-    // Clear team_session cookie
-    response.cookies.set('team_session', '', {
+    // Enhanced cookie clearing with proper domain settings
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: 'strict' as const,
       maxAge: 0,
-      path: '/'
-    });
+      path: '/',
+      ...(process.env.NODE_ENV === 'production' && {
+        domain: '.fisherbackflows.com'
+      })
+    };
 
-    // Clear any other potential session cookies
-    response.cookies.set('session', '', {
-      maxAge: 0,
-      path: '/'
-    });
+    // Clear team_session cookie
+    response.cookies.set('team_session', '', cookieOptions);
 
-    response.cookies.set('auth', '', {
-      maxAge: 0,
-      path: '/'
-    });
+    // Clear any other potential session cookies with same options
+    response.cookies.set('session', '', cookieOptions);
+    response.cookies.set('auth', '', cookieOptions);
+    response.cookies.set('next-auth.session-token', '', cookieOptions);
+    response.cookies.set('__Secure-next-auth.session-token', '', cookieOptions);
 
     // Add cache control headers to prevent caching
     response.headers.set('Cache-Control', 'no-cache, no-store, must-revalidate');
