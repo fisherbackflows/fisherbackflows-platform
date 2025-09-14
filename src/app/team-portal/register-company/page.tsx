@@ -37,6 +37,9 @@ interface CompanyRegistrationData {
   // Business details
   yearsInBusiness: string;
   numberOfEmployees: string;
+  businessLicense: string;
+  serviceArea: string;
+  timeZone: string;
 
   // Admin user
   adminFirstName: string;
@@ -77,6 +80,9 @@ export default function CompanyRegistrationPage() {
     // Business details
     yearsInBusiness: '',
     numberOfEmployees: '',
+    businessLicense: '',
+    serviceArea: '',
+    timeZone: '',
 
     // Admin user
     adminFirstName: '',
@@ -105,6 +111,15 @@ export default function CompanyRegistrationPage() {
     { value: '26-50', label: '26-50 employees' },
     { value: '51-100', label: '51-100 employees' },
     { value: '100+', label: '100+ employees' }
+  ];
+
+  const timeZones = [
+    { value: 'America/New_York', label: 'Eastern Time (ET)' },
+    { value: 'America/Chicago', label: 'Central Time (CT)' },
+    { value: 'America/Denver', label: 'Mountain Time (MT)' },
+    { value: 'America/Los_Angeles', label: 'Pacific Time (PT)' },
+    { value: 'America/Anchorage', label: 'Alaska Time (AKT)' },
+    { value: 'Pacific/Honolulu', label: 'Hawaii Time (HT)' }
   ];
 
   const plans = [
@@ -410,20 +425,66 @@ export default function CompanyRegistrationPage() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
-                Number of Employees
-              </label>
-              <select
-                value={formData.numberOfEmployees}
-                onChange={(e) => updateFormData('numberOfEmployees', e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
-              >
-                <option value="" className="bg-slate-900 text-white">Select employee count</option>
-                {employeeCounts.map(count => (
-                  <option key={count.value} value={count.value} className="bg-slate-900 text-white">{count.label}</option>
-                ))}
-              </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Number of Employees
+                </label>
+                <select
+                  value={formData.numberOfEmployees}
+                  onChange={(e) => updateFormData('numberOfEmployees', e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
+                >
+                  <option value="" className="bg-slate-900 text-white">Select employee count</option>
+                  {employeeCounts.map(count => (
+                    <option key={count.value} value={count.value} className="bg-slate-900 text-white">{count.label}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Time Zone
+                </label>
+                <select
+                  value={formData.timeZone}
+                  onChange={(e) => updateFormData('timeZone', e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
+                >
+                  <option value="" className="bg-slate-900 text-white">Select time zone</option>
+                  {timeZones.map(tz => (
+                    <option key={tz.value} value={tz.value} className="bg-slate-900 text-white">{tz.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Business License #
+                </label>
+                <input
+                  type="text"
+                  value={formData.businessLicense}
+                  onChange={(e) => updateFormData('businessLicense', e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
+                  placeholder="BL-123456 (optional)"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-2">
+                  Primary Service Area
+                </label>
+                <input
+                  type="text"
+                  value={formData.serviceArea}
+                  onChange={(e) => updateFormData('serviceArea', e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
+                  placeholder="Seattle Metro Area"
+                />
+              </div>
             </div>
           </div>
         );
