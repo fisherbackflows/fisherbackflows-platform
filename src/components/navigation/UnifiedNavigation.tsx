@@ -6,11 +6,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import Logo from '@/components/ui/Logo';
 import { THEME, LIGHT_THEME, UnifiedNavItem } from '@/components/ui/UnifiedTheme';
-import { 
-  Home, 
-  Calendar, 
-  FileText, 
-  CreditCard, 
+import NotificationCenter from '@/components/notifications/NotificationCenter';
+import {
+  Home,
+  Calendar,
+  FileText,
+  CreditCard,
   Users,
   Settings,
   Menu,
@@ -25,7 +26,9 @@ import {
   Database,
   Mail,
   Zap,
-  Activity
+  Activity,
+  Palette,
+  Bell
 } from 'lucide-react';
 
 // Navigation configurations for different sections
@@ -88,7 +91,8 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
     if (section === 'team-portal' && userInfo?.role === 'Company Admin') {
       return [
         ...baseItems,
-        { href: '/team-portal/admin/employees', icon: Users, label: 'Employees' }
+        { href: '/team-portal/admin/employees', icon: Users, label: 'Employees' },
+        { href: '/team-portal/admin/branding', icon: Palette, label: 'Branding' }
       ];
     }
 
@@ -171,21 +175,27 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
           {/* Desktop User Info & Actions */}
           <div className="hidden md:flex items-center space-x-4">
             {userInfo && (
-              <div className="text-right">
-                <p className={`font-medium text-sm ${currentTheme.colors.text.secondary}`}>
-                  {userInfo.name || userInfo.email}
-                </p>
-                {userInfo.accountNumber && (
-                  <p className={`text-xs ${currentTheme.colors.text.muted}`}>
-                    Account: {userInfo.accountNumber}
+              <>
+                <div className="text-right">
+                  <p className={`font-medium text-sm ${currentTheme.colors.text.secondary}`}>
+                    {userInfo.name || userInfo.email}
                   </p>
-                )}
-                {userInfo.role && (
-                  <p className={`text-xs ${currentTheme.colors.text.muted} capitalize`}>
-                    {userInfo.role}
-                  </p>
-                )}
-              </div>
+                  {userInfo.accountNumber && (
+                    <p className={`text-xs ${currentTheme.colors.text.muted}`}>
+                      Account: {userInfo.accountNumber}
+                    </p>
+                  )}
+                  {userInfo.role && (
+                    <p className={`text-xs ${currentTheme.colors.text.muted} capitalize`}>
+                      {userInfo.role}
+                    </p>
+                  )}
+                </div>
+                <NotificationCenter
+                  userId={userInfo.id}
+                  companyId={userInfo.company_id}
+                />
+              </>
             )}
             <Button
               onClick={handleLogout}
