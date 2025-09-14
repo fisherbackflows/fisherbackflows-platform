@@ -170,12 +170,24 @@ export default function TeamPortalLoginPage() {
               </Button>
             </form>
 
+            <div className="mt-8 text-center">
+              <div className="border-t border-blue-400/20 pt-6">
+                <p className="text-white/80 text-sm mb-4">Don't have a company account?</p>
+                <Link
+                  href="/team-portal/register-company"
+                  className="inline-flex items-center px-6 py-3 bg-white/10 border border-blue-400/50 rounded-xl text-blue-300 hover:text-white hover:bg-white/20 transition-all duration-200 font-medium"
+                >
+                  Register Your Company
+                </Link>
+              </div>
+            </div>
+
             <div className="mt-8 text-center text-white/80 text-sm">
               <p>Need help accessing your account?</p>
               <p className="mt-2">
                 Contact IT support at{' '}
-                <a 
-                  href="mailto:support@fisherbackflows.com" 
+                <a
+                  href="mailto:support@fisherbackflows.com"
                   className="text-blue-300 hover:text-blue-400 transition-colors font-semibold"
                 >
                   support@fisherbackflows.com

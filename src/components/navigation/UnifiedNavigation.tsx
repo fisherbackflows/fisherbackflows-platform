@@ -75,11 +75,27 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navigationItems = NAVIGATION_CONFIG[section] || [];
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
   // Use light theme for tester portal (white backgrounds), dark theme for others
   const currentTheme = section === 'team-portal' ? LIGHT_THEME : THEME;
+
+  // Get navigation items with role-based filtering
+  const getNavigationItems = () => {
+    const baseItems = NAVIGATION_CONFIG[section] || [];
+
+    // Add admin items for company admins in team portal
+    if (section === 'team-portal' && userInfo?.role === 'Company Admin') {
+      return [
+        ...baseItems,
+        { href: '/team-portal/admin/employees', icon: Users, label: 'Employees' }
+      ];
+    }
+
+    return baseItems;
+  };
+
+  const navigationItems = getNavigationItems();
 
   const handleLogout = async () => {
     if (confirm('Are you sure you want to log out?')) {
