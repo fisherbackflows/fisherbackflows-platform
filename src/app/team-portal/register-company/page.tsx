@@ -336,7 +336,7 @@ export default function CompanyRegistrationPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-2">
-                  Company Name *
+                  Company Name <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -367,7 +367,7 @@ export default function CompanyRegistrationPage() {
 
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-2">
-                  Company Email *
+                  Company Email <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="email"
@@ -383,7 +383,7 @@ export default function CompanyRegistrationPage() {
 
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-2">
-                  Phone Number *
+                  Phone Number <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="tel"
@@ -503,7 +503,7 @@ export default function CompanyRegistrationPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-2">
-                  Street Address *
+                  Street Address <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -533,7 +533,7 @@ export default function CompanyRegistrationPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-white/80 mb-2">
-                    City *
+                    City <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
@@ -549,7 +549,7 @@ export default function CompanyRegistrationPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-white/80 mb-2">
-                    State *
+                    State <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
@@ -565,7 +565,7 @@ export default function CompanyRegistrationPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-white/80 mb-2">
-                    ZIP Code *
+                    ZIP Code <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
@@ -597,7 +597,7 @@ export default function CompanyRegistrationPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-2">
-                  First Name *
+                  First Name <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -613,7 +613,7 @@ export default function CompanyRegistrationPage() {
 
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-2">
-                  Last Name *
+                  Last Name <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
@@ -630,7 +630,7 @@ export default function CompanyRegistrationPage() {
 
             <div>
               <label className="block text-sm font-medium text-white/80 mb-2">
-                Admin Email *
+                Admin Email <span className="text-red-400">*</span>
               </label>
               <input
                 type="email"
@@ -647,7 +647,7 @@ export default function CompanyRegistrationPage() {
 
             <div>
               <label className="block text-sm font-medium text-white/80 mb-2">
-                Password *
+                Password <span className="text-red-400">*</span>
               </label>
               <input
                 type="password"
@@ -664,7 +664,7 @@ export default function CompanyRegistrationPage() {
 
             <div>
               <label className="block text-sm font-medium text-white/80 mb-2">
-                Confirm Password *
+                Confirm Password <span className="text-red-400">*</span>
               </label>
               <input
                 type="password"
