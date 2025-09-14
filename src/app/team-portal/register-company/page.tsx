@@ -35,8 +35,8 @@ interface CompanyRegistrationData {
   zipCode: string;
 
   // Business details
-  licenseNumber: string;
-  certificationLevel: string;
+  yearsInBusiness: string;
+  numberOfEmployees: string;
 
   // Admin user
   adminFirstName: string;
@@ -75,8 +75,8 @@ export default function CompanyRegistrationPage() {
     zipCode: '',
 
     // Business details
-    licenseNumber: '',
-    certificationLevel: 'basic',
+    yearsInBusiness: '',
+    numberOfEmployees: '',
 
     // Admin user
     adminFirstName: '',
@@ -98,10 +98,13 @@ export default function CompanyRegistrationPage() {
     { value: 'other', label: 'Other' }
   ];
 
-  const certificationLevels = [
-    { value: 'basic', label: 'Basic Certification' },
-    { value: 'advanced', label: 'Advanced Certification' },
-    { value: 'master', label: 'Master Certification' }
+  const employeeCounts = [
+    { value: '1-5', label: '1-5 employees' },
+    { value: '6-10', label: '6-10 employees' },
+    { value: '11-25', label: '11-25 employees' },
+    { value: '26-50', label: '26-50 employees' },
+    { value: '51-100', label: '51-100 employees' },
+    { value: '100+', label: '100+ employees' }
   ];
 
   const plans = [
@@ -348,29 +351,30 @@ export default function CompanyRegistrationPage() {
 
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-2">
-                  License Number
+                  Years in Business
                 </label>
                 <input
                   type="text"
-                  value={formData.licenseNumber}
-                  onChange={(e) => updateFormData('licenseNumber', e.target.value)}
+                  value={formData.yearsInBusiness}
+                  onChange={(e) => updateFormData('yearsInBusiness', e.target.value)}
                   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
-                  placeholder="BT-12345"
+                  placeholder="5 years"
                 />
               </div>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-white/80 mb-2">
-                Certification Level
+                Number of Employees
               </label>
               <select
-                value={formData.certificationLevel}
-                onChange={(e) => updateFormData('certificationLevel', e.target.value)}
+                value={formData.numberOfEmployees}
+                onChange={(e) => updateFormData('numberOfEmployees', e.target.value)}
                 className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
               >
-                {certificationLevels.map(level => (
-                  <option key={level.value} value={level.value} className="bg-slate-900 text-white">{level.label}</option>
+                <option value="" className="bg-slate-900 text-white">Select employee count</option>
+                {employeeCounts.map(count => (
+                  <option key={count.value} value={count.value} className="bg-slate-900 text-white">{count.label}</option>
                 ))}
               </select>
             </div>
