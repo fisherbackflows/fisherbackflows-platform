@@ -160,6 +160,18 @@ export default function CompanyRegistrationPage() {
     }
   ];
 
+  // Function to format phone number as user types
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-numeric characters
+    const phoneNumber = value.replace(/\D/g, '');
+
+    // Format based on length
+    if (phoneNumber.length === 0) return '';
+    if (phoneNumber.length <= 3) return `(${phoneNumber}`;
+    if (phoneNumber.length <= 6) return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  };
+
   // Function to suggest plan based on employee count
   const suggestPlanBasedOnEmployees = (employeeCount: string) => {
     switch (employeeCount) {
@@ -178,9 +190,16 @@ export default function CompanyRegistrationPage() {
   };
 
   const updateFormData = (field: keyof CompanyRegistrationData, value: string) => {
+    let processedValue = value;
+
+    // Format phone numbers as user types
+    if (field === 'phone') {
+      processedValue = formatPhoneNumber(value);
+    }
+
     setFormData(prev => ({
       ...prev,
-      [field]: value
+      [field]: processedValue
     }));
 
     // Auto-select plan based on employee count
@@ -188,7 +207,7 @@ export default function CompanyRegistrationPage() {
       const suggestedPlan = suggestPlanBasedOnEmployees(value);
       setFormData(prev => ({
         ...prev,
-        [field]: value,
+        [field]: processedValue,
         planType: suggestedPlan as any
       }));
     }
@@ -355,6 +374,7 @@ export default function CompanyRegistrationPage() {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => updateFormData('phone', e.target.value)}
+                  maxLength={14}
                   className={`w-full px-4 py-3 rounded-xl bg-white/10 border glass text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200 ${
                     errors.phone ? 'border-red-400' : 'border-blue-400'
                   }`}
