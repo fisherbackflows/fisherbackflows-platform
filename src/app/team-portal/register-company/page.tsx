@@ -92,6 +92,7 @@ export default function CompanyRegistrationPage() {
   const businessTypes = [
     { value: 'testing_service', label: 'Backflow Testing Service' },
     { value: 'plumbing', label: 'Plumbing Company' },
+    { value: 'hvac', label: 'HVAC Company' },
     { value: 'municipal', label: 'Municipal Water Department' },
     { value: 'contractor', label: 'General Contractor' },
     { value: 'other', label: 'Other' }
