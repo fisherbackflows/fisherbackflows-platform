@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import { logSecurityEvent } from '@/lib/auth-security';

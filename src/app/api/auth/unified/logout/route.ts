@@ -1,4 +1,6 @@
 /**
+
+export const runtime = 'nodejs';
  * Unified Logout API Route
  * Handles session termination for all portals
  */

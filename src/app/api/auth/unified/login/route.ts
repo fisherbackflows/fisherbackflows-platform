@@ -1,4 +1,6 @@
 /**
+
+export const runtime = 'nodejs';
  * Unified Login API Route
  * Handles authentication for all portals using the unified system
  */

@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
 import { createRouteHandlerClient } from '@/lib/supabase';
 import { validateSession } from '@/lib/auth-security';
 import { cookies } from 'next/headers';

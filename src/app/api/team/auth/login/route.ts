@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
 import bcrypt from 'bcryptjs';
 import { supabase, supabaseAdmin } from '@/lib/supabase';
 import { cookies } from 'next/headers';
