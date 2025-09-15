@@ -1,4 +1,5 @@
 /**
+export const runtime = 'nodejs';
  * Database-Specific Health Check Endpoint
  * Provides detailed database connectivity and performance metrics
  */

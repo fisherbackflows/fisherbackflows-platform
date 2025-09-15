@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+export const runtime = 'nodejs';
 import { getCompanyBranding, updateCompanyBranding } from '@/lib/company-branding'
 import { getTeamSession } from '@/lib/team-auth'
 import { createClient } from '@supabase/supabase-js'

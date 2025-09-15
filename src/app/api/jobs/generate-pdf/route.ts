@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+export const runtime = 'nodejs';
 import { verifyWebhook } from '@/lib/queue/qstash'
 import { supabaseAdmin } from '@/lib/supabase'
 // LEGITIMATE SERVICE ROLE USAGE: This operation requires elevated privileges

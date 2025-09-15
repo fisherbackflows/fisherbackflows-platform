@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+export const runtime = 'nodejs';
 import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
 import { generateInvoicePDF } from '@/lib/pdf-generator';

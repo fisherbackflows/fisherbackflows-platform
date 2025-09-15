@@ -1,4 +1,5 @@
 /**
+export const runtime = 'nodejs';
  * Comprehensive Health Check Endpoint
  * Provides detailed system health status for all services
  */
