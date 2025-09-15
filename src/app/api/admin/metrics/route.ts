@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
       console.error('Error fetching invoices:', invoiceError)
     }
 
-    const monthlyRevenue = invoices?.reduce((total, invoice) => {
+    const monthlyRevenue = invoices?.reduce((total: number, invoice: any) => {
       return invoice.status === 'paid' ? total + (invoice.amount || 0) : total
     }, 0) || 0
 
