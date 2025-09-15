@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
 import { generateTestReport } from '@/lib/pdf-generator';
 
@@ -14,7 +14,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     // Get test report with customer and device information
     const { data: testReport, error } = await supabase

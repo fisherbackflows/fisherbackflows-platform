@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyWebhook } from '@/lib/queue/qstash'
-import { createServiceClient } from '@/lib/supabase/server'
+import { supabaseAdmin } from '@/lib/supabase'
+// LEGITIMATE SERVICE ROLE USAGE: This operation requires elevated privileges
+// Reason: Background job processing
 import { logger } from '@/lib/logger'
 import { updateJob } from '@/lib/db/queries'
 

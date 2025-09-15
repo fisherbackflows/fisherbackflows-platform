@@ -3,11 +3,12 @@ export const runtime = 'nodejs'; // Force Node.js runtime for service role acces
 
 import { NextRequest, NextResponse } from 'next/server';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
-import { 
-  CustomerRegistrationService, 
-  RegistrationError, 
-  type RegistrationData 
+import {
+  CustomerRegistrationService,
+  RegistrationError,
+  type RegistrationData
 } from '@/lib/auth/registration';
+import crypto from 'crypto';
 
 // Input validation schemas
 const VALIDATION_RULES = {
@@ -68,20 +69,24 @@ function validateRegistrationData(body: any): {
     return { isValid: false, errors };
   }
 
-  // Clean and structure the data
+  // Clean and structure the data with sanitization
+  function sanitizeString(input: string): string {
+    return input.replace(/[<>'"&]/g, '').trim();
+  }
+
   const data: RegistrationData = {
-    firstName: body.firstName.trim(),
-    lastName: body.lastName.trim(),
+    firstName: sanitizeString(body.firstName),
+    lastName: sanitizeString(body.lastName),
     email: body.email.trim().toLowerCase(),
-    phone: body.phone.trim(),
+    phone: body.phone.replace(/\D/g, ''), // Keep only digits
     password: body.password,
     address: body.address ? {
-      street: body.address.street?.trim(),
-      city: body.address.city?.trim(),
-      state: body.address.state?.trim(),
-      zipCode: body.address.zipCode?.trim(),
+      street: body.address.street ? sanitizeString(body.address.street) : undefined,
+      city: body.address.city ? sanitizeString(body.address.city) : undefined,
+      state: body.address.state ? sanitizeString(body.address.state) : undefined,
+      zipCode: body.address.zipCode ? body.address.zipCode.replace(/\D/g, '') : undefined,
     } : undefined,
-    propertyType: body.propertyType?.trim()
+    propertyType: body.propertyType ? sanitizeString(body.propertyType) : undefined
   };
 
   return { isValid: true, data };
@@ -173,7 +178,7 @@ export async function POST(request: NextRequest) {
       .from('customers')
       .insert({
         auth_user_id: authUserId,
-        account_number: `FB-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
+        account_number: `FB-${Date.now()}-${crypto.randomBytes(4).toString('hex').toUpperCase()}`,
         first_name: validation.data!.firstName,
         last_name: validation.data!.lastName,
         email: validation.data!.email,

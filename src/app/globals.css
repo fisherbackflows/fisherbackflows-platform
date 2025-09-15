@@ -15,118 +15,329 @@
     --border: 217 91% 40%;
     --ring: 217 91% 60%;
   }
-  
-  
+
+  /* Cross-browser scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Fallback for browsers without scroll-behavior support */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   body {
     @apply bg-black text-white;
+    /* Fallback background for older browsers */
+    background: #000000;
+    background: -webkit-linear-gradient(315deg, #000000 0%, #0a0a0a 100%);
+    background: -moz-linear-gradient(315deg, #000000 0%, #0a0a0a 100%);
     background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
     min-height: 100vh;
+    /* Ensure smooth font rendering across browsers */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
-  
-  /* Glassmorphism utilities */
+
+  /* Glassmorphism utilities with fallbacks */
   .glass {
+    /* Fallback for browsers without backdrop-filter */
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    /* Modern backdrop-filter */
     @apply bg-black/40 backdrop-blur-xl border border-blue-500/50;
+    /* Webkit prefix for Safari */
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
   }
   
   .glass-card {
+    /* Fallback background */
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(59, 130, 246, 0.5);
+    border-radius: 1rem;
+    /* Modern glass effect */
     @apply bg-black/40 backdrop-blur-xl border-2 border-blue-500/50 rounded-2xl;
+    /* Cross-browser backdrop-filter */
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    /* Cross-browser box-shadow */
+    -webkit-box-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
+    -moz-box-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
     box-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
   }
-  
+
   .glass-input {
+    /* Fallback styles */
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(59, 130, 246, 0.5);
+    border-radius: 0.5rem;
+    color: white;
+    /* Modern glass effect */
     @apply bg-black/50 backdrop-blur-xl border-2 border-blue-500/50 rounded-lg text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50;
+    /* Cross-browser backdrop-filter */
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    /* Cross-browser transitions */
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
   }
-  
+
   .glass-button {
+    /* Fallback background */
+    background: rgba(37, 99, 235, 0.8);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: 600;
+    /* Modern gradient and glass effect */
     @apply bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-400/50 rounded-lg text-white font-semibold hover:from-blue-500 hover:to-blue-400 transition-all duration-300;
+    /* Cross-browser backdrop-filter */
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    /* Cross-browser box-shadow */
+    -webkit-box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+    -moz-box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
     box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+    /* Cross-browser transitions */
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
   }
   
-  /* Glow effects */
+  /* Glow effects with cross-browser support */
   .glow-blue {
+    -webkit-box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+    -moz-box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
     box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
   }
-  
+
   .glow-soft {
+    -webkit-box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    -moz-box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
   }
 
   .glow-amber {
+    -webkit-box-shadow: 0 0 30px rgba(245, 158, 11, 0.6);
+    -moz-box-shadow: 0 0 30px rgba(245, 158, 11, 0.6);
     box-shadow: 0 0 30px rgba(245, 158, 11, 0.6);
   }
 
   .glow-blue-sm {
+    -webkit-box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    -moz-box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
   }
-  
-  /* Text shadows for better readability */
+
+  /* Text shadows for better readability with fallbacks */
   h1, h2, h3, h4, h5, h6 {
     @apply text-white;
+    /* Fallback color for older browsers */
+    color: #ffffff;
+    /* Cross-browser text-shadow */
     text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    -webkit-text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    -moz-text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
   }
-  
-  /* Scrollbar styling */
+
+  /* Cross-browser scrollbar styling */
+  /* Webkit browsers (Chrome, Safari, Edge) */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
-  
+
   ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
     @apply bg-black/50;
   }
-  
+
   ::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.5);
+    border-radius: 50px;
     @apply bg-blue-500/50 rounded-full;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
+    background: rgba(96, 165, 250, 0.7);
     @apply bg-blue-400/70;
+  }
+
+  /* Firefox scrollbar styling */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59, 130, 246, 0.5) rgba(0, 0, 0, 0.5);
   }
 }
 
 @layer components {
-  /* Animated gradient borders */
+  /* Animated gradient borders with fallbacks */
   .gradient-border {
     position: relative;
+    /* Fallback background */
+    background: rgba(59, 130, 246, 0.3);
+    /* Modern gradient with cross-browser support */
+    background: -webkit-linear-gradient(315deg, transparent, rgba(59, 130, 246, 0.3));
+    background: -moz-linear-gradient(315deg, transparent, rgba(59, 130, 246, 0.3));
     background: linear-gradient(135deg, transparent, rgba(59, 130, 246, 0.3));
     padding: 1px;
     border-radius: 1rem;
+    -webkit-border-radius: 1rem;
+    -moz-border-radius: 1rem;
   }
-  
+
   .gradient-border::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: inherit;
     padding: 1px;
+    /* Cross-browser gradient */
+    background: -webkit-linear-gradient(315deg, #3b82f6, #1e40af, #3b82f6);
+    background: -moz-linear-gradient(315deg, #3b82f6, #1e40af, #3b82f6);
     background: linear-gradient(135deg, #3b82f6, #1e40af, #3b82f6);
+    /* Cross-browser mask properties */
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
+    /* Fallback for browsers without mask support */
+    border: 1px solid rgba(59, 130, 246, 0.5);
   }
-  
-  /* Pulse animation for buttons */
+
+  /* Pulse animation with cross-browser support */
   .pulse-glow {
+    -webkit-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    -moz-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    -o-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  /* Button variants */
-  .glass-btn-primary {
-    @apply bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-400/50 text-white font-semibold hover:from-blue-500 hover:to-blue-400 transition-all duration-300;
-    box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+  /* Cross-browser keyframes */
+  @-webkit-keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
   }
 
-  /* Smaller glow effects */
+  @-moz-keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* Button variants with fallbacks */
+  .glass-btn-primary {
+    /* Fallback background */
+    background: rgba(37, 99, 235, 0.8);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    color: white;
+    font-weight: 600;
+    /* Modern glass effect */
+    @apply bg-gradient-to-r from-blue-600/80 to-blue-500/80 backdrop-blur-xl border border-blue-400/50 text-white font-semibold hover:from-blue-500 hover:to-blue-400 transition-all duration-300;
+    /* Cross-browser backdrop-filter */
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+    /* Cross-browser box-shadow */
+    -webkit-box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+    -moz-box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.7);
+    /* Cross-browser transitions */
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  /* Smaller glow effects with cross-browser support */
   .glow-blue-sm {
+    -webkit-box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+    -moz-box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
   }
 
   .focus\:glow-blue-sm:focus {
+    -webkit-box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    -moz-box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
   }
 
-  /* Icon container */
+  /* Icon container with fallbacks */
   .glass-icon {
+    /* Fallback styles */
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    border-radius: 1rem;
+    padding: 1rem;
+    /* Modern glass effect */
     @apply bg-black/40 backdrop-blur-xl border border-blue-400/50 rounded-2xl p-4;
+    /* Cross-browser backdrop-filter */
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+  }
+
+  /* Support for older flexbox syntax */
+  .flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  .flex-col {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -moz-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
+
+  .items-center {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+
+  .justify-center {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
+
+  /* CSS Grid fallbacks */
+  .grid {
+    display: -ms-grid;
+    display: grid;
+  }
+
+  /* Support for older transform syntax */
+  .transform {
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Support for older opacity transitions */
+  .transition-opacity {
+    -webkit-transition: opacity 0.3s ease;
+    -moz-transition: opacity 0.3s ease;
+    -o-transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease;
   }
 }

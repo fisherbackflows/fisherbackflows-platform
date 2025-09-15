@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 
 export async function GET(request: NextRequest) {
@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Update Supabase Auth user as verified
-    const { error: authUpdateError } = await supabaseAdmin.auth.admin.updateUserById(
+    const { error: authUpdateError } = await createRouteHandlerClient(request).auth.admin.updateUserById(
       verification.user_id,
       { email_confirm: true }
     );

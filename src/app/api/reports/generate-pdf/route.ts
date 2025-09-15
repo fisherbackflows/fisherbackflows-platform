@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase'
+import { createRouteHandlerClient } from '@/lib/supabase'
 import { auth } from '@/lib/auth'
 const jsPDF = require('jspdf').default;
 require('jspdf-autotable');
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 
     console.log('📄 Generating PDF for report:', reportId);
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     // Fetch test report with all related data using correct relationship syntax
     const { data: report, error } = await supabase

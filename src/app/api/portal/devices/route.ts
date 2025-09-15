@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
 
 // Device validation schema
@@ -86,7 +86,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized - Customer access required' }, { status: 401 });
     }
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     console.log(`🔍 [Customer Portal] Fetching devices for customer ${user.customerId}`);
 
@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     console.log(`💾 [Customer Portal] Registering device for customer ${user.customerId}:`, validation.cleanData);
 
@@ -234,7 +234,7 @@ export async function PUT(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     // Verify device ownership
     const { data: existingDevice } = await supabase

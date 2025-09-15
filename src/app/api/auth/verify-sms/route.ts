@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
   try {
     // Rate limiting check
     const clientId = getClientIdentifier(request);
-    const rateLimitCheck = await checkRateLimit(clientId, RATE_LIMIT_CONFIGS.AUTH_VERIFY);
+    const rateLimitCheck = checkRateLimit(clientId, 'login');
     
     if (!rateLimitCheck.allowed) {
       return NextResponse.json({

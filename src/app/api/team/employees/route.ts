@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 import { supabase, supabaseAdmin } from '@/lib/supabase';
 import { cookies } from 'next/headers';
 

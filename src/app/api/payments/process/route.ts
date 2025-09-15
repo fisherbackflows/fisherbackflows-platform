@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import StripeService from '@/lib/stripe';
 import { createRouteHandlerClient } from '@/lib/supabase';
 import { logger } from '@/lib/logger';
+import { verifyCustomerAccess, authenticateRequest } from '@/lib/auth-helpers';
+import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 import { z } from 'zod';
 
 const PaymentRequestSchema = z.object({
@@ -16,18 +18,49 @@ const PaymentRequestSchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient(request);
+    // SECURITY: Rate limiting for payment processing
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
+
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        {
+          error: 'Too many payment attempts. Please try again later.',
+          retryAfter: rateLimitResult.retryAfter
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '3600',
+          }
+        }
+      );
+    }
+
     const body = await request.json();
     const validatedData = PaymentRequestSchema.parse(body);
 
-    // Get customer from database
+    // SECURITY: Authenticate user and verify access to customer ID
+    const authResult = await verifyCustomerAccess(request, validatedData.customerId);
+    if (!authResult.success) {
+      recordAttempt(clientId, false, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.statusCode || 401 }
+      );
+    }
+
+    const supabase = createRouteHandlerClient(request);
+
+    // Get customer from database - using authenticated customer ID only
     const { data: customer, error: customerError } = await supabase
       .from('customers')
       .select('*')
-      .eq('id', validatedData.customerId)
+      .eq('id', authResult.customerId)
       .single();
 
     if (customerError || !customer) {
+      recordAttempt(clientId, false, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
       return NextResponse.json(
         { error: 'Customer not found' },
         { status: 404 }
@@ -173,6 +206,9 @@ export async function POST(request: NextRequest) {
         logger.error('Failed to send payment confirmation email', { error: emailError });
       }
 
+      // Record successful payment
+      recordAttempt(clientId, true, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
+
       return NextResponse.json({
         success: true,
         paymentId: payment.id,
@@ -190,6 +226,8 @@ export async function POST(request: NextRequest) {
         })
         .eq('id', payment.id);
 
+      recordAttempt(clientId, false, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
+
       return NextResponse.json({
         success: false,
         paymentId: payment.id,
@@ -200,8 +238,11 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
+    const clientId = getClientIdentifier(request);
+    recordAttempt(clientId, false, RATE_LIMIT_CONFIGS.AUTH_LOGIN);
+
     logger.error('Payment processing error', { error });
-    
+
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: 'Invalid payment data', details: error.errors },
@@ -216,9 +257,18 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Get payment status
+// Get payment status - SECURED with authentication
 export async function GET(request: NextRequest) {
   try {
+    // SECURITY: Authenticate request first
+    const authResult = await authenticateRequest(request);
+    if (!authResult.success) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.statusCode || 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const paymentId = searchParams.get('paymentId');
 
@@ -229,6 +279,9 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const supabase = createRouteHandlerClient(request);
+
+    // SECURITY: Only allow access to user's own payments
     const { data: payment, error } = await supabase
       .from('payments')
       .select(`
@@ -247,6 +300,7 @@ export async function GET(request: NextRequest) {
         )
       `)
       .eq('id', paymentId)
+      .eq('customer_id', authResult.customerId)
       .single();
 
     if (error || !payment) {

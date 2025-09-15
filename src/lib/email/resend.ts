@@ -2,8 +2,8 @@ import { Resend } from 'resend'
 import { logger } from '@/lib/logger'
 import type { EmailSend } from '@/lib/validation/schemas'
 
-// Initialize Resend client
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Initialize Resend client with fallback for missing API key
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@fisherbackflows.com'
 
@@ -16,6 +16,11 @@ const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@fisherbackflows.com
  */
 export async function sendEmail(emailData: EmailSend): Promise<{ success: boolean; id?: string; error?: string }> {
   try {
+    if (!resend) {
+      logger.warn('Resend API key not configured, email sending disabled')
+      return { success: false, error: 'Email service not configured' }
+    }
+
     const response = await resend.emails.send({
       from: FROM_EMAIL,
       to: Array.isArray(emailData.to) ? emailData.to : [emailData.to],

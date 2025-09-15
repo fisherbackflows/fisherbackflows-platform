@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
+// LEGITIMATE SERVICE ROLE USAGE: This operation requires elevated privileges
+// Reason: Admin operation to unlock user accounts
 
 // SECURITY: Admin key check - cryptographically secure
 const ADMIN_KEY = process.env.ADMIN_BYPASS_KEY || '18e6443e086999819ade470550ab0257ddc97378812e5b4cd1ee249988e29f2b';

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     // Get all active technicians
     const { data: technicians, error: techError } = await supabase

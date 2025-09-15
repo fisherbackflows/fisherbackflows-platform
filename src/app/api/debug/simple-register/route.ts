@@ -6,6 +6,25 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function POST(request: NextRequest) {
   try {
+    // SECURITY: Only allow in development environment
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        { error: 'Debug endpoints are disabled in production' },
+        { status: 403 }
+      );
+    }
+
+    // SECURITY: Require debug authorization header
+    const debugAuth = request.headers.get('X-Debug-Auth');
+    const expectedAuth = process.env.DEBUG_ENDPOINT_KEY;
+
+    if (!expectedAuth || debugAuth !== expectedAuth) {
+      return NextResponse.json(
+        { error: 'Debug authorization required' },
+        { status: 401 }
+      );
+    }
+
     console.log('[simple-register] Starting simple registration test');
     
     // Environment check

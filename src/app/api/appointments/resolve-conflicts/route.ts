@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 
 interface ConflictResolution {
   appointmentId: string;
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     const resolvedConflicts = [];
     const failedResolutions = [];
@@ -250,7 +250,7 @@ export async function GET(request: NextRequest) {
     const date = searchParams.get('date');
     const appointmentId = searchParams.get('exclude'); // Exclude specific appointment from conflict check
     
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     // Get appointments for conflict analysis
     let query = supabase

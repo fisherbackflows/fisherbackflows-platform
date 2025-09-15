@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
 import { generateInvoicePDF } from '@/lib/pdf-generator';
 
@@ -14,7 +14,7 @@ export async function GET(
     }
 
     const { id } = await params;
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     // Get invoice with customer information
     const { data: invoice, error } = await supabase

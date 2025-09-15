@@ -5,7 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { auditLogger, AuditEventType } from '@/lib/audit-logger';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { cookies } from 'next/headers';
 
 interface AuditMiddlewareOptions {

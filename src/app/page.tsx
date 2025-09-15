@@ -28,8 +28,12 @@ export default function HomePage() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-3 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-lg font-medium text-white/80">Loading...</p>
+          <div
+            className="animate-spin rounded-full h-12 w-12 border-b-3 border-blue-600 mx-auto mb-4"
+            role="status"
+            aria-label="Loading page content"
+          ></div>
+          <p className="text-lg font-medium text-white/80" aria-live="polite">Loading...</p>
         </div>
       </div>
     );
@@ -56,14 +60,26 @@ export default function HomePage() {
               </div>
             </Link>
 
-            <nav className="flex items-center space-x-6">
-              <Link href="/portal" className="text-white/80 hover:text-white transition-colors font-medium">
+            <nav className="flex items-center space-x-6" role="navigation" aria-label="Main navigation">
+              <Link
+                href="/portal"
+                className="text-white/80 hover:text-white transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black rounded"
+                aria-label="Access property owner portal"
+              >
                 Property Owners
               </Link>
-              <Link href="/team-portal" className="text-white/80 hover:text-white transition-colors font-medium">
+              <Link
+                href="/team-portal"
+                className="text-white/80 hover:text-white transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black rounded"
+                aria-label="Access testing company portal"
+              >
                 Testing Companies
               </Link>
-              <Link href="/signup" className="px-5 py-2 rounded-full glass-btn-primary text-white font-semibold transition-all duration-200 hover:glow-blue">
+              <Link
+                href="/signup"
+                className="px-5 py-2 rounded-full glass-btn-primary text-white font-semibold transition-all duration-200 hover:glow-blue focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black"
+                aria-label="Sign up for a new account"
+              >
                 Get Started
               </Link>
             </nav>
@@ -75,8 +91,8 @@ export default function HomePage() {
       <section className="relative pt-32 pb-24 px-6">
         <div className="max-w-5xl mx-auto text-center">
           <div className="mb-8">
-            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass border border-emerald-400/50 text-sm">
-              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass border border-emerald-400/50 text-sm" role="status" aria-label="Trust indicator">
+              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" aria-hidden="true"></div>
               <span className="text-white/90">Trusted by 500+ Companies Nationwide</span>
             </div>
           </div>
@@ -96,13 +112,21 @@ export default function HomePage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/portal">
-              <Button size="lg" className="glass-btn-primary hover:glow-blue text-white px-8 py-6 text-lg font-semibold rounded-2xl group">
+              <Button
+                size="lg"
+                className="glass-btn-primary hover:glow-blue text-white px-8 py-6 text-lg font-semibold rounded-2xl group focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black"
+                aria-label="Access property owner portal to manage your backflow compliance"
+              >
                 I Own Property
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Button>
             </Link>
             <Link href="/team-portal">
-              <Button size="lg" className="glass border border-blue-400/50 hover:border-blue-400 text-white px-8 py-6 text-lg font-semibold rounded-2xl">
+              <Button
+                size="lg"
+                className="glass border border-blue-400/50 hover:border-blue-400 text-white px-8 py-6 text-lg font-semibold rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black"
+                aria-label="Access testing company portal to manage your business"
+              >
                 I Test Backflows
               </Button>
             </Link>
@@ -111,39 +135,40 @@ export default function HomePage() {
       </section>
 
       {/* Core Value Props - Minimal Grid */}
-      <section className="py-24 px-6">
+      <section className="py-24 px-6" aria-labelledby="features-heading">
         <div className="max-w-6xl mx-auto">
+          <h2 id="features-heading" className="sr-only">Platform Features</h2>
           <div className="grid md:grid-cols-3 gap-8">
 
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl glass border border-blue-400/30 flex items-center justify-center">
-                <MapPin className="h-8 w-8 text-blue-400" />
+            <article className="text-center">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl glass border border-blue-400/30 flex items-center justify-center" aria-hidden="true">
+                <MapPin className="h-8 w-8 text-blue-400" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">Find Certified Testers</h3>
               <p className="text-white/70 leading-relaxed">
                 Search by location or browse our marketplace of verified testing companies - from solo testers to large HVAC firms.
               </p>
-            </div>
+            </article>
 
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl glass border border-emerald-400/30 flex items-center justify-center">
-                <Clock className="h-8 w-8 text-emerald-400" />
+            <article className="text-center">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl glass border border-emerald-400/30 flex items-center justify-center" aria-hidden="true">
+                <Clock className="h-8 w-8 text-emerald-400" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">Automatic Scheduling</h3>
               <p className="text-white/70 leading-relaxed">
                 Never miss yearly compliance deadlines. Auto-schedule tests, get reminders, and track all devices in one dashboard.
               </p>
-            </div>
+            </article>
 
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl glass border border-purple-400/30 flex items-center justify-center">
-                <Users className="h-8 w-8 text-purple-400" />
+            <article className="text-center">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl glass border border-purple-400/30 flex items-center justify-center" aria-hidden="true">
+                <Users className="h-8 w-8 text-purple-400" aria-hidden="true" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-3">Business Management</h3>
               <p className="text-white/70 leading-relaxed">
                 Testing companies get admin controls, mobile apps for techs, auto-routing, and 70% faster workflows.
               </p>
-            </div>
+            </article>
 
           </div>
         </div>

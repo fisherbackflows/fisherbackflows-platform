@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
 
 export interface Appointment {
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     console.log('🔍 Fetching appointments from database...');
 
@@ -156,7 +156,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     // For customer users, ensure they can only create appointments for themselves
     let targetCustomerId = finalCustomerId;
@@ -250,7 +250,7 @@ export async function PUT(request: NextRequest) {
 
     console.log('📅 Updating appointment:', targetId, 'for user:', user.email);
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     // First, verify the appointment exists and user has permission
     const { data: existingAppointment } = await supabase
@@ -348,7 +348,7 @@ export async function DELETE(request: NextRequest) {
 
     console.log('🗑️ Deleting appointment:', appointmentId, 'for user:', user.email);
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     // First, verify the appointment exists and user has permission
     const { data: existingAppointment } = await supabase

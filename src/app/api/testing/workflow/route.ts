@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
 
 export interface TestingWorkflow {
@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
     const appointmentId = searchParams.get('appointment_id');
     const workflowId = searchParams.get('workflow_id');
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     // First check if testing_workflows table exists by trying a simple query
     let tableExists = true;
@@ -184,7 +184,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await request.json();
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     if (data.action === 'start_testing') {
       // Handle mock workflow

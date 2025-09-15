@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
 import { sendEmail, emailTemplates } from '@/lib/email';
 
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
 
     const targetCustomerId = customerId || customer_id;
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
 
     console.log('📍 Query filters:', { targetCustomerId, status, test_passed, submitted_to_district });
 
@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await request.json();
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     // Validate required fields
     if (!data.customer_id || !data.device_id || !data.appointment_id) {

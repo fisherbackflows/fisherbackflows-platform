@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
 
 // Automated test completion workflow
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
     console.log('🔄 Field test completion: User', user.email, 'completing test');
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     const data = await request.json();
     
     // Validate required fields

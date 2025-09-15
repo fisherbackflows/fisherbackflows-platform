@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { validateSession } from '@/lib/auth-security';
 import { cookies } from 'next/headers';
 
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
       }, { status: 401 });
     }
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     console.log('🔍 Tester Portal: Fetching customers from database...');
     

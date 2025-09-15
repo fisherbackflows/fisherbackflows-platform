@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { cache, CacheTTL, CacheKeys } from '@/lib/cache';
 
 export async function GET(request: NextRequest) {
@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 
     // Fetch fresh data
     const result = await (async () => {
-      const supabase = supabaseAdmin || createRouteHandlerClient(request);
+      const supabase = createRouteHandlerClient(request);
       
       // Get current date and calculate next 30 days
       const today = new Date();

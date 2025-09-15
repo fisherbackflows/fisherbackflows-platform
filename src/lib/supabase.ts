@@ -82,10 +82,26 @@ export function createRouteHandlerClient(
   )
 }
 
-// Admin client with service role key
-export const supabaseAdmin = isSupabaseConfigured && supabaseServiceKey
+// Admin client with service role key - ONLY for server-side operations that require it
+// WARNING: This bypasses ALL Row Level Security - use createRouteHandlerClient instead
+// Only use for: initial setup, admin operations, system tasks
+const supabaseServiceRole = isSupabaseConfigured && supabaseServiceKey
   ? createClient<Database>(supabaseUrl!, supabaseServiceKey)
   : null
+
+// Export a function that requires explicit acknowledgment of security bypass
+export function getServiceRoleClient(purpose: string) {
+  console.warn(`⚠️ Service role client requested for: ${purpose}`);
+  console.warn('This bypasses all Row Level Security policies!');
+  if (!supabaseServiceRole) {
+    throw new Error('Service role client not configured');
+  }
+  return supabaseServiceRole;
+}
+
+// DEPRECATED: Use getServiceRoleClient() with explicit purpose instead
+// This export remains for critical system functions that legitimately need service role
+export const supabaseAdmin = supabaseServiceRole
 
 // Legacy client for backwards compatibility
 export const supabase = isSupabaseConfigured 

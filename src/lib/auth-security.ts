@@ -1,5 +1,7 @@
 import crypto from 'crypto';
 import { supabaseAdmin } from '@/lib/supabase';
+// LEGITIMATE SERVICE ROLE USAGE: This operation requires elevated privileges
+// Reason: Session validation across all users
 
 // Production security configuration
 export const SECURITY_CONFIG = {

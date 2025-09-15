@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createServiceClient } from '@/lib/supabase/server'
+import { createRouteHandlerClient } from '@/lib/supabase'
 import { verifyResendWebhook } from '@/lib/email/resend'
 import { logger } from '@/lib/logger'
 

@@ -1,177 +1,148 @@
-// SECURITY: Rate limiting implementation for authentication endpoints
+import { NextRequest } from 'next/server';
 
-interface RateLimitStore {
-  [key: string]: {
-    attempts: number;
-    resetTime: number;
-    blocked: boolean;
-  };
-}
+// Simple in-memory rate limiting store (in production, use Redis)
+const rateLimitStore = new Map<string, { attempts: number; lastAttempt: number; blockUntil?: number }>();
 
-// In-memory store (in production, use Redis)
-const rateLimitStore: RateLimitStore = {};
-
-export interface RateLimitConfig {
-  maxAttempts: number;
-  windowMs: number;
-  blockDurationMs: number;
-}
-
-// Default rate limit configurations
 export const RATE_LIMIT_CONFIGS = {
-  AUTH_LOGIN: {
+  login: {
     maxAttempts: 5,
     windowMs: 15 * 60 * 1000, // 15 minutes
     blockDurationMs: 30 * 60 * 1000, // 30 minutes
   },
-  AUTH_REGISTER: {
-    maxAttempts: 3,
-    windowMs: 10 * 60 * 1000, // 10 minutes
-    blockDurationMs: 60 * 60 * 1000, // 1 hour
-  },
-  PASSWORD_RESET: {
-    maxAttempts: 3,
-    windowMs: 5 * 60 * 1000, // 5 minutes
-    blockDurationMs: 15 * 60 * 1000, // 15 minutes
-  },
-  ADMIN_BYPASS: {
+  register: {
     maxAttempts: 3,
     windowMs: 60 * 60 * 1000, // 1 hour
-    blockDurationMs: 24 * 60 * 60 * 1000, // 24 hours
+    blockDurationMs: 60 * 60 * 1000, // 1 hour
   },
-  AUTH_VERIFY: {
-    maxAttempts: 5,
-    windowMs: 10 * 60 * 1000, // 10 minutes
-    blockDurationMs: 15 * 60 * 1000, // 15 minutes
-  },
-  SMS_RESEND: {
+  passwordReset: {
     maxAttempts: 3,
-    windowMs: 10 * 60 * 1000, // 10 minutes
-    blockDurationMs: 30 * 60 * 1000, // 30 minutes
-  },
+    windowMs: 60 * 60 * 1000, // 1 hour
+    blockDurationMs: 60 * 60 * 1000, // 1 hour
+  }
 } as const;
 
-export function checkRateLimit(
-  identifier: string,
-  config: RateLimitConfig
-): {
-  allowed: boolean;
-  remainingAttempts: number;
-  resetTime: number;
-  retryAfter?: number;
-} {
-  const now = Date.now();
-  const key = identifier;
-  
-  // Clean up expired entries
-  if (rateLimitStore[key] && now > rateLimitStore[key].resetTime && !rateLimitStore[key].blocked) {
-    delete rateLimitStore[key];
-  }
-  
-  // Initialize if not exists
-  if (!rateLimitStore[key]) {
-    rateLimitStore[key] = {
-      attempts: 0,
-      resetTime: now + config.windowMs,
-      blocked: false,
-    };
-  }
-  
-  const entry = rateLimitStore[key];
-  
-  // Check if still blocked
-  if (entry.blocked && now < entry.resetTime) {
-    return {
-      allowed: false,
-      remainingAttempts: 0,
-      resetTime: entry.resetTime,
-      retryAfter: Math.ceil((entry.resetTime - now) / 1000),
-    };
-  }
-  
-  // Reset if block period expired
-  if (entry.blocked && now >= entry.resetTime) {
-    entry.attempts = 0;
-    entry.blocked = false;
-    entry.resetTime = now + config.windowMs;
-  }
-  
-  // Check if within rate limit
-  if (entry.attempts >= config.maxAttempts) {
-    // Block the identifier
-    entry.blocked = true;
-    entry.resetTime = now + config.blockDurationMs;
-    
-    return {
-      allowed: false,
-      remainingAttempts: 0,
-      resetTime: entry.resetTime,
-      retryAfter: Math.ceil(config.blockDurationMs / 1000),
-    };
-  }
-  
-  return {
-    allowed: true,
-    remainingAttempts: config.maxAttempts - entry.attempts,
-    resetTime: entry.resetTime,
-  };
-}
+export function getClientIdentifier(request: NextRequest): string {
+  // Try to get real IP from headers (for proxies/load balancers)
+  const forwarded = request.headers.get('x-forwarded-for');
+  const realIp = request.headers.get('x-real-ip');
 
-export function recordAttempt(identifier: string, success: boolean, config: RateLimitConfig): void {
-  const now = Date.now();
-  const key = identifier;
-  
-  if (!rateLimitStore[key]) {
-    rateLimitStore[key] = {
-      attempts: 0,
-      resetTime: now + config.windowMs,
-      blocked: false,
-    };
-  }
-  
-  const entry = rateLimitStore[key];
-  
-  if (success) {
-    // Reset on successful attempt
-    delete rateLimitStore[key];
-  } else {
-    // Increment failed attempts
-    entry.attempts++;
-  }
-}
-
-export function getClientIdentifier(request: any): string {
-  // Use IP address as primary identifier
-  const forwarded = request.headers?.get?.('x-forwarded-for') || request.headers?.['x-forwarded-for'];
-  const real = request.headers?.get?.('x-real-ip') || request.headers?.['x-real-ip'];
-  const ip = request.ip || 'unknown';
-  
   if (forwarded) {
     return forwarded.split(',')[0].trim();
   }
-  if (real) {
-    return real;
+  if (realIp) {
+    return realIp;
   }
-  return ip;
+
+  // Fallback to connection IP
+  return request.ip || 'unknown';
 }
 
-export function clearRateLimit(identifier: string): void {
-  delete rateLimitStore[identifier];
-}
-
-// Cleanup function to remove old entries
-export function cleanupRateLimit(): void {
+export function checkRateLimit(
+  clientId: string,
+  action: keyof typeof RATE_LIMIT_CONFIGS
+): { allowed: boolean; remainingAttempts: number; resetTime: number; blockedUntil?: number } {
+  const config = RATE_LIMIT_CONFIGS[action];
   const now = Date.now();
-  
-  Object.keys(rateLimitStore).forEach(key => {
-    const entry = rateLimitStore[key];
-    if (now > entry.resetTime && !entry.blocked) {
-      delete rateLimitStore[key];
-    }
-  });
+  const key = `${action}:${clientId}`;
+
+  let record = rateLimitStore.get(key);
+
+  // Clean up old records
+  if (record && now - record.lastAttempt > config.windowMs && (!record.blockUntil || now > record.blockUntil)) {
+    record = undefined;
+    rateLimitStore.delete(key);
+  }
+
+  // Check if currently blocked
+  if (record?.blockUntil && now < record.blockUntil) {
+    return {
+      allowed: false,
+      remainingAttempts: 0,
+      resetTime: record.blockUntil,
+      blockedUntil: record.blockUntil
+    };
+  }
+
+  // Initialize or reset if window expired
+  if (!record) {
+    record = { attempts: 0, lastAttempt: now };
+    rateLimitStore.set(key, record);
+  }
+
+  const remainingAttempts = Math.max(0, config.maxAttempts - record.attempts);
+
+  if (remainingAttempts <= 0) {
+    // Block the client
+    record.blockUntil = now + config.blockDurationMs;
+    rateLimitStore.set(key, record);
+
+    return {
+      allowed: false,
+      remainingAttempts: 0,
+      resetTime: record.blockUntil,
+      blockedUntil: record.blockUntil
+    };
+  }
+
+  return {
+    allowed: true,
+    remainingAttempts,
+    resetTime: now + config.windowMs
+  };
 }
 
-// Run cleanup every 5 minutes
-if (typeof setInterval !== 'undefined') {
-  setInterval(cleanupRateLimit, 5 * 60 * 1000);
+export function recordAttempt(
+  clientId: string,
+  action: keyof typeof RATE_LIMIT_CONFIGS,
+  success: boolean = false
+): void {
+  const key = `${action}:${clientId}`;
+  const now = Date.now();
+
+  let record = rateLimitStore.get(key);
+
+  if (!record) {
+    record = { attempts: 0, lastAttempt: now };
+  }
+
+  // If successful login, reset attempts
+  if (success && action === 'login') {
+    rateLimitStore.delete(key);
+    return;
+  }
+
+  // Increment attempts for failed attempts
+  record.attempts++;
+  record.lastAttempt = now;
+
+  rateLimitStore.set(key, record);
+}
+
+// Clean up old entries periodically (simple cleanup)
+setInterval(() => {
+  const now = Date.now();
+  const maxAge = 60 * 60 * 1000; // 1 hour
+
+  for (const [key, record] of rateLimitStore.entries()) {
+    if (now - record.lastAttempt > maxAge && (!record.blockUntil || now > record.blockUntil)) {
+      rateLimitStore.delete(key);
+    }
+  }
+}, 10 * 60 * 1000); // Clean every 10 minutes
+
+export function getRateLimitHeaders(
+  remainingAttempts: number,
+  resetTime: number,
+  blockedUntil?: number
+): Record<string, string> {
+  const headers: Record<string, string> = {
+    'X-RateLimit-Remaining': remainingAttempts.toString(),
+    'X-RateLimit-Reset': Math.ceil(resetTime / 1000).toString()
+  };
+
+  if (blockedUntil) {
+    headers['Retry-After'] = Math.ceil((blockedUntil - Date.now()) / 1000).toString();
+  }
+
+  return headers;
 }

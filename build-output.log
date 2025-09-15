@@ -1,0 +1,110 @@
+
+> fisherbackflows@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.2
+   - Environments: .env.local, .env.production
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (108kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ⚠ Compiled with warnings in 85s
+
+./src/app/api/team/employees/route.ts
+Attempted import error: 'NextResponse' is not exported from 'next/headers' (imported as 'NextResponse').
+
+Import trace for requested module:
+./src/app/api/team/employees/route.ts
+
+./src/app/api/team/employees/route.ts
+Attempted import error: 'NextResponse' is not exported from 'next/headers' (imported as 'NextResponse').
+
+Import trace for requested module:
+./src/app/api/team/employees/route.ts
+
+./src/app/api/team/employees/route.ts
+Attempted import error: 'NextResponse' is not exported from 'next/headers' (imported as 'NextResponse').
+
+Import trace for requested module:
+./src/app/api/team/employees/route.ts
+
+./src/app/api/team/employees/route.ts
+Attempted import error: 'NextResponse' is not exported from 'next/headers' (imported as 'NextResponse').
+
+Import trace for requested module:
+./src/app/api/team/employees/route.ts
+
+./src/app/api/team/employees/route.ts
+Attempted import error: 'NextResponse' is not exported from 'next/headers' (imported as 'NextResponse').
+
+Import trace for requested module:
+./src/app/api/team/employees/route.ts
+
+./src/app/api/team/employees/route.ts
+Attempted import error: 'NextResponse' is not exported from 'next/headers' (imported as 'NextResponse').
+
+Import trace for requested module:
+./src/app/api/team/employees/route.ts
+
+./src/app/api/team/employees/route.ts
+Attempted import error: 'NextResponse' is not exported from 'next/headers' (imported as 'NextResponse').
+
+Import trace for requested module:
+./src/app/api/team/employees/route.ts
+
+./src/app/api/team/employees/route.ts
+Attempted import error: 'NextResponse' is not exported from 'next/headers' (imported as 'NextResponse').
+
+Import trace for requested module:
+./src/app/api/team/employees/route.ts
+
+./src/app/api/v1/customers/route.ts
+Attempted import error: 'requireSession' is not exported from '@/lib/auth/requireSession' (imported as 'requireSession').
+
+Import trace for requested module:
+./src/app/api/v1/customers/route.ts
+
+./src/app/api/v1/customers/route.ts
+Attempted import error: 'requireSession' is not exported from '@/lib/auth/requireSession' (imported as 'requireSession').
+
+Import trace for requested module:
+./src/app/api/v1/customers/route.ts
+
+./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+A Node.js API is used (process.versions at line: 35) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+./node_modules/@supabase/realtime-js/dist/module/index.js
+./node_modules/@supabase/supabase-js/dist/module/index.js
+
+./node_modules/@supabase/supabase-js/dist/module/index.js
+A Node.js API is used (process.version at line: 24) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/@supabase/supabase-js/dist/module/index.js
+
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+[Upstash QStash] client token is not set. Either pass a token or set QSTASH_TOKEN env variable.
+[Upstash QStash] client token is not set. Either pass a token or set QSTASH_TOKEN env variable.
+   Generating static pages (0/284) ...
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+   Generating static pages (71/284) 
+   Generating static pages (142/284) 
+[Upstash QStash] client token is not set. Either pass a token or set QSTASH_TOKEN env variable.
+[Upstash QStash] client token is not set. Either pass a token or set QSTASH_TOKEN env variable.
+⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217
+   Generating static pages (213/284) 
+ ✓ Generating static pages (284/284)

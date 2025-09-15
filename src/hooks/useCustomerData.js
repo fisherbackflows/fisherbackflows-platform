@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { createClientComponentClient } from '@/lib/supabase';
 
 export function useCustomerData() {
   const [customer, setCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   useEffect(() => {
     const supabase = createClientComponentClient();
     
@@ -20,24 +20,42 @@ export function useCustomerData() {
           return;
         }
         
-        // Get customer record
+        // Get customer record with devices in single optimized query
         const { data: customerData, error: customerError } = await supabase
           .from('customers')
-          .select('*')
+          .select(`
+            id,
+            first_name,
+            last_name,
+            email,
+            account_number,
+            phone,
+            account_status,
+            balance,
+            devices:devices(
+              id,
+              location,
+              make,
+              model,
+              size,
+              status,
+              serial_number,
+              last_test_date,
+              next_test_date,
+              days_until_test
+            )
+          `)
           .eq('auth_user_id', user.id)
           .single();
-          
+
         if (customerError || !customerData) {
           setError('Unable to load customer data');
           setLoading(false);
           return;
         }
-        
-        // Get customer's devices
-        const { data: devices, error: devicesError } = await supabase
-          .from('devices')
-          .select('*')
-          .eq('customer_id', customerData.id);
+
+        // Devices are now included in the main query
+        const devices = customerData.devices;
           
         // Format customer data
         const formattedCustomer = {

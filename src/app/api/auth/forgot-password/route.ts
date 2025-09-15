@@ -1,8 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@/lib/supabase';
+import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 
 export async function POST(request: NextRequest) {
   try {
+    // SECURITY: Rate limiting for password reset attempts
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = checkRateLimit(clientId, 'passwordReset');
+
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        {
+          error: 'Too many password reset attempts. Please try again later.',
+          retryAfter: rateLimitResult.retryAfter
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '900',
+          }
+        }
+      );
+    }
+
     const { identifier, type } = await request.json();
     
     if (!identifier || !type) {
@@ -24,7 +44,10 @@ export async function POST(request: NextRequest) {
         console.error('Password reset email error:', error);
         // Don't reveal if user exists - always return success for security
       }
-      
+
+      // Record successful password reset attempt
+      recordAttempt(clientId, true, 'passwordReset');
+
       return NextResponse.json({
         success: true,
         message: 'If an account exists with that email, you will receive reset instructions.'
@@ -59,7 +82,10 @@ export async function POST(request: NextRequest) {
       if (error) {
         console.error('Password reset for phone lookup error:', error);
       }
-      
+
+      // Record successful password reset attempt
+      recordAttempt(clientId, true, 'passwordReset');
+
       return NextResponse.json({
         success: true,
         message: 'If an account exists with that phone number, reset instructions have been sent to your associated email.'
@@ -73,6 +99,11 @@ export async function POST(request: NextRequest) {
     
   } catch (error) {
     console.error('Password reset error:', error);
+
+    // Record failed attempt
+    const clientId = getClientIdentifier(request);
+    recordAttempt(clientId, false, 'passwordReset');
+
     return NextResponse.json(
       { error: 'Failed to process reset request' },
       { status: 500 }

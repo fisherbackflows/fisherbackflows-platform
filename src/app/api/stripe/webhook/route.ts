@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { supabaseAdmin } from '@/lib/supabase';
+// LEGITIMATE SERVICE ROLE USAGE: This operation requires elevated privileges
+// Reason: System webhook with no user context
 import { sendEmail, emailTemplates } from '@/lib/email';
 import { logger } from '@/lib/logger';
 import StripeService, { StripeWebhookHandler } from '@/lib/stripe';

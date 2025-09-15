@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
 
 // Lazy load Stripe to avoid build-time environment variable issues
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     // Get subscription from database
     const { data: subscription, error } = await supabase
@@ -98,7 +98,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       update_payment_method = false
     } = body;
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     // Get current subscription
     const { data: subscription, error: fetchError } = await supabase
@@ -242,7 +242,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     const { searchParams } = new URL(request.url);
     const cancelImmediately = searchParams.get('immediate') === 'true';
 
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     // Get subscription
     const { data: subscription, error: fetchError } = await supabase

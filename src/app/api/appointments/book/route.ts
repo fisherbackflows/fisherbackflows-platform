@@ -1,12 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient, supabaseAdmin } from '@/lib/supabase';
+import { createRouteHandlerClient } from '@/lib/supabase';
 import { sendEmail, emailTemplates } from '@/lib/email';
 import { cache, CacheKeys } from '@/lib/cache';
+import { verifyCustomerAccess } from '@/lib/auth-helpers';
+import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 
 export async function POST(request: NextRequest) {
   try {
+    // SECURITY: Rate limiting for appointment booking
+    const clientId = getClientIdentifier(request);
+    const rateLimitResult = checkRateLimit(clientId, 'register'); // Reuse register limits
+
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        {
+          error: 'Too many booking attempts. Please try again later.',
+          retryAfter: rateLimitResult.retryAfter
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': rateLimitResult.retryAfter?.toString() || '3600',
+          }
+        }
+      );
+    }
+
     const body = await request.json();
     const { customerId, deviceId, date, time, serviceType, notes } = body;
+
+    // SECURITY: Authenticate user and verify access to customer ID
+    const authResult = await verifyCustomerAccess(request, customerId);
+    if (!authResult.success) {
+      recordAttempt(clientId, false, 'register');
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.statusCode || 401 }
+      );
+    }
     
     // Validate required fields
     if (!customerId || !date || !time) {
@@ -44,7 +75,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const supabase = supabaseAdmin || createRouteHandlerClient(request);
+    const supabase = createRouteHandlerClient(request);
     
     // First, check if the time slot is still available
     const { data: existingAppointments, error: checkError } = await supabase
@@ -210,8 +241,11 @@ export async function POST(request: NextRequest) {
     // Invalidate cache for this date
     cache.delete(CacheKeys.availableTimes(date));
     cache.delete(CacheKeys.availableDates());
-    
-    const successMessage = assignedTechnicianId 
+
+    // Record successful booking
+    recordAttempt(clientId, true, 'register');
+
+    const successMessage = assignedTechnicianId
       ? `Appointment booked successfully with technician ${assignedTechnicianName} and confirmation email sent`
       : 'Appointment booked successfully (no available technician assigned) and confirmation email sent';
 
@@ -224,9 +258,14 @@ export async function POST(request: NextRequest) {
       } : null,
       message: successMessage
     });
-    
+
   } catch (error) {
     console.error('Booking API error:', error);
+
+    // Record failed booking attempt
+    const clientId = getClientIdentifier(request);
+    recordAttempt(clientId, false, 'register');
+
     return NextResponse.json(
       { error: 'Server error' },
       { status: 500 }

@@ -1,17 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { createRouteHandlerClient } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const location = searchParams.get('location')
     const service_area = searchParams.get('service_area')
-    
+
+    // Create client that respects RLS
+    const supabase = createRouteHandlerClient(request)
+
     // Get companies with their branding information
     const query = supabase
       .from('companies')
