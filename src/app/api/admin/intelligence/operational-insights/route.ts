@@ -66,21 +66,21 @@ export async function GET(request: NextRequest) {
       realTimeMetrics: {
         appointments: {
           total: appointmentData.data?.length || 0,
-          completed: appointmentData.data?.filter(apt => apt.status === 'completed').length || 0,
+          completed: appointmentData.data?.filter((apt: any) => apt.status === 'completed').length || 0,
           avgDuration: calculateAverageAppointmentDuration(appointmentData.data || []),
           onTimeRate: calculateOnTimeRate(appointmentData.data || [])
         },
         revenue: {
-          total: revenueData.data?.reduce((sum, inv) => sum + parseFloat(inv.total_amount || '0'), 0) || 0,
+          total: revenueData.data?.reduce((sum: number, inv: any) => sum + parseFloat(inv.total_amount || '0'), 0) || 0,
           invoiceCount: revenueData.data?.length || 0,
-          paidInvoices: revenueData.data?.filter(inv => inv.status === 'paid').length || 0,
-          averageInvoiceValue: revenueData.data?.length 
-            ? (revenueData.data.reduce((sum, inv) => sum + parseFloat(inv.total_amount || '0'), 0) / revenueData.data.length)
+          paidInvoices: revenueData.data?.filter((inv: any) => inv.status === 'paid').length || 0,
+          averageInvoiceValue: revenueData.data?.length
+            ? (revenueData.data.reduce((sum: number, inv: any) => sum + parseFloat(inv.total_amount || '0'), 0) / revenueData.data.length)
             : 0
         },
         customers: {
           newCustomers: customerData.data?.length || 0,
-          activeCustomers: customerData.data?.filter(cust => cust.status === 'active').length || 0,
+          activeCustomers: customerData.data?.filter((cust: any) => cust.status === 'active').length || 0,
           acquisitionRate: calculateCustomerAcquisitionRate(customerData.data || [], timeframeDays)
         }
       }
