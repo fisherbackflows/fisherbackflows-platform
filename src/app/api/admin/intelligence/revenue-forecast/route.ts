@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
         period,
         scenario,
         adjustments,
-        projectedRevenue: customForecast.projectedRevenue,
+        projectedRevenue: customForecast.predictedRevenue,
         confidence: customForecast.confidence,
         generatedBy: session.user.id
       },
