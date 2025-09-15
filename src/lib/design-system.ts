@@ -214,6 +214,7 @@ export const animations = {
   glow: {
     blue: 'shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30',
     green: 'shadow-lg shadow-green-500/20 hover:shadow-xl hover:shadow-green-500/30',
+    emerald: 'shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30',
     yellow: 'shadow-lg shadow-yellow-500/20 hover:shadow-xl hover:shadow-yellow-500/30',
     red: 'shadow-lg shadow-red-500/20 hover:shadow-xl hover:shadow-red-500/30',
     white: 'shadow-lg shadow-white/10 hover:shadow-xl hover:shadow-white/20',

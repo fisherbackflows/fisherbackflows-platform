@@ -8,7 +8,7 @@
     "build": "next build",
     "build-turbo": "next build --turbopack",
     "start": "next start -H 0.0.0.0 -p 3010",
-    "lint": "eslint src/app/owner src/app/portal/page.tsx src/components/auth/LoginForm.tsx src/components/ui/Logo.tsx --fix",
+    "lint": "eslint src --fix",
     "type-check": "tsc -p tsconfig.ci.json --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

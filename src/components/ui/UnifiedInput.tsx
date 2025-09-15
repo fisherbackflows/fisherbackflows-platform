@@ -40,8 +40,8 @@ export default function UnifiedInput({
     variantClass,
     sizeClass,
     transitionClass,
-    icon && iconPosition === 'left' && 'pl-10',
-    icon && iconPosition === 'right' && 'pr-10',
+    icon && iconPosition === 'left' ? 'pl-10' : '',
+    icon && iconPosition === 'right' ? 'pr-10' : '',
     className
   );
 

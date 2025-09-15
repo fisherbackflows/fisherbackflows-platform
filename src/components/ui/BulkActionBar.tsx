@@ -61,9 +61,10 @@ export function BulkActionBar({
       setExecutingAction(action.id);
       await action.action(selectedItems);
       onClearSelection(); // Clear selection after successful action
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(`Bulk action ${action.id} failed:`, error);
-      alert(`Failed to ${action.label.toLowerCase()}: ${error.message || 'Unknown error'}`);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      alert(`Failed to ${action.label.toLowerCase()}: ${errorMessage}`);
     } finally {
       setExecutingAction(null);
       setShowConfirmation(null);

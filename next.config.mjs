@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // typescript: {
+  //   ignoreBuildErrors: true, // REMOVED - Now fails on type errors
+  // },
+  // eslint: {
+  //   ignoreDuringBuilds: true, // REMOVED - Now fails on lint errors
+  // },
   // Bundle optimization (swcMinify is enabled by default in Next.js 15)
   experimental: {
     optimizePackageImports: [

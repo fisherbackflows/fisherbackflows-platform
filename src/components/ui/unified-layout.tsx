@@ -111,13 +111,20 @@ export function UnifiedCard({
   );
 }
 
-export function UnifiedButton({ 
-  children, 
+interface UnifiedButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'success' | 'outline' | 'ghost';
+  size?: 'sm' | 'default' | 'lg';
+  className?: string;
+}
+
+export function UnifiedButton({
+  children,
   variant = 'primary',
   size = 'default',
   className = '',
   ...props
-}: any) {
+}: UnifiedButtonProps) {
   const baseClasses = "rounded-lg transition-all font-medium";
   
   const variants = {
