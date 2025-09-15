@@ -18,6 +18,11 @@ export const RATE_LIMIT_CONFIGS = {
     maxAttempts: 3,
     windowMs: 60 * 60 * 1000, // 1 hour
     blockDurationMs: 60 * 60 * 1000, // 1 hour
+  },
+  ADMIN_BYPASS: {
+    maxAttempts: 3,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    blockDurationMs: 60 * 60 * 1000, // 1 hour
   }
 } as const;
 
