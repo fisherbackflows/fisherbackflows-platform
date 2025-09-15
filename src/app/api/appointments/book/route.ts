@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
 import { createRouteHandlerClient } from '@/lib/supabase';
 import { sendEmail, emailTemplates } from '@/lib/email';
 import { cache, CacheKeys } from '@/lib/cache';

@@ -132,8 +132,9 @@ export async function GET(request: NextRequest) {
         scheduled_date,
         customer:customers (
           id,
-          name,
-          address,
+          first_name,
+          last_name,
+          address_line1,
           city,
           state,
           zip_code
@@ -149,13 +150,13 @@ export async function GET(request: NextRequest) {
     }
 
     // Convert appointments to suggested locations
-    const suggestedLocations: Location[] = (appointments || []).map(appointment => ({
+    const suggestedLocations: Location[] = (appointments || []).map((appointment: any) => ({
       id: appointment.id,
-      name: appointment.customer?.name || 'Unknown Customer',
-      address: `${appointment.customer?.address || ''} ${appointment.customer?.city || ''} ${appointment.customer?.state || ''} ${appointment.customer?.zip_code || ''}`.trim(),
+      name: appointment.customer ? `${appointment.customer.first_name || ''} ${appointment.customer.last_name || ''}`.trim() || 'Unknown Customer' : 'Unknown Customer',
+      address: `${appointment.customer?.address_line1 || ''} ${appointment.customer?.city || ''} ${appointment.customer?.state || ''} ${appointment.customer?.zip_code || ''}`.trim(),
       latitude: 47.2529 + (Math.random() - 0.5) * 0.1, // Mock coordinates - would use geocoding
       longitude: -122.4443 + (Math.random() - 0.5) * 0.1,
-      priority: 'medium',
+      priority: 'medium' as const,
       estimatedServiceTime: 60, // Default 1 hour
       timeWindow: {
         start: '08:00',
