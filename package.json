@@ -35,7 +35,9 @@
     "ai:install-schema": "node scripts/install-ai-schema.js",
     "ai:test": "node scripts/test-ai-features.js",
     "ai:verify-data": "node scripts/verify-real-data.js",
-    "ai:setup": "npm run ai:install-schema && npm run ai:test && npm run ai:verify-data"
+    "ai:setup": "npm run ai:install-schema && npm run ai:test && npm run ai:verify-data",
+    "analyze": "ANALYZE=true npm run build",
+    "build:analyze": "npm run analyze"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -83,6 +85,7 @@
     "@babel/preset-env": "^7.23.8",
     "@babel/preset-typescript": "^7.23.3",
     "@eslint/eslintrc": "^3",
+    "@next/bundle-analyzer": "^15.5.3",
     "@playwright/test": "^1.40.1",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
