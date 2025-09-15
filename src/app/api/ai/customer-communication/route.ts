@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || !['admin', 'manager', 'coordinator'].includes(teamUser.role)) {
+    if (!teamUser || !['admin', 'manager', 'coordinator'].includes((teamUser as any).role)) {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
     }
 
@@ -175,7 +175,7 @@ export async function GET(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || !['admin', 'manager', 'coordinator'].includes(teamUser.role)) {
+    if (!teamUser || !['admin', 'manager', 'coordinator'].includes((teamUser as any).role)) {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 });
     }
 
