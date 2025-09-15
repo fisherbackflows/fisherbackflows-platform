@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Failed to export audit logs:', error);
     return NextResponse.json(
-      { error: 'Failed to export audit logs', details: error.message },
+      { error: 'Failed to export audit logs', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
