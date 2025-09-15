@@ -226,7 +226,7 @@ function calculateAverageTestTime(testReports: Array<{ test_duration?: number }>
   const testsWithDuration = testReports.filter(r => r.test_duration && r.test_duration > 0)
   if (testsWithDuration.length === 0) return 18.5
   
-  const totalTime = testsWithDuration.reduce((sum, r) => sum + r.test_duration, 0)
+  const totalTime = testsWithDuration.reduce((sum, r) => sum + (r.test_duration || 0), 0)
   return Math.round(totalTime / testsWithDuration.length * 10) / 10
 }
 
