@@ -208,9 +208,9 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * GET /api/auth/unified/session/all - Get all active sessions for user
+ * DELETE - Terminate other sessions (logout from other devices)
  */
-export async function getAllSessions(request: NextRequest) {
+export async function DELETE(request: NextRequest) {
   const requestId = crypto.randomUUID();
 
   try {
