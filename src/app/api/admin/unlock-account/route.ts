@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from('team_users')
       .update({
         failed_login_attempts: 0,
@@ -110,7 +110,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await (supabaseAdmin as any)
       .from('team_users')
       .select('email, failed_login_attempts, account_locked_until, last_failed_login, is_active')
       .eq('email', email.toLowerCase().trim())

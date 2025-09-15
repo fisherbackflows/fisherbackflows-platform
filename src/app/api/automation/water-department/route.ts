@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+export const runtime = 'nodejs';
 import { createRouteHandlerClient } from '@/lib/supabase';
 
 // Water Department configurations
