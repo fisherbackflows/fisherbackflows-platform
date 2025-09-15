@@ -351,9 +351,9 @@ export async function POST(request: NextRequest) {
 
     // Process the created lead
     const processedLead = {
-      ...lead,
-      lead_type: categorizeLeadType(lead),
-      priority_score: calculatePriorityScore(lead)
+      ...(lead as any),
+      lead_type: categorizeLeadType(lead as any),
+      priority_score: calculatePriorityScore(lead as any)
     };
 
     console.log('✅ Lead created successfully:', processedLead.id);
