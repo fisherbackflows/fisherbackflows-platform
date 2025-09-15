@@ -72,7 +72,7 @@ async function fallbackRLSCheck(supabase: any) {
           table_name: tableName,
           rls_enabled: rlsData?.relrowsecurity || false,
           policy_count: policyData?.length || 0,
-          policies: policyData?.map(p => p.policyname) || []
+          policies: policyData?.map((p: any) => p.policyname) || []
         });
 
       } catch (error) {
