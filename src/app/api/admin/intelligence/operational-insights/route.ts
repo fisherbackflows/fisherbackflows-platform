@@ -87,7 +87,7 @@ export async function GET(request: NextRequest) {
     };
 
     if (includeRecommendations) {
-      enhancedInsights.actionableRecommendations = generateOperationalRecommendations(enhancedInsights);
+      (enhancedInsights as any).actionableRecommendations = generateOperationalRecommendations(enhancedInsights);
     }
 
     return NextResponse.json(enhancedInsights);
