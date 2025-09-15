@@ -41,7 +41,7 @@ const SERVICE_RATES = {
 };
 
 // Auto-generate invoices for completed tests
-export async function createAutoInvoice(customerId: string, serviceType: string, deviceSize: string, notes?: string, testReportId?: string, appointmentId?: string, supabaseClient?: any) {
+async function createAutoInvoice(customerId: string, serviceType: string, deviceSize: string, notes?: string, testReportId?: string, appointmentId?: string, supabaseClient?: any) {
   try {
     const supabase = supabaseClient || createRouteHandlerClient(new Request('http://localhost'));
     
