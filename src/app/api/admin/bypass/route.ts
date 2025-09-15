@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     }
     // SECURITY: Rate limiting for admin bypass attempts
     const clientId = getClientIdentifier(request);
-    const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.ADMIN_BYPASS);
+    const rateLimitResult = checkRateLimit(clientId, 'ADMIN_BYPASS');
     
     if (!rateLimitResult.allowed) {
       return NextResponse.json(
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
       const validatedInput = validateInput(adminBypassSchema)(body);
       const { code } = validatedInput;
     } catch (error) {
-      recordAttempt(clientId, false, RATE_LIMIT_CONFIGS.ADMIN_BYPASS);
+      recordAttempt(clientId, 'ADMIN_BYPASS', false);
       return NextResponse.json(
         { error: 'Invalid input format' },
         { status: 400 }
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     // Verify the bypass code
     if (code !== ADMIN_BYPASS_CODE) {
       // SECURITY: Record failed bypass attempt
-      recordAttempt(clientId, false, RATE_LIMIT_CONFIGS.ADMIN_BYPASS);
+      recordAttempt(clientId, 'ADMIN_BYPASS', false);
       
       return NextResponse.json(
         { error: 'Invalid access code' },
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
     
     // SECURITY: Record successful bypass
-    recordAttempt(clientId, true, RATE_LIMIT_CONFIGS.ADMIN_BYPASS);
+    recordAttempt(clientId, 'ADMIN_BYPASS', true);
 
     // Set admin bypass cookie
     const cookieStore = await cookies();
