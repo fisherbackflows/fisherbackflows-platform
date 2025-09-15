@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     const appointments = appointmentsResponse.count || 0;
     
     // Calculate total revenue from invoices
-    const revenue = invoicesResponse.data?.reduce((sum, invoice) => sum + (invoice.amount || 0), 0) || 0;
+    const revenue = invoicesResponse.data?.reduce((sum: number, invoice: any) => sum + (invoice.amount || 0), 0) || 0;
 
     // Get recent appointments with customer names
     const { data: recentAppointments } = await supabase
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
       .order('created_at', { ascending: false })
       .limit(5);
 
-    const formattedAppointments = recentAppointments?.map(apt => ({
+    const formattedAppointments = recentAppointments?.map((apt: any) => ({
       id: apt.id,
       customer_name: apt.customers ? `${apt.customers.first_name} ${apt.customers.last_name}` : 'Unknown',
       scheduled_date: new Date(apt.scheduled_date).toLocaleDateString(),
