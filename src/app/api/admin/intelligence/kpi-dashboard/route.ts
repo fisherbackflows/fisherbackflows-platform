@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { PredictiveAnalyticsEngine } from '@/lib/ai/predictive-engine';
 
+export const runtime = 'nodejs';
+
 export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
@@ -128,8 +130,11 @@ export async function GET(request: NextRequest) {
       trends,
       aiInsights: {
         alerts: extractAlerts(kpis),
-        opportunities: aiInsights.businessOpportunities?.slice(0, 3) || [],
-        predictions: aiInsights.predictions || {}
+        insights: {
+          efficiency: aiInsights.efficiency,
+          growth: aiInsights.growth,
+          risks: aiInsights.risks
+        }
       },
       performance: {
         score: calculateOverallPerformanceScore(kpis),
