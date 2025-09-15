@@ -337,7 +337,7 @@ export async function POST(request: NextRequest) {
         estimated_value: body.estimated_value || 0,
         notes: body.notes,
         assigned_to: body.assigned_to || 'Unassigned'
-      }])
+      }] as any)
       .select()
       .single();
 
