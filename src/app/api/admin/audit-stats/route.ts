@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Failed to get audit stats:', error);
     return NextResponse.json(
-      { error: 'Failed to get audit stats', details: error.message },
+      { error: 'Failed to get audit stats', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
