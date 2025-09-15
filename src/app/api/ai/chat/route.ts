@@ -163,7 +163,7 @@ async function generateChatResponse(
       };
     }
   } catch (error) {
-    console.log('AI service unavailable, using structured responses:', error.message);
+    console.log('AI service unavailable, using structured responses:', error instanceof Error ? error.message : 'Unknown error');
   }
 
   // Fallback to structured responses with real customer data if available
