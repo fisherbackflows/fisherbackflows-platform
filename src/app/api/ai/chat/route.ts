@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
 
     // Store chat history for context (optional)
     if (customerId) {
-      await supabase.from('chat_history').insert({
+      await (supabase as any).from('chat_history').insert({
         customer_id: customerId,
         message,
         response: chatResponse.message,
