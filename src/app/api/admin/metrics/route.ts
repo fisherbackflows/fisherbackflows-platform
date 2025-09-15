@@ -56,13 +56,13 @@ export async function GET(request: NextRequest) {
 
     // Calculate customer metrics
     const totalCustomers = customers?.length || 0
-    const activeCustomers = customers?.filter(c => c.status === 'active').length || 0
+    const activeCustomers = customers?.filter((c: any) => c.status === 'active').length || 0
     
     // Customers needing service (next test due within 30 days or overdue)
     const thirtyDaysFromNow = new Date()
     thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30)
     
-    const customersNeedingService = customers?.filter(customer => {
+    const customersNeedingService = customers?.filter((customer: any) => {
       const customerWithDevices = customer as { devices?: Array<{ next_test_due?: string }> };
       return customerWithDevices.devices?.some(device => {
         if (!device.next_test_due) return false
@@ -81,9 +81,9 @@ export async function GET(request: NextRequest) {
       console.error('Error fetching appointments:', appointmentError)
     }
 
-    const scheduledAppointments = appointments?.filter(a => a.status === 'scheduled').length || 0
-    const completedAppointments = appointments?.filter(a => a.status === 'completed').length || 0
-    const pendingAppointments = appointments?.filter(a => a.status === 'confirmed' || a.status === 'pending').length || 0
+    const scheduledAppointments = appointments?.filter((a: any) => a.status === 'scheduled').length || 0
+    const completedAppointments = appointments?.filter((a: any) => a.status === 'completed').length || 0
+    const pendingAppointments = appointments?.filter((a: any) => a.status === 'confirmed' || a.status === 'pending').length || 0
 
     // Get financial metrics
     const { data: invoices, error: invoiceError } = await supabase
@@ -99,8 +99,8 @@ export async function GET(request: NextRequest) {
       return invoice.status === 'paid' ? total + (invoice.amount || 0) : total
     }, 0) || 0
 
-    const pendingInvoices = invoices?.filter(i => i.status === 'pending' || i.status === 'sent').length || 0
-    const overdueInvoices = invoices?.filter(i => {
+    const pendingInvoices = invoices?.filter((i: any) => i.status === 'pending' || i.status === 'sent').length || 0
+    const overdueInvoices = invoices?.filter((i: any) => {
       if (i.status !== 'pending' && i.status !== 'sent') return false
       const invoiceDate = new Date(i.created_at)
       const thirtyDaysAgo = new Date()
@@ -119,8 +119,8 @@ export async function GET(request: NextRequest) {
     }
 
     const totalTests = testReports?.length || 0
-    const passedTests = testReports?.filter(t => t.test_result === 'Passed').length || 0
-    const failedTests = testReports?.filter(t => t.test_result === 'Failed').length || 0
+    const passedTests = testReports?.filter((t: any) => t.test_result === 'Passed').length || 0
+    const failedTests = testReports?.filter((t: any) => t.test_result === 'Failed').length || 0
 
     // Calculate system health metrics
     const systemHealth = {
