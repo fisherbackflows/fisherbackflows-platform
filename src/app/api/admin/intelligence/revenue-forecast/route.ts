@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
       response = {
         ...forecast,
         additionalScenarios: forecast.scenarios
-      };
+      } as any;
     }
 
     return NextResponse.json(response);
