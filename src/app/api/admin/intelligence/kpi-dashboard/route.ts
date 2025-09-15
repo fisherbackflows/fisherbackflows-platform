@@ -81,16 +81,16 @@ export async function GET(request: NextRequest) {
       // Appointment KPIs
       appointments: {
         total: appointmentData.data?.length || 0,
-        completed: appointmentData.data?.filter(apt => apt.status === 'completed').length || 0,
-        scheduled: appointmentData.data?.filter(apt => apt.status === 'scheduled').length || 0,
-        cancelled: appointmentData.data?.filter(apt => apt.status === 'cancelled').length || 0,
+        completed: appointmentData.data?.filter((apt: any) => apt.status === 'completed').length || 0,
+        scheduled: appointmentData.data?.filter((apt: any) => apt.status === 'scheduled').length || 0,
+        cancelled: appointmentData.data?.filter((apt: any) => apt.status === 'cancelled').length || 0,
         completionRate: calculateCompletionRate(appointmentData.data || [])
       },
-      
+
       // Customer KPIs
       customers: {
         total: customerData.data?.length || 0,
-        active: customerData.data?.filter(cust => cust.status === 'active').length || 0,
+        active: customerData.data?.filter((cust: any) => cust.status === 'active').length || 0,
         newCustomers: customerData.data?.length || 0,
         retention: calculateCustomerRetention(customerData.data || []),
         averageLifetime: calculateCustomerLifetime(customerData.data || [])
@@ -106,7 +106,7 @@ export async function GET(request: NextRequest) {
       
       // Operational KPIs
       operations: {
-        techniciansActive: techniciansData.data?.filter(tech => tech.role === 'tester').length || 0,
+        techniciansActive: techniciansData.data?.filter((tech: any) => tech.role === 'tester').length || 0,
         utilization: 85, // Placeholder - would calculate from actual schedule data
         efficiency: 92,  // Placeholder - would calculate from appointment durations
         customerSatisfaction: 4.6 // Placeholder - would come from customer feedback
