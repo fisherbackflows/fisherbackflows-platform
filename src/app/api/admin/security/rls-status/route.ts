@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: false,
       error: 'Failed to check RLS status',
-      details: error.message
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -81,7 +81,7 @@ async function fallbackRLSCheck(supabase: any) {
           rls_enabled: false,
           policy_count: 0,
           policies: [],
-          error: error.message
+          error: error instanceof Error ? error.message : 'Unknown error'
         });
       }
     }
@@ -101,7 +101,7 @@ async function fallbackRLSCheck(supabase: any) {
     return NextResponse.json({
       success: false,
       error: 'Fallback RLS check failed',
-      details: error.message
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -218,7 +218,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: false,
       error: 'RLS action failed',
-      details: error.message
+      details: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
@@ -256,7 +256,7 @@ async function testPolicies(supabase: any, tableName?: string) {
         results.push({
           test: test.name,
           passed: false,
-          error: error.message
+          error: error instanceof Error ? error.message : 'Unknown error'
         });
         continue;
       }
@@ -276,7 +276,7 @@ async function testPolicies(supabase: any, tableName?: string) {
       results.push({
         test: test.name,
         passed: false,
-        error: error.message
+        error: error instanceof Error ? error.message : 'Unknown error'
       });
     }
   }
