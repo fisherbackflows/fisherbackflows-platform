@@ -3,14 +3,15 @@ import { createRouteHandlerClient } from '@/lib/supabase';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const supabase = createRouteHandlerClient(request);
     const { data: lead, error } = await supabase
       .from('leads')
       .select('*')
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (error) {
@@ -43,7 +44,7 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createRouteHandlerClient(request);
@@ -127,7 +128,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = createRouteHandlerClient(request);

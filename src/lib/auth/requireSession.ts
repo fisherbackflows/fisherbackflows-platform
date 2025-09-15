@@ -165,3 +165,42 @@ export function hasPermission(
   const requiredLevel = ROLE_HIERARCHY[requiredRole] || 100
   return userLevel >= requiredLevel
 }
+
+/**
+ * Higher-order function for role-based access control
+ */
+export function requireSession(
+  allowedRoles: string[],
+  handler: (context: { orgId: string; userId: string; session: any }) => Promise<NextResponse>
+) {
+  return async (req: NextRequest): Promise<NextResponse> => {
+    return withAuth(req, async (session, orgId, role, requestId) => {
+      // Check if user has required role
+      if (!requireRole(role, allowedRoles)) {
+        logger.warn('Insufficient permissions', {
+          userRole: role,
+          requiredRoles: allowedRoles,
+          userId: session.user.id,
+          requestId
+        })
+
+        return NextResponse.json(
+          {
+            error: {
+              code: 'INSUFFICIENT_PERMISSIONS',
+              message: 'Insufficient permissions for this operation',
+              requestId
+            }
+          },
+          { status: 403 }
+        )
+      }
+
+      return handler({
+        orgId,
+        userId: session.user.id,
+        session
+      })
+    })
+  }
+}

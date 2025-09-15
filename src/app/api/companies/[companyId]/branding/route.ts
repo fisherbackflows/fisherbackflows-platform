@@ -10,7 +10,7 @@ const supabase = createClient(
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { companyId: string } }
+  { params }: { params: Promise<{ companyId: string }> }
 ) {
   try {
     const branding = await getCompanyBranding(params.companyId)
@@ -31,7 +31,7 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { companyId: string } }
+  { params }: { params: Promise<{ companyId: string }> }
 ) {
   try {
     // Verify team session and permissions

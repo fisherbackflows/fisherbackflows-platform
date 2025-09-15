@@ -10,7 +10,7 @@ const supabase = createClient(
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = params

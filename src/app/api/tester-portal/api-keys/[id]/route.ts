@@ -10,7 +10,7 @@ const supabase = createClient(
 // DELETE /api/tester-portal/api-keys/[id] - Delete API key
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth(['admin'])(request)
@@ -81,7 +81,7 @@ export async function DELETE(
 // PATCH /api/tester-portal/api-keys/[id] - Update API key
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await requireAuth(['admin'])(request)

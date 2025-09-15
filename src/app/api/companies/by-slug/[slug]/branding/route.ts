@@ -3,7 +3,7 @@ import { getCompanyBrandingBySlug } from '@/lib/company-branding'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const branding = await getCompanyBrandingBySlug(params.slug)

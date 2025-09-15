@@ -3,10 +3,10 @@ import { createClient } from '@supabase/supabase-js';
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const bookingId = params.id;
+    const { id: bookingId } = await params;
     
     if (!bookingId) {
       return NextResponse.json(
@@ -85,10 +85,10 @@ export async function DELETE(
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const bookingId = params.id;
+    const { id: bookingId } = await params;
     
     if (!bookingId) {
       return NextResponse.json(
