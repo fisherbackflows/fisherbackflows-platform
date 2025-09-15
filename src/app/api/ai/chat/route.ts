@@ -145,7 +145,7 @@ async function generateChatResponse(
     if (gpt5Service && typeof gpt5Service.generateBusinessInsights === 'function') {
       const aiResponse = await gpt5Service.generateBusinessInsights({
         query: `Customer support query: "${message}"`,
-        context: 'customer_service',
+        context: 'customers',
         timeframe: '30d'
       });
 
