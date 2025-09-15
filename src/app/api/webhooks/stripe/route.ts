@@ -39,6 +39,78 @@ export async function POST(request: NextRequest) {
 
   try {
     switch (event.type) {
+      // ONE-TIME PAYMENT EVENTS (for individual backflow tests)
+      case 'payment_intent.succeeded': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent
+        const customerId = paymentIntent.metadata?.customer_id
+        const appointmentId = paymentIntent.metadata?.appointment_id
+        const serviceType = paymentIntent.metadata?.service_type
+
+        if (customerId && appointmentId) {
+          // Update appointment payment status
+          await supabase
+            .from('appointments')
+            .update({
+              payment_status: 'paid',
+              payment_intent_id: paymentIntent.id,
+              amount_paid: paymentIntent.amount / 100,
+              paid_at: new Date().toISOString()
+            })
+            .eq('id', appointmentId)
+
+          // Create payment record
+          await supabase
+            .from('payments')
+            .insert({
+              customer_id: customerId,
+              appointment_id: appointmentId,
+              stripe_payment_intent_id: paymentIntent.id,
+              amount: paymentIntent.amount / 100,
+              status: 'completed',
+              service_type: serviceType || 'backflow_test',
+              payment_method: 'stripe'
+            })
+
+          console.log(`✅ One-time payment processed: $${paymentIntent.amount / 100} for appointment ${appointmentId}`)
+        }
+        break
+      }
+
+      case 'payment_intent.payment_failed': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent
+        const customerId = paymentIntent.metadata?.customer_id
+        const appointmentId = paymentIntent.metadata?.appointment_id
+
+        if (customerId && appointmentId) {
+          // Update appointment payment status
+          await supabase
+            .from('appointments')
+            .update({
+              payment_status: 'failed',
+              payment_intent_id: paymentIntent.id
+            })
+            .eq('id', appointmentId)
+
+          // Create failed payment record
+          await supabase
+            .from('payments')
+            .insert({
+              customer_id: customerId,
+              appointment_id: appointmentId,
+              stripe_payment_intent_id: paymentIntent.id,
+              amount: paymentIntent.amount / 100,
+              status: 'failed',
+              service_type: paymentIntent.metadata?.service_type || 'backflow_test',
+              payment_method: 'stripe',
+              failure_reason: paymentIntent.last_payment_error?.message || 'Payment failed'
+            })
+
+          console.log(`❌ One-time payment failed: $${paymentIntent.amount / 100} for appointment ${appointmentId}`)
+        }
+        break
+      }
+
+      // SUBSCRIPTION PAYMENT EVENTS (for testing companies)
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session
         const companyId = session.metadata?.company_id
