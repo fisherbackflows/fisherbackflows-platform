@@ -28,6 +28,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Reset the account lock
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Admin client not available' },
+        { status: 500 }
+      );
+    }
+
     const { data, error } = await supabaseAdmin
       .from('team_users')
       .update({
@@ -93,6 +100,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         { error: 'Email is required' },
         { status: 400 }
+      );
+    }
+
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Admin client not available' },
+        { status: 500 }
       );
     }
 
