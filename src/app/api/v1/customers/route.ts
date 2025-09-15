@@ -10,7 +10,7 @@ import { rateLimit } from '@/lib/redis'
  * List customers with filtering and pagination
  */
 export async function GET(req: NextRequest) {
-  return requireSession(['admin', 'manager', 'coordinator'], async ({ orgId, userId, session }) => {
+  const authHandler = requireSession(['admin', 'manager', 'coordinator'], async ({ orgId, userId, session }) => {
     const requestId = req.headers.get('x-request-id') || crypto.randomUUID()
 
     try {
@@ -86,6 +86,8 @@ export async function GET(req: NextRequest) {
       )
     }
   })
+
+  return authHandler(req)
 }
 
 /**
@@ -93,7 +95,7 @@ export async function GET(req: NextRequest) {
  * Create a new customer
  */
 export async function POST(req: NextRequest) {
-  return requireSession(['admin', 'manager', 'coordinator'], async ({ orgId, userId, session }) => {
+  const authHandler = requireSession(['admin', 'manager', 'coordinator'], async ({ orgId, userId, session }) => {
     const requestId = req.headers.get('x-request-id') || crypto.randomUUID()
 
     try {
@@ -184,4 +186,6 @@ export async function POST(req: NextRequest) {
       )
     }
   })
+
+  return authHandler(req)
 }
