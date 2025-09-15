@@ -390,9 +390,9 @@ export async function PATCH(request: NextRequest) {
     const supabase = createRouteHandlerClient(request);
     
     // Update the lead
-    const { data: lead, error } = await supabase
+    const { data: lead, error } = await (supabase as any)
       .from('leads')
-      .update(updates as any)
+      .update(updates)
       .eq('id', id)
       .select()
       .single();
