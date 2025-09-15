@@ -3,11 +3,11 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Globe, 
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Globe,
   Search,
   Filter,
   Star,
@@ -16,6 +16,7 @@ import {
   ArrowRight,
   Clock
 } from 'lucide-react'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 interface Company {
   id: string
@@ -31,7 +32,7 @@ interface Company {
   portal_url: string
 }
 
-export default function CompanyDirectoryPage() {
+function CompanyDirectoryPage() {
   const [companies, setCompanies] = useState<Company[]>([])
   const [filteredCompanies, setFilteredCompanies] = useState<Company[]>([])
   const [loading, setLoading] = useState(true)
@@ -297,5 +298,13 @@ export default function CompanyDirectoryPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function CompanyDirectoryPageWithErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <CompanyDirectoryPage />
+    </ErrorBoundary>
   )
 }

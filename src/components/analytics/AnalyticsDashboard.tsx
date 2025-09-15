@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo, useMemo, useCallback } from 'react'
 import { DollarSign, Users, Calendar, CheckCircle, TrendingUp, AlertTriangle, Lightbulb, Target } from 'lucide-react'
 import MetricsCard from './MetricsCard'
 import RevenueChart from './RevenueChart'
@@ -66,14 +66,14 @@ interface DashboardData {
   lastUpdated: string
 }
 
-export default function AnalyticsDashboard() {
+const AnalyticsDashboard = memo(function AnalyticsDashboard() {
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [timeframe, setTimeframe] = useState('30')
   const [refreshing, setRefreshing] = useState(false)
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       setRefreshing(true)
       const response = await fetch(`/api/analytics/dashboard?timeframe=${timeframe}`)
@@ -92,17 +92,17 @@ export default function AnalyticsDashboard() {
       setLoading(false)
       setRefreshing(false)
     }
-  }
+  }, [timeframe])
 
   useEffect(() => {
     fetchDashboardData()
-  }, [timeframe])
+  }, [fetchDashboardData])
 
   // Auto-refresh every 5 minutes
   useEffect(() => {
     const interval = setInterval(fetchDashboardData, 5 * 60 * 1000)
     return () => clearInterval(interval)
-  }, [])
+  }, [fetchDashboardData])
 
   if (loading && !data) {
     return <DashboardSkeleton />
@@ -346,14 +346,14 @@ export default function AnalyticsDashboard() {
       {/* Last Updated */}
       <div className="text-center">
         <p className="text-slate-500 text-sm">
-          Last updated: {new Date(data.lastUpdated).toLocaleString()}
+          Last updated: {useMemo(() => new Date(data.lastUpdated).toLocaleString(), [data.lastUpdated])}
         </p>
       </div>
     </div>
   )
-}
+})
 
-function DashboardSkeleton() {
+const DashboardSkeleton = memo(function DashboardSkeleton() {
   return (
     <div className="space-y-8 animate-pulse">
       {/* Header skeleton */}
@@ -386,4 +386,6 @@ function DashboardSkeleton() {
       </div>
     </div>
   )
-}
+});
+
+export default AnalyticsDashboard;

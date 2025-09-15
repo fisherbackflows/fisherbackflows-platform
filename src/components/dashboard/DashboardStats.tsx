@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useMemo, useCallback } from 'react';
 import {
   Users,
   UserPlus,
@@ -42,17 +42,11 @@ interface StatsData {
   };
 }
 
-export default function DashboardStats({ companyId, userRole }: DashboardStatsProps) {
+const DashboardStats = memo(function DashboardStats({ companyId, userRole }: DashboardStatsProps) {
   const [stats, setStats] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (companyId) {
-      fetchStats();
-    }
-  }, [companyId]);
-
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     try {
       const response = await fetch(`/api/team/dashboard/stats?companyId=${companyId}`);
       if (response.ok) {
@@ -64,7 +58,13 @@ export default function DashboardStats({ companyId, userRole }: DashboardStatsPr
     } finally {
       setLoading(false);
     }
-  };
+  }, [companyId]);
+
+  useEffect(() => {
+    if (companyId) {
+      fetchStats();
+    }
+  }, [companyId, fetchStats]);
 
   if (loading) {
     return (
@@ -84,7 +84,7 @@ export default function DashboardStats({ companyId, userRole }: DashboardStatsPr
     return null;
   }
 
-  const StatCard = ({
+  const StatCard = memo(function StatCard({
     title,
     value,
     subtitle,
@@ -100,17 +100,19 @@ export default function DashboardStats({ companyId, userRole }: DashboardStatsPr
     color?: 'blue' | 'green' | 'yellow' | 'purple' | 'red';
     trend?: 'up' | 'down' | 'neutral';
     progress?: number;
-  }) => {
-    const colors = {
+  }) {
+    const colors = useMemo(() => ({
       blue: 'from-blue-500 to-blue-600 text-blue-600',
       green: 'from-green-500 to-green-600 text-green-600',
       yellow: 'from-yellow-500 to-yellow-600 text-yellow-600',
       purple: 'from-purple-500 to-purple-600 text-purple-600',
       red: 'from-red-500 to-red-600 text-red-600'
-    };
+    }), []);
 
-    const TrendIcon = trend === 'up' ? ArrowUp : trend === 'down' ? ArrowDown : Minus;
-    const trendColor = trend === 'up' ? 'text-green-500' : trend === 'down' ? 'text-red-500' : 'text-slate-400';
+    const { TrendIcon, trendColor } = useMemo(() => ({
+      TrendIcon: trend === 'up' ? ArrowUp : trend === 'down' ? ArrowDown : Minus,
+      trendColor: trend === 'up' ? 'text-green-500' : trend === 'down' ? 'text-red-500' : 'text-slate-400'
+    }), [trend]);
 
     return (
       <div className="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
@@ -148,11 +150,21 @@ export default function DashboardStats({ companyId, userRole }: DashboardStatsPr
         </div>
       </div>
     );
-  };
+  });
 
-  const teamUsagePercent = Math.round((stats.teamStats.activeUsers / stats.teamStats.planLimit) * 100);
-  const testsChange = stats.activityStats.testsThisMonth - stats.activityStats.testsLastMonth;
-  const testsTrend = testsChange > 0 ? 'up' : testsChange < 0 ? 'down' : 'neutral';
+  const { teamUsagePercent, testsChange, testsTrend } = useMemo(() => {
+    if (!stats) return { teamUsagePercent: 0, testsChange: 0, testsTrend: 'neutral' as const };
+
+    const usagePercent = Math.round((stats.teamStats.activeUsers / stats.teamStats.planLimit) * 100);
+    const change = stats.activityStats.testsThisMonth - stats.activityStats.testsLastMonth;
+    const trend = change > 0 ? 'up' : change < 0 ? 'down' : 'neutral';
+
+    return {
+      teamUsagePercent: usagePercent,
+      testsChange: change,
+      testsTrend: trend
+    };
+  }, [stats]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -196,4 +208,6 @@ export default function DashboardStats({ companyId, userRole }: DashboardStatsPr
       />
     </div>
   );
-}
+});
+
+export default DashboardStats;

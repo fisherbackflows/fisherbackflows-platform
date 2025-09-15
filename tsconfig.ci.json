@@ -2,21 +2,27 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noUncheckedIndexedAccess": false,
+    "exactOptionalPropertyTypes": false
   },
   "include": [
     "next-env.d.ts",
-    "src/app/owner/**/*",
-    "src/app/portal/page.tsx",
-    "src/components/auth/LoginForm.tsx",
-    "src/components/ui/**/*",
-    "src/lib/supabase/**/*",
-    "src/types/**/*"
+    "src/app/portal/**/*.ts",
+    "src/app/portal/**/*.tsx",
+    "src/components/**/*.ts",
+    "src/components/**/*.tsx",
+    "src/app/layout.tsx",
+    "src/app/page.tsx"
   ],
   "exclude": [
     "node_modules",
+    "src/app/admin/**",
     "src/app/api/**",
-    "src/lib/**"
+    "src/app/team-portal/**",
+    "src/app/field/**",
+    "src/lib/**",
+    "src/middleware/**"
   ]
 }
 

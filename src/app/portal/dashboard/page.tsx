@@ -24,8 +24,9 @@ import {
 
 import { useCustomerData } from '@/hooks/useCustomerData';
 import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
-export default function CustomerPortalDashboard() {
+function CustomerPortalDashboard() {
   const { customer, loading, error } = useCustomerData();
 
   if (loading) {
@@ -332,4 +333,12 @@ export default function CustomerPortalDashboard() {
       </main>
     </div>
   );
+}
+
+export default function CustomerPortalDashboardWithErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <CustomerPortalDashboard />
+    </ErrorBoundary>
+  )
 }

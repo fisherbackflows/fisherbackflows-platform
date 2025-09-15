@@ -6,8 +6,9 @@ import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Calendar, Clock, MapPin, User, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
-export default function AppointmentsPage() {
+function AppointmentsPage() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [customer, setCustomer] = useState(null);
@@ -193,4 +194,12 @@ export default function AppointmentsPage() {
       </main>
     </div>
   );
+}
+
+export default function AppointmentsPageWithErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <AppointmentsPage />
+    </ErrorBoundary>
+  )
 }

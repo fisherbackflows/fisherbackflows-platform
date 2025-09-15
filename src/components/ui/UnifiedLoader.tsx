@@ -1,14 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import { cn } from '@/lib/design-system';
 
 interface UnifiedLoaderProps {
-  variant?: 'spinner' | 'dots' | 'pulse' | 'wave';
+  variant?: 'spinner' | 'dots' | 'pulse' | 'wave' | 'skeleton';
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  color?: 'blue' | 'white' | 'green' | 'yellow' | 'red';
+  color?: 'blue' | 'white' | 'green' | 'yellow' | 'red' | 'slate';
   text?: string;
   fullScreen?: boolean;
+  overlay?: boolean;
+  inline?: boolean;
   className?: string;
 }
 
@@ -25,6 +27,7 @@ const colorClasses = {
   green: 'border-green-400',
   yellow: 'border-yellow-400',
   red: 'border-red-400',
+  slate: 'border-slate-400',
 };
 
 const textColorClasses = {
@@ -33,9 +36,10 @@ const textColorClasses = {
   green: 'text-green-400',
   yellow: 'text-yellow-400',
   red: 'text-red-400',
+  slate: 'text-slate-400',
 };
 
-function SpinnerLoader({ size, color }: { size: string; color: string }) {
+const SpinnerLoader = memo(function SpinnerLoader({ size, color }: { size: string; color: string }) {
   return (
     <div
       className={cn(
@@ -45,11 +49,16 @@ function SpinnerLoader({ size, color }: { size: string; color: string }) {
       )}
     />
   );
-}
+});
 
-function DotsLoader({ size, color }: { size: string; color: string }) {
-  const dotSize = size === 'h-4 w-4' ? 'h-2 w-2' : size === 'h-6 w-6' ? 'h-3 w-3' : size === 'h-8 w-8' ? 'h-4 w-4' : 'h-6 w-6';
-  
+const DotsLoader = memo(function DotsLoader({ size, color }: { size: string; color: string }) {
+  const dotSize = useMemo(() => {
+    if (size === 'h-4 w-4') return 'h-2 w-2';
+    if (size === 'h-6 w-6') return 'h-3 w-3';
+    if (size === 'h-8 w-8') return 'h-4 w-4';
+    return 'h-6 w-6';
+  }, [size]);
+
   return (
     <div className="flex space-x-1">
       {[0, 1, 2].map((i) => (
@@ -65,9 +74,9 @@ function DotsLoader({ size, color }: { size: string; color: string }) {
       ))}
     </div>
   );
-}
+});
 
-function PulseLoader({ size, color }: { size: string; color: string }) {
+const PulseLoader = memo(function PulseLoader({ size, color }: { size: string; color: string }) {
   return (
     <div
       className={cn(
@@ -77,11 +86,16 @@ function PulseLoader({ size, color }: { size: string; color: string }) {
       )}
     />
   );
-}
+});
 
-function WaveLoader({ size, color }: { size: string; color: string }) {
-  const barHeight = size === 'h-4 w-4' ? 'h-8' : size === 'h-6 w-6' ? 'h-12' : size === 'h-8 w-8' ? 'h-16' : 'h-20';
-  
+const WaveLoader = memo(function WaveLoader({ size, color }: { size: string; color: string }) {
+  const barHeight = useMemo(() => {
+    if (size === 'h-4 w-4') return 'h-8';
+    if (size === 'h-6 w-6') return 'h-12';
+    if (size === 'h-8 w-8') return 'h-16';
+    return 'h-20';
+  }, [size]);
+
   return (
     <div className="flex items-end space-x-1">
       {[0, 1, 2, 3, 4].map((i) => (
@@ -92,7 +106,7 @@ function WaveLoader({ size, color }: { size: string; color: string }) {
             barHeight,
             color.replace('border-', 'bg-')
           )}
-          style={{ 
+          style={{
             animationDelay: `${i * 0.1}s`,
             animationDuration: '0.8s'
           }}
@@ -100,21 +114,35 @@ function WaveLoader({ size, color }: { size: string; color: string }) {
       ))}
     </div>
   );
-}
+});
 
-export default function UnifiedLoader({
+const SkeletonLoader = memo(function SkeletonLoader({ size }: { size: string }) {
+  return (
+    <div className="space-y-3">
+      <div className={cn('bg-slate-300 dark:bg-slate-700 animate-pulse rounded', size)} />
+      <div className="space-y-2">
+        <div className="h-3 bg-slate-300 dark:bg-slate-700 animate-pulse rounded w-3/4" />
+        <div className="h-3 bg-slate-300 dark:bg-slate-700 animate-pulse rounded w-1/2" />
+      </div>
+    </div>
+  );
+});
+
+const UnifiedLoader = memo(function UnifiedLoader({
   variant = 'spinner',
   size = 'md',
   color = 'blue',
   text,
   fullScreen = false,
+  overlay = false,
+  inline = false,
   className,
 }: UnifiedLoaderProps) {
   const sizeClass = sizeClasses[size];
   const colorClass = colorClasses[color];
   const textColorClass = textColorClasses[color];
-  
-  const renderLoader = () => {
+
+  const renderLoader = useMemo(() => {
     switch (variant) {
       case 'dots':
         return <DotsLoader size={sizeClass} color={colorClass} />;
@@ -122,21 +150,31 @@ export default function UnifiedLoader({
         return <PulseLoader size={sizeClass} color={colorClass} />;
       case 'wave':
         return <WaveLoader size={sizeClass} color={colorClass} />;
+      case 'skeleton':
+        return <SkeletonLoader size={sizeClass} />;
       default:
         return <SpinnerLoader size={sizeClass} color={colorClass} />;
     }
-  };
+  }, [variant, sizeClass, colorClass]);
 
-  const loaderContent = (
-    <div className={cn('flex flex-col items-center justify-center', className)}>
-      {renderLoader()}
+  const loaderContent = useMemo(() => (
+    <div className={cn(
+      'flex flex-col items-center justify-center',
+      inline && 'flex-row space-x-2',
+      className
+    )}>
+      {renderLoader}
       {text && (
-        <p className={cn('mt-4 text-sm font-medium', textColorClass)}>
+        <p className={cn(
+          'text-sm font-medium',
+          inline ? 'mt-0' : 'mt-4',
+          textColorClass
+        )}>
           {text}
         </p>
       )}
     </div>
-  );
+  ), [renderLoader, text, textColorClass, inline, className]);
 
   if (fullScreen) {
     return (
@@ -148,5 +186,15 @@ export default function UnifiedLoader({
     );
   }
 
+  if (overlay) {
+    return (
+      <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 dark:bg-black/80 backdrop-blur-sm">
+        {loaderContent}
+      </div>
+    );
+  }
+
   return loaderContent;
-}
+});
+
+export default UnifiedLoader;

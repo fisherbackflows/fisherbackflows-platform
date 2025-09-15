@@ -254,7 +254,7 @@ async function getSuggestedAlternatives(supabase: any, requestedDate: string, zo
     const alternatives = [];
     
     // Check same day, different times
-    for (let hour of getZoneHours(zone, date.getDay())) {
+    for (const hour of getZoneHours(zone, date.getDay())) {
       const timeSlot = `${hour.toString().padStart(2, '0')}:00`;
       
       const { data: conflicts } = await supabase
@@ -285,7 +285,7 @@ async function getSuggestedAlternatives(supabase: any, requestedDate: string, zo
         const hours = getZoneHours(zone, nextDate.getDay());
         if (hours.length === 0) continue;
         
-        for (let hour of hours.slice(0, 2)) {
+        for (const hour of hours.slice(0, 2)) {
           const timeSlot = `${hour.toString().padStart(2, '0')}:00`;
           
           const { data: conflicts } = await supabase

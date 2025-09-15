@@ -17,8 +17,9 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useCustomerData } from '@/hooks/useCustomerData';
 import { PortalNavigation } from '@/components/navigation/UnifiedNavigation';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
-export default function CustomerBillingPage() {
+function CustomerBillingPage() {
   const { customer, loading, error } = useCustomerData();
   const [invoices, setInvoices] = useState([]);
   const [loadingInvoices, setLoadingInvoices] = useState(true);
@@ -341,4 +342,12 @@ export default function CustomerBillingPage() {
       </main>
     </div>
   );
+}
+
+export default function CustomerBillingPageWithErrorBoundary() {
+  return (
+    <ErrorBoundary>
+      <CustomerBillingPage />
+    </ErrorBoundary>
+  )
 }

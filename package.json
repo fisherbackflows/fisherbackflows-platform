@@ -35,10 +35,7 @@
     "ai:install-schema": "node scripts/install-ai-schema.js",
     "ai:test": "node scripts/test-ai-features.js",
     "ai:verify-data": "node scripts/verify-real-data.js",
-    "ai:setup": "npm run ai:install-schema && npm run ai:test && npm run ai:verify-data",
-    "build:push": "npm run build && npm run lint && git add -A && git commit -m 'build: Successful build and deployment' && git push origin main",
-    "deploy": "./scripts/auto-push-on-build.sh",
-    "quick-push": "./scripts/build-and-push.sh"
+    "ai:setup": "npm run ai:install-schema && npm run ai:test && npm run ai:verify-data"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

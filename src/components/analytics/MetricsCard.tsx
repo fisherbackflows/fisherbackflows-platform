@@ -1,5 +1,6 @@
 'use client'
 
+import { memo, useMemo } from 'react'
 import { TrendingUp, TrendingDown, Minus, LucideIcon } from 'lucide-react'
 
 interface MetricsCardProps {
@@ -13,7 +14,7 @@ interface MetricsCardProps {
   loading?: boolean
 }
 
-export default function MetricsCard({
+const MetricsCard = memo(function MetricsCard({
   title,
   value,
   change,
@@ -23,9 +24,9 @@ export default function MetricsCard({
   format = 'number',
   loading = false
 }: MetricsCardProps) {
-  const formatValue = (val: string | number) => {
-    const numVal = typeof val === 'string' ? parseFloat(val) : val
-    
+  const formattedValue = useMemo(() => {
+    const numVal = typeof value === 'string' ? parseFloat(value) : value
+
     switch (format) {
       case 'currency':
         return new Intl.NumberFormat('en-US', {
@@ -38,21 +39,35 @@ export default function MetricsCard({
       default:
         return new Intl.NumberFormat('en-US').format(numVal)
     }
-  }
+  }, [value, format])
 
-  const getTrendIcon = () => {
-    if (!change) return <Minus className="w-4 h-4 text-slate-400" />
-    if (change > 0) return <TrendingUp className="w-4 h-4 text-green-400" />
-    if (change < 0) return <TrendingDown className="w-4 h-4 text-red-400" />
-    return <Minus className="w-4 h-4 text-slate-400" />
-  }
+  const { trendIcon, trendColor } = useMemo(() => {
+    if (!change) {
+      return {
+        trendIcon: <Minus className="w-4 h-4 text-slate-400" />,
+        trendColor: 'text-slate-400'
+      }
+    }
 
-  const getTrendColor = () => {
-    if (!change) return 'text-slate-400'
-    if (change > 0) return 'text-green-400'
-    if (change < 0) return 'text-red-400'
-    return 'text-slate-400'
-  }
+    if (change > 0) {
+      return {
+        trendIcon: <TrendingUp className="w-4 h-4 text-green-400" />,
+        trendColor: 'text-green-400'
+      }
+    }
+
+    if (change < 0) {
+      return {
+        trendIcon: <TrendingDown className="w-4 h-4 text-red-400" />,
+        trendColor: 'text-red-400'
+      }
+    }
+
+    return {
+      trendIcon: <Minus className="w-4 h-4 text-slate-400" />,
+      trendColor: 'text-slate-400'
+    }
+  }, [change])
 
   if (loading) {
     return (
@@ -76,18 +91,18 @@ export default function MetricsCard({
         <div className={`w-8 h-8 ${iconColor} group-hover:scale-110 transition-transform`}>
           <Icon className="w-full h-full" />
         </div>
-        {getTrendIcon()}
+        {trendIcon}
       </div>
       
       <div>
         <p className="text-slate-400 text-sm font-medium mb-1">{title}</p>
         <p className="text-2xl font-bold text-white mb-2">
-          {formatValue(value)}
+          {formattedValue}
         </p>
         
         {change !== undefined && (
           <div className="flex items-center gap-1">
-            <span className={`text-sm font-medium ${getTrendColor()}`}>
+            <span className={`text-sm font-medium ${trendColor}`}>
               {change > 0 ? '+' : ''}{change.toFixed(1)}%
             </span>
             {changeLabel && (
@@ -100,4 +115,6 @@ export default function MetricsCard({
       </div>
     </div>
   )
-}
+});
+
+export default MetricsCard;

@@ -16,7 +16,7 @@ export async function GET() {
     };
 
     // Try to create supabase clients
-    let clientTests = {
+    const clientTests = {
       anonClient: false,
       serviceClient: false,
       anonConnection: false,
