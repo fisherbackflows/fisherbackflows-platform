@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
         await sendCommunication(supabase, savedCommunication.id, customer, communication);
         
         // Update status to sent
-        await supabase
+        await (supabase as any)
           .from('customer_communications')
           .update({ 
             status: 'sent', 
