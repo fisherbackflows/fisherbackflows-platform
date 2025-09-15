@@ -1,6 +1,4 @@
 'use client';
-
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -16,28 +14,7 @@ import {
 } from 'lucide-react';
 
 export default function HomePage() {
-  const [currentYear, setCurrentYear] = useState(2024);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setCurrentYear(new Date().getFullYear());
-  }, []);
-
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <div
-            className="animate-spin rounded-full h-12 w-12 border-b-3 border-blue-600 mx-auto mb-4"
-            role="status"
-            aria-label="Loading page content"
-          ></div>
-          <p className="text-lg font-medium text-white/80" aria-live="polite">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+  const currentYear = new Date().getFullYear();
 
   return (
     <div className="min-h-screen bg-black text-white">

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import "./globals.css";
 import AppProviders from "@/components/providers/AppProviders";
 import { I18nProvider } from "@/contexts/I18nProvider";
@@ -10,10 +10,6 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Fisher Backflows - Professional Backflow Testing & Certification",
@@ -52,8 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning={true}
+        className={`${geistSans.variable} antialiased`}
       >
         <ErrorBoundary>
           <I18nProvider>
