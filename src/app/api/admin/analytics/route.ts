@@ -65,10 +65,10 @@ export async function GET(request: NextRequest) {
     ])
 
     // Process data with fallbacks
-    const testReports = testReportsResponse.status === 'fulfilled' ? testReportsResponse.value.data || [] : []
-    const customers = customersResponse.status === 'fulfilled' ? customersResponse.value.data || [] : []
-    const invoices = invoicesResponse.status === 'fulfilled' ? invoicesResponse.value.data || [] : []
-    const devices = devicesResponse.status === 'fulfilled' ? devicesResponse.value.data || [] : []
+    const testReports = testReportsResponse.status === 'fulfilled' ? (testReportsResponse.value.data as any[]) || [] : []
+    const customers = customersResponse.status === 'fulfilled' ? (customersResponse.value.data as any[]) || [] : []
+    const invoices = invoicesResponse.status === 'fulfilled' ? (invoicesResponse.value.data as any[]) || [] : []
+    const devices = devicesResponse.status === 'fulfilled' ? (devicesResponse.value.data as any[]) || [] : []
 
     // Generate monthly revenue data
     const monthlyRevenue = generateMonthlyData(testReports, invoices, startDate, endDate)
