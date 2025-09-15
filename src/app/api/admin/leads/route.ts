@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@/lib/supabase';
 
+export const runtime = 'nodejs';
+
 // Interface definitions for comprehensive lead management
 interface Lead {
   id: string;
@@ -185,7 +187,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Process and categorize leads
-    const processedLeads: Lead[] = allLeads.map(lead => ({
+    const processedLeads: Lead[] = allLeads.map((lead: any) => ({
       ...lead,
       lead_type: categorizeLeadType(lead),
       priority_score: calculatePriorityScore(lead)
