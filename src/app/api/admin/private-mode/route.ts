@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
 import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {

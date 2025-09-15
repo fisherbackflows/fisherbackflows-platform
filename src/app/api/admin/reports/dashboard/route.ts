@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
+export const runtime = 'nodejs';
+
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -21,7 +23,7 @@ export async function GET(request: NextRequest) {
 
     const { data: appointments } = await supabase
       .from('appointments')
-      .select('id, created_at, status, total_amount, scheduled_date')
+      .select('id, created_at, status, total_amount, scheduled_date, technician_id')
       .gte('created_at', startDate.toISOString());
 
     const { data: invoices } = await supabase
@@ -35,18 +37,18 @@ export async function GET(request: NextRequest) {
 
     // Calculate metrics
     const totalCustomers = customers?.length || 0;
-    const newCustomers = customers?.filter(c => new Date(c.created_at) >= startDate).length || 0;
-    const activeCustomers = customers?.filter(c => c.status === 'active').length || 0;
-    
+    const newCustomers = customers?.filter((c: any) => new Date(c.created_at) >= startDate).length || 0;
+    const activeCustomers = customers?.filter((c: any) => c.status === 'active').length || 0;
+
     const totalAppointments = appointments?.length || 0;
-    const completedAppointments = appointments?.filter(a => a.status === 'completed').length || 0;
-    const pendingAppointments = appointments?.filter(a => a.status === 'scheduled').length || 0;
+    const completedAppointments = appointments?.filter((a: any) => a.status === 'completed').length || 0;
+    const pendingAppointments = appointments?.filter((a: any) => a.status === 'scheduled').length || 0;
+
+    const totalRevenue = appointments?.filter((a: any) => a.status === 'completed').reduce((sum: number, a: any) => sum + (a.total_amount || 0), 0) || 0;
+    const totalInvoiced = invoices?.reduce((sum: number, i: any) => sum + (i.amount || 0), 0) || 0;
+    const overdueInvoices = invoices?.filter((i: any) => i.status === 'overdue' || (new Date(i.due_date) < new Date() && i.status !== 'paid')).length || 0;
     
-    const totalRevenue = appointments?.filter(a => a.status === 'completed').reduce((sum, a) => sum + (a.total_amount || 0), 0) || 0;
-    const totalInvoiced = invoices?.reduce((sum, i) => sum + (i.amount || 0), 0) || 0;
-    const overdueInvoices = invoices?.filter(i => i.status === 'overdue' || (new Date(i.due_date) < new Date() && i.status !== 'paid')).length || 0;
-    
-    const activeTechnicians = teamMembers?.filter(t => t.role === 'technician' && t.status === 'active').length || 0;
+    const activeTechnicians = teamMembers?.filter((t: any) => t.role === 'technician' && t.status === 'active').length || 0;
 
     // Daily data for trends
     const dailyData = [];
@@ -56,20 +58,20 @@ export async function GET(request: NextRequest) {
       const dayStart = new Date(date.setHours(0, 0, 0, 0));
       const dayEnd = new Date(date.setHours(23, 59, 59, 999));
 
-      const dayAppointments = appointments?.filter(a => {
+      const dayAppointments = appointments?.filter((a: any) => {
         const appointmentDate = new Date(a.created_at);
         return appointmentDate >= dayStart && appointmentDate <= dayEnd;
       }) || [];
 
       const dayRevenue = dayAppointments
-        .filter(a => a.status === 'completed')
-        .reduce((sum, a) => sum + (a.total_amount || 0), 0);
+        .filter((a: any) => a.status === 'completed')
+        .reduce((sum: number, a: any) => sum + (a.total_amount || 0), 0);
 
       dailyData.push({
         date: dayStart.toISOString().split('T')[0],
         appointments: dayAppointments.length,
         revenue: dayRevenue,
-        customers: customers?.filter(c => {
+        customers: customers?.filter((c: any) => {
           const customerDate = new Date(c.created_at);
           return customerDate >= dayStart && customerDate <= dayEnd;
         }).length || 0
@@ -84,13 +86,13 @@ export async function GET(request: NextRequest) {
     ];
 
     // Performance metrics by technician
-    const technicianPerformance = teamMembers?.filter(t => t.role === 'technician').map(tech => {
-      const techAppointments = appointments?.filter(a => a.technician_id === tech.user_id) || [];
-      const completed = techAppointments.filter(a => a.status === 'completed').length;
+    const technicianPerformance = teamMembers?.filter((t: any) => t.role === 'technician').map((tech: any) => {
+      const techAppointments = appointments?.filter((a: any) => a.technician_id === tech.user_id) || [];
+      const completed = techAppointments.filter((a: any) => a.status === 'completed').length;
       const total = techAppointments.length;
       const revenue = techAppointments
-        .filter(a => a.status === 'completed')
-        .reduce((sum, a) => sum + (a.total_amount || 0), 0);
+        .filter((a: any) => a.status === 'completed')
+        .reduce((sum: number, a: any) => sum + (a.total_amount || 0), 0);
 
       return {
         id: tech.id,
@@ -110,10 +112,10 @@ export async function GET(request: NextRequest) {
 
     const complianceMetrics = {
       totalEvents: auditLogs?.length || 0,
-      criticalEvents: auditLogs?.filter(log => log.severity === 'critical').length || 0,
-      failedEvents: auditLogs?.filter(log => !log.success).length || 0,
-      successRate: auditLogs && auditLogs.length > 0 
-        ? Math.round((auditLogs.filter(log => log.success).length / auditLogs.length) * 100)
+      criticalEvents: auditLogs?.filter((log: any) => log.severity === 'critical').length || 0,
+      failedEvents: auditLogs?.filter((log: any) => !log.success).length || 0,
+      successRate: auditLogs && auditLogs.length > 0
+        ? Math.round((auditLogs.filter((log: any) => log.success).length / auditLogs.length) * 100)
         : 100
     };
 

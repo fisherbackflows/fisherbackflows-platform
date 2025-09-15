@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
 import { supabaseAdmin } from '@/lib/supabase';
 // LEGITIMATE SERVICE ROLE USAGE: This operation requires elevated privileges
 // Reason: Admin operation to unlock user accounts
