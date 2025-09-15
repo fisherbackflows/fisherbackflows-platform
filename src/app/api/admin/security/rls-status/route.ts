@@ -224,7 +224,11 @@ export async function POST(request: NextRequest) {
 }
 
 async function testPolicies(supabase: any, tableName?: string) {
-  const tests = [
+  const tests: Array<{
+    name: string;
+    sql: string;
+    expected: number | boolean;
+  }> = [
     {
       name: 'Helper Functions Exist',
       sql: `SELECT COUNT(*) as count FROM pg_proc WHERE proname IN ('is_team_member', 'is_admin', 'is_customer')`,
