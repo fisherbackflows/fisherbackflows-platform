@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
         console.error('Failed to send communication:', sendError);
         
         // Update status to failed
-        await supabase
+        await (supabase as any)
           .from('customer_communications')
           .update({ 
             status: 'failed',
