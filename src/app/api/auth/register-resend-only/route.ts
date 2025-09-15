@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
 import bcrypt from 'bcryptjs';
 import { createRouteHandlerClient } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';

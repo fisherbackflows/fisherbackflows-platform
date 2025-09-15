@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
 import { verifyEmailToken } from '@/lib/verification-tokens';
 
 export async function GET(request: NextRequest) {

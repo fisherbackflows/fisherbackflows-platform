@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export const runtime = 'nodejs';
+
 // Simple in-memory token store for demo (use Redis in production)
 const resetTokens = new Map<string, { otp: string; email: string; expiresAt: number }>();
 
