@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Create communication record
-    const { data: savedCommunication, error: saveError } = await supabase
+    const { data: savedCommunication, error: saveError } = await (supabase as any)
       .from('customer_communications')
       .insert({
         customer_id: customerId,
