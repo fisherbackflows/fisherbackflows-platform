@@ -204,7 +204,7 @@ export async function GET(request: NextRequest) {
       .from('leads')
       .select('*');
 
-    const allProcessedLeads = (allLeadsForStats || []).map(lead => ({
+    const allProcessedLeads = (allLeadsForStats || []).map((lead: any) => ({
       ...lead,
       lead_type: categorizeLeadType(lead),
       priority_score: calculatePriorityScore(lead)
