@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       }
     } catch (parseError) {
       return NextResponse.json(
-        { error: `Failed to parse file: ${parseError.message}` },
+        { error: `Failed to parse file: ${parseError instanceof Error ? parseError.message : 'Unknown error'}` },
         { status: 400 }
       );
     }
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Import error:', error);
     return NextResponse.json(
-      { error: 'Import failed', details: error.message },
+      { error: 'Import failed', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
@@ -180,7 +180,7 @@ async function importCustomers(supabase: any, data: any[]) {
       }
 
     } catch (error) {
-      results.errors.push(`Row ${index + 1}: ${error.message}`);
+      results.errors.push(`Row ${index + 1}: ${error instanceof Error ? error.message : 'Unknown error'}`);
       results.skipped++;
     }
   }
@@ -245,7 +245,7 @@ async function importTestReports(supabase: any, data: any[]) {
       }
 
     } catch (error) {
-      results.errors.push(`Row ${index + 1}: ${error.message}`);
+      results.errors.push(`Row ${index + 1}: ${error instanceof Error ? error.message : 'Unknown error'}`);
       results.skipped++;
     }
   }
@@ -307,7 +307,7 @@ async function importAppointments(supabase: any, data: any[]) {
       }
 
     } catch (error) {
-      results.errors.push(`Row ${index + 1}: ${error.message}`);
+      results.errors.push(`Row ${index + 1}: ${error instanceof Error ? error.message : 'Unknown error'}`);
       results.skipped++;
     }
   }

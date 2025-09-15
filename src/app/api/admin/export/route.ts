@@ -195,7 +195,10 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Export error:', error);
     return NextResponse.json(
-      { error: 'Export failed', details: error.message },
+      {
+        error: 'Export failed',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
@@ -268,14 +271,14 @@ async function generateAnalyticsData(supabase: any) {
     {
       metric: 'Total Revenue',
       period: 'Last 30 Days',
-      value: revenueData.data?.reduce((sum, payment) => sum + payment.amount, 0) || 0,
+      value: revenueData.data?.reduce((sum: number, payment: any) => sum + payment.amount, 0) || 0,
       category: 'Financial'
     },
     {
       metric: 'Compliance Rate',
       period: 'All Time',
-      value: complianceStats.data ? 
-        Math.round((complianceStats.data.filter(r => r.compliance_status === 'compliant').length / complianceStats.data.length) * 100) : 0,
+      value: complianceStats.data ?
+        Math.round((complianceStats.data.filter((r: any) => r.compliance_status === 'compliant').length / complianceStats.data.length) * 100) : 0,
       category: 'Compliance'
     }
   ];

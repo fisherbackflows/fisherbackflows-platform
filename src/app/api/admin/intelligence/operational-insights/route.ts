@@ -21,11 +21,11 @@ export async function GET(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || teamUser.role !== 'admin') {
+    if (!teamUser || (teamUser as any).role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    const engine = new PredictiveAnalyticsEngine(supabase);
+    const engine = new PredictiveAnalyticsEngine();
     const insights = await engine.generateOperationalInsights();
 
     // Calculate additional real-time metrics

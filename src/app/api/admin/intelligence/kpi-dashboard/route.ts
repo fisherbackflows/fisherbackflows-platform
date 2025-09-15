@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || teamUser.role !== 'admin') {
+    if (!teamUser || (teamUser as any).role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
@@ -117,7 +117,7 @@ export async function GET(request: NextRequest) {
     const trends = await calculateTrendData(supabase, timeframe, timeframeDays);
 
     // Use AI for insights
-    const engine = new PredictiveAnalyticsEngine(supabase);
+    const engine = new PredictiveAnalyticsEngine();
     const aiInsights = await engine.generateOperationalInsights();
 
     const dashboardData = {

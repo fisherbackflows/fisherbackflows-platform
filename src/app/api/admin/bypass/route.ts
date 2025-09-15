@@ -20,15 +20,19 @@ export async function POST(request: NextRequest) {
     const rateLimitResult = checkRateLimit(clientId, 'ADMIN_BYPASS');
     
     if (!rateLimitResult.allowed) {
+      const retryAfterSeconds = rateLimitResult.blockedUntil
+        ? Math.ceil((rateLimitResult.blockedUntil - Date.now()) / 1000)
+        : 86400;
+
       return NextResponse.json(
-        { 
+        {
           error: 'Too many bypass attempts. Access temporarily blocked.',
-          retryAfter: rateLimitResult.retryAfter 
+          retryAfter: retryAfterSeconds
         },
-        { 
+        {
           status: 429,
           headers: {
-            'Retry-After': rateLimitResult.retryAfter?.toString() || '86400',
+            'Retry-After': retryAfterSeconds.toString(),
           }
         }
       );

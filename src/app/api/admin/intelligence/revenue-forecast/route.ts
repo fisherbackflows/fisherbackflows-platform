@@ -21,11 +21,11 @@ export async function GET(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || teamUser.role !== 'admin') {
+    if (!teamUser || (teamUser as any).role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    const engine = new PredictiveAnalyticsEngine(supabase);
+    const engine = new PredictiveAnalyticsEngine();
     const forecast = await engine.generateRevenueForecasting(period);
 
     let response = forecast;
@@ -75,11 +75,11 @@ export async function POST(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || teamUser.role !== 'admin') {
+    if (!teamUser || (teamUser as any).role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    const engine = new PredictiveAnalyticsEngine(supabase);
+    const engine = new PredictiveAnalyticsEngine();
     
     // Generate custom forecast with adjustments
     const customForecast = await engine.generateRevenueForecasting(
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
         generatedBy: session.user.id
       },
       created_by: session.user.id
-    });
+    } as any);
 
     return NextResponse.json(customForecast);
   } catch (error) {

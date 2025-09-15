@@ -115,7 +115,7 @@ async function generateChatResponse(
         const sanitizedData = await gpt5Service['getSanitizedCustomerData'](customerId);
         customerContext = `Customer Context: ${sanitizedData.customerType} customer with ${sanitizedData.deviceCount} devices, ${sanitizedData.serviceHistory} months history, compliance score ${sanitizedData.complianceScore}/100, risk level ${sanitizedData.riskLevel}.`;
       } catch (error) {
-        console.log('Could not get customer context:', error.message);
+        console.log('Could not get customer context:', error instanceof Error ? error.message : 'Unknown error');
       }
     }
 

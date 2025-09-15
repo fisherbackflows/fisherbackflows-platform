@@ -20,11 +20,11 @@ export async function GET(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || teamUser.role !== 'admin') {
+    if (!teamUser || (teamUser as any).role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    const engine = new PredictiveAnalyticsEngine(supabase);
+    const engine = new PredictiveAnalyticsEngine();
 
     if (customerId) {
       // Get specific customer health score
@@ -43,19 +43,19 @@ export async function GET(request: NextRequest) {
       }
 
       const healthScores = await Promise.all(
-        customers.map(async (customer) => {
+        customers.map(async (customer: any) => {
           const health = await engine.calculateCustomerHealthScore(customer.id);
           return {
+            ...health,
             customerId: customer.id,
             customerName: `${customer.first_name} ${customer.last_name}`,
-            customerEmail: customer.email,
-            ...health
+            customerEmail: customer.email
           };
         })
       );
 
       // Sort by health score descending
-      healthScores.sort((a, b) => b.overallScore - a.overallScore);
+      healthScores.sort((a, b) => b.score - a.score);
 
       return NextResponse.json({ customers: healthScores });
     }
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || teamUser.role !== 'admin') {
+    if (!teamUser || (teamUser as any).role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Customer ID required' }, { status: 400 });
     }
 
-    const engine = new PredictiveAnalyticsEngine(supabase);
+    const engine = new PredictiveAnalyticsEngine();
     
     // Recalculate health score (in a real implementation, updateFactors would be used to adjust weights)
     const updatedHealth = await engine.calculateCustomerHealthScore(customerId);
@@ -104,12 +104,12 @@ export async function POST(request: NextRequest) {
       action: 'HEALTH_SCORE_UPDATE',
       details: {
         customerId,
-        newScore: updatedHealth.overallScore,
+        newScore: updatedHealth.score,
         factors: updatedHealth.factors,
         updatedBy: session.user.id
       },
       created_by: session.user.id
-    });
+    } as any);
 
     return NextResponse.json(updatedHealth);
   } catch (error) {

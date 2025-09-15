@@ -6,8 +6,8 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
     const url = new URL(request.url);
-    const priority = url.searchParams.get('priority'); // 'high', 'medium', 'low'
-    const category = url.searchParams.get('category'); // 'customer_expansion', 'operational_efficiency', etc.
+    const type = url.searchParams.get('type'); // 'upsell', 'retention', 'expansion', 'efficiency'
+    const minValue = parseFloat(url.searchParams.get('minValue') || '0');
     const limit = parseInt(url.searchParams.get('limit') || '20');
 
     // Verify admin access
@@ -22,41 +22,42 @@ export async function GET(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || teamUser.role !== 'admin') {
+    if (!teamUser || (teamUser as any).role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
-    const engine = new PredictiveAnalyticsEngine(supabase);
+    const engine = new PredictiveAnalyticsEngine();
     let opportunities = await engine.identifyBusinessOpportunities();
 
     // Apply filters
-    if (priority) {
-      opportunities = opportunities.filter(opp => opp.priority === priority);
-    }
-    
-    if (category) {
-      opportunities = opportunities.filter(opp => opp.category === category);
+    if (type) {
+      opportunities = opportunities.filter(opp => opp.type === type);
     }
 
-    // Sort by revenue potential (descending) and limit results
+    if (minValue > 0) {
+      opportunities = opportunities.filter(opp => opp.potentialValue >= minValue);
+    }
+
+    // Sort by potential value (descending) and limit results
     opportunities = opportunities
-      .sort((a, b) => b.revenueImpact - a.revenueImpact)
+      .sort((a, b) => b.potentialValue - a.potentialValue)
       .slice(0, limit);
 
     // Calculate summary statistics
     const summary = {
       totalOpportunities: opportunities.length,
-      totalRevenueImpact: opportunities.reduce((sum, opp) => sum + opp.revenueImpact, 0),
-      averageRevenueImpact: opportunities.length > 0 
-        ? opportunities.reduce((sum, opp) => sum + opp.revenueImpact, 0) / opportunities.length 
+      totalPotentialValue: opportunities.reduce((sum, opp) => sum + opp.potentialValue, 0),
+      averagePotentialValue: opportunities.length > 0
+        ? opportunities.reduce((sum, opp) => sum + opp.potentialValue, 0) / opportunities.length
         : 0,
-      priorityBreakdown: {
-        high: opportunities.filter(opp => opp.priority === 'high').length,
-        medium: opportunities.filter(opp => opp.priority === 'medium').length,
-        low: opportunities.filter(opp => opp.priority === 'low').length
+      typeBreakdown: {
+        upsell: opportunities.filter(opp => opp.type === 'upsell').length,
+        retention: opportunities.filter(opp => opp.type === 'retention').length,
+        expansion: opportunities.filter(opp => opp.type === 'expansion').length,
+        efficiency: opportunities.filter(opp => opp.type === 'efficiency').length
       },
-      categoryBreakdown: opportunities.reduce((acc, opp) => {
-        acc[opp.category] = (acc[opp.category] || 0) + 1;
+      timelineBreakdown: opportunities.reduce((acc: any, opp) => {
+        acc[opp.timeline] = (acc[opp.timeline] || 0) + 1;
         return acc;
       }, {} as Record<string, number>)
     };
@@ -64,7 +65,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       opportunities,
       summary,
-      filters: { priority, category, limit }
+      filters: { type, minValue, limit }
     });
   } catch (error) {
     console.error('Business opportunities API error:', error);
@@ -92,7 +93,7 @@ export async function POST(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || teamUser.role !== 'admin') {
+    if (!teamUser || (teamUser as any).role !== 'admin') {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
@@ -122,7 +123,7 @@ export async function POST(request: NextRequest) {
         actionBy: session.user.id
       },
       created_by: session.user.id
-    });
+    } as any);
 
     // In a real implementation, you might update a business_opportunities table
     // For now, we'll return success confirmation
@@ -132,7 +133,7 @@ export async function POST(request: NextRequest) {
       action,
       notes,
       timestamp: new Date().toISOString()
-    });
+    } as any);
   } catch (error) {
     console.error('Business opportunity action API error:', error);
     return NextResponse.json(
