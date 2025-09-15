@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@/lib/supabase'
 
+export const runtime = 'nodejs';
+
 export async function GET(request: NextRequest) {
   try {
     const supabase = createRouteHandlerClient(request)
@@ -22,7 +24,7 @@ export async function GET(request: NextRequest) {
       .eq('id', user.id)
       .single()
 
-    if (profile?.role !== 'admin' && profile?.role !== 'technician') {
+    if ((profile as any)?.role !== 'admin' && (profile as any)?.role !== 'technician') {
       return NextResponse.json(
         { success: false, error: 'Insufficient permissions' },
         { status: 403 }
