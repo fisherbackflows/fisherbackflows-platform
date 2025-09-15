@@ -251,7 +251,11 @@ function calculateComplianceRate(devices: any[]): number {
 
 async function calculateTrendData(supabase: any, timeframe: string, days: number) {
   // Generate daily data points for trends
-  const trends = {
+  const trends: {
+    revenue: Array<{ date: string; value: number }>;
+    appointments: Array<{ date: string; value: number }>;
+    customers: Array<{ date: string; value: number }>;
+  } = {
     revenue: [],
     appointments: [],
     customers: []
