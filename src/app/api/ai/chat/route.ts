@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
     const chatResponse = await generateChatResponse(gpt5Service, message, responseType, customerId, context);
 
     // Log the chat interaction
-    await supabase.from('audit_logs').insert({
+    await (supabase as any).from('audit_logs').insert({
       table_name: 'ai_chat',
       action: 'CHAT_INTERACTION',
       details: {
