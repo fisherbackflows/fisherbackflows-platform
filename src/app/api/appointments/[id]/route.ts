@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 import { createRouteHandlerClient } from '@/lib/supabase';
 import { auth } from '@/lib/auth';
+import type { Database } from '@/lib/database.types';
 
 export async function GET(
   request: NextRequest,
@@ -128,9 +129,8 @@ export async function PATCH(
   try {
     const supabase = createRouteHandlerClient(request);
     const { id: appointmentId } = await params;
-    const updateData: any = await request.json();
+    const updateData: Database['public']['Tables']['appointments']['Update'] = await request.json();
 
-    // @ts-ignore - Supabase type inference issue
     const { data, error } = await supabase
       .from('appointments')
       .update(updateData)
