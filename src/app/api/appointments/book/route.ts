@@ -249,7 +249,7 @@ export async function POST(request: NextRequest) {
     cache.delete(CacheKeys.availableDates());
 
     // Record successful booking
-    recordAttempt(clientId, true, 'register');
+    recordAttempt(clientId, 'register', true);
 
     const successMessage = assignedTechnicianId
       ? `Appointment booked successfully with technician ${assignedTechnicianName} and confirmation email sent`
