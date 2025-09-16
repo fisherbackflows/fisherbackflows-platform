@@ -117,7 +117,7 @@ export async function GET(
     // Get technician details
     const { data: technician } = await supabase
       .from('team_users')
-      .select('name, phone')
+      .select('first_name, last_name, phone')
       .eq('id', appointment.assigned_technician)
       .single()
 
@@ -126,7 +126,7 @@ export async function GET(
       latitude: currentLocation.latitude,
       longitude: currentLocation.longitude,
       lastUpdated: currentLocation.updated_at,
-      technicianName: technician?.name,
+      technicianName: technician ? `${technician.first_name} ${technician.last_name}` : undefined,
       technicianPhone: technician?.phone,
       distanceFromCustomer,
       estimatedTravelTime,
