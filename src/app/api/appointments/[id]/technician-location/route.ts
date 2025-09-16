@@ -77,7 +77,7 @@ export async function GET(
 
     // Only track active appointments
     const validStatuses = ['confirmed', 'in_progress', 'traveling', 'on_site']
-    if (!validStatuses.includes(appointment.status)) {
+    if (!appointment.status || !validStatuses.includes(appointment.status)) {
       return NextResponse.json({
         success: false,
         message: 'Location tracking not available for this appointment status',
