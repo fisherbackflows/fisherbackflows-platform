@@ -49,7 +49,7 @@ const nextConfig = {
     config.cache = {
       type: 'filesystem',
       buildDependencies: {
-        config: [__filename],
+        config: [import.meta.url],
       },
     };
 
