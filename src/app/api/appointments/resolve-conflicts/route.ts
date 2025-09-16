@@ -269,7 +269,7 @@ export async function GET(request: NextRequest) {
           last_name,
           company_name,
           phone,
-          street_address,
+          address_line1,
           city
         )
       `)
@@ -337,14 +337,14 @@ export async function GET(request: NextRequest) {
                 customerName: current.customers?.company_name || `${current.customers?.first_name} ${current.customers?.last_name}`,
                 time: currentStart,
                 duration: currentDuration,
-                address: current.customers?.street_address
+                address: current.customers?.address_line1
               },
               {
                 id: next.id,
                 customerName: next.customers?.company_name || `${next.customers?.first_name} ${next.customers?.last_name}`,
                 time: nextStart,
                 duration: next.estimated_duration || 60,
-                address: next.customers?.street_address
+                address: next.customers?.address_line1
               }
             ],
             overlapMinutes: currentEndMinutes - nextStartMinutes,
