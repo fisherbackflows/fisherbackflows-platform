@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
                 <li><strong>Date:</strong> ${appointmentDate}</li>
                 <li><strong>Time:</strong> ${appointmentTime}</li>
                 <li><strong>Service:</strong> ${appointment.service_type}</li>
-                <li><strong>Device:</strong> ${appointment.devices?.device_type} at ${appointment.devices?.location}</li>
+                <li><strong>Device:</strong> ${appointment.devices?.[0]?.device_type} at ${appointment.devices?.[0]?.location}</li>
               </ul>
               ${validatedData.reason ? `<p><strong>Reason:</strong> ${validatedData.reason}</p>` : ''}
               <p>If you need to reschedule, please visit your customer portal or contact us.</p>
