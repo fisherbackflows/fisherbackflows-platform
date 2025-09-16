@@ -179,7 +179,7 @@ export async function PUT(
 
     // Verify team member authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
+    if (authError || !user || !user.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
