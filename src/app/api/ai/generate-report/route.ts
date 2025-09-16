@@ -188,7 +188,7 @@ async function applyCustomFilters(content: string, filters: any): Promise<string
 
   if (filters.summarizeOnly) {
     // Extract only summary sections
-    const summaryMatch = filteredContent.match(/## Executive Summary(.*?)(?=##|$)/s);
+    const summaryMatch = filteredContent.match(/## Executive Summary([\s\S]*?)(?=##|$)/);
     if (summaryMatch) {
       filteredContent = summaryMatch[0];
     }
