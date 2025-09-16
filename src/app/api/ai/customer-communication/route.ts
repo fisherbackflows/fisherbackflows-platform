@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Log communication generation
-    await supabase.from('audit_logs').insert({
+    await (supabase as any).from('audit_logs').insert({
       table_name: 'customer_communications',
       action: 'AI_COMMUNICATION_GENERATED',
       details: {
