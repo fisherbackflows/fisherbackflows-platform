@@ -208,8 +208,6 @@ const nextConfig = {
     }
   },
 
-  // Force silent mode
-  silent: true,
 
 };
 

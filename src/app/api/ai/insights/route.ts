@@ -127,7 +127,7 @@ export async function GET(request: NextRequest) {
     if (insightId) {
       // Get specific insight
       const { data: insight, error } = await supabase
-        .from('ai_insights')
+        .from('audit_logs')
         .select('*')
         .eq('id', insightId)
         .single();
@@ -140,8 +140,8 @@ export async function GET(request: NextRequest) {
     } else {
       // List insights with optional filtering
       let query = supabase
-        .from('ai_insights')
-        .select('id, query, context, timeframe, confidence, key_findings, recommendations, created_at, generated_by')
+        .from('audit_logs')
+        .select('id, action, details, created_at, user_id')
         .order('created_at', { ascending: false })
         .limit(limit);
 

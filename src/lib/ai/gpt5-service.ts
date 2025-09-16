@@ -227,7 +227,7 @@ export class GPT5Service {
 
     // Log insight generation
     await supabase.from('audit_logs').insert({
-      table_name: 'ai_insights',
+      resource_type: 'ai_insights',
       action: 'GENERATED_BUSINESS_INSIGHT',
       details: {
         query: request.query,
