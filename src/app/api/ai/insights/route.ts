@@ -273,12 +273,12 @@ async function getBusinessMetrics(supabase: any, startDate: Date, endDate: Date)
       .lt('created_at', endDate.toISOString())
   ]);
 
-  const revenue = revenueData.data?.filter(inv => inv.status === 'paid')
-    .reduce((sum, inv) => sum + parseFloat(inv.total_amount || '0'), 0) || 0;
+  const revenue = revenueData.data?.filter((inv: any) => inv.status === 'paid')
+    .reduce((sum: number, inv: any) => sum + parseFloat(inv.total_amount || '0'), 0) || 0;
 
-  const customers = customerData.data?.filter(c => c.status === 'active').length || 0;
-  
-  const completedAppointments = appointmentData.data?.filter(apt => apt.status === 'completed').length || 0;
+  const customers = customerData.data?.filter((c: any) => c.status === 'active').length || 0;
+
+  const completedAppointments = appointmentData.data?.filter((apt: any) => apt.status === 'completed').length || 0;
   const totalAppointments = appointmentData.data?.length || 1;
   const complianceRate = (completedAppointments / totalAppointments) * 100;
 
