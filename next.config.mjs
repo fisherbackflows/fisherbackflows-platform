@@ -45,6 +45,14 @@ const nextConfig = {
     config.optimization.removeEmptyChunks = false;
     config.optimization.splitChunks = false; // Disable initially to reduce memory
 
+    // Enable incremental builds
+    config.cache = {
+      type: 'filesystem',
+      buildDependencies: {
+        config: [__filename],
+      },
+    };
+
     // Production optimizations only
     if (!dev) {
       // Advanced chunk splitting strategy

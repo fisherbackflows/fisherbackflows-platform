@@ -22,12 +22,13 @@ COPY . .
 # Create necessary directories
 RUN mkdir -p logs backups
 
-# Build the application
+# Build the application with memory optimization
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
+ENV NODE_OPTIONS="--max-old-space-size=16384"
 
 RUN \
-  if [ -f package-lock.json ]; then npm run build; \
+  if [ -f package-lock.json ]; then npm run build-minimal; \
   else echo "Lockfile not found." && exit 1; \
   fi
 
