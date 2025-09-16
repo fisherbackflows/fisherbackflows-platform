@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
     // Step 3: Get customer data by auth_user_id (proper linking)
     // For customer lookup, we need service role to handle legacy data
     const serviceClient = getServiceRoleClient('customer-auth-linking');
-    const { data: customerData, error: customerError } = await serviceClient
+    let { data: customerData, error: customerError } = await serviceClient
       .from('customers')
       .select('*')
       .eq('auth_user_id', authData.user.id)
