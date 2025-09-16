@@ -130,14 +130,13 @@ export async function PATCH(
     const { id: appointmentId } = await params;
     const updateData: any = await request.json();
 
-    const result = await supabase
+    // @ts-ignore - Supabase type inference issue
+    const { data, error } = await supabase
       .from('appointments')
-      .update(updateData as any)
+      .update(updateData)
       .eq('id', appointmentId)
       .select()
       .single();
-
-    const { data, error } = result as { data: any; error: any };
 
     if (error) {
       return NextResponse.json(
