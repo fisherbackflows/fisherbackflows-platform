@@ -19,12 +19,12 @@ export async function GET(request: NextRequest) {
 
     // Verify user is an admin (you may want to add a role check)
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('team_users')
       .select('role')
       .eq('id', user.id)
       .single()
 
-    if ((profile as any)?.role !== 'admin' && (profile as any)?.role !== 'technician') {
+    if (profile?.role !== 'admin' && profile?.role !== 'technician') {
       return NextResponse.json(
         { success: false, error: 'Insufficient permissions' },
         { status: 403 }

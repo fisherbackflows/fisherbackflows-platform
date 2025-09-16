@@ -236,7 +236,7 @@ class SecurityManager {
     try {
       // Get user role and permissions
       const { data: profile } = await this.supabase
-        .from('profiles')
+        .from('team_users')
         .select('role, permissions')
         .eq('id', userId)
         .single()

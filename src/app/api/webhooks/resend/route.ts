@@ -206,7 +206,7 @@ async function markEmailAsInvalid(email: string, reason: string) {
   try {
     // Update profile to mark email as invalid
     const { data, error } = await supabase
-      .from('profiles')
+      .from('team_users')
       .update({
         metadata: {
           email_status: 'invalid',

@@ -59,7 +59,7 @@ class UnifiedAuthService {
       if (user && !error) {
         // Get user profile
         const { data: profile } = await supabase
-          .from('profiles')
+          .from('team_users')
           .select('*')
           .eq('id', user.id)
           .single()
@@ -107,7 +107,7 @@ class UnifiedAuthService {
       
       // Get user from database
       const { data: profile } = await this.supabaseAdmin
-        .from('profiles')
+        .from('team_users')
         .select('*')
         .eq('id', decoded.userId)
         .single()
@@ -166,7 +166,7 @@ class UnifiedAuthService {
 
       if (authData.user && !authError) {
         const { data: profile } = await this.supabaseAdmin
-          .from('profiles')
+          .from('team_users')
           .select('*')
           .eq('id', authData.user.id)
           .single()
@@ -229,7 +229,7 @@ class UnifiedAuthService {
 
       // Create profile
       const { data: profile, error: profileError } = await this.supabaseAdmin
-        .from('profiles')
+        .from('team_users')
         .insert({
           id: authData.user.id,
           email,
@@ -270,7 +270,7 @@ class UnifiedAuthService {
   async updateUser(userId: string, updates: Partial<AuthUser>): Promise<AuthUser | null> {
     try {
       const { data: profile, error } = await this.supabaseAdmin
-        .from('profiles')
+        .from('team_users')
         .update({
           name: updates.name,
           phone: updates.phone,
@@ -310,7 +310,7 @@ class UnifiedAuthService {
     try {
       // Deactivate profile first
       await this.supabaseAdmin
-        .from('profiles')
+        .from('team_users')
         .update({ active: false })
         .eq('id', userId)
 

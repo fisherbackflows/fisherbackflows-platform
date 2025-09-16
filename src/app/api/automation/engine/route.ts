@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     // Verify admin role
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('team_users')
       .select('role')
       .eq('id', user.id)
       .single()
