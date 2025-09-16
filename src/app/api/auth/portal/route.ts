@@ -4,8 +4,8 @@ export const runtime = 'nodejs';
 import { createRouteHandlerClient } from '@/lib/supabase'
 import type { Customer } from '@/lib/types'
 
-async function calculateCustomerBalance(customerId: string): Promise<number> {
-  const supabase = createRouteHandlerClient()
+async function calculateCustomerBalance(customerId: string, request: NextRequest): Promise<number> {
+  const supabase = createRouteHandlerClient(request)
   
   const { data: invoices } = await supabase
     .from('invoices')
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       phone: customerData.phone,
       address: `${customerData.address_line1}, ${customerData.city}, ${customerData.state} ${customerData.zip_code}`,
       accountNumber: customerData.account_number,
-      balance: await calculateCustomerBalance(customerData.id),
+      balance: await calculateCustomerBalance(customerData.id, request),
       status: customerData.account_status || 'Active'
     }
     
@@ -160,7 +160,7 @@ export async function GET(request: NextRequest) {
       phone: customerData.phone,
       address: `${customerData.address_line1}, ${customerData.city}, ${customerData.state} ${customerData.zip_code}`,
       accountNumber: customerData.account_number,
-      balance: customerData.invoices?.filter(inv => inv.status !== 'paid').reduce((sum, inv) => sum + (inv.total_amount || 0), 0) || 0,
+      balance: customerData.invoices?.filter(inv => inv.status !== 'paid').reduce((sum, inv) => sum + (inv.amount || 0), 0) || 0,
       status: customerData.account_status || 'Active',
       devices: customerData.devices?.map(device => ({
         id: device.id,
