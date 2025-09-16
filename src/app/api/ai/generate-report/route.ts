@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Log report generation
-    await supabase.from('audit_logs').insert({
+    await (supabase as any).from('audit_logs').insert({
       table_name: 'generated_reports',
       action: 'AI_REPORT_GENERATED',
       details: {
