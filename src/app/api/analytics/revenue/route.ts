@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     
     // Verify authentication and permissions
     const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
+    if (authError || !user || !user.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -19,7 +19,7 @@ export async function GET(request: NextRequest) {
       .eq('email', user.email)
       .single()
 
-    if (!profile || !['admin', 'manager'].includes(profile.role)) {
+    if (!profile || !['admin', 'manager'].includes((profile as any).role)) {
       return NextResponse.json({ error: 'Insufficient permissions' }, { status: 403 })
     }
 
