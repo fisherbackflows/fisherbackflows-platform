@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
   try {
     // SECURITY: Rate limiting for registration attempts
     const clientId = getClientIdentifier(request);
-    const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.AUTH_REGISTER);
+    const rateLimitResult = checkRateLimit(clientId, 'register');
     
     if (!rateLimitResult.allowed) {
       return NextResponse.json(

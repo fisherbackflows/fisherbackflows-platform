@@ -166,7 +166,7 @@ export async function GET(request: NextRequest) {
         id: device.id,
         location: device.location_description,
         serialNumber: device.serial_number || 'N/A',
-        size: device.size || 'N/A',
+        size: device.size_inches || 'N/A',
         make: device.manufacturer,
         model: device.model,
         installDate: device.installation_date,
