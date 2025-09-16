@@ -156,7 +156,7 @@ export async function GET(
         id: appointment.id,
         status: appointment.status,
         customerCanTrack: appointment.customer_can_track,
-        appointmentDate: appointment.appointment_date
+        appointmentDate: appointment.scheduled_date
       }
     })
 
