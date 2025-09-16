@@ -85,6 +85,15 @@ export async function GET(
       })
     }
 
+    // Check if technician is assigned
+    if (!appointment.assigned_technician) {
+      return NextResponse.json({
+        success: false,
+        message: 'No technician assigned to this appointment',
+        error: 'Technician not assigned'
+      })
+    }
+
     // Get current technician location
     const { data: currentLocation, error: locationError } = await supabase
       .from('technician_current_location')
