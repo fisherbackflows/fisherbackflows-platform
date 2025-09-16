@@ -140,7 +140,7 @@ export async function POST(request: NextRequest) {
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
               <h2 style="color: #dc2626;">Appointment Cancelled</h2>
-              <p>Hello ${appointment.customers?.name},</p>
+              <p>Hello ${appointment.customers?.[0]?.name},</p>
               <p>Your backflow testing appointment has been cancelled:</p>
               <ul>
                 <li><strong>Date:</strong> ${appointmentDate}</li>
