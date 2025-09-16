@@ -135,7 +135,7 @@ export async function PATCH(
       .update(updateData)
       .eq('id', appointmentId)
       .select()
-      .single();
+      .single() as { data: any; error: any };
 
     if (error) {
       return NextResponse.json(
