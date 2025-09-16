@@ -33,6 +33,23 @@ const nextConfig = {
 
   // Advanced webpack optimizations
   webpack: (config, { dev, isServer, webpack }) => {
+    // Reduce build output verbosity
+    config.stats = {
+      preset: 'errors-warnings',
+      assets: false,
+      chunks: false,
+      modules: false,
+      chunkModules: false,
+      entrypoints: false,
+      chunkGroups: false,
+      children: false,
+      version: false,
+      timings: false,
+      hash: false,
+      builtAt: false,
+      warnings: false
+    };
+
     // Production optimizations only
     if (!dev) {
       // Advanced chunk splitting strategy
@@ -201,6 +218,9 @@ const nextConfig = {
       fullUrl: false
     }
   },
+
+  // Silent build output
+  silent: process.env.NODE_ENV === 'production',
 
 };
 
