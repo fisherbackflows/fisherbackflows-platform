@@ -163,12 +163,12 @@ export async function POST(request: NextRequest) {
     if (deviceId) {
       const { data: device } = await supabase
         .from('devices')
-        .select('make, model, location')
+        .select('manufacturer, model, location_description')
         .eq('id', deviceId)
         .single();
-      
+
       if (device) {
-        deviceInfo = `Device: ${device.make} ${device.model} at ${device.location}`;
+        deviceInfo = `Device: ${device.manufacturer} ${device.model} at ${device.location_description}`;
       }
     }
     
