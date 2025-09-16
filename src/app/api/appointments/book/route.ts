@@ -270,7 +270,7 @@ export async function POST(request: NextRequest) {
 
     // Record failed booking attempt
     const clientId = getClientIdentifier(request);
-    recordAttempt(clientId, false, 'register');
+    recordAttempt(clientId, 'register', false);
 
     return NextResponse.json(
       { error: 'Server error' },
