@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     // SECURITY: Authenticate user and verify access to customer ID
     const authResult = await verifyCustomerAccess(request, customerId);
     if (!authResult.success) {
-      recordAttempt(clientId, false, 'register');
+      recordAttempt(clientId, 'register', false);
       return NextResponse.json(
         { error: authResult.error },
         { status: authResult.statusCode || 401 }
