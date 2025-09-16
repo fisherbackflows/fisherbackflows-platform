@@ -341,7 +341,7 @@ async function getInsightAnalytics(supabase: any) {
   const avgConfidence = insights.reduce((sum: number, insight: any) => sum + insight.confidence, 0) / insights.length;
 
   const sevenDaysAgo = new Date(Date.now() - (7 * 24 * 60 * 60 * 1000));
-  const recentActivity = insights.filter(insight => new Date(insight.created_at) >= sevenDaysAgo).length;
+  const recentActivity = insights.filter((insight: any) => new Date(insight.created_at) >= sevenDaysAgo).length;
 
   return {
     totalInsights: insights.length,
