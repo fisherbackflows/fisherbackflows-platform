@@ -128,14 +128,14 @@ export async function PATCH(
   try {
     const supabase = createRouteHandlerClient(request);
     const { id: appointmentId } = await params;
-    const updateData = await request.json();
+    const updateData: any = await request.json();
 
-    const { data, error } = await supabase
+    const { data, error }: { data: any; error: any } = await supabase
       .from('appointments')
       .update(updateData)
       .eq('id', appointmentId)
       .select()
-      .single() as { data: any; error: any };
+      .single();
 
     if (error) {
       return NextResponse.json(
