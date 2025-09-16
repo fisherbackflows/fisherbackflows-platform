@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
       
       // Email notifications sent (if you have an email_logs table)
       supabase
-        .from('email_logs')
+        .from('notification_logs')
         .select('id, created_at, type')
         .gte('created_at', startDate.toISOString()),
     ]

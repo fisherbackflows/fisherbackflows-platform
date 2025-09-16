@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
 
     // Store the generated report
     const { data: savedReport, error: saveError } = await (supabase as any)
-      .from('generated_reports')
+      .from('test_reports')
       .insert({
         title: report.title,
         report_type: reportType,
@@ -134,7 +134,7 @@ export async function GET(request: NextRequest) {
     if (reportId) {
       // Get specific report
       const { data: report, error } = await supabase
-        .from('generated_reports')
+        .from('test_reports')
         .select('*')
         .eq('id', reportId)
         .single();
@@ -147,7 +147,7 @@ export async function GET(request: NextRequest) {
     } else {
       // List reports with optional filtering
       let query = supabase
-        .from('generated_reports')
+        .from('test_reports')
         .select('id, title, report_type, period, format, created_at, generated_by, metadata')
         .order('created_at', { ascending: false })
         .limit(limit);

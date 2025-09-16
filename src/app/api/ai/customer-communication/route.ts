@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 
     // Create communication record
     const { data: savedCommunication, error: saveError } = await (supabase as any)
-      .from('customer_communications')
+      .from('notification_logs')
       .insert({
         customer_id: customerId,
         message_type: messageType,
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
         
         // Update status to sent
         await (supabase as any)
-          .from('customer_communications')
+          .from('notification_logs')
           .update({ 
             status: 'sent', 
             sent_at: new Date().toISOString() 
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
         
         // Update status to failed
         await (supabase as any)
-          .from('customer_communications')
+          .from('notification_logs')
           .update({ 
             status: 'failed',
             error_message: sendError instanceof Error ? sendError.message : 'Unknown error'
@@ -250,7 +250,7 @@ async function sendCommunication(
   };
 
   // Log the email sending attempt
-  await supabase.from('email_logs').insert({
+  await supabase.from('notification_logs').insert({
     communication_id: communicationId,
     customer_id: customer.id,
     email: customer.email,

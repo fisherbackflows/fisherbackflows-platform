@@ -276,7 +276,7 @@ class UnifiedNotificationService {
 
   private async logEmailDelivery(email: string, provider: string, messageId?: string) {
     await this.supabase
-      .from('email_logs')
+      .from('notification_logs')
       .insert({
         to_email: email,
         from_email: process.env.COMPANY_EMAIL || process.env.GMAIL_USER!,
