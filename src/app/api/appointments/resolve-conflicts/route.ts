@@ -201,16 +201,16 @@ export async function POST(request: NextRequest) {
     // Log conflict resolution activity
     try {
       await supabase
-        .from('activity_logs')
+        .from('audit_logs')
         .insert({
-          type: 'conflict_resolution',
+          action: 'conflict_resolution',
+          resource_type: 'appointments',
           details: {
             totalConflicts: conflicts.length,
             resolved: resolvedConflicts.length,
             failed: failedResolutions.length,
             resolutions: resolvedConflicts
-          },
-          created_at: new Date().toISOString()
+          }
         });
     } catch (logError) {
       console.warn('Failed to log conflict resolution activity:', logError);

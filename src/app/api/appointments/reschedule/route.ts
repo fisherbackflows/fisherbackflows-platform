@@ -258,7 +258,7 @@ export async function POST(request: NextRequest) {
                   <li><strong>Time:</strong> ${validatedData.newTime}</li>
                   <li><strong>Zone:</strong> ${newZone}</li>
                   <li><strong>Service:</strong> ${appointment.service_type}</li>
-                  <li><strong>Device:</strong> ${appointment.devices?.device_type} at ${appointment.devices?.location}</li>
+                  <li><strong>Device:</strong> ${appointment.devices?.[0]?.device_type} at ${appointment.devices?.[0]?.location}</li>
                 </ul>
               </div>
               
