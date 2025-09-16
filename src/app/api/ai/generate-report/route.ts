@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Store the generated report
-    const { data: savedReport, error: saveError } = await supabase
+    const { data: savedReport, error: saveError } = await (supabase as any)
       .from('generated_reports')
       .insert({
         title: report.title,
