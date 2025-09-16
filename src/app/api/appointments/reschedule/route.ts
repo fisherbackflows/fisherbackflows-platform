@@ -235,12 +235,12 @@ export async function POST(request: NextRequest) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          to: appointment.customers?.email,
+          to: appointment.customers?.[0]?.email,
           subject: 'Appointment Rescheduled - Fisher Backflows',
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
               <h2 style="color: #059669;">Appointment Rescheduled</h2>
-              <p>Hello ${appointment.customers?.name},</p>
+              <p>Hello ${appointment.customers?.[0]?.name},</p>
               <p>Your backflow testing appointment has been successfully rescheduled:</p>
               
               <div style="background: #f3f4f6; padding: 16px; border-radius: 8px; margin: 16px 0;">
