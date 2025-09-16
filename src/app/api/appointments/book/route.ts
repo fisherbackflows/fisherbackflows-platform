@@ -173,13 +173,13 @@ export async function POST(request: NextRequest) {
     }
     
     // Create basic appointment data with only essential fields
-    const appointmentData = {
+    const appointmentData: any = {
       customer_id: customerId,
       scheduled_date: date,
       scheduled_time_start: dbTime,
       status: 'scheduled'
     };
-    
+
     // Add optional fields if they exist in the database schema
     if (serviceType) appointmentData.appointment_type = serviceType;
     if (notes || deviceInfo) appointmentData.special_instructions = notes ? `${notes}${deviceInfo ? `. ${deviceInfo}` : ''}` : deviceInfo;
