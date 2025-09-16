@@ -14,15 +14,19 @@ export async function POST(request: NextRequest) {
     const rateLimitResult = checkRateLimit(clientId, 'register'); // Reuse register limits
 
     if (!rateLimitResult.allowed) {
+      const retryAfterSeconds = rateLimitResult.blockedUntil
+        ? Math.ceil((rateLimitResult.blockedUntil - Date.now()) / 1000)
+        : 3600;
+
       return NextResponse.json(
         {
           error: 'Too many booking attempts. Please try again later.',
-          retryAfter: rateLimitResult.retryAfter
+          retryAfter: retryAfterSeconds
         },
         {
           status: 429,
           headers: {
-            'Retry-After': rateLimitResult.retryAfter?.toString() || '3600',
+            'Retry-After': retryAfterSeconds.toString(),
           }
         }
       );
