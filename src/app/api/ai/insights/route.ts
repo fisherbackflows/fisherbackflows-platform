@@ -296,13 +296,13 @@ async function assessDataQuality(supabase: any, timeframe: string) {
     supabase.from('invoices').select('id, total_amount, status').gte('created_at', startDate.toISOString())
   ]);
 
-  const customerCompleteness = customerData.data?.filter(c => c.email && c.phone).length / 
+  const customerCompleteness = customerData.data?.filter((c: any) => c.email && c.phone).length /
     Math.max(customerData.data?.length || 0, 1);
 
-  const appointmentCompleteness = appointmentData.data?.filter(a => a.status && a.scheduled_date).length /
+  const appointmentCompleteness = appointmentData.data?.filter((a: any) => a.status && a.scheduled_date).length /
     Math.max(appointmentData.data?.length || 0, 1);
 
-  const invoiceCompleteness = invoiceData.data?.filter(i => i.total_amount && i.status).length /
+  const invoiceCompleteness = invoiceData.data?.filter((i: any) => i.total_amount && i.status).length /
     Math.max(invoiceData.data?.length || 0, 1);
 
   const overallScore = Math.round(((customerCompleteness + appointmentCompleteness + invoiceCompleteness) / 3) * 100);
