@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     // Get customer information for context
     const { data: customer, error: customerError } = await supabase
       .from('customers')
-      .select('first_name, last_name, company_name, preferred_time_slots')
+      .select('first_name, last_name, company_name')
       .eq('id', customerId)
       .single();
 
@@ -105,10 +105,8 @@ export async function POST(request: NextRequest) {
             });
 
             if (!hasConflict) {
-              // Check if this matches customer preferences
-              const customerPrefs = customer.preferred_time_slots || [];
-              const matchesPreference = customerPrefs.length === 0 || 
-                customerPrefs.some(pref => slot.time.includes(pref));
+              // Check if this matches customer preferences (no preferences stored in DB currently)
+              const matchesPreference = true; // All times are acceptable since no preferences are stored
 
               foundSlot = {
                 date: dateString,
