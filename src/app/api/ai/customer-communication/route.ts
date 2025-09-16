@@ -181,14 +181,14 @@ export async function GET(request: NextRequest) {
 
     // Build query
     let query = supabase
-      .from('customer_communications')
+      .from('notification_logs')
       .select(`
         id,
-        customer_id,
-        message_type,
-        subject,
+        recipient_id,
+        notification_type,
+        title,
         status,
-        tone,
+        message,
         scheduled_for,
         sent_at,
         created_at,
