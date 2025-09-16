@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     const enhancedInsights = await enhanceInsightsWithContext(supabase, insights, context, timeframe);
 
     // Store the insight request for analysis
-    const { data: savedInsight } = await supabase
+    const { data: savedInsight } = await (supabase as any)
       .from('ai_insights')
       .insert({
         query,
