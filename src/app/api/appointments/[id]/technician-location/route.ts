@@ -29,7 +29,8 @@ export async function GET(
         customers (
           id,
           email,
-          name
+          first_name,
+          last_name
         )
       `)
       .eq('id', appointmentId)
