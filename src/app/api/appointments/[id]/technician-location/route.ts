@@ -45,6 +45,13 @@ export async function GET(
 
     // Check if user has permission to view location
     const userEmail = user.email
+    if (!userEmail) {
+      return NextResponse.json(
+        { error: 'User email required' },
+        { status: 400 }
+      )
+    }
+
     const isCustomer = appointment.customers?.email === userEmail
     const isTeamMember = await supabase
       .from('team_users')
