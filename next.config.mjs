@@ -195,6 +195,13 @@ const nextConfig = {
   // PWA-friendly configuration
   poweredByHeader: false,
 
+  // Reduce verbose build output
+  logging: {
+    fetches: {
+      fullUrl: false
+    }
+  },
+
 };
 
 export default withBundleAnalyzer(nextConfig);

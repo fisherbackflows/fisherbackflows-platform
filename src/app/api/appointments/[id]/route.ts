@@ -46,7 +46,7 @@ export async function GET(
         )
       `)
       .eq('id', appointmentId)
-      .single();
+      .single() as { data: any; error: any };
 
     if (error || !appointment) {
       return NextResponse.json(
