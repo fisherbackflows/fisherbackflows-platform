@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
         scheduled_time,
         status,
         service_type,
+        customer_notes,
         customers!customer_id (
           name,
           email
@@ -93,7 +94,7 @@ export async function POST(request: NextRequest) {
       .from('appointments')
       .update({
         status: 'cancelled',
-        notes: `${appointment.notes || ''}\nCancelled by customer${validatedData.reason ? `: ${validatedData.reason}` : ''}`.trim(),
+        customer_notes: `${appointment.customer_notes || ''}\nCancelled by customer${validatedData.reason ? `: ${validatedData.reason}` : ''}`.trim(),
         updated_at: new Date().toISOString()
       })
       .eq('id', validatedData.appointmentId)
