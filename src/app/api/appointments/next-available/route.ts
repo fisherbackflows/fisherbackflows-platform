@@ -184,7 +184,7 @@ export async function POST(request: NextRequest) {
       },
       customer: {
         name: customer.company_name || `${customer.first_name} ${customer.last_name}`,
-        preferences: customer.preferred_time_slots || []
+        preferences: [] // No preferences stored in database currently
       },
       message: `Next available slot: ${foundSlot.timeLabel} on ${new Date(foundSlot.date).toLocaleDateString()}`
     });
