@@ -94,19 +94,19 @@ export async function productionAuthMiddleware(request: NextRequest) {
         metadata: {
           reason: 'rate_limited',
           path: pathname,
-          retryAfter: rateLimitResult.retryAfter
+          retryAfter: rateLimitResult.blockedUntil ? Math.ceil((rateLimitResult.blockedUntil - Date.now()) / 1000) : 300
         }
       });
       
       return NextResponse.json(
         { 
           error: 'Too many requests',
-          retryAfter: rateLimitResult.retryAfter 
+          retryAfter: rateLimitResult.blockedUntil ? Math.ceil((rateLimitResult.blockedUntil - Date.now()) / 1000) : 300 
         },
         { 
           status: 429,
           headers: {
-            'Retry-After': rateLimitResult.retryAfter?.toString() || '300',
+            'Retry-After': (rateLimitResult.blockedUntil ? Math.ceil((rateLimitResult.blockedUntil - Date.now()) / 1000) : 300).toString(),
             'X-Rate-Limit-Limit': '5',
             'X-Rate-Limit-Window': '300'
           }

@@ -102,6 +102,13 @@ export async function POST(request: NextRequest) {
       console.error('Customer lookup failed:', customerError);
       
       // If no customer found, check if account was created before auth_user_id linking
+      if (!authData.user.email) {
+        return NextResponse.json({
+          error: 'User email not available',
+          code: 'EMAIL_MISSING'
+        }, { status: 400 });
+      }
+
       const { data: emailCustomer, error: emailError } = await serviceClient
         .from('customers')
         .select('*')

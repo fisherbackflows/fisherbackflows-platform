@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     if (!rateLimitCheck.allowed) {
       return NextResponse.json({
         error: 'Too many resend attempts. Please wait before requesting another code.',
-        retryAfter: rateLimitCheck.retryAfter
+        retryAfter: rateLimitCheck.blockedUntil ? Math.ceil((rateLimitCheck.blockedUntil - Date.now()) / 1000) : undefined
       }, { status: 429 });
     }
 

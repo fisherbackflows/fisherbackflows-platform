@@ -64,7 +64,7 @@ export async function GET(request: NextRequest) {
         .select('*')
         .order('scheduled_date', { ascending: true });
 
-      appointments = simpleResult.data;
+      appointments = simpleResult.data as any; // Type assertion for fallback query
       error = simpleResult.error;
     }
 
@@ -382,7 +382,7 @@ export async function DELETE(request: NextRequest) {
       }
 
       // Customers can only cancel appointments that haven't started
-      if (['in_progress', 'completed'].includes(existingAppointment.status)) {
+      if (existingAppointment.status && ['in_progress', 'completed'].includes(existingAppointment.status)) {
         return NextResponse.json({
           success: false,
           error: 'Cannot delete appointment that has already started or been completed'

@@ -11,15 +11,18 @@ export async function POST(request: NextRequest) {
     const rateLimitResult = checkRateLimit(clientId, 'passwordReset');
 
     if (!rateLimitResult.allowed) {
+      const retryAfterSeconds = rateLimitResult.blockedUntil
+        ? Math.ceil((rateLimitResult.blockedUntil - Date.now()) / 1000)
+        : 900;
       return NextResponse.json(
         {
           error: 'Too many password reset attempts. Please try again later.',
-          retryAfter: rateLimitResult.retryAfter
+          retryAfter: retryAfterSeconds
         },
         {
           status: 429,
           headers: {
-            'Retry-After': rateLimitResult.retryAfter?.toString() || '900',
+            'Retry-After': retryAfterSeconds.toString(),
           }
         }
       );
@@ -48,7 +51,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Record successful password reset attempt
-      recordAttempt(clientId, true, 'passwordReset');
+      recordAttempt(clientId, 'passwordReset', true);
 
       return NextResponse.json({
         success: true,
@@ -86,7 +89,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Record successful password reset attempt
-      recordAttempt(clientId, true, 'passwordReset');
+      recordAttempt(clientId, 'passwordReset', true);
 
       return NextResponse.json({
         success: true,
@@ -104,7 +107,7 @@ export async function POST(request: NextRequest) {
 
     // Record failed attempt
     const clientId = getClientIdentifier(request);
-    recordAttempt(clientId, false, 'passwordReset');
+    recordAttempt(clientId, 'passwordReset', false);
 
     return NextResponse.json(
       { error: 'Failed to process reset request' },

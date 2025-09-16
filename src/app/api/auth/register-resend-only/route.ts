@@ -18,12 +18,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { 
           error: 'Too many registration attempts. Please try again later.',
-          retryAfter: rateLimitResult.retryAfter 
+          retryAfter: rateLimitResult.blockedUntil ? Math.ceil((rateLimitResult.blockedUntil - Date.now()) / 1000) : 3600 
         },
         { 
           status: 429,
           headers: {
-            'Retry-After': rateLimitResult.retryAfter?.toString() || '3600',
+            'Retry-After': (rateLimitResult.blockedUntil ? Math.ceil((rateLimitResult.blockedUntil - Date.now()) / 1000) : 3600).toString(),
           }
         }
       );

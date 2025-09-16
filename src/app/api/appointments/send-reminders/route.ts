@@ -82,10 +82,16 @@ export async function POST(request: NextRequest) {
         remindersSent++;
         console.log(`✅ Reminder sent to ${customerEmail} for appointment ${appointment.id}`);
         
-        // Optional: Update appointment to mark reminder sent
+        // Track reminder sent in special_instructions
+        const currentInstructions = appointment.special_instructions || '';
+        const reminderNote = `[Reminder sent: ${new Date().toISOString()}]`;
         await supabase
           .from('appointments')
-          .update({ reminder_sent: true })
+          .update({
+            special_instructions: currentInstructions
+              ? `${currentInstructions}\n${reminderNote}`
+              : reminderNote
+          })
           .eq('id', appointment.id);
         
       } catch (emailError) {

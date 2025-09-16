@@ -11,14 +11,6 @@ export async function POST(request: NextRequest) {
     if (!email || !password) {
       return NextResponse.json({ error: 'Email and password required' }, { status: 400 });
     }
-    
-    // Verify we have admin client
-    if (!supabaseAdmin) {
-      return NextResponse.json(
-        { error: 'Server configuration error: Admin client not available' },
-        { status: 500 }
-      );
-    }
 
     // Step 1: Authenticate with Supabase Auth
     const { data: authData, error: authError } = await createRouteHandlerClient(request).auth.signInWithPassword({
@@ -39,7 +31,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Step 3: Get customer data using auth user ID
-    const { data: customerData, error: customerError } = await supabaseAdmin
+    const supabase = createRouteHandlerClient(request);
+    const { data: customerData, error: customerError } = await supabase
       .from('customers')
       .select('*')
       .eq('auth_user_id', authData.user.id)
