@@ -189,7 +189,7 @@ export async function PUT(
       .eq('email', user.email)
       .single()
 
-    if (!teamMember || !['admin', 'manager', 'technician'].includes(teamMember.role)) {
+    if (!teamMember || !teamMember.role || !['admin', 'manager', 'technician'].includes(teamMember.role)) {
       return NextResponse.json({ error: 'Access denied' }, { status: 403 })
     }
 
