@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       .gte('created_at', startDate.toISOString());
 
     const { data: teamMembers } = await supabase
-      .from('team_members')
+      .from('team_users')
       .select('id, user_id, role, status');
 
     // Calculate metrics

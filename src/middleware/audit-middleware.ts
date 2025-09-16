@@ -129,7 +129,7 @@ async function getUserContext(request: NextRequest): Promise<{
     if (user) {
       // Try to get additional user info
       const { data: profile } = await supabase
-        .from('team_members')
+        .from('team_users')
         .select('role')
         .eq('user_id', user.id)
         .single();
