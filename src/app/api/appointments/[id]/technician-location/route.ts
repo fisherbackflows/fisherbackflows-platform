@@ -110,23 +110,9 @@ export async function GET(
       })
     }
 
-    // Calculate distance from customer if customer coordinates available
-    let distanceFromCustomer = null
-    let estimatedTravelTime = null
-
-    if (appointment.customers?.latitude && appointment.customers?.longitude) {
-      const customerLat = parseFloat(appointment.customers.latitude)
-      const customerLng = parseFloat(appointment.customers.longitude)
-      const techLat = parseFloat(currentLocation.latitude)
-      const techLng = parseFloat(currentLocation.longitude)
-
-      // Calculate distance using Haversine formula
-      distanceFromCustomer = calculateDistance(customerLat, customerLng, techLat, techLng)
-      
-      // Estimate travel time (assuming average speed of 50 km/h in urban areas)
-      const averageSpeedKmh = 50
-      estimatedTravelTime = Math.round((distanceFromCustomer / 1000) / averageSpeedKmh * 60) // minutes
-    }
+    // Distance calculation removed - customer coordinates not available in database
+    const distanceFromCustomer = null
+    const estimatedTravelTime = null
 
     // Get technician details
     const { data: technician } = await supabase
