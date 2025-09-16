@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || !['admin', 'manager'].includes(teamUser.role)) {
+    if (!teamUser || !['admin', 'manager'].includes((teamUser as any).role)) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
@@ -120,7 +120,7 @@ export async function GET(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    if (!teamUser || !['admin', 'manager'].includes(teamUser.role)) {
+    if (!teamUser || !['admin', 'manager'].includes((teamUser as any).role)) {
       return NextResponse.json({ error: 'Admin access required' }, { status: 403 });
     }
 
