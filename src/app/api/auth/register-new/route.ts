@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
-import { createRouteHandlerClient } from '@/lib/supabase';
+import { createRouteHandlerClient, createAdminClient } from '@/lib/supabase';
 import { generateId } from '@/lib/utils';
 import { checkRateLimit, recordAttempt, getClientIdentifier, RATE_LIMIT_CONFIGS } from '@/lib/rate-limiting';
 
@@ -71,13 +71,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify we have admin client
-    if (!supabaseAdmin) {
-      return NextResponse.json(
-        { error: 'Server configuration error: Admin client not available' },
-        { status: 500 }
-      );
-    }
+    // Create admin client for user management
+    const supabaseAdmin = createAdminClient();
 
     // Skip user existence check for now - just try to create and handle errors
 
