@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     // Log insight generation
-    await supabase.from('audit_logs').insert({
+    await (supabase as any).from('audit_logs').insert({
       table_name: 'ai_insights',
       action: 'BUSINESS_INSIGHT_GENERATED',
       details: {
