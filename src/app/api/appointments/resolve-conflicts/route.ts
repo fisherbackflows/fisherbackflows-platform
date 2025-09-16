@@ -390,8 +390,8 @@ export async function GET(request: NextRequest) {
         totalConflicts: conflicts.length,
         highSeverity: conflicts.filter(c => c.severity === 'high').length,
         mediumSeverity: conflicts.filter(c => c.severity === 'medium').length,
-        appointmentsAffected: conflicts.reduce((acc, c) => 
-          acc + (c.appointments?.length || c.appointmentCount || 0), 0
+        appointmentsAffected: conflicts.reduce((acc, c) =>
+          acc + ((c as any).appointments?.length || (c as any).appointmentCount || 0), 0
         )
       },
       recommendations: conflicts.length > 0 ? [
