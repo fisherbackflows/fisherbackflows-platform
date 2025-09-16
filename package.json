@@ -7,7 +7,7 @@
     "dev-turbo": "next dev -H 0.0.0.0 -p 3010 --turbopack",
     "build": "next build",
     "build-turbo": "next build --turbopack",
-    "build-minimal": "env -u NODE_OPTIONS NODE_OPTIONS='--max-old-space-size=16384' next build --no-lint",
+    "build-minimal": "NODE_OPTIONS='--max-old-space-size=16384' next build --no-lint",
     "start": "next start -H 0.0.0.0 -p 3010",
     "lint": "eslint src --fix",
     "type-check": "tsc -p tsconfig.ci.json --noEmit",
