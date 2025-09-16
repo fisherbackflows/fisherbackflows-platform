@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Calculate summary statistics
-    const totalRevenue = payments?.reduce((sum, p) => sum + Number(p.amount), 0) || 0
+    const totalRevenue = payments?.reduce((sum: number, p: any) => sum + Number(p.amount), 0) || 0
     const totalTransactions = payments?.length || 0
     const averageTransaction = totalTransactions > 0 ? totalRevenue / totalTransactions : 0
 
