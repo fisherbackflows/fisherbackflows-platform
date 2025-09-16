@@ -142,7 +142,7 @@ export async function GET(
       .update({
         technician_latitude: currentLocation.latitude,
         technician_longitude: currentLocation.longitude,
-        technician_last_location: currentLocation.last_updated,
+        technician_last_location: currentLocation.updated_at,
         travel_distance_km: distanceFromCustomer ? Math.round(distanceFromCustomer / 100) / 10 : null,
         estimated_arrival: estimatedTravelTime ? 
           new Date(Date.now() + estimatedTravelTime * 60000).toISOString() : null
