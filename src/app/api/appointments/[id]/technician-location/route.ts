@@ -22,17 +22,14 @@ export async function GET(
       .select(`
         id,
         customer_id,
-        technician_id,
+        assigned_technician,
         customer_can_track,
         status,
-        appointment_date,
+        scheduled_date,
         customers (
           id,
           email,
-          name,
-          address,
-          latitude,
-          longitude
+          name
         )
       `)
       .eq('id', appointmentId)
@@ -84,7 +81,7 @@ export async function GET(
     const { data: currentLocation, error: locationError } = await supabase
       .from('technician_current_location')
       .select('*')
-      .eq('technician_id', appointment.technician_id)
+      .eq('technician_id', appointment.assigned_technician)
       .eq('is_active', true)
       .single()
 
@@ -118,7 +115,7 @@ export async function GET(
     const { data: technician } = await supabase
       .from('team_users')
       .select('name, phone')
-      .eq('id', appointment.technician_id)
+      .eq('id', appointment.assigned_technician)
       .single()
 
     // Prepare location response
