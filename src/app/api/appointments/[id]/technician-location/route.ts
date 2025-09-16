@@ -123,8 +123,8 @@ export async function GET(
 
     // Prepare location response
     const locationData = {
-      latitude: parseFloat(currentLocation.latitude),
-      longitude: parseFloat(currentLocation.longitude),
+      latitude: currentLocation.latitude,
+      longitude: currentLocation.longitude,
       accuracy: currentLocation.accuracy,
       address: currentLocation.address,
       lastUpdated: currentLocation.last_updated,
