@@ -39,6 +39,12 @@ const nextConfig = {
       level: 'error'
     };
 
+    // AGGRESSIVE memory optimization
+    config.optimization.runtimeChunk = 'single';
+    config.optimization.removeAvailableModules = false;
+    config.optimization.removeEmptyChunks = false;
+    config.optimization.splitChunks = false; // Disable initially to reduce memory
+
     // Production optimizations only
     if (!dev) {
       // Advanced chunk splitting strategy
@@ -131,8 +137,26 @@ const nextConfig = {
         new webpack.IgnorePlugin({
           resourceRegExp: /^\.\/locale$/,
           contextRegExp: /moment$/,
+        }),
+        // Ignore large optional dependencies
+        new webpack.IgnorePlugin({
+          resourceRegExp: /^\.\/locale$/,
+          contextRegExp: /date-fns$/,
+        }),
+        // Ignore unused chart components
+        new webpack.IgnorePlugin({
+          resourceRegExp: /^recharts\/lib\/(cartesian|polar)$/,
         })
       );
+
+      // Aggressive external modules to reduce bundle
+      config.externals = config.externals || [];
+      if (!isServer) {
+        config.externals.push({
+          // Externalize heavy libraries where possible
+          'pg-native': 'commonjs pg-native',
+        });
+      }
     }
 
     // Performance hints
