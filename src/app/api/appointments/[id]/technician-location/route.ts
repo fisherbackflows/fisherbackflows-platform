@@ -125,16 +125,15 @@ export async function GET(
     const locationData = {
       latitude: currentLocation.latitude,
       longitude: currentLocation.longitude,
-      accuracy: currentLocation.accuracy,
-      address: currentLocation.address,
-      lastUpdated: currentLocation.last_updated,
+      lastUpdated: currentLocation.updated_at,
       technicianName: technician?.name,
       technicianPhone: technician?.phone,
       distanceFromCustomer,
       estimatedTravelTime,
       batteryLevel: currentLocation.battery_level,
       speed: currentLocation.speed,
-      heading: currentLocation.heading
+      heading: currentLocation.heading,
+      isOnCall: currentLocation.is_on_call
     }
 
     // Update appointment with latest location info
