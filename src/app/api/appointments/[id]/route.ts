@@ -130,12 +130,14 @@ export async function PATCH(
     const { id: appointmentId } = await params;
     const updateData: any = await request.json();
 
-    const { data, error }: { data: any; error: any } = await supabase
+    const result = await supabase
       .from('appointments')
-      .update(updateData)
+      .update(updateData as any)
       .eq('id', appointmentId)
       .select()
       .single();
+
+    const { data, error } = result as { data: any; error: any };
 
     if (error) {
       return NextResponse.json(
