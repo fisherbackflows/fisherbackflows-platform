@@ -1,4 +1,10 @@
 {
   "devCommand": "npm run dev",
-  "installCommand": "npm install"
+  "installCommand": "npm install",
+  "buildCommand": "NODE_OPTIONS='--max-old-space-size=8192' npm run build",
+  "functions": {
+    "app/**": {
+      "memory": 3008
+    }
+  }
 }
