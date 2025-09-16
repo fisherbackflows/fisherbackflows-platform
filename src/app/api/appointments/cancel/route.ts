@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          to: appointment.customers?.email,
+          to: appointment.customers?.[0]?.email,
           subject: 'Appointment Cancelled - Fisher Backflows',
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
