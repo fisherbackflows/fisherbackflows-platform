@@ -21,7 +21,7 @@ export default function HomePage() {
 
       {/* Minimal Header */}
       <header className="sticky top-0 z-50 glass border-b border-blue-400/30">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex justify-between items-center">
             <Link href="/" className="flex items-center space-x-3">
               <Image
@@ -37,7 +37,7 @@ export default function HomePage() {
               </div>
             </Link>
 
-            <nav className="flex items-center space-x-6" role="navigation" aria-label="Main navigation">
+            <nav className="hidden sm:flex items-center space-x-6" role="navigation" aria-label="Main navigation">
               <Link
                 href="/portal"
                 className="text-white/80 hover:text-white transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black rounded"
@@ -60,12 +60,21 @@ export default function HomePage() {
                 Get Started
               </Link>
             </nav>
+
+            {/* Mobile Navigation Button */}
+            <Link
+              href="/signup"
+              className="sm:hidden px-4 py-2 rounded-full glass-btn-primary text-white text-sm font-semibold transition-all duration-200"
+              aria-label="Sign up for a new account"
+            >
+              Get Started
+            </Link>
           </div>
         </div>
       </header>
 
       {/* Hero Section - Simplified */}
-      <section className="relative pt-32 pb-24 px-6">
+      <section className="relative pt-20 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6">
         <div className="max-w-5xl mx-auto text-center">
           <div className="mb-8">
             <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass border border-emerald-400/50 text-sm" role="status" aria-label="Trust indicator">
@@ -74,7 +83,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-tight">
             <span className="text-white">Backflow Compliance</span>
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
@@ -82,7 +91,7 @@ export default function HomePage() {
             </span>
           </h1>
 
-          <p className="text-xl md:text-2xl text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg sm:text-xl md:text-2xl text-white/80 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed">
             The marketplace connecting property owners with certified testing companies.
             Track compliance, auto-schedule yearly tests, and manage everything in one platform.
           </p>
@@ -112,10 +121,10 @@ export default function HomePage() {
       </section>
 
       {/* Core Value Props - Minimal Grid */}
-      <section className="py-24 px-6" aria-labelledby="features-heading">
+      <section className="py-16 sm:py-24 px-4 sm:px-6" aria-labelledby="features-heading">
         <div className="max-w-6xl mx-auto">
           <h2 id="features-heading" className="sr-only">Platform Features</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
 
             <article className="text-center">
               <div className="w-16 h-16 mx-auto mb-6 rounded-2xl glass border border-blue-400/30 flex items-center justify-center" aria-hidden="true">
@@ -152,17 +161,17 @@ export default function HomePage() {
       </section>
 
       {/* How It Works - Two Paths */}
-      <section className="py-24 px-6 relative">
+      <section className="py-16 sm:py-24 px-4 sm:px-6 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent"></div>
         <div className="max-w-6xl mx-auto relative">
-          <h2 className="text-4xl md:text-5xl font-bold text-center text-white mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-white mb-12 sm:mb-16">
             Two Sides, One Platform
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
 
             {/* Property Owners */}
-            <div className="glass border border-blue-400/30 rounded-3xl p-8">
+            <div className="glass border border-blue-400/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8">
               <div className="flex items-center mb-6">
                 <Shield className="h-8 w-8 text-blue-400 mr-3" />
                 <h3 className="text-2xl font-bold text-white">Property Owners</h3>
@@ -196,7 +205,7 @@ export default function HomePage() {
             </div>
 
             {/* Testing Companies */}
-            <div className="glass border border-emerald-400/30 rounded-3xl p-8">
+            <div className="glass border border-emerald-400/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8">
               <div className="flex items-center mb-6">
                 <Users className="h-8 w-8 text-emerald-400 mr-3" />
                 <h3 className="text-2xl font-bold text-white">Testing Companies</h3>
@@ -234,9 +243,9 @@ export default function HomePage() {
       </section>
 
       {/* Simple CTA */}
-      <section className="py-24 px-6">
+      <section className="py-16 sm:py-24 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
             Ready to Simplify Compliance?
           </h2>
           <p className="text-xl text-white/70 mb-10">
