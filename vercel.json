@@ -1,7 +1,7 @@
 {
   "devCommand": "npm run dev",
   "installCommand": "npm install",
-  "buildCommand": "npm run build-minimal",
+  "buildCommand": "npm run build-no-check",
   "functions": {
     "app/**": {
       "memory": 1024
