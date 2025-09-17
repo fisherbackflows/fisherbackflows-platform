@@ -21,6 +21,14 @@ export async function POST(request: NextRequest) {
 
     console.log('📧 Creating customer:', email);
 
+    // Check if admin client is available
+    if (!supabaseAdmin) {
+      return NextResponse.json(
+        { error: 'Server configuration error' },
+        { status: 500 }
+      );
+    }
+
     // Step 1: Create auth user with Supabase Admin (no email confirmation required)
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
