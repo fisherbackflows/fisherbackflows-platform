@@ -1,4 +1,9 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
@@ -17,7 +22,7 @@ const nextConfig = {
   // Memory-optimized bundle configuration
   experimental: {
     optimizePackageImports: [
-      // Only core UI libraries (not charts - they'll be lazy loaded)
+      // UI libraries with tree shaking
       '@heroicons/react',
       'lucide-react',
       '@radix-ui/react-label',
@@ -25,10 +30,11 @@ const nextConfig = {
       // Core utilities only
       'clsx',
       'tailwind-merge',
+      // Date utilities for better tree shaking
+      'date-fns',
     ],
     // Enable optimizeCss for better CSS bundling
     optimizeCss: true,
-    // Note: lazyCompilation not available in Next.js 15 production
   },
 
   // Memory-optimized webpack configuration
@@ -126,6 +132,27 @@ const nextConfig = {
 
         // Minimize bundle size
         config.optimization.minimize = true;
+
+        // Advanced minification options (use Next.js built-in minimizer)
+        if (config.optimization.minimizer) {
+          config.optimization.minimizer.forEach((minimizer) => {
+            if (minimizer.constructor.name === 'TerserPlugin') {
+              minimizer.options.terserOptions = {
+                ...minimizer.options.terserOptions,
+                compress: {
+                  ...minimizer.options.terserOptions?.compress,
+                  drop_console: true,
+                  drop_debugger: true,
+                  pure_funcs: ['console.log', 'console.info', 'console.debug'],
+                },
+              };
+            }
+          });
+        }
+
+        // Aggressive dead code elimination
+        config.optimization.providedExports = true;
+        config.optimization.innerGraph = true;
       }
 
       // Add webpack plugins for better optimization
@@ -134,14 +161,44 @@ const nextConfig = {
         new webpack.IgnorePlugin({
           resourceRegExp: /^\.\/locale$/,
           contextRegExp: /moment$/,
+        }),
+        // Ignore large unused libraries
+        new webpack.IgnorePlugin({
+          resourceRegExp: /^\.\/locale$/,
+          contextRegExp: /date-fns$/,
+        }),
+        // Define plugin for dead code elimination
+        new webpack.DefinePlugin({
+          'process.env.NODE_ENV': JSON.stringify('production'),
+          __DEV__: false,
         })
       );
     }
 
+    // Enable persistent caching for faster builds
+    config.cache = {
+      type: 'filesystem',
+      allowCollectingMemory: true,
+      buildDependencies: {
+        config: [__filename],
+      },
+    };
+
+    // Resolve optimizations
+    config.resolve = {
+      ...config.resolve,
+      alias: {
+        ...config.resolve?.alias,
+      },
+      // Reduce module resolution overhead
+      modules: ['node_modules'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    };
+
     // Performance hints
     config.performance = {
-      maxAssetSize: 512000, // 500 KB
-      maxEntrypointSize: 512000, // 500 KB
+      maxAssetSize: 400000, // 400 KB (reduced from 500KB)
+      maxEntrypointSize: 400000, // 400 KB
       hints: 'warning',
     };
 
