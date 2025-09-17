@@ -44,6 +44,15 @@ const nextConfig = {
       level: 'error'
     };
 
+    // Enable persistent caching for faster builds
+    config.cache = {
+      type: 'filesystem',
+      allowCollectingMemory: true,
+      buildDependencies: {
+        config: [__filename],
+      },
+    };
+
     return config;
   },
 };
