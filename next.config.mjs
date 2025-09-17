@@ -16,7 +16,25 @@ const nextConfig = {
   },
   eslint: {
     ignoreDuringBuilds: true,
-  }
+  },
+
+  // Memory-optimized bundle configuration
+  experimental: {
+    optimizePackageImports: [
+      // UI libraries with tree shaking
+      '@heroicons/react',
+      'lucide-react',
+      '@radix-ui/react-label',
+      '@radix-ui/react-slot',
+      // Core utilities only
+      'clsx',
+      'tailwind-merge',
+      // Date utilities for better tree shaking
+      'date-fns',
+    ],
+    // Enable optimizeCss for better CSS bundling
+    optimizeCss: true,
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);
