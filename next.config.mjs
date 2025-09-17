@@ -14,38 +14,46 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 
-  // Advanced bundle optimization
+  // Memory-optimized bundle configuration
   experimental: {
     optimizePackageImports: [
-      // UI Libraries
+      // Only core UI libraries (not charts - they'll be lazy loaded)
       '@heroicons/react',
       'lucide-react',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-select',
-      '@radix-ui/react-tabs',
-      '@radix-ui/react-toast',
       '@radix-ui/react-label',
       '@radix-ui/react-slot',
-      // Charts and data visualization
-      'recharts',
-      // Utilities
-      'date-fns',
+      // Core utilities only
       'clsx',
-      'class-variance-authority',
       'tailwind-merge',
     ],
     // Enable optimizeCss for better CSS bundling
     optimizeCss: true,
+    // Note: lazyCompilation not available in Next.js 15 production
   },
 
-  // Advanced webpack optimizations
+  // Memory-optimized webpack configuration
   webpack: (config, { dev, isServer, webpack }) => {
     // Completely silence build output
     config.stats = 'none';
     config.infrastructureLogging = {
       level: 'error'
     };
+
+    // AGGRESSIVE memory optimizations
+    config.optimization.moduleIds = 'deterministic';
+    config.optimization.chunkIds = 'deterministic';
+
+    // Initialize splitChunks if not present
+    if (!config.optimization.splitChunks) {
+      config.optimization.splitChunks = {};
+    }
+    if (!config.optimization.splitChunks.cacheGroups) {
+      config.optimization.splitChunks.cacheGroups = {};
+    }
+
+    // Reduce parallelism to save memory
+    config.optimization.splitChunks.cacheGroups.default = false;
+    config.optimization.splitChunks.cacheGroups.defaultVendors = false;
 
     // Production optimizations only
     if (!dev) {
@@ -58,64 +66,51 @@ const nextConfig = {
         maxAsyncRequests: 30,
         maxInitialRequests: 30,
         cacheGroups: {
-          // Framework chunk (React, Next.js core)
+          // Framework chunk (React, Next.js core) - REDUCED
           framework: {
             chunks: 'all',
             name: 'framework',
-            test: /(?<!node_modules.*)[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|use-subscription)[\\/]/,
+            test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
             priority: 40,
             enforce: true,
           },
-          // Supabase and auth libs
+          // Core auth only - reduce auth bundle size
           auth: {
-            name: 'auth',
-            test: /[\\/]node_modules[\\/](@supabase|supabase|jsonwebtoken|bcryptjs)[\\/]/,
+            name: 'auth-core',
+            test: /[\\/]node_modules[\\/](@supabase\/ssr|@supabase\/auth-helpers-nextjs)[\\/]/,
             priority: 30,
             chunks: 'all',
           },
-          // UI component libraries
-          ui: {
-            name: 'ui',
-            test: /[\\/]node_modules[\\/](@radix-ui|@heroicons|lucide-react|class-variance-authority|clsx|tailwind-merge)[\\/]/,
-            priority: 25,
-            chunks: 'all',
-          },
-          // Charts and data visualization
+          // LAZY LOAD GROUPS - these won't be in main bundle
+          // Charts are now async-only (no eager loading)
           charts: {
-            name: 'charts',
+            name: 'charts-lazy',
             test: /[\\/]node_modules[\\/](recharts|d3-)[\\/]/,
             priority: 20,
-            chunks: 'all',
+            chunks: 'async', // Only load when actually needed
           },
-          // PDF and file processing
+          // PDF processing is async-only
           pdf: {
-            name: 'pdf',
+            name: 'pdf-lazy',
             test: /[\\/]node_modules[\\/](jspdf|csv-parser|papaparse)[\\/]/,
             priority: 20,
-            chunks: 'all',
+            chunks: 'async',
           },
-          // Date utilities
-          dates: {
-            name: 'dates',
-            test: /[\\/]node_modules[\\/](date-fns)[\\/]/,
-            priority: 15,
-            chunks: 'all',
+          // Heavy libs are async-only
+          heavy: {
+            name: 'heavy-lazy',
+            test: /[\\/]node_modules[\\/](@stripe|openai|twilio|web-push)[\\/]/,
+            priority: 19,
+            chunks: 'async',
           },
-          // Other vendor libraries
+          // Smaller vendor chunk
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
             chunks: 'all',
             priority: 10,
-            minChunks: 1,
-          },
-          // Common application code
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            priority: 5,
-            enforce: true,
+            minChunks: 2, // Require 2+ usage to include
+            maxSize: 100000, // 100KB max per vendor chunk
           },
         },
       };

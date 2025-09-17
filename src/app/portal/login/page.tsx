@@ -1,13 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Shield, CheckCircle } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function CustomerLoginPage() {
+// Component that uses searchParams
+function LoginForm() {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -226,5 +227,14 @@ export default function CustomerLoginPage() {
 
       </div>
     </div>
+  );
+}
+
+// Main component with suspense boundary
+export default function CustomerLoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
