@@ -35,6 +35,17 @@ const nextConfig = {
     // Enable optimizeCss for better CSS bundling
     optimizeCss: true,
   },
+
+  // Memory-optimized webpack configuration
+  webpack: (config, { dev, isServer, webpack }) => {
+    // Completely silence build output
+    config.stats = 'none';
+    config.infrastructureLogging = {
+      level: 'error'
+    };
+
+    return config;
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);
