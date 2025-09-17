@@ -53,7 +53,46 @@ const nextConfig = {
       },
     };
 
+    // Performance hints to manage bundle size
+    config.performance = {
+      hints: false, // Disable warnings to reduce noise
+      maxAssetSize: 1000000, // 1MB
+      maxEntrypointSize: 1000000, // 1MB
+    };
+
     return config;
+  },
+
+  // Performance headers
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
+      },
+      {
+        source: '/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
   },
 
   // Enhanced image optimization
