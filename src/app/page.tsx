@@ -41,33 +41,33 @@ export default function HomePage() {
               <Link
                 href="/portal"
                 className="text-white/80 hover:text-white transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black rounded"
-                aria-label="Access property owner portal"
+                aria-label="Find certified testers"
               >
-                Property Owners
+                Find Testers
               </Link>
               <Link
                 href="/team-portal"
                 className="text-white/80 hover:text-white transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black rounded"
-                aria-label="Access testing company portal"
+                aria-label="For testing companies"
               >
-                Testing Companies
+                For Testers
               </Link>
               <Link
-                href="/signup"
-                className="px-5 py-2 rounded-full glass-btn-primary text-white font-semibold transition-all duration-200 hover:glow-blue focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black"
-                aria-label="Sign up for a new account"
+                href="/portal/login"
+                className="px-5 py-2 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black"
+                aria-label="Login to your account"
               >
-                Get Started
+                Login
               </Link>
             </nav>
 
             {/* Mobile Navigation Button */}
             <Link
-              href="/signup"
+              href="/portal"
               className="sm:hidden px-4 py-2 rounded-full glass-btn-primary text-white text-sm font-semibold transition-all duration-200"
-              aria-label="Sign up for a new account"
+              aria-label="Find testers near you"
             >
-              Get Started
+              Find Testers
             </Link>
           </div>
         </div>
@@ -84,160 +84,137 @@ export default function HomePage() {
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            <span className="text-white">Backflow Compliance</span>
+            <span className="text-white">Never Miss a</span>
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
-              Made Simple
+              Backflow Test Again
             </span>
           </h1>
 
-          <p className="text-lg sm:text-xl md:text-2xl text-white/80 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed">
-            The marketplace connecting property owners with certified testing companies.
-            Track compliance, auto-schedule yearly tests, and manage everything in one platform.
+          <p className="text-lg sm:text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto leading-relaxed">
+            Required annual backflow testing made simple. Find certified testers near you or manage your testing business - all in one platform.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/portal">
-              <Button
-                size="lg"
-                className="glass-btn-primary hover:glow-blue text-white px-8 py-6 text-lg font-semibold rounded-2xl group focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black"
-                aria-label="Access property owner portal to manage your backflow compliance"
-              >
-                I Own Property
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-              </Button>
-            </Link>
-            <Link href="/team-portal">
-              <Button
-                size="lg"
-                className="glass border border-blue-400/50 hover:border-blue-400 text-white px-8 py-6 text-lg font-semibold rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black"
-                aria-label="Access testing company portal to manage your business"
-              >
-                I Test Backflows
-              </Button>
-            </Link>
+          <div className="text-center mb-8 sm:mb-12">
+            <p className="text-sm text-white/60 mb-2">What is backflow testing?</p>
+            <p className="text-base text-white/70 max-w-2xl mx-auto">
+              Annual safety tests required by law to prevent contamination of drinking water. We make compliance automatic.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {/* Primary CTA for Property Owners */}
+            <div className="text-center">
+              <Link href="/portal">
+                <Button
+                  size="lg"
+                  className="glass-btn-primary hover:glow-blue text-white px-12 py-6 text-xl font-bold rounded-2xl group focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black shadow-2xl"
+                  aria-label="Find certified backflow testers in your area"
+                >
+                  Find Testers Near Me
+                  <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                </Button>
+              </Link>
+              <p className="text-sm text-white/60 mt-3">Property owners & managers - Get compliant in minutes</p>
+            </div>
+
+            {/* Secondary CTA for Testing Companies */}
+            <div className="text-center">
+              <p className="text-white/80 mb-3">Are you a testing company?</p>
+              <Link href="/team-portal">
+                <Button
+                  size="default"
+                  className="glass border border-emerald-400/50 hover:border-emerald-400 text-white px-6 py-3 text-base font-semibold rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-black"
+                  aria-label="Access testing company portal to grow your business"
+                >
+                  Grow Your Business
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Core Value Props - Minimal Grid */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6" aria-labelledby="features-heading">
-        <div className="max-w-6xl mx-auto">
-          <h2 id="features-heading" className="sr-only">Platform Features</h2>
-          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
-
-            <article className="text-center">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl glass border border-blue-400/30 flex items-center justify-center" aria-hidden="true">
-                <MapPin className="h-8 w-8 text-blue-400" aria-hidden="true" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-3">Find Certified Testers</h3>
-              <p className="text-white/70 leading-relaxed">
-                Search by location or browse our marketplace of verified testing companies - from solo testers to large HVAC firms.
-              </p>
-            </article>
-
-            <article className="text-center">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl glass border border-emerald-400/30 flex items-center justify-center" aria-hidden="true">
-                <Clock className="h-8 w-8 text-emerald-400" aria-hidden="true" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-3">Automatic Scheduling</h3>
-              <p className="text-white/70 leading-relaxed">
-                Never miss yearly compliance deadlines. Auto-schedule tests, get reminders, and track all devices in one dashboard.
-              </p>
-            </article>
-
-            <article className="text-center">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-2xl glass border border-purple-400/30 flex items-center justify-center" aria-hidden="true">
-                <Users className="h-8 w-8 text-purple-400" aria-hidden="true" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-3">Business Management</h3>
-              <p className="text-white/70 leading-relaxed">
-                Testing companies get admin controls, mobile apps for techs, auto-routing, and 70% faster workflows.
-              </p>
-            </article>
-
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works - Two Paths */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent"></div>
-        <div className="max-w-6xl mx-auto relative">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-white mb-12 sm:mb-16">
-            Two Sides, One Platform
+      {/* Core Value Props - Simplified */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-12">
+            Everything You Need for Backflow Compliance
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
-
-            {/* Property Owners */}
-            <div className="glass border border-blue-400/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8">
-              <div className="flex items-center mb-6">
-                <Shield className="h-8 w-8 text-blue-400 mr-3" />
-                <h3 className="text-2xl font-bold text-white">Property Owners</h3>
+          <div className="grid sm:grid-cols-2 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl glass border border-blue-400/30 flex items-center justify-center">
+                <MapPin className="h-8 w-8 text-blue-400" />
               </div>
-
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-emerald-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-white/80">Create one account to manage all backflow devices</p>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-emerald-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-white/80">Search and compare certified testing companies</p>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-emerald-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-white/80">Auto-schedule yearly required tests</p>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-emerald-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-white/80">Track compliance history and get reminders</p>
-                </div>
-              </div>
-
-              <Link href="/portal">
-                <Button className="w-full glass-btn-primary hover:glow-blue text-white font-semibold rounded-xl">
-                  Access Property Portal
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+              <h3 className="text-lg font-semibold text-white mb-2">Find Local Testers</h3>
+              <p className="text-white/70">
+                Browse verified testing companies in your area
+              </p>
             </div>
 
-            {/* Testing Companies */}
-            <div className="glass border border-emerald-400/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8">
-              <div className="flex items-center mb-6">
-                <Users className="h-8 w-8 text-emerald-400 mr-3" />
-                <h3 className="text-2xl font-bold text-white">Testing Companies</h3>
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-2xl glass border border-emerald-400/30 flex items-center justify-center">
+                <Clock className="h-8 w-8 text-emerald-400" />
               </div>
+              <h3 className="text-lg font-semibold text-white mb-2">Never Miss a Test</h3>
+              <p className="text-white/70">
+                Automatic scheduling and yearly reminders
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-white/80">Create company profile with admin controls</p>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-white/80">Add unlimited testers with custom permissions</p>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-white/80">Mobile app with optimized routing for field techs</p>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-blue-400 mr-3 mt-0.5 flex-shrink-0" />
-                  <p className="text-white/80">Auto-populate forms and streamline workflows</p>
-                </div>
+      {/* How It Works - Simplified */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-12">
+            How It Works
+          </h2>
+
+          <div className="space-y-8">
+            {/* Step 1 */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left">
+              <div className="w-12 h-12 mb-4 sm:mb-0 sm:mr-6 flex-shrink-0 rounded-full glass border border-blue-400/30 flex items-center justify-center">
+                <span className="text-xl font-bold text-blue-400">1</span>
               </div>
-
-              <Link href="/signup">
-                <Button className="w-full glass border border-emerald-400 hover:bg-emerald-400/10 text-white font-semibold rounded-xl">
-                  Start Free Trial
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-2">Find Certified Testers</h3>
+                <p className="text-white/70">Search by location to find verified testing companies near you.</p>
+              </div>
             </div>
 
+            {/* Step 2 */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left">
+              <div className="w-12 h-12 mb-4 sm:mb-0 sm:mr-6 flex-shrink-0 rounded-full glass border border-emerald-400/30 flex items-center justify-center">
+                <span className="text-xl font-bold text-emerald-400">2</span>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-2">Schedule Your Test</h3>
+                <p className="text-white/70">Book directly with testing companies and get automatic yearly reminders.</p>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left">
+              <div className="w-12 h-12 mb-4 sm:mb-0 sm:mr-6 flex-shrink-0 rounded-full glass border border-purple-400/30 flex items-center justify-center">
+                <span className="text-xl font-bold text-purple-400">3</span>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold text-white mb-2">Stay Compliant</h3>
+                <p className="text-white/70">Track all your devices and never miss a required test again.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12">
+            <Link href="/portal">
+              <Button size="lg" className="glass-btn-primary hover:glow-blue text-white px-8 py-4 text-lg font-semibold rounded-2xl">
+                Get Started Now
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

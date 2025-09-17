@@ -303,8 +303,11 @@ export async function isAuthenticatedTech() {
   return user && user.role === 'technician';
 }
 
-// JWT secret for customer portal tokens
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+// JWT secret for customer portal tokens - SECURITY FIX: No fallback allowed
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('CRITICAL: JWT_SECRET environment variable is required for security');
+}
 
 // Generate customer JWT token
 export function generateCustomerToken(customerId: string, companyId: string, email: string) {
