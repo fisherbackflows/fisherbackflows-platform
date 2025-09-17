@@ -1,4 +1,4 @@
-name: Build and Deploy to Vercel
+name: Build and Deploy to Vercel (Prebuilt)
 
 on:
   push:
@@ -30,20 +30,26 @@ jobs:
       env:
         NEXT_TELEMETRY_DISABLED: 1
 
-    - name: Deploy to Vercel (Production)
+    - name: Create Vercel output directory structure
+      run: |
+        mkdir -p .vercel/output
+        mv .next .vercel/output/
+        echo '{"version": 3}' > .vercel/output/config.json
+
+    - name: Deploy to Vercel with prebuilt files (Production)
       if: github.ref == 'refs/heads/main'
       run: |
         npm install -g vercel
-        vercel --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
+        vercel --prebuilt --token ${{ secrets.VERCEL_TOKEN }} --prod --yes
       env:
         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
-    - name: Deploy to Vercel (Preview)
+    - name: Deploy to Vercel with prebuilt files (Preview)
       if: github.event_name == 'pull_request'
       run: |
         npm install -g vercel
-        vercel --token ${{ secrets.VERCEL_TOKEN }} --yes
+        vercel --prebuilt --token ${{ secrets.VERCEL_TOKEN }} --yes
       env:
         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

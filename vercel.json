@@ -1,7 +1,7 @@
 {
+  "buildCommand": "echo 'Build step skipped - using prebuilt files from GitHub Actions'",
   "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "buildCommand": "npm run build-no-check",
+  "installCommand": "echo 'Install step skipped - using prebuilt files from GitHub Actions'",
   "functions": {
     "app/**": {
       "memory": 1024
