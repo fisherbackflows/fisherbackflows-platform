@@ -60,7 +60,7 @@ export default function TeamPortalLoginPage() {
 
   return (
     <div className="min-h-screen bg-black">
-      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      <TeamPortalNavigation />
 
       {/* Main Content */}
       <main className="flex items-center justify-center min-h-[calc(100vh-100px)] p-6">

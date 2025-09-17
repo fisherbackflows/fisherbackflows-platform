@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 import {
   Shield,
   Clock,
@@ -10,11 +11,14 @@ import {
   MapPin,
   CheckCircle,
   Phone,
-  Mail
+  Mail,
+  Menu,
+  X
 } from 'lucide-react';
 
 export default function HomePage() {
   const currentYear = new Date().getFullYear();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -61,21 +65,61 @@ export default function HomePage() {
               </Link>
             </nav>
 
-            {/* Mobile Navigation Button */}
-            <Link
-              href="/portal"
-              className="sm:hidden px-4 py-2 rounded-full glass-btn-primary text-white text-sm font-semibold transition-all duration-200"
-              aria-label="Find testers near you"
+            {/* Mobile Hamburger Menu */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="sm:hidden p-2 rounded-lg glass border border-white/30 text-white hover:bg-white/10 transition-all duration-200"
+              aria-label="Toggle mobile menu"
             >
-              Find Testers
-            </Link>
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        {isMobileMenuOpen && (
+          <div className="sm:hidden glass border-t border-blue-400/30 py-4 px-6">
+            <nav className="flex flex-col space-y-4">
+              <Link
+                href="/portal"
+                className="text-white/80 hover:text-white transition-colors font-medium py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Find Testers
+              </Link>
+              <Link
+                href="/team-portal"
+                className="text-white/80 hover:text-white transition-colors font-medium py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                For Testers
+              </Link>
+              <Link
+                href="/portal/login"
+                className="text-white/80 hover:text-white transition-colors font-medium py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Login
+              </Link>
+              <Link
+                href="/signup"
+                className="text-white/80 hover:text-white transition-colors font-medium py-2"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Sign Up
+              </Link>
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* Hero Section - Simplified */}
       <section className="relative pt-20 sm:pt-32 pb-16 sm:pb-24 px-4 sm:px-6">
-        <div className="max-w-5xl mx-auto text-center">
+        <div className="max-w-6xl mx-auto text-center">
           <div className="mb-8">
             <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass border border-emerald-400/50 text-sm" role="status" aria-label="Trust indicator">
               <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" aria-hidden="true"></div>
@@ -124,7 +168,7 @@ export default function HomePage() {
               <Link href="/team-portal">
                 <Button
                   size="default"
-                  className="glass border border-emerald-400/50 hover:border-emerald-400 text-white px-6 py-3 text-base font-semibold rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-black"
+                  className="glass border border-emerald-400/50 hover:border-emerald-400 text-white px-8 py-4 text-lg font-semibold rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-black"
                   aria-label="Access testing company portal to grow your business"
                 >
                   Grow Your Business
@@ -137,8 +181,8 @@ export default function HomePage() {
 
       {/* Core Value Props - Simplified */}
       <section className="py-16 sm:py-24 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-12">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-12">
             Everything You Need for Backflow Compliance
           </h2>
 
@@ -168,7 +212,7 @@ export default function HomePage() {
 
       {/* How It Works - Simplified */}
       <section className="py-16 sm:py-24 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-12">
             How It Works
           </h2>
@@ -176,8 +220,8 @@ export default function HomePage() {
           <div className="space-y-8">
             {/* Step 1 */}
             <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left">
-              <div className="w-12 h-12 mb-4 sm:mb-0 sm:mr-6 flex-shrink-0 rounded-full glass border border-blue-400/30 flex items-center justify-center">
-                <span className="text-xl font-bold text-blue-400">1</span>
+              <div className="w-16 h-16 mb-4 sm:mb-0 sm:mr-6 flex-shrink-0 rounded-2xl glass border border-blue-400/30 flex items-center justify-center">
+                <span className="text-2xl font-bold text-blue-400">1</span>
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-white mb-2">Find Certified Testers</h3>
@@ -187,8 +231,8 @@ export default function HomePage() {
 
             {/* Step 2 */}
             <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left">
-              <div className="w-12 h-12 mb-4 sm:mb-0 sm:mr-6 flex-shrink-0 rounded-full glass border border-emerald-400/30 flex items-center justify-center">
-                <span className="text-xl font-bold text-emerald-400">2</span>
+              <div className="w-16 h-16 mb-4 sm:mb-0 sm:mr-6 flex-shrink-0 rounded-2xl glass border border-emerald-400/30 flex items-center justify-center">
+                <span className="text-2xl font-bold text-emerald-400">2</span>
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-white mb-2">Schedule Your Test</h3>
@@ -198,8 +242,8 @@ export default function HomePage() {
 
             {/* Step 3 */}
             <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left">
-              <div className="w-12 h-12 mb-4 sm:mb-0 sm:mr-6 flex-shrink-0 rounded-full glass border border-purple-400/30 flex items-center justify-center">
-                <span className="text-xl font-bold text-purple-400">3</span>
+              <div className="w-16 h-16 mb-4 sm:mb-0 sm:mr-6 flex-shrink-0 rounded-2xl glass border border-purple-400/30 flex items-center justify-center">
+                <span className="text-2xl font-bold text-purple-400">3</span>
               </div>
               <div>
                 <h3 className="text-xl font-semibold text-white mb-2">Stay Compliant</h3>
@@ -221,8 +265,8 @@ export default function HomePage() {
 
       {/* Simple CTA */}
       <section className="py-16 sm:py-24 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
             Ready to Simplify Compliance?
           </h2>
           <p className="text-xl text-white/70 mb-10">

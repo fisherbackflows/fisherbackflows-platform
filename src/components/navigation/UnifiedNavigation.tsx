@@ -174,14 +174,17 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
 
   return (
     <header className={`sticky top-0 z-50 ${currentTheme.colors.surfaceGlass} ${currentTheme.colors.border} border-b`}>
-      <div className="max-w-7xl mx-auto px-4 py-4">
+      <div className="max-w-7xl mx-auto px-4 py-2 md:py-4">
         <div className="flex justify-between items-center">
           {/* Logo and Section Title */}
-          <Link href={getHomeLink()} className="flex items-center space-x-3">
-            <Logo width={40} height={32} />
-            <div>
-              <h1 className={`text-lg font-bold ${currentTheme.colors.text.primary}`}>Fisher Backflows</h1>
+          <Link href={getHomeLink()} className="flex items-center space-x-2 md:space-x-3">
+            <Logo width={24} height={20} className="md:w-10 md:h-8" />
+            <div className="hidden sm:block md:block">
+              <h1 className={`text-sm md:text-lg font-bold ${currentTheme.colors.text.primary}`}>Fisher Backflows</h1>
               <p className={`text-xs ${currentTheme.colors.text.muted}`}>{getSectionTitle()}</p>
+            </div>
+            <div className="sm:hidden">
+              <h1 className={`text-sm font-bold ${currentTheme.colors.text.primary}`}>{getSectionTitle()}</h1>
             </div>
           </Link>
 
@@ -238,9 +241,9 @@ export default function UnifiedNavigation({ section, userInfo }: UnifiedNavigati
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`md:hidden ${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} p-2`}
+            className={`md:hidden ${currentTheme.colors.text.secondary} hover:${currentTheme.colors.text.primary} p-1.5 rounded-lg`}
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
 
