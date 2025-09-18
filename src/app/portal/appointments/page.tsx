@@ -8,10 +8,31 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
+interface Appointment {
+  id: string;
+  customer_id: string;
+  scheduled_date: string;
+  scheduled_time_start?: string;
+  scheduled_time_end?: string;
+  appointment_type?: string;
+  status: 'scheduled' | 'completed' | 'cancelled' | 'in_progress';
+  priority?: string;
+  customer_notes?: string;
+  special_instructions?: string;
+}
+
+interface Customer {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  auth_user_id: string;
+}
+
 function AppointmentsPage() {
-  const [appointments, setAppointments] = useState([]);
+  const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [customer, setCustomer] = useState(null);
+  const [customer, setCustomer] = useState<Customer | null>(null);
   const supabase = createClientComponentClient();
 
   useEffect(() => {

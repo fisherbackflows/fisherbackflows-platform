@@ -13,15 +13,11 @@ import {
   CheckCircle,
   XCircle,
   AlertTriangle,
-  Edit3,
   Trash2,
   RefreshCw,
-  Filter,
   Search,
   Download,
-  Plus,
   Eye,
-  Settings,
   ArrowUpDown,
   ChevronLeft,
   ChevronRight
@@ -125,7 +121,7 @@ function AdminBookings() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [stats]);
 
   const handleStatusUpdate = async (bookingId: string, newStatus: string) => {
     const loadingToast = toast.loading('Updating booking status...');

@@ -8,7 +8,6 @@ import {
   TrendingUp,
   Calendar,
   Route,
-  BarChart3,
   Activity,
   Cpu,
   Database,
@@ -17,8 +16,7 @@ import {
   CheckCircle2,
   ArrowRight,
   Play,
-  Pause,
-  RefreshCw
+  Pause
 } from 'lucide-react'
 
 interface AIMetric {
@@ -44,13 +42,13 @@ export default function AIShowcasePage() {
   const [metrics, setMetrics] = useState<AIMetric[]>([])
   const [features, setFeatures] = useState<AIFeature[]>([])
   const [isLiveDemo, setIsLiveDemo] = useState(false)
-  const [demoData, setDemoData] = useState<any>(null)
+  const [demoData, setDemoData] = useState<Record<string, unknown> | null>(null)
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null)
 
   useEffect(() => {
     loadAIMetrics()
     loadAIFeatures()
-    
+
     // Start live demo updates
     const interval = setInterval(() => {
       if (isLiveDemo) {

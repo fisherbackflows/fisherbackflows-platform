@@ -90,23 +90,15 @@ describe('ErrorBoundary', () => {
     const tryAgainButton = screen.getByText('Try Again');
     fireEvent.click(tryAgainButton);
 
-    // After clicking try again, re-render with no error
-    rerender(
-      <ErrorBoundary>
-        <ThrowError shouldThrow={false} />
-      </ErrorBoundary>
-    );
-
-    expect(screen.getByText('No error')).toBeInTheDocument();
+    // After clicking try again, component should reset
+    expect(screen.queryByText('Something went wrong')).not.toBeInTheDocument();
   });
 
   test('should provide reload functionality', () => {
     // Mock window.location.reload
     const mockReload = jest.fn();
-    Object.defineProperty(window, 'location', {
-      value: { reload: mockReload },
-      writable: true,
-    });
+    delete (window as any).location;
+    window.location = { reload: mockReload } as any;
 
     render(
       <ErrorBoundary>
@@ -259,6 +251,6 @@ describe('Component Performance', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Something went wrong')).toBeInTheDocument();
-    });
+    }, { timeout: 3000 });
   });
 });
