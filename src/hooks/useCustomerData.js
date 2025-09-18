@@ -113,7 +113,10 @@ export function useCustomerData() {
         setLoading(false);
         
       } catch (err) {
-        console.error('Error loading customer data:', err);
+        // Log error only in development
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error loading customer data:', err);
+        }
         setError('Failed to load customer data');
         setLoading(false);
       }

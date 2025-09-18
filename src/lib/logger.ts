@@ -11,11 +11,16 @@ export const logger = {
   },
   
   error: (message: string, error?: any) => {
-    console.error(`[ERROR] ${message}`, error || '');
+    if (process.env.NODE_ENV === 'development') {
+      console.error(`[ERROR] ${message}`, error || '');
+    }
+    // In production, could send to error monitoring service
   },
   
   warn: (message: string, data?: any) => {
-    console.warn(`[WARN] ${message}`, data || '');
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`[WARN] ${message}`, data || '');
+    }
   },
   
   debug: (message: string, data?: any) => {

@@ -5,7 +5,7 @@ const { createClient } = require('@supabase/supabase-js');
 async function testProductionLogin() {
   console.log('🔍 TESTING PRODUCTION LOGIN FLOW\n');
   
-  const baseUrl = 'https://fisherbackflows.com';
+  const baseUrl = 'https://www.fisherbackflows.com';
   const testEmail = 'test.customer.fixed@example.com';
   const testPassword = 'TestPassword123';
   
