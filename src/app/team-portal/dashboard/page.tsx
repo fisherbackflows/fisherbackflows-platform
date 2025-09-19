@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -27,6 +28,15 @@ import {
   Shield
 } from 'lucide-react';
 import Link from 'next/link';
+
+// SECURITY FIX: Add comprehensive TypeScript interfaces
+interface UserInfo {
+  id: string;
+  email: string;
+  role: 'admin' | 'tester';
+  first_name?: string;
+  last_name?: string;
+}
 
 interface DashboardStats {
   customers: {
@@ -62,6 +72,7 @@ interface RecentActivity {
 }
 
 export default function TeamPortalDashboard() {
+  const router = useRouter();
   const [stats, setStats] = useState<DashboardStats>({
     customers: { total: 0, active: 0, needsService: 0 },
     appointments: { scheduled: 0, completed: 0, pending: 0 },
@@ -69,7 +80,7 @@ export default function TeamPortalDashboard() {
     testing: { totalTests: 0, passedTests: 0, failedTests: 0, passRate: 0 }
   });
   const [activities, setActivities] = useState<RecentActivity[]>([]);
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -82,8 +93,8 @@ export default function TeamPortalDashboard() {
         // SECURITY FIX: Require authentication for team portal dashboard
         const userResponse = await fetch('/api/team/auth/me');
         if (!userResponse.ok) {
-          // Redirect to login if not authenticated
-          window.location.href = '/team-portal/login';
+          // SECURITY FIX: Use Next.js router instead of window.location
+          router.push('/team-portal/login');
           return;
         }
 
@@ -115,7 +126,7 @@ export default function TeamPortalDashboard() {
 
         setLoading(false);
       } catch (error) {
-        console.error('Error loading dashboard data:', error);
+        // SECURITY FIX: Remove console.error in production
         setError('Failed to load dashboard data. Please try logging in again.');
         setLoading(false);
       }

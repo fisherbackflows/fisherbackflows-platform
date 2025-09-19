@@ -17,17 +17,25 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Verify user is an admin (you may want to add a role check)
+    // Verify user is an admin - restrict to admin only
     const { data: profile } = await supabase
       .from('team_users')
-      .select('role')
+      .select('role, company_id')
       .eq('id', user.id)
       .single()
 
-    if (profile?.role !== 'admin' && profile?.role !== 'technician') {
+    if (profile?.role !== 'admin') {
       return NextResponse.json(
-        { success: false, error: 'Insufficient permissions' },
+        { success: false, error: 'Admin access required' },
         { status: 403 }
+      )
+    }
+
+    const userCompanyId = profile.company_id;
+    if (!userCompanyId) {
+      return NextResponse.json(
+        { success: false, error: 'User company not found' },
+        { status: 400 }
       )
     }
 
@@ -36,7 +44,7 @@ export async function GET(request: NextRequest) {
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1)
     const thisYear = new Date(now.getFullYear(), 0, 1)
 
-    // Get customer metrics
+    // Get customer metrics - SECURITY FIX: Filter by company
     const { data: customers, error: customerError } = await supabase
       .from('customers')
       .select(`
@@ -49,9 +57,14 @@ export async function GET(request: NextRequest) {
           next_test_due
         )
       `)
+      .eq('company_id', userCompanyId)
 
     if (customerError) {
-      console.error('Error fetching customers:', customerError)
+      // SECURITY FIX: Remove console.error in production
+      return NextResponse.json(
+        { success: false, error: 'Failed to fetch customer data' },
+        { status: 500 }
+      )
     }
 
     // Calculate customer metrics
@@ -71,28 +84,38 @@ export async function GET(request: NextRequest) {
       })
     }).length || 0
 
-    // Get appointment metrics
+    // Get appointment metrics - SECURITY FIX: Filter by company
     const { data: appointments, error: appointmentError } = await supabase
       .from('appointments')
       .select('*')
+      .eq('company_id', userCompanyId)
       .gte('created_at', thisMonth.toISOString())
 
     if (appointmentError) {
-      console.error('Error fetching appointments:', appointmentError)
+      // SECURITY FIX: Remove console.error in production
+      return NextResponse.json(
+        { success: false, error: 'Failed to fetch appointment data' },
+        { status: 500 }
+      )
     }
 
     const scheduledAppointments = appointments?.filter((a: any) => a.status === 'scheduled').length || 0
     const completedAppointments = appointments?.filter((a: any) => a.status === 'completed').length || 0
     const pendingAppointments = appointments?.filter((a: any) => a.status === 'confirmed' || a.status === 'pending').length || 0
 
-    // Get financial metrics
+    // Get financial metrics - SECURITY FIX: Filter by company
     const { data: invoices, error: invoiceError } = await supabase
       .from('invoices')
       .select('amount, status, created_at')
+      .eq('company_id', userCompanyId)
       .gte('created_at', thisMonth.toISOString())
 
     if (invoiceError) {
-      console.error('Error fetching invoices:', invoiceError)
+      // SECURITY FIX: Remove console.error in production
+      return NextResponse.json(
+        { success: false, error: 'Failed to fetch financial data' },
+        { status: 500 }
+      )
     }
 
     const monthlyRevenue = invoices?.reduce((total: number, invoice: any) => {
@@ -108,14 +131,19 @@ export async function GET(request: NextRequest) {
       return invoiceDate <= thirtyDaysAgo
     }).length || 0
 
-    // Get test report metrics for this year
+    // Get test report metrics for this year - SECURITY FIX: Filter by company
     const { data: testReports, error: testError } = await supabase
       .from('test_reports')
       .select('*')
+      .eq('company_id', userCompanyId)
       .gte('created_at', thisYear.toISOString())
 
     if (testError) {
-      console.error('Error fetching test reports:', testError)
+      // SECURITY FIX: Remove console.error in production
+      return NextResponse.json(
+        { success: false, error: 'Failed to fetch test report data' },
+        { status: 500 }
+      )
     }
 
     const totalTests = testReports?.length || 0
@@ -162,7 +190,7 @@ export async function GET(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Error in admin metrics API:', error)
+    // SECURITY FIX: Remove console.error in production
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }
