@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
+// Force middleware to use Node.js runtime instead of Edge Runtime
+export const runtime = 'nodejs'
+
 // Initialize Supabase client for middleware
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
