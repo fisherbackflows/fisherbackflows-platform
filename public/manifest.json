@@ -1,0 +1,167 @@
+{
+  "name": "Fisher Backflows - Business Management & Customer Portal",
+  "short_name": "Fisher Backflows",
+  "description": "Complete backflow testing business management system with customer portal for scheduling, payments, and service tracking",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Customer Portal",
+      "short_name": "Portal",
+      "description": "Access customer account, pay bills, schedule service",
+      "url": "/portal",
+      "icons": [
+        {
+          "src": "/icons/customer-portal-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Schedule Service",
+      "short_name": "Schedule",
+      "description": "Book backflow testing appointment",
+      "url": "/portal/schedule",
+      "icons": [
+        {
+          "src": "/icons/schedule-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Pay Bill",
+      "short_name": "Pay",
+      "description": "Pay outstanding invoices securely",
+      "url": "/portal/pay",
+      "icons": [
+        {
+          "src": "/icons/payment-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Business App",
+      "short_name": "Business",
+      "description": "Fisher Backflows business management system",
+      "url": "/app",
+      "icons": [
+        {
+          "src": "/icons/business-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile-home.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Home screen showing customer portal access"
+    },
+    {
+      "src": "/screenshots/mobile-portal.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Customer portal dashboard with account overview"
+    },
+    {
+      "src": "/screenshots/mobile-payment.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Secure payment interface for bill payment"
+    },
+    {
+      "src": "/screenshots/desktop-business.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Business management dashboard for technicians"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+  "protocol_handlers": [
+    {
+      "protocol": "tel",
+      "url": "tel:%s"
+    },
+    {
+      "protocol": "mailto",
+      "url": "mailto:%s"
+    }
+  ]
+}

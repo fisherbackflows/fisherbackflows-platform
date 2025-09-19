@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" fill="none">
+  <defs>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="1" stdDeviation="1" flood-color="#00000020"/>
+    </filter>
+  </defs>
+  
+  <!-- White background -->
+  <rect width="384" height="384" rx="58" fill="#FFFFFF"/>
+  
+  <!-- Main Diamond Element -->
+  <g transform="translate(77, 77)">
+    <path d="M115 23 L207 115 L115 207 L23 115 Z" 
+          fill="#000000" 
+          filter="url(#softShadow)"
+          stroke="#FFFFFF" 
+          stroke-width="4"/>
+    <path d="M115 58 L172.5 115 L115 172.5 L58 115 Z" 
+          fill="#FFFFFF" 
+          fill-opacity="0.9"/>
+    <circle cx="115" cy="115" r="12" fill="#000000"/>
+    <!-- Corner accents -->
+    <circle cx="115" cy="35" r="6" fill="#FFFFFF"/>
+    <circle cx="196" cy="115" r="6" fill="#FFFFFF"/>
+    <circle cx="115" cy="196" r="6" fill="#FFFFFF"/>
+    <circle cx="35" cy="115" r="6" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Brand text -->
+  <text x="192" y="353" text-anchor="middle" fill="#000000" font-family="Arial, sans-serif" font-size="31" font-weight="bold">FISHER BACKFLOWS</text>
+</svg>

@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" fill="none">
+  <defs>
+    <!-- Gradient definitions for professional depth -->
+    <linearGradient id="diamondGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1E40AF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E3A8A;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E3A8A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3B82F6;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Subtle shadow filter -->
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000020"/>
+    </filter>
+  </defs>
+
+  <!-- Main Diamond Element (Premium geometric design) -->
+  <g transform="translate(20, 25)">
+    <!-- Outer diamond border -->
+    <path d="M25 5 L45 25 L25 45 L5 25 Z" 
+          fill="url(#diamondGradient)" 
+          filter="url(#softShadow)"
+          stroke="#FFFFFF" 
+          stroke-width="1.5"/>
+    
+    <!-- Inner diamond accent -->
+    <path d="M25 12 L35 25 L25 38 L15 25 Z" 
+          fill="#FFFFFF" 
+          fill-opacity="0.2"/>
+    
+    <!-- Central highlight -->
+    <circle cx="25" cy="25" r="3" fill="#FFFFFF" fill-opacity="0.6"/>
+    
+    <!-- Decorative corner accents -->
+    <circle cx="25" cy="8" r="1.5" fill="#FFFFFF" fill-opacity="0.8"/>
+    <circle cx="42" cy="25" r="1.5" fill="#FFFFFF" fill-opacity="0.8"/>
+    <circle cx="25" cy="42" r="1.5" fill="#FFFFFF" fill-opacity="0.8"/>
+    <circle cx="8" cy="25" r="1.5" fill="#FFFFFF" fill-opacity="0.8"/>
+  </g>
+
+  <!-- Decorative Spacer Element -->
+  <g transform="translate(75, 35)">
+    <!-- Elegant flowing lines -->
+    <path d="M0 15 Q8 10 16 15 Q24 20 32 15" 
+          stroke="url(#diamondGradient)" 
+          stroke-width="2" 
+          fill="none" 
+          opacity="0.6"/>
+    <path d="M0 20 Q8 15 16 20 Q24 25 32 20" 
+          stroke="url(#diamondGradient)" 
+          stroke-width="1.5" 
+          fill="none" 
+          opacity="0.4"/>
+    
+    <!-- Accent dots -->
+    <circle cx="8" cy="12" r="1" fill="url(#diamondGradient)" opacity="0.7"/>
+    <circle cx="24" cy="12" r="1" fill="url(#diamondGradient)" opacity="0.7"/>
+  </g>
+
+  <!-- FISHER Text (Premium Typography) -->
+  <text x="120" y="45" 
+        font-family="system-ui, -apple-system, sans-serif" 
+        font-size="26" 
+        font-weight="700" 
+        fill="url(#textGradient)"
+        letter-spacing="0.5px">
+    FISHER
+  </text>
+
+  <!-- BACKFLOWS Text -->
+  <text x="120" y="70" 
+        font-family="system-ui, -apple-system, sans-serif" 
+        font-size="22" 
+        font-weight="500" 
+        fill="url(#textGradient)"
+        letter-spacing="2px"
+        opacity="0.9">
+    BACKFLOWS
+  </text>
+
+  <!-- Professional Accent Line -->
+  <line x1="120" y1="52" x2="320" y2="52" 
+        stroke="url(#diamondGradient)" 
+        stroke-width="1" 
+        opacity="0.3"/>
+
+  <!-- Subtle Brand Mark -->
+  <g transform="translate(340, 35)">
+    <path d="M0 0 L8 8 L0 16 L8 8 L16 0 L8 8 L16 16" 
+          stroke="url(#diamondGradient)" 
+          stroke-width="1.5" 
+          fill="none" 
+          opacity="0.25"/>
+  </g>
+</svg>

@@ -1,0 +1,237 @@
+import { NextRequest, NextResponse } from 'next/server'
+export const runtime = 'nodejs';
+import { createRouteHandlerClient } from '@/lib/supabase'
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const supabase = createRouteHandlerClient(request)
+    const { id: appointmentId } = await params
+
+    // Verify authentication (customer or team member)
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Get appointment details and verify access
+    const { data: appointment, error: appointmentError } = await supabase
+      .from('appointments')
+      .select(`
+        id,
+        customer_id,
+        assigned_technician,
+        customer_can_track,
+        status,
+        scheduled_date,
+        customers (
+          id,
+          email,
+          first_name,
+          last_name
+        )
+      `)
+      .eq('id', appointmentId)
+      .single()
+
+    if (appointmentError || !appointment) {
+      return NextResponse.json(
+        { error: 'Appointment not found' },
+        { status: 404 }
+      )
+    }
+
+    // Check if user has permission to view location
+    const userEmail = user.email
+    if (!userEmail) {
+      return NextResponse.json(
+        { error: 'User email required' },
+        { status: 400 }
+      )
+    }
+
+    const isCustomer = appointment.customers?.email === userEmail
+    const isTeamMember = await supabase
+      .from('team_users')
+      .select('id')
+      .eq('email', userEmail)
+      .single()
+
+    // Customers can only track if explicitly enabled and it's their appointment
+    if (isCustomer && !appointment.customer_can_track) {
+      return NextResponse.json(
+        { error: 'Location tracking not enabled for this appointment' },
+        { status: 403 }
+      )
+    }
+
+    // Non-team members can only view their own appointments
+    if (!isTeamMember.data && !isCustomer) {
+      return NextResponse.json(
+        { error: 'Access denied' },
+        { status: 403 }
+      )
+    }
+
+    // Only track active appointments
+    const validStatuses = ['confirmed', 'in_progress', 'traveling', 'on_site']
+    if (!appointment.status || !validStatuses.includes(appointment.status)) {
+      return NextResponse.json({
+        success: false,
+        message: 'Location tracking not available for this appointment status',
+        status: appointment.status
+      })
+    }
+
+    // Check if technician is assigned
+    if (!appointment.assigned_technician) {
+      return NextResponse.json({
+        success: false,
+        message: 'No technician assigned to this appointment',
+        error: 'Technician not assigned'
+      })
+    }
+
+    // Get current technician location
+    const { data: currentLocation, error: locationError } = await supabase
+      .from('technician_current_location')
+      .select('*')
+      .eq('technician_id', appointment.assigned_technician)
+      .eq('is_active', true)
+      .single()
+
+    if (locationError || !currentLocation) {
+      return NextResponse.json({
+        success: false,
+        message: 'Technician location not available',
+        error: 'Location data not found or technician not actively tracking'
+      })
+    }
+
+    // Distance calculation removed - customer coordinates not available in database
+    const distanceFromCustomer = null
+    const estimatedTravelTime = null
+
+    // Get technician details
+    const { data: technician } = await supabase
+      .from('team_users')
+      .select('first_name, last_name, phone')
+      .eq('id', appointment.assigned_technician)
+      .single()
+
+    // Prepare location response
+    const locationData = {
+      latitude: currentLocation.latitude,
+      longitude: currentLocation.longitude,
+      lastUpdated: currentLocation.updated_at,
+      technicianName: technician ? `${technician.first_name} ${technician.last_name}` : undefined,
+      technicianPhone: technician?.phone,
+      distanceFromCustomer,
+      estimatedTravelTime,
+      batteryLevel: currentLocation.battery_level,
+      speed: currentLocation.speed,
+      heading: currentLocation.heading,
+      isOnCall: currentLocation.is_on_call
+    }
+
+    // Update appointment with latest location info
+    await supabase
+      .from('appointments')
+      .update({
+        technician_latitude: currentLocation.latitude,
+        technician_longitude: currentLocation.longitude,
+        technician_last_location: currentLocation.updated_at,
+        travel_distance_km: distanceFromCustomer ? Math.round(distanceFromCustomer / 100) / 10 : null,
+        estimated_arrival: estimatedTravelTime ? 
+          new Date(Date.now() + estimatedTravelTime * 60000).toISOString() : null
+      })
+      .eq('id', appointmentId)
+
+    return NextResponse.json({
+      success: true,
+      location: locationData,
+      appointment: {
+        id: appointment.id,
+        status: appointment.status,
+        customerCanTrack: appointment.customer_can_track,
+        appointmentDate: appointment.scheduled_date
+      }
+    })
+
+  } catch (error) {
+    console.error('Technician location API error:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const supabase = createRouteHandlerClient(request)
+    const { id: appointmentId } = await params
+
+    // Verify team member authentication
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user || !user.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const { data: teamMember } = await supabase
+      .from('team_users')
+      .select('role')
+      .eq('email', user.email)
+      .single()
+
+    if (!teamMember || !teamMember.role || !['admin', 'manager', 'technician'].includes(teamMember.role)) {
+      return NextResponse.json({ error: 'Access denied' }, { status: 403 })
+    }
+
+    const { customerCanTrack } = await request.json()
+
+    // Update tracking permission
+    const { error: updateError } = await supabase
+      .from('appointments')
+      .update({
+        customer_can_track: customerCanTrack,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', appointmentId)
+
+    if (updateError) {
+      throw updateError
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Location tracking ${customerCanTrack ? 'enabled' : 'disabled'} for appointment`
+    })
+
+  } catch (error) {
+    console.error('Update tracking permission error:', error)
+    return NextResponse.json(
+      { error: 'Failed to update tracking permission' },
+      { status: 500 }
+    )
+  }
+}
+
+// Haversine formula to calculate distance between two points
+function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+  const R = 6371000 // Earth's radius in meters
+  const dLat = (lat2 - lat1) * Math.PI / 180
+  const dLon = (lon2 - lon1) * Math.PI / 180
+  
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
+  
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  return R * c
+}

@@ -1,0 +1,28 @@
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="waterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="50%" stop-color="#1d4ed8"/>
+      <stop offset="100%" stop-color="#1e40af"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Water droplet icon -->
+  <g transform="translate(8,8)">
+    <path d="M22 4C22 4 10 16 10 28C10 34.627 15.373 40 22 40C28.627 40 34 34.627 34 28C34 16 22 4 22 4Z" 
+          fill="url(#waterGradient)" filter="url(#glow)"/>
+    <ellipse cx="18" cy="24" rx="4" ry="6" fill="white" opacity="0.3"/>
+    <rect x="20" y="40" width="4" height="4" fill="url(#waterGradient)"/>
+  </g>
+  
+  <!-- Company text -->
+  <text x="50" y="25" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#1e40af">Fisher</text>
+  <text x="50" y="42" font-family="Arial, sans-serif" font-size="14" font-weight="normal" fill="#64748b">Backflows</text>
+</svg>

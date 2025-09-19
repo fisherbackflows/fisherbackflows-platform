@@ -1,0 +1,583 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
+import { Button } from '@/components/ui/button';
+import { SmartBackButton } from '@/components/ui/SmartBreadcrumb';
+import { useKeyboardShortcuts, createFormShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { RecoveryNotification, AutoSaveStatus } from '@/components/ui/AutoSaveComponents';
+import { 
+  ArrowLeft,
+  Save,
+  Phone,
+  Mail,
+  MapPin,
+  Building,
+  User,
+  Plus,
+  Trash2
+} from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+interface Device {
+  id: string;
+  type: 'RP' | 'PVB' | 'DC' | 'DCDA' | 'SVB';
+  manufacturer: string;
+  model: string;
+  serialNumber: string;
+  location: string;
+  installDate: string;
+  size: string;
+}
+
+interface CustomerForm {
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  customerType: 'residential' | 'commercial' | 'industrial';
+  waterDistrict: string;
+  notes: string;
+  devices: Device[];
+}
+
+export default function NewCustomerPage() {
+  const router = useRouter();
+  const [saving, setSaving] = useState(false);
+  const [showRecovery, setShowRecovery] = useState(false);
+  const [formData, setFormData] = useState<CustomerForm>({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: 'Tacoma',
+    state: 'WA',
+    zip: '',
+    customerType: 'residential',
+    waterDistrict: 'Tacoma Water',
+    notes: '',
+    devices: []
+  });
+
+  // Auto-save functionality
+  const { saveNow, clearSave, recoverData, hasSavedData, lastSaved } = useAutoSave(formData, {
+    key: 'new_customer_form',
+    interval: 15000, // Save every 15 seconds
+    onSave: (data) => console.log('🔄 Customer form auto-saved'),
+    onRecover: (data) => {
+      setFormData(data);
+      setShowRecovery(false);
+    }
+  });
+
+  // Check for saved data on mount
+  useEffect(() => {
+    if (hasSavedData) {
+      setShowRecovery(true);
+    }
+  }, [hasSavedData]);
+
+  // Keyboard shortcuts for better UX
+  useKeyboardShortcuts([
+    ...createFormShortcuts(
+      () => saveNow(), // Manual save on Ctrl+S
+      () => handleSubmit(new Event('submit') as any), // Submit on Ctrl+Enter
+      () => router.back() // Cancel on Escape
+    )
+  ]);
+
+  const deviceTypes = [
+    { value: 'RP', label: 'Reduced Pressure (RP)' },
+    { value: 'PVB', label: 'Pressure Vacuum Breaker (PVB)' },
+    { value: 'DC', label: 'Double Check (DC)' },
+    { value: 'DCDA', label: 'Double Check Detector Assembly (DCDA)' },
+    { value: 'SVB', label: 'Spill-Resistant Vacuum Breaker (SVB)' }
+  ];
+
+  const waterDistricts = [
+    'Tacoma Water',
+    'Lakewood Water District',
+    'Puyallup Water',
+    'Gig Harbor Water',
+    'Pierce County Water Utility',
+    'Steilacoom Water',
+    'University Place Water',
+    'Other'
+  ];
+
+  const handleInputChange = (field: keyof CustomerForm, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const addDevice = () => {
+    const newDevice: Device = {
+      id: Date.now().toString(),
+      type: 'RP',
+      manufacturer: '',
+      model: '',
+      serialNumber: '',
+      location: '',
+      installDate: '',
+      size: '3/4"'
+    };
+
+    setFormData(prev => ({
+      ...prev,
+      devices: [...prev.devices, newDevice]
+    }));
+  };
+
+  const updateDevice = (deviceId: string, field: keyof Device, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      devices: prev.devices.map(device => 
+        device.id === deviceId ? { ...device, [field]: value } : device
+      )
+    }));
+  };
+
+  const removeDevice = (deviceId: string) => {
+    setFormData(prev => ({
+      ...prev,
+      devices: prev.devices.filter(device => device.id !== deviceId)
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+
+    try {
+      // Transform form data to match API expectations
+      const customerData = {
+        first_name: formData.name.split(' ')[0] || formData.name,
+        last_name: formData.name.split(' ').slice(1).join(' ') || '',
+        email: formData.email,
+        phone: formData.phone,
+        address: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`,
+        customer_type: formData.customerType,
+        water_district: formData.waterDistrict,
+        notes: formData.notes,
+        status: 'active'
+      };
+
+      // Create customer
+      const response = await fetch('/api/customers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(customerData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to create customer');
+      }
+
+      const result = await response.json();
+      console.log('Customer created successfully:', result);
+
+      // If devices were added, create them separately
+      if (formData.devices.length > 0) {
+        for (const device of formData.devices) {
+          const deviceData = {
+            customer_id: result.customer.id,
+            serial_number: device.serialNumber,
+            device_type: device.type,
+            make: device.manufacturer,
+            model: device.model,
+            size: device.size,
+            location: device.location,
+            install_date: device.installDate,
+            status: 'active'
+          };
+
+          try {
+            const deviceResponse = await fetch('/api/devices', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(deviceData),
+            });
+
+            if (!deviceResponse.ok) {
+              console.warn('Failed to create device:', device);
+            }
+          } catch (deviceError) {
+            console.warn('Error creating device:', deviceError);
+          }
+        }
+      }
+
+      alert('Customer created successfully!');
+      clearSave(); // Clear auto-save after successful submission
+      router.push('/team-portal/customers');
+    } catch (error) {
+      console.error('Error saving customer:', error);
+      alert(`Error saving customer: ${error.message}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const formatPhoneNumber = (value: string) => {
+    const numbers = value.replace(/\D/g, '');
+    if (numbers.length <= 3) return numbers;
+    if (numbers.length <= 6) return `(${numbers.slice(0, 3)}) ${numbers.slice(3)}`;
+    return `(${numbers.slice(0, 3)}) ${numbers.slice(3, 6)}-${numbers.slice(6, 10)}`;
+  };
+
+  const handlePhoneChange = (value: string) => {
+    const formatted = formatPhoneNumber(value);
+    handleInputChange('phone', formatted);
+  };
+
+  return (
+    <div className="min-h-screen bg-black">
+      <TeamPortalNavigation userInfo={{ name: 'Team Member', email: '' }} />
+      
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <SmartBackButton 
+              breadcrumb={[
+                { label: 'Customers', href: '/team-portal/customers' },
+                { label: 'New Customer', href: '/team-portal/customers/new', current: true }
+              ]}
+            />
+            <div>
+              <h1 className="text-2xl font-bold text-white flex items-center">
+                <User className="h-6 w-6 mr-2" />
+                Add New Customer
+              </h1>
+              <p className="text-white/60 text-sm">(Ctrl+S to save, Esc to cancel)</p>
+            </div>
+          </div>
+          <AutoSaveStatus lastSaved={lastSaved} saving={saving} />
+        </div>
+
+        <form onSubmit={handleSubmit} className="pb-20">
+        {/* Basic Information */}
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
+            <User className="h-5 w-5 mr-2" />
+            Basic Information
+          </h2>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-white/80 mb-1">
+                Customer Name *
+              </label>
+              <input
+                type="text"
+                required
+                className="form-input"
+                value={formData.name}
+                onChange={(e) => handleInputChange('name', e.target.value)}
+                placeholder="Enter customer or business name"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-1">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="form-input"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  placeholder="email@example.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-1">
+                  Phone *
+                </label>
+                <input
+                  type="tel"
+                  required
+                  className="form-input"
+                  value={formData.phone}
+                  onChange={(e) => handlePhoneChange(e.target.value)}
+                  placeholder="(253) 555-0123"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/80 mb-1">
+                Customer Type
+              </label>
+              <select
+                className="form-select"
+                value={formData.customerType}
+                onChange={(e) => handleInputChange('customerType', e.target.value as 'residential' | 'commercial' | 'industrial')}
+              >
+                <option value="residential">Residential</option>
+                <option value="commercial">Commercial</option>
+                <option value="industrial">Industrial</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Address Information */}
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
+          <h2 className="text-lg font-semibold text-white mb-4 flex items-center">
+            <MapPin className="h-5 w-5 mr-2" />
+            Address
+          </h2>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-white/80 mb-1">
+                Street Address *
+              </label>
+              <input
+                type="text"
+                required
+                className="form-input"
+                value={formData.address}
+                onChange={(e) => handleInputChange('address', e.target.value)}
+                placeholder="1234 Main Street"
+              />
+            </div>
+
+            <div className="grid grid-cols-3 gap-3">
+              <div className="col-span-2">
+                <label className="block text-sm font-medium text-white/80 mb-1">
+                  City *
+                </label>
+                <input
+                  type="text"
+                  required
+                  className="form-input"
+                  value={formData.city}
+                  onChange={(e) => handleInputChange('city', e.target.value)}
+                  placeholder="Tacoma"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-white/80 mb-1">
+                  ZIP *
+                </label>
+                <input
+                  type="text"
+                  required
+                  className="form-input"
+                  value={formData.zip}
+                  onChange={(e) => handleInputChange('zip', e.target.value)}
+                  placeholder="98402"
+                  maxLength={5}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-white/80 mb-1">
+                Water District
+              </label>
+              <select
+                className="form-select"
+                value={formData.waterDistrict}
+                onChange={(e) => handleInputChange('waterDistrict', e.target.value)}
+              >
+                {waterDistricts.map(district => (
+                  <option key={district} value={district}>{district}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Devices */}
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold text-white flex items-center">
+              <Building className="h-5 w-5 mr-2" />
+              Backflow Devices
+            </h2>
+            <Button type="button" variant="outline" size="sm" onClick={addDevice}>
+              <Plus className="h-4 w-4 mr-1" />
+              Add Device
+            </Button>
+          </div>
+
+          {formData.devices.length === 0 ? (
+            <div className="text-center py-6 text-white/80">
+              <Building className="h-8 w-8 mx-auto mb-2 text-white/80" />
+              <p>No devices added yet</p>
+              <p className="text-sm">Add backflow prevention devices for this customer</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {formData.devices.map((device, index) => (
+                <div key={device.id} className="border border-blue-500/50 rounded-2xl p-4">
+                  <div className="flex justify-between items-center mb-3">
+                    <h3 className="font-medium text-white">Device #{index + 1}</h3>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => removeDevice(device.id)}
+                      className="text-red-300 hover:text-red-700 hover:bg-gradient-to-r from-red-600/80 to-red-500/80 backdrop-blur-xl"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                      <label className="block text-sm font-medium text-white/80 mb-1">
+                        Device Type
+                      </label>
+                      <select
+                        className="form-select"
+                        value={device.type}
+                        onChange={(e) => updateDevice(device.id, 'type', e.target.value as Device['type'])}
+                      >
+                        {deviceTypes.map(type => (
+                          <option key={type.value} value={type.value}>{type.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-white/80 mb-1">
+                        Size
+                      </label>
+                      <select
+                        className="form-select"
+                        value={device.size}
+                        onChange={(e) => updateDevice(device.id, 'size', e.target.value)}
+                      >
+                        <option value="3/4&quot;">3/4"</option>
+                        <option value="1&quot;">1"</option>
+                        <option value="1.5&quot;">1.5"</option>
+                        <option value="2&quot;">2"</option>
+                        <option value="3&quot;">3"</option>
+                        <option value="4&quot;">4"</option>
+                        <option value="6&quot;">6"</option>
+                        <option value="8&quot;">8"</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                      <label className="block text-sm font-medium text-white/80 mb-1">
+                        Manufacturer
+                      </label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={device.manufacturer}
+                        onChange={(e) => updateDevice(device.id, 'manufacturer', e.target.value)}
+                        placeholder="e.g. Watts, Zurn, Febco"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-white/80 mb-1">
+                        Model
+                      </label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={device.model}
+                        onChange={(e) => updateDevice(device.id, 'model', e.target.value)}
+                        placeholder="Model number"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-sm font-medium text-white/80 mb-1">
+                        Serial Number
+                      </label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={device.serialNumber}
+                        onChange={(e) => updateDevice(device.id, 'serialNumber', e.target.value)}
+                        placeholder="Serial number"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-white/80 mb-1">
+                        Location
+                      </label>
+                      <input
+                        type="text"
+                        className="form-input"
+                        value={device.location}
+                        onChange={(e) => updateDevice(device.id, 'location', e.target.value)}
+                        placeholder="e.g. Front yard, Basement"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Notes */}
+        <div className="glass rounded-2xl glow-blue-sm p-4 mb-4">
+          <h2 className="text-lg font-semibold text-white mb-4">
+            Additional Notes
+          </h2>
+          <textarea
+            className="form-textarea"
+            rows={4}
+            value={formData.notes}
+            onChange={(e) => handleInputChange('notes', e.target.value)}
+            placeholder="Any additional information about this customer..."
+          />
+        </div>
+
+        {/* Actions */}
+        <div className="flex space-x-4">
+          <Button type="submit" disabled={saving} className="flex-1">
+            <Save className="h-4 w-4 mr-2" />
+            {saving ? 'Saving...' : 'Save Customer'}
+          </Button>
+          <Button type="button" variant="outline" onClick={() => router.back()}>
+            Cancel
+          </Button>
+        </div>
+      </form>
+
+      {/* Recovery Notification */}
+      <RecoveryNotification
+        show={showRecovery}
+        onRecover={() => {
+          const saved = recoverData();
+          if (saved) {
+            setFormData(saved);
+          }
+          setShowRecovery(false);
+        }}
+        onDiscard={() => {
+          clearSave();
+          setShowRecovery(false);
+        }}
+        formName="customer form"
+      />
+      </div>
+    </div>
+  );
+}
