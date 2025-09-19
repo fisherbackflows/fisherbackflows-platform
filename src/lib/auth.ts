@@ -305,12 +305,19 @@ export async function isAuthenticatedTech() {
 
 // JWT secret for customer portal tokens - SECURITY FIX: No fallback allowed
 const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  throw new Error('CRITICAL: JWT_SECRET environment variable is required for security');
+if (!JWT_SECRET && process.env.NODE_ENV !== 'test') {
+  // Allow build to complete but fail at runtime if missing in production
+  if (process.env.VERCEL_ENV || process.env.NODE_ENV === 'production') {
+    throw new Error('CRITICAL: JWT_SECRET environment variable is required for security');
+  }
+  console.warn('WARNING: JWT_SECRET missing - authentication will not work');
 }
 
 // Generate customer JWT token
 export function generateCustomerToken(customerId: string, companyId: string, email: string) {
+  if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET is required for token generation');
+  }
   return jwt.sign(
     { 
       customer_id: customerId,
@@ -330,6 +337,9 @@ export async function verifyCustomerToken(token: string): Promise<{
   email: string;
 } | null> {
   try {
+    if (!JWT_SECRET) {
+      throw new Error('JWT_SECRET is required for token verification');
+    }
     const decoded = jwt.verify(token, JWT_SECRET) as any;
     
     if (decoded.type !== 'customer_portal') {
