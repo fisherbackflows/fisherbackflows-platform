@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -11,12 +12,24 @@ import { ArrowLeft, Lock, User, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { TeamPortalNavigation } from '@/components/navigation/UnifiedNavigation';
 
+// Type definitions
+interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+interface LoginError {
+  error: string;
+  retryAfter?: number;
+}
+
 export default function TeamPortalLoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [retryTimer, setRetryTimer] = useState<number>(0);
+  const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: ''
   });
@@ -31,8 +44,25 @@ export default function TeamPortalLoginPage() {
     // No automatic authentication checks to prevent bypass
   }, [logoutReason]);
 
+  // Handle rate limiting countdown
+  useEffect(() => {
+    if (retryTimer > 0) {
+      const timer = setTimeout(() => {
+        setRetryTimer(retryTimer - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [retryTimer]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Don't submit if rate limited
+    if (retryTimer > 0) {
+      toast.error(`Please wait ${retryTimer} seconds before trying again`);
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -42,17 +72,25 @@ export default function TeamPortalLoginPage() {
         body: JSON.stringify(formData)
       });
 
-      const data = await response.json();
+      const data: LoginError = await response.json();
 
       if (response.ok) {
         toast.success('Login successful!');
         // All users go to dashboard regardless of role
         router.push('/team-portal/dashboard');
+      } else if (response.status === 429) {
+        // Handle rate limiting
+        const retryAfterSeconds = data.retryAfter || 900;
+        setRetryTimer(retryAfterSeconds);
+        toast.error(`Too many login attempts. Please wait ${Math.ceil(retryAfterSeconds / 60)} minutes.`);
+      } else if (data.error?.includes('locked')) {
+        // Handle account lockout
+        toast.error('Your account has been locked due to multiple failed attempts. Please contact support.');
       } else {
-        toast.error(data.error || 'Login failed');
+        toast.error(data.error || 'Invalid credentials');
       }
     } catch (error) {
-      toast.error('Network error. Please try again.');
+      toast.error('Network error. Please check your connection and try again.');
     } finally {
       setIsLoading(false);
     }
@@ -103,7 +141,7 @@ export default function TeamPortalLoginPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" aria-label="Team Portal Login Form" role="form">
               <div>
                 <Label htmlFor="email" className="block text-sm font-medium text-white/80 mb-2">
                   Email Address
@@ -115,8 +153,13 @@ export default function TeamPortalLoginPage() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
                   placeholder="tester@company.com"
+                  aria-label="Email address"
+                  aria-required="true"
+                  aria-describedby="email-help"
+                  disabled={retryTimer > 0}
                   required
                 />
+                <span id="email-help" className="sr-only">Enter your company email address</span>
               </div>
 
               <div>
@@ -131,22 +174,43 @@ export default function TeamPortalLoginPage() {
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     className="w-full px-4 py-3 pr-12 rounded-xl bg-white/10 border border-blue-400 glass text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:glow-blue-sm transition-all duration-200"
                     placeholder="Enter your password"
+                    aria-label="Password"
+                    aria-required="true"
+                    aria-describedby="password-requirements"
+                    disabled={retryTimer > 0}
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                   </button>
                 </div>
+                <div id="password-requirements" className="mt-2 text-xs text-white/60">
+                  Password must be at least 12 characters long
+                </div>
               </div>
+
+              {/* Rate limit countdown */}
+              {retryTimer > 0 && (
+                <div className="mb-4 p-3 bg-red-500/20 border border-red-400 rounded-xl">
+                  <div className="flex items-center space-x-2">
+                    <AlertTriangle className="h-5 w-5 text-red-400" />
+                    <span className="text-red-300 text-sm">
+                      Too many attempts. Please wait {Math.floor(retryTimer / 60)}:{(retryTimer % 60).toString().padStart(2, '0')}
+                    </span>
+                  </div>
+                </div>
+              )}
 
               <Button
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || retryTimer > 0}
                 className="w-full py-3 text-white font-semibold rounded-xl glass-btn-primary glow-blue transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                aria-label="Sign in to team portal"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center space-x-2">
