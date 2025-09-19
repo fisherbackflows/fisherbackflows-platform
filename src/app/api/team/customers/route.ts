@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const sessionToken = cookieStore.get('team_session')?.value;
 
     if (!sessionToken) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
         error: 'Not authenticated',
         customers: [],
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
     const sessionValidation = await validateSession(sessionToken);
     if (!sessionValidation.isValid) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
         error: 'Session expired',
         customers: [],
@@ -30,15 +30,46 @@ export async function GET(request: NextRequest) {
       }, { status: 401 });
     }
 
+    // CRITICAL SECURITY FIX: Verify user role authorization
+    if (!['admin', 'tester'].includes(sessionValidation.role)) {
+      return NextResponse.json({
+        success: false,
+        error: 'Insufficient permissions',
+        customers: [],
+        count: 0
+      }, { status: 403 });
+    }
+
+    // CRITICAL SECURITY FIX: Get user's company for data isolation
+    const userCompanyId = sessionValidation.companyId;
+    if (!userCompanyId) {
+      return NextResponse.json({
+        success: false,
+        error: 'Company access required',
+        customers: [],
+        count: 0
+      }, { status: 400 });
+    }
+
     const supabase = createRouteHandlerClient(request);
-    
-    console.log('🔍 Tester Portal: Fetching customers from database...');
-    
-    // Fetch real customers from the database
+
+    // CRITICAL SECURITY FIX: Fetch customers filtered by company
     const { data: customers, error: customerError } = await supabase
       .from('customers')
       .select(`
-        *,
+        id,
+        company_name,
+        first_name,
+        last_name,
+        email,
+        phone,
+        street_address,
+        city,
+        state,
+        zip_code,
+        account_status,
+        last_test_date,
+        next_test_due,
         devices:devices(
           id,
           device_type,
@@ -49,11 +80,11 @@ export async function GET(request: NextRequest) {
           next_test_due
         )
       `)
+      .eq('company_id', userCompanyId)
       .order('last_name');
 
     if (customerError) {
-      console.error('Customer database error:', customerError);
-      return NextResponse.json({ 
+      return NextResponse.json({
         success: false,
         error: 'Failed to load customers',
         customers: [],
@@ -78,16 +109,13 @@ export async function GET(request: NextRequest) {
       totalPaid: 0 // This would need to be calculated from payments/invoices
     })) || [];
 
-    console.log(`📊 Tester Portal: Loaded ${transformedCustomers.length} real customers`);
-
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
       customers: transformedCustomers,
       count: transformedCustomers.length
     });
   } catch (error) {
-    console.error('Team API error:', error);
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: false,
       error: 'Server error',
       customers: [],
