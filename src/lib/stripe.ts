@@ -18,12 +18,12 @@ import {
 // CONFIGURATION
 // ═══════════════════════════════════════════════════════════════════════
 
-const stripeConfig = {
+const stripeConfig: Stripe.StripeConfig = {
   apiVersion: '2024-06-20' as Stripe.LatestApiVersion,
   typescript: true,
   maxNetworkRetries: 3,
   timeout: 30000,
-  telemetry: true
+  telemetry: false
 };
 
 // Lazy initialization function to avoid build-time errors
@@ -122,7 +122,9 @@ export class StripeCustomerManager {
         // Try to retrieve existing customer
         try {
           customer = await stripe.customers.retrieve(data.id) as Stripe.Customer;
-          if (customer.deleted) customer = null;
+          if ('deleted' in customer && Boolean(customer.deleted)) {
+            customer = null;
+          }
         } catch (error) {
           logger.warn('Customer not found, creating new', { customerId: data.id });
         }
@@ -271,6 +273,7 @@ export class StripePaymentProcessor {
         off_session: true,
         confirm: true,
         setup_future_usage: savePaymentMethod ? 'off_session' : undefined,
+        expand: ['charges.data'],
         metadata: {
           invoice_id: invoiceId || '',
           processed_at: new Date().toISOString()
@@ -278,7 +281,8 @@ export class StripePaymentProcessor {
       });
 
       if (intent.status === 'succeeded') {
-        const charge = intent.charges.data[0];
+        const expandedIntent = intent as unknown as Stripe.PaymentIntent & { charges: { data: Stripe.Charge[] } };
+        const charge = expandedIntent.charges?.data?.[0] || null;
         return {
           success: true,
           paymentId: intent.id,
@@ -302,11 +306,11 @@ export class StripePaymentProcessor {
       logger.error('Payment processing failed', { error, customerId, amount });
       
       // Handle specific Stripe errors
-      if (error.type === 'StripeCardError') {
+      if (error && typeof error === 'object' && 'type' in error && error.type === 'StripeCardError') {
         return {
           success: false,
-          error: error.message,
-          errorCode: error.code
+          error: 'message' in error ? String(error.message) : 'Card error occurred',
+          errorCode: 'code' in error ? String(error.code) : undefined
         };
       }
       
@@ -387,7 +391,8 @@ export class StripePaymentProcessor {
       });
 
       if (intent.status === 'succeeded') {
-        const charge = intent.charges.data[0];
+        const expandedIntent = intent as unknown as Stripe.PaymentIntent & { charges: { data: Stripe.Charge[] } };
+        const charge = expandedIntent.charges?.data?.[0] || null;
         return {
           success: true,
           paymentId: intent.id,
@@ -404,7 +409,7 @@ export class StripePaymentProcessor {
       logger.error('Payment confirmation failed', { error, paymentIntentId });
       return {
         success: false,
-        error: error.message || 'Payment confirmation failed'
+        error: (error && typeof error === 'object' && 'message' in error) ? String(error.message) : 'Payment confirmation failed'
       };
     }
   }
@@ -446,7 +451,7 @@ export class StripeRefundManager {
       logger.error('Refund processing failed', { error, paymentIntentId });
       return {
         success: false,
-        error: error.message || 'Refund processing failed'
+        error: (error && typeof error === 'object' && 'message' in error) ? String(error.message) : 'Refund processing failed'
       };
     }
   }
