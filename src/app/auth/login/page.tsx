@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -39,7 +39,7 @@ interface LoginResponse {
   retryAfter?: number;
 }
 
-export default function UnifiedLoginPage() {
+function UnifiedLoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -389,5 +389,20 @@ export default function UnifiedLoginPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function UnifiedLoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-400 mx-auto mb-4" />
+          <p className="text-white/70">Loading login page...</p>
+        </div>
+      </div>
+    }>
+      <UnifiedLoginContent />
+    </Suspense>
   );
 }
