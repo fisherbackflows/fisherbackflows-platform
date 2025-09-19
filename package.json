@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3010",
     "dev-turbo": "next dev -H 0.0.0.0 -p 3010 --turbopack",
-    "build": "next build",
+    "build": "NODE_OPTIONS='--max-old-space-size=6144' next build --no-lint",
     "build-turbo": "next build --turbopack",
     "build-no-check": "NODE_OPTIONS='--max-old-space-size=6144' next build --no-lint",
     "start": "next start -H 0.0.0.0 -p 3010",
