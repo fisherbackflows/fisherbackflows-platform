@@ -1,24 +1,24 @@
 /**
-
-export const runtime = 'nodejs';
  * Unified Login API Route
  * Handles authentication for all portals using the unified system
  */
 
+export const runtime = 'nodejs';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
-import { createUnifiedSession } from '@/lib/auth/unified-auth-system';
-import { logger } from '@/lib/logger';
-import { z } from 'zod';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
 
 // Request validation schema
-const LoginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-  portal: z.enum(['customer', 'team', 'field', 'admin']),
-  rememberMe: z.boolean().optional(),
-});
+interface LoginRequest {
+  email: string;
+  password: string;
+  userType: 'auto' | 'customer' | 'business' | 'field' | 'admin';
+  returnTo?: string;
+}
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -26,226 +26,278 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+interface User {
+  id: string;
+  email: string;
+  password_hash: string;
+  first_name?: string;
+  last_name?: string;
+  name?: string;
+  role: 'customer' | 'business_owner' | 'business_admin' | 'field_tech' | 'admin';
+  is_active: boolean;
+  failed_login_attempts?: number;
+  locked_until?: string;
+  company_id?: string;
+}
+
+// Rate limiting storage (in production, use Redis)
+const loginAttempts = new Map<string, { count: number; lastAttempt: number; lockedUntil?: number }>();
+
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes
+const ATTEMPT_WINDOW = 15 * 60 * 1000; // 15 minutes
+
 export async function POST(request: NextRequest) {
-  const requestId = crypto.randomUUID();
-
   try {
-    // Parse and validate request body
-    const body = await request.json();
-    const validation = LoginSchema.safeParse(body);
+    const body: LoginRequest = await request.json();
+    const { email, password, userType, returnTo } = body;
 
-    if (!validation.success) {
+    if (!email || !password) {
       return NextResponse.json(
-        {
-          error: {
-            code: 'VALIDATION_ERROR',
-            message: 'Invalid request data',
-            details: validation.error.errors,
-          },
-        },
+        { success: false, error: 'Email and password are required' },
         { status: 400 }
       );
     }
 
-    const { email, password, portal, rememberMe } = validation.data;
+    const clientIP = request.ip || request.headers.get('x-forwarded-for') || 'unknown';
+    const attemptKey = `${email}-${clientIP}`;
 
-    // Log login attempt
-    logger.info('Login attempt', {
-      email,
-      portal,
-      requestId,
-    });
+    // Check rate limiting
+    const attempts = loginAttempts.get(attemptKey);
+    const now = Date.now();
 
-    // Determine user lookup based on portal
-    let user = null;
-    let isValidPassword = false;
-
-    if (portal === 'customer') {
-      // Authenticate customer
-      const { data: customer } = await supabase
-        .from('customers')
-        .select('*')
-        .eq('email', email.toLowerCase())
-        .single();
-
-      if (customer && customer.password_hash) {
-        isValidPassword = await bcrypt.compare(password, customer.password_hash);
-        if (isValidPassword) {
-          user = customer;
-        }
-      }
-
-      // Also try Supabase auth for customers
-      if (!user) {
-        const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (authData?.user && !authError) {
-          // Get customer record
-          const { data: authCustomer } = await supabase
-            .from('customers')
-            .select('*')
-            .eq('auth_user_id', authData.user.id)
-            .single();
-
-          if (authCustomer) {
-            user = authCustomer;
-          }
-        }
-      }
-    } else {
-      // Authenticate team member
-      const { data: teamUser } = await supabase
-        .from('team_users')
-        .select('*')
-        .eq('email', email.toLowerCase())
-        .single();
-
-      if (teamUser) {
-        // Check portal access
-        const portalRoleMap: Record<string, string[]> = {
-          team: ['admin', 'manager', 'coordinator', 'technician', 'inspector'],
-          field: ['technician', 'inspector'],
-          admin: ['admin'],
-        };
-
-        const allowedRoles = portalRoleMap[portal] || [];
-        if (!allowedRoles.includes(teamUser.role)) {
-          return NextResponse.json(
-            {
-              error: {
-                code: 'PORTAL_ACCESS_DENIED',
-                message: `Your role (${teamUser.role}) does not have access to the ${portal} portal`,
-              },
-            },
-            { status: 403 }
-          );
-        }
-
-        // Verify password
-        if (teamUser.password_hash) {
-          isValidPassword = await bcrypt.compare(password, teamUser.password_hash);
-          if (isValidPassword) {
-            user = teamUser;
-          }
-        }
+    if (attempts) {
+      // Clean up old attempts
+      if (now - attempts.lastAttempt > ATTEMPT_WINDOW) {
+        loginAttempts.delete(attemptKey);
+      } else if (attempts.lockedUntil && now < attempts.lockedUntil) {
+        const retryAfter = Math.ceil((attempts.lockedUntil - now) / 1000);
+        return NextResponse.json(
+          { success: false, error: 'Too many login attempts', retryAfter },
+          { status: 429 }
+        );
+      } else if (attempts.count >= MAX_ATTEMPTS && !attempts.lockedUntil) {
+        // Lock the account
+        attempts.lockedUntil = now + LOCKOUT_DURATION;
+        const retryAfter = Math.ceil(LOCKOUT_DURATION / 1000);
+        return NextResponse.json(
+          { success: false, error: 'Too many login attempts', retryAfter },
+          { status: 429 }
+        );
       }
     }
 
-    // Check if authentication was successful
+    // Find user across all user tables based on userType
+    let user: User | null = null;
+    let userTable = '';
+
+    if (userType === 'auto' || userType === 'customer') {
+      // Check customers table
+      const { data: customerData } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('email', email.toLowerCase())
+        .eq('is_active', true)
+        .single();
+
+      if (customerData) {
+        user = {
+          ...customerData,
+          role: 'customer' as const,
+          name: `${customerData.first_name} ${customerData.last_name}`.trim()
+        };
+        userTable = 'customers';
+      }
+    }
+
+    if (!user && (userType === 'auto' || userType === 'business')) {
+      // Check business users table
+      const { data: businessData } = await supabase
+        .from('business_users')
+        .select('*')
+        .eq('email', email.toLowerCase())
+        .eq('is_active', true)
+        .single();
+
+      if (businessData) {
+        user = {
+          ...businessData,
+          name: businessData.name || `${businessData.first_name} ${businessData.last_name}`.trim()
+        };
+        userTable = 'business_users';
+      }
+    }
+
+    if (!user && (userType === 'auto' || userType === 'field')) {
+      // Check field technicians table
+      const { data: fieldData } = await supabase
+        .from('field_technicians')
+        .select('*')
+        .eq('email', email.toLowerCase())
+        .eq('is_active', true)
+        .single();
+
+      if (fieldData) {
+        user = {
+          ...fieldData,
+          role: 'field_tech' as const,
+          name: `${fieldData.first_name} ${fieldData.last_name}`.trim()
+        };
+        userTable = 'field_technicians';
+      }
+    }
+
+    if (!user && (userType === 'auto' || userType === 'admin')) {
+      // Check admin users table
+      const { data: adminData } = await supabase
+        .from('admin_users')
+        .select('*')
+        .eq('email', email.toLowerCase())
+        .eq('is_active', true)
+        .single();
+
+      if (adminData) {
+        user = {
+          ...adminData,
+          role: 'admin' as const,
+          name: adminData.name || `${adminData.first_name} ${adminData.last_name}`.trim()
+        };
+        userTable = 'admin_users';
+      }
+    }
+
     if (!user) {
-      // Log failed attempt
-      await supabase.from('security_logs').insert({
-        event_type: 'login_failed',
-        user_id: null,
-        email,
-        portal,
-        ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip'),
-        user_agent: request.headers.get('user-agent'),
-        metadata: { requestId },
+      // Record failed attempt
+      const currentAttempts = loginAttempts.get(attemptKey) || { count: 0, lastAttempt: 0 };
+      loginAttempts.set(attemptKey, {
+        count: currentAttempts.count + 1,
+        lastAttempt: now
       });
 
       return NextResponse.json(
-        {
-          error: {
-            code: 'INVALID_CREDENTIALS',
-            message: 'Invalid email or password',
-          },
-        },
+        { success: false, error: 'Invalid email or password' },
         { status: 401 }
       );
     }
 
-    // Check account status
-    if (portal === 'customer' && user.account_status !== 'active') {
+    // Check if account is locked
+    if (user.locked_until && new Date(user.locked_until) > new Date()) {
       return NextResponse.json(
-        {
-          error: {
-            code: 'ACCOUNT_INACTIVE',
-            message: `Your account is ${user.account_status}. Please contact support.`,
-          },
-        },
-        { status: 403 }
+        { success: false, error: 'Account is temporarily locked. Please contact support.' },
+        { status: 423 }
       );
     }
 
-    if (portal !== 'customer' && user.is_active === false) {
+    // Verify password
+    const isValidPassword = await bcrypt.compare(password, user.password_hash);
+
+    if (!isValidPassword) {
+      // Record failed attempt
+      const currentAttempts = loginAttempts.get(attemptKey) || { count: 0, lastAttempt: 0 };
+      loginAttempts.set(attemptKey, {
+        count: currentAttempts.count + 1,
+        lastAttempt: now
+      });
+
+      // Update failed login attempts in database
+      await supabase
+        .from(userTable)
+        .update({
+          failed_login_attempts: (user.failed_login_attempts || 0) + 1,
+          last_login_attempt: new Date().toISOString()
+        })
+        .eq('id', user.id);
+
       return NextResponse.json(
-        {
-          error: {
-            code: 'ACCOUNT_DISABLED',
-            message: 'Your account has been disabled. Please contact your administrator.',
-          },
-        },
-        { status: 403 }
+        { success: false, error: 'Invalid email or password' },
+        { status: 401 }
       );
     }
 
-    // Create unified session
+    // Clear failed attempts on successful login
+    loginAttempts.delete(attemptKey);
+
+    // Update successful login
+    await supabase
+      .from(userTable)
+      .update({
+        last_login: new Date().toISOString(),
+        failed_login_attempts: 0,
+        locked_until: null
+      })
+      .eq('id', user.id);
+
+    // Generate JWT token
+    const tokenPayload = {
+      userId: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+      companyId: user.company_id,
+      userTable
+    };
+
+    const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '24h' });
+
+    // Determine redirect path based on role
+    const getRedirectPath = (role: string): string => {
+      switch (role) {
+        case 'customer':
+          return '/portal/dashboard';
+        case 'business_owner':
+        case 'business_admin':
+          return '/business';
+        case 'field_tech':
+          return '/field';
+        case 'admin':
+          return '/admin';
+        default:
+          return '/portal/dashboard';
+      }
+    };
+
+    const redirectPath = getRedirectPath(user.role);
+
+    // Create response with secure cookie
     const response = NextResponse.json({
       success: true,
       user: {
         id: user.id,
         email: user.email,
-        name: user.full_name || user.contact_name || `${user.first_name} ${user.last_name}`,
-        role: user.role || 'customer',
-        portal,
-      },
+        role: user.role,
+        name: user.name,
+        redirectPath
+      }
     });
 
-    const { session, token } = await createUnifiedSession(user, portal, response);
-
-    // Set session duration based on rememberMe
-    const maxAge = rememberMe ? 30 * 24 * 60 * 60 : 8 * 60 * 60; // 30 days or 8 hours
-    const cookieName = `${portal}_session`;
-
-    response.cookies.set(cookieName, token, {
+    // Set secure HTTP-only cookie
+    response.cookies.set('auth_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge,
-      path: '/',
+      maxAge: 24 * 60 * 60, // 24 hours
+      path: '/'
     });
 
-    // Log successful login
-    await supabase.from('security_logs').insert({
-      event_type: 'login_success',
-      user_id: user.id,
+    // Also set a client-accessible token for frontend use
+    response.cookies.set('user_session', JSON.stringify({
+      id: user.id,
       email: user.email,
-      portal,
-      ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip'),
-      user_agent: request.headers.get('user-agent'),
-      metadata: {
-        requestId,
-        sessionId: session.id,
-        rememberMe,
-      },
-    });
-
-    logger.info('Login successful', {
-      userId: user.id,
-      email: user.email,
-      portal,
-      sessionId: session.id,
-      requestId,
+      role: user.role,
+      name: user.name
+    }), {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60,
+      path: '/'
     });
 
     return response;
-  } catch (error) {
-    logger.error('Login error', {
-      error,
-      requestId,
-    });
 
+  } catch (error) {
+    console.error('Login error:', error);
     return NextResponse.json(
-      {
-        error: {
-          code: 'LOGIN_ERROR',
-          message: 'An error occurred during login',
-        },
-      },
+      { success: false, error: 'Internal server error' },
       { status: 500 }
     );
   }

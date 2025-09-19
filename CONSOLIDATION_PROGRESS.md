@@ -18,12 +18,12 @@
 - [x] Create main business dashboard with stats grid
 - [x] Set up role-based navigation system
 
-#### 🚧 Phase 1.2: Migrate Core Features (High Priority)
+#### ✅ Phase 1.2: Migrate Core Features (High Priority)
 - [x] Dashboard (merge team-portal/dashboard + tester-portal/dashboard)
 - [x] Customer Management (migrate best from both)
-- [ ] Invoice Management (consolidate billing features)
-- [ ] Scheduling System (merge scheduling features)
-- [ ] Test Reports (consolidate reporting)
+- [x] Invoice Management (consolidate billing features)
+- [x] Scheduling System (merge scheduling features)
+- [x] Test Reports (consolidate reporting)
 
 #### 🚧 Phase 1.3: Migrate Advanced Features (Medium Priority)
 - [ ] Analytics (from tester-portal/analytics)

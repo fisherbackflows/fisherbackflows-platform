@@ -154,7 +154,7 @@ export default function SignupPage() {
           <div className="mt-12 text-center">
             <p className="text-white/60 mb-4">Already have an account?</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/portal/login">
+              <Link href="/auth/login">
                 <Button className="glass hover:glass text-white/80 border border-blue-400/50">
                   Customer Login
                 </Button>

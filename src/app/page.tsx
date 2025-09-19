@@ -50,14 +50,14 @@ export default function HomePage() {
                 Find Testers
               </Link>
               <Link
-                href="/team-portal"
+                href="/business"
                 className="text-white/80 hover:text-white transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black rounded"
                 aria-label="For testing companies"
               >
                 For Testers
               </Link>
               <Link
-                href="/portal/login"
+                href="/auth/login"
                 className="px-5 py-2 rounded-full border border-white/30 text-white font-medium hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-black"
                 aria-label="Login to your account"
               >
@@ -92,21 +92,21 @@ export default function HomePage() {
                 Find Testers
               </Link>
               <Link
-                href="/team-portal"
+                href="/business"
                 className="text-white/80 hover:text-white transition-colors font-medium py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 For Testers
               </Link>
               <Link
-                href="/portal/login"
+                href="/auth/login"
                 className="text-white/80 hover:text-white transition-colors font-medium py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Login
               </Link>
               <Link
-                href="/signup"
+                href="/auth/register"
                 className="text-white/80 hover:text-white transition-colors font-medium py-2"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

@@ -28,13 +28,13 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
         const { data: { user } } = await Promise.race([authPromise, timeoutPromise]);
 
         if (!user) {
-          router.push('/portal/login');
+          router.push('/auth/login');
           return;
         }
         setIsAuthenticated(true);
       } catch (error) {
         console.error('Auth check failed:', error);
-        router.push('/portal/login');
+        router.push('/auth/login');
       }
     };
 
@@ -43,7 +43,7 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT' || !session) {
-        router.push('/portal/login');
+        router.push('/auth/login');
       } else if (event === 'SIGNED_IN' && session) {
         setIsAuthenticated(true);
       }

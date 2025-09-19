@@ -251,6 +251,13 @@ export default function BusinessDashboard() {
                   </div>
                 </Link>
 
+                <Link href="/business/admin">
+                  <div className="p-4 bg-red-500/20 border border-red-400 rounded-xl hover:bg-red-500/30 transition-colors text-center">
+                    <Shield className="h-8 w-8 text-red-300 mx-auto mb-2" />
+                    <h3 className="font-semibold text-white text-sm">Admin Panel</h3>
+                  </div>
+                </Link>
+
                 <Link href="/business/settings">
                   <div className="p-4 bg-gray-500/20 border border-gray-400 rounded-xl hover:bg-gray-500/30 transition-colors text-center">
                     <Settings className="h-8 w-8 text-gray-300 mx-auto mb-2" />
