@@ -15,7 +15,7 @@ export function useCustomerData() {
         const { data: { user }, error: userError } = await supabase.auth.getUser();
         
         if (userError || !user) {
-          setError('Please login to view your devices');
+          setError('Please login to view your dashboard');
           setLoading(false);
           return;
         }

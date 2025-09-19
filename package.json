@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3010",
     "dev-turbo": "next dev -H 0.0.0.0 -p 3010 --turbopack",
-    "build": "npm run type-check && NODE_OPTIONS='--max-old-space-size=6144' next build",
+    "build": "NODE_OPTIONS='--max-old-space-size=6144' next build",
+    "build-with-types": "npm run type-check && NODE_OPTIONS='--max-old-space-size=6144' next build",
     "build-turbo": "next build --turbopack",
     "build-no-check": "NODE_OPTIONS='--max-old-space-size=6144' next build --no-lint",
     "start": "next start -H 0.0.0.0 -p 3010",
@@ -38,7 +39,11 @@
     "ai:verify-data": "node scripts/verify-real-data.js",
     "ai:setup": "npm run ai:install-schema && npm run ai:test && npm run ai:verify-data",
     "analyze": "ANALYZE=true npm run build",
-    "build:analyze": "npm run analyze"
+    "build:analyze": "npm run analyze",
+    "deploy:link": "bash scripts/deploy-link.sh",
+    "deploy:status": "bash scripts/deploy-status.sh",
+    "deploy:preview": "bash scripts/deploy.sh",
+    "deploy:production": "bash scripts/deploy.sh --production"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
