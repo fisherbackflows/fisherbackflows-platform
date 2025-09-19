@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET || 'test_jwt_secret_key_for_production_1614aa41ebc6a184fbe318c11ab915ada4f583055a92b98b09c5e1589965528b';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

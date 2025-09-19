@@ -10,7 +10,7 @@ import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET || 'test_jwt_secret_key_for_production_1614aa41ebc6a184fbe318c11ab915ada4f583055a92b98b09c5e1589965528b';
 
 // Request validation schema
 interface LoginRequest {
