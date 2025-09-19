@@ -15,14 +15,27 @@ export default function PortalLayout({ children }: PortalLayoutProps) {
   useEffect(() => {
     const supabase = createClientComponentClient();
 
-    // Check initial auth state
+    // Check initial auth state with timeout
     const checkAuth = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
+      try {
+        // Set a timeout for the auth check
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Auth check timeout')), 10000)
+        );
+
+        const authPromise = supabase.auth.getUser();
+
+        const { data: { user } } = await Promise.race([authPromise, timeoutPromise]);
+
+        if (!user) {
+          router.push('/portal/login');
+          return;
+        }
+        setIsAuthenticated(true);
+      } catch (error) {
+        console.error('Auth check failed:', error);
         router.push('/portal/login');
-        return;
       }
-      setIsAuthenticated(true);
     };
 
     checkAuth();
